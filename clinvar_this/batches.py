@@ -157,9 +157,6 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
         _write_payload(submission_container, config.profile, name)
     elif path.endswith(".json"):
         gks_json_io = gks_json.GksJsonTransformer()
-        batch_metadata = gks_json_io.batch_metadata_from_mapping(
-            metadata, use_defaults=True
-        )
         new_submission_container = gks_json_io.records_to_submission_container(
             gks_json_io.read_file(path=path)
         )

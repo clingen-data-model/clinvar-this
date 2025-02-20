@@ -12,7 +12,7 @@ from ga4gh.core.models import MappableConcept
 from ga4gh.va_spec.aac_2017 import VariantTherapeuticResponseStudyStatement
 from ga4gh.va_spec.base import TherapeuticResponsePredicate, EvidenceLine, TherapyGroup
 from ga4gh.vrs.models import Syntax, Expression, Variation
-from pydantic import ConfigDict
+from pydantic import ConfigDict, ValidationError
 import requests
 
 from clinvar_api.models import (
@@ -64,7 +64,6 @@ class GksJsonTransformer(TransformIO):
         allele_origin=AlleleOrigin.SOMATIC,
         affected_status=AffectedStatus.YES,
     )
-    batch_metadata_model = BatchMetadataGksJson
 
     # Mapping from GKS classification to ClinVar
     gks_class_to_impact_class = {
@@ -85,6 +84,8 @@ class GksJsonTransformer(TransformIO):
     ) -> typing.List[VariantTherapeuticResponseStudyStatement]:
         """Get list of CIViC Variant Therapeutic Response Study Statements from a file
 
+        For now, diagnostic and prognostic CIViC assertions are not supported
+
         :param inputf: Text file-like object containing input GKS Statement data
         :raises exceptions.InvalidFormat: If there was an error decoding JSON
         :return: A list of CIViC Assertions represented as Variant Therapeutic Response
@@ -99,14 +100,12 @@ class GksJsonTransformer(TransformIO):
             raise exceptions.InvalidFormat(err_msg) from e
 
         for civic_assertion in civic_assertions:
-            if (
-                civic_assertion["id"].startswith("civic.aid:")
-                and civic_assertion["proposition"]["type"]
-                == "VariantTherapeuticResponseProposition"
-            ):
+            try:
                 tr_assertions.append(
                     VariantTherapeuticResponseStudyStatement(**civic_assertion)
                 )
+            except ValidationError:
+                pass
 
         return tr_assertions
 
@@ -195,19 +194,19 @@ class GksJsonTransformer(TransformIO):
         """
         citations = []
         for evidence_line in evidence_lines:
-            docs = evidence_line.reportedIn or []
-            for doc in docs:
-                if getattr(doc, "pmid", None):
-                    citations.append(
-                        SubmissionCitation(db=CitationDb.PUBMED, id=str(doc.pmid))
-                    )
-
             for evidence_item in getattr(evidence_line, "hasEvidenceItems", []):
                 citations.append(
                     SubmissionCitation(
                         url=f"https://civicdb.org/links/evidence/{evidence_item.id.split('civic.eid:')[-1]}"
                     )
                 )
+
+                docs = evidence_item.reportedIn or []
+                for doc in docs:
+                    if getattr(doc, "pmid", None):
+                        citations.append(
+                            SubmissionCitation(db=CitationDb.PUBMED, id=str(doc.pmid))
+                        )
 
         return citations
 
@@ -257,9 +256,10 @@ class GksJsonTransformer(TransformIO):
                 .get("lastAcceptedRevisionEvent", {})
                 .get("createdAt", "")
             )
-            last_accepted_revision = datetime.datetime.strftime(
-                datetime.datetime.now(tz=datetime.UTC), "%Y-%m-%d"
+            last_accepted_revision = datetime.datetime.strptime(
+                last_accepted_revision, "%Y-%m-%dT%H:%M:%SZ"
             )
+            last_accepted_revision = last_accepted_revision.strftime("%Y-%m-%d")
             return last_accepted_revision
         return
 
@@ -355,7 +355,6 @@ class GksJsonTransformer(TransformIO):
 
         Will only submit using clinical impact submissions
 
-        :param batch_metadata: Batch-wide settings for GKS import
         :param civic_tr_assertions: List of CIViC Therapeutic Assertions represented
             as GKS Variant Therapeutic Response Study Statements
         :return: A list of submission container data structures
