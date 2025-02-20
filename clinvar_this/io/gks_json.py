@@ -183,16 +183,18 @@ class GksJsonTransformer(TransformIO):
 
     @staticmethod
     def _get_citations(
+        mp_id: str,
         evidence_lines: typing.List[EvidenceLine],
     ) -> typing.List[SubmissionCitation]:
         """Get list of PubMed citations and supporting CIViC evidence for an assertion
 
+        :param mp_id: CIViC molecular profile ID for assertion
         :param evidence_lines: A list of evidence-based arguments that may support or
             refute the validity of a proposition for a CIViC assertion
         :return: List of PubMed citations and supporting CIViC evidence URLs for an
             assertion
         """
-        citations = []
+        citations = [SubmissionCitation(url=f"https://identifiers.org/{mp_id}")]
         for evidence_line in evidence_lines:
             for evidence_item in getattr(evidence_line, "hasEvidenceItems", []):
                 citations.append(
@@ -298,9 +300,11 @@ class GksJsonTransformer(TransformIO):
         else:
             description = record.description
 
+        mp_id = proposition.subjectVariant.id
+
         return SubmissionClinicalImpactSubmission(
             record_status=RecordStatus.NOVEL,
-            local_id=proposition.subjectVariant.id,
+            local_id=mp_id,
             local_key=record.id,
             observed_in=[
                 SubmissionObservedInSomatic(
@@ -339,7 +343,7 @@ class GksJsonTransformer(TransformIO):
                     proposition.predicate
                 ],
                 comment=description,
-                citation=self._get_citations(record.hasEvidenceLines),
+                citation=self._get_citations(mp_id, record.hasEvidenceLines),
                 drug_for_therapeutic_assertion=self._get_drugs(therapeutic),
                 date_last_evaluated=self._get_last_accepted_revision(
                     int(record.id.split("civic.aid:")[-1])

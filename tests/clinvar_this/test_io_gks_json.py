@@ -98,6 +98,7 @@ def civic_aid7_submission():
             assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
             comment="Combination treatment of BRAF inhibitor dabrafenib and MEK inhibitor trametinib is recommended for adjuvant treatment of stage III or recurrent melanoma with BRAF V600E mutation detected by the approved THxID kit, as well as first line treatment for metastatic melanoma. The treatments are FDA approved based on studies including the Phase III COMBI-V, COMBI-D and COMBI-AD Trials. Combination therapy is now recommended above BRAF inhibitor monotherapy. Cutaneous squamous-cell carcinoma and keratoacanthoma occur at lower rates with combination therapy than with BRAF inhibitor alone.",
             citation=[
+                SubmissionCitation(url="https://identifiers.org/civic.mpid:12"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/3758"),
                 SubmissionCitation(id="25399551", db=CitationDb.PUBMED),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6178"),
@@ -153,6 +154,7 @@ def civic_tr_submissions(civic_aid7_submission):
                     assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
                     comment="L858R is among the most common sensitizing EGFR mutations in NSCLC, and is assessed via DNA mutational analysis, including Sanger sequencing and next generation sequencing methods. Tyrosine kinase inhibitor afatinib is FDA approved as a first line systemic therapy in NSCLC with sensitizing EGFR mutation (civic.EID:2997).",
                     citation=[
+                        SubmissionCitation(url="https://identifiers.org/civic.mpid:33"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2997"
                         ),
