@@ -62,7 +62,7 @@ class GksJsonTransformer(TransformIO):
     batch_metadata_defaults = BatchMetadataGksJson(
         collection_method=CollectionMethod.CURATION,
         allele_origin=AlleleOrigin.SOMATIC,
-        affected_status=AffectedStatus.YES,
+        affected_status=AffectedStatus.UNKNOWN,
     )
 
     # Mapping from GKS classification to ClinVar

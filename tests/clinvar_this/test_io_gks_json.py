@@ -73,7 +73,7 @@ def civic_aid7_submission():
         local_key="civic.aid:7",
         observed_in=[
             SubmissionObservedInSomatic(
-                affected_status=AffectedStatus.YES,
+                affected_status=AffectedStatus.UNKNOWN,
                 allele_origin=AlleleOrigin.SOMATIC,
                 collection_method=CollectionMethod.CURATION,
             )
@@ -129,7 +129,7 @@ def civic_tr_submissions(civic_aid7_submission):
                 local_key="civic.aid:6",
                 observed_in=[
                     SubmissionObservedInSomatic(
-                        affected_status=AffectedStatus.YES,
+                        affected_status=AffectedStatus.UNKNOWN,
                         allele_origin=AlleleOrigin.SOMATIC,
                         collection_method=CollectionMethod.CURATION,
                     )
