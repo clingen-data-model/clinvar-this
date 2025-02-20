@@ -1,6 +1,7 @@
 """Support for I/O of the GKS JSON format to define submissions.
 
-Currently only supports CIViC Therapeutic Assertions
+Currently only supports CIViC Therapeutic Assertions. This assumes you are using
+MetaKB (https://github.com/cancervariants/metakb) to generate GKS JSON files.
 """
 
 import datetime
