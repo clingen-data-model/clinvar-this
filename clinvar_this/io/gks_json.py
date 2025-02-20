@@ -61,7 +61,7 @@ class GksJsonTransformer(TransformIO):
     batch_metadata_defaults = BatchMetadataGksJson(
         collection_method=CollectionMethod.CURATION,
         allele_origin=AlleleOrigin.SOMATIC,
-        affected_status=AffectedStatus.YES,  # Document this that this is hard coded
+        affected_status=AffectedStatus.YES,
     )
     batch_metadata_model = BatchMetadataGksJson
 
