@@ -307,7 +307,7 @@ class GksJsonTransformer(TransformIO):
         return SubmissionClinicalImpactSubmission(
             record_status=RecordStatus.NOVEL,
             local_id=mp_id,
-            local_key=record.id,
+            local_key=record.id.replace(".aid:", ".AID:"),
             observed_in=[
                 SubmissionObservedInSomatic(
                     allele_origin=self.batch_metadata_defaults.allele_origin,

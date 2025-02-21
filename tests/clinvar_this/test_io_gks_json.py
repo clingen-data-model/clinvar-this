@@ -70,7 +70,7 @@ def civic_aid7_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:12",
-        local_key="civic.aid:7",
+        local_key="civic.AID:7",
         observed_in=[
             SubmissionObservedInSomatic(
                 affected_status=AffectedStatus.UNKNOWN,
@@ -126,7 +126,7 @@ def civic_tr_submissions(civic_aid7_submission):
             SubmissionClinicalImpactSubmission(
                 record_status=RecordStatus.NOVEL,
                 local_id="civic.mpid:33",
-                local_key="civic.aid:6",
+                local_key="civic.AID:6",
                 observed_in=[
                     SubmissionObservedInSomatic(
                         affected_status=AffectedStatus.UNKNOWN,
