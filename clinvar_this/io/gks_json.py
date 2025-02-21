@@ -182,6 +182,22 @@ class GksJsonTransformer(TransformIO):
         )
 
     @staticmethod
+    def _get_variant_aliases(variant: Variation) -> typing.List[str] | None:
+        """Get the aliases for a variant
+
+        Looks in the variant's extensions to find an extension with the name 'aliases'
+
+        :param variant: Variant record from CIViC
+        :return: Aliases for a variant, if found
+        """
+        try:
+            return next(
+                ext for ext in variant.extensions if ext.name == "aliases"
+            ).value
+        except StopIteration:
+            return
+
+    @staticmethod
     def _get_citations(
         mp_id: str,
         evidence_lines: typing.List[EvidenceLine],
@@ -334,6 +350,9 @@ class GksJsonTransformer(TransformIO):
                                 symbol=proposition.geneContextQualifier.name
                             )
                         ],
+                        alternate_designations=self._get_variant_aliases(
+                            proposition.subjectVariant
+                        ),
                     )
                 ]
             ),

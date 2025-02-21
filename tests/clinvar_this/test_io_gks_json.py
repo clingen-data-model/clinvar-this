@@ -90,6 +90,7 @@ def civic_aid7_submission():
                 SubmissionVariant(
                     hgvs="NM_004333.4:c.1799T>A",
                     gene=[SubmissionVariantGene(symbol="BRAF")],
+                    alternate_designations=["VAL600GLU", "V640E", "VAL640GLU"],
                 )
             ]
         ),
@@ -146,6 +147,7 @@ def civic_tr_submissions(civic_aid7_submission):
                         SubmissionVariant(
                             hgvs="NM_005228.4:c.2573T>G",
                             gene=[SubmissionVariantGene(symbol="EGFR")],
+                            alternate_designations=["LEU858ARG", "L813R", "LEU813ARG"],
                         )
                     ]
                 ),
