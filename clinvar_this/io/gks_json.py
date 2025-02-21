@@ -207,7 +207,9 @@ class GksJsonTransformer(TransformIO):
                 for doc in docs:
                     if getattr(doc, "pmid", None):
                         citations.append(
-                            SubmissionCitation(db=CitationDb.PUBMED, id=str(doc.pmid))
+                            SubmissionCitation(
+                                url=f"https://pubmed.ncbi.nlm.nih.gov/{doc.pmid}"
+                            )
                         )
 
         return citations

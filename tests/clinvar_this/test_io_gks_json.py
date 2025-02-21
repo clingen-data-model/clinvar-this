@@ -100,13 +100,13 @@ def civic_aid7_submission():
             citation=[
                 SubmissionCitation(url="https://identifiers.org/civic.mpid:12"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/3758"),
-                SubmissionCitation(id="25399551", db=CitationDb.PUBMED),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25399551"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6178"),
-                SubmissionCitation(id="28891408", db=CitationDb.PUBMED),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/28891408"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6940"),
-                SubmissionCitation(id="23020132", db=CitationDb.PUBMED),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/23020132"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6938"),
-                SubmissionCitation(id="25265492", db=CitationDb.PUBMED),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25265492"),
             ],
             drug_for_therapeutic_assertion="Trametinib;Dabrafenib",
             date_last_evaluated="2018-05-15",
@@ -158,27 +158,39 @@ def civic_tr_submissions(civic_aid7_submission):
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2997"
                         ),
-                        SubmissionCitation(id="23982599", db=CitationDb.PUBMED),
+                        SubmissionCitation(
+                            url="https://pubmed.ncbi.nlm.nih.gov/23982599"
+                        ),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2629"
                         ),
-                        SubmissionCitation(id="18408761", db=CitationDb.PUBMED),
+                        SubmissionCitation(
+                            url="https://pubmed.ncbi.nlm.nih.gov/18408761"
+                        ),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/982"
                         ),
-                        SubmissionCitation(id="24439929", db=CitationDb.PUBMED),
+                        SubmissionCitation(
+                            url="https://pubmed.ncbi.nlm.nih.gov/24439929"
+                        ),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/968"
                         ),
-                        SubmissionCitation(id="26515464", db=CitationDb.PUBMED),
+                        SubmissionCitation(
+                            url="https://pubmed.ncbi.nlm.nih.gov/26515464"
+                        ),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/883"
                         ),
-                        SubmissionCitation(id="22452895", db=CitationDb.PUBMED),
+                        SubmissionCitation(
+                            url="https://pubmed.ncbi.nlm.nih.gov/22452895"
+                        ),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/879"
                         ),
-                        SubmissionCitation(id="23816960", db=CitationDb.PUBMED),
+                        SubmissionCitation(
+                            url="https://pubmed.ncbi.nlm.nih.gov/23816960"
+                        ),
                     ],
                     drug_for_therapeutic_assertion="Afatinib",
                     date_last_evaluated="2018-02-23",
