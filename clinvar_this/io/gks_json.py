@@ -226,18 +226,18 @@ class GksJsonTransformer(TransformIO):
         return ";".join([t.name for t in therapeutic.therapies])
 
     @staticmethod
-    def _get_last_accepted_revision(record_id: int) -> str | None:
-        """Get the date (yyyy-mm-dd) for the last accepted revision for an assertion
+    def _get_submitted_date(record_id: int) -> str | None:
+        """Get the date (yyyy-mm-dd) for the submission for an assertion
 
         Since CIViCPy does not include event information, use the CIVIC GraphQL API
 
         :param record_id: The ID for the CIViC assertion
-        :return: The date (yyyy-mm-dd) for the last accepted revision for an assertion
+        :return: The date (yyyy-mm-dd) for the submission for an assertion
         """
         query = f"""
             {{
                 assertion(id: {record_id}) {{
-                    lastAcceptedRevisionEvent {{
+                    submissionEvent {{
                         createdAt
                     }}
                 }}
@@ -252,17 +252,17 @@ class GksJsonTransformer(TransformIO):
 
         if resp.status_code == 200:
             resp = resp.json()
-            last_accepted_revision = (
+            submitted_date = (
                 resp.get("data", {})
                 .get("assertion", {})
-                .get("lastAcceptedRevisionEvent", {})
+                .get("submissionEvent", {})
                 .get("createdAt", "")
             )
-            last_accepted_revision = datetime.datetime.strptime(
-                last_accepted_revision, "%Y-%m-%dT%H:%M:%SZ"
+            submitted_date = datetime.datetime.strptime(
+                submitted_date, "%Y-%m-%dT%H:%M:%SZ"
             )
-            last_accepted_revision = last_accepted_revision.strftime("%Y-%m-%d")
-            return last_accepted_revision
+            submitted_date = submitted_date.strftime("%Y-%m-%d")
+            return submitted_date
         return
 
     def _get_clinical_impact_submission(
@@ -345,7 +345,7 @@ class GksJsonTransformer(TransformIO):
                 comment=description,
                 citation=self._get_citations(mp_id, record.hasEvidenceLines),
                 drug_for_therapeutic_assertion=self._get_drugs(therapeutic),
-                date_last_evaluated=self._get_last_accepted_revision(
+                date_last_evaluated=self._get_submitted_date(
                     int(record.id.split("civic.aid:")[-1])
                 ),
             ),

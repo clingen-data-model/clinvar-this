@@ -109,7 +109,7 @@ def civic_aid7_submission():
                 SubmissionCitation(id="25265492", db=CitationDb.PUBMED),
             ],
             drug_for_therapeutic_assertion="Trametinib;Dabrafenib",
-            date_last_evaluated="2023-02-06",
+            date_last_evaluated="2018-05-15",
         ),
     )
 
@@ -181,7 +181,7 @@ def civic_tr_submissions(civic_aid7_submission):
                         SubmissionCitation(id="23816960", db=CitationDb.PUBMED),
                     ],
                     drug_for_therapeutic_assertion="Afatinib",
-                    date_last_evaluated="2024-02-16",
+                    date_last_evaluated="2018-02-23",
                 ),
             ),
             civic_aid7_submission,
