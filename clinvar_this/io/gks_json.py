@@ -6,6 +6,7 @@ MetaKB (https://github.com/cancervariants/metakb) to generate GKS JSON files.
 
 import datetime
 import json
+from types import MappingProxyType
 import typing
 
 from ga4gh.core.models import MappableConcept
@@ -52,7 +53,6 @@ class BatchMetadataGksJson(BatchMetadata):
     The properties will be assigned to all variants/samples in the batch.
     """
 
-    model_config = ConfigDict(frozen=True)
     affected_status: typing.Optional[AffectedStatus] = None
 
 
@@ -65,14 +65,17 @@ class GksJsonTransformer(TransformIO):
         affected_status=AffectedStatus.UNKNOWN,
     )
 
-    # Mapping from GKS classification to ClinVar
-    gks_class_to_impact_class = {
-        "Tier I": SomaticClinicalImpactClassificationDescription.STRONG,
-        "Tier II": SomaticClinicalImpactClassificationDescription.POTENTIAL,
-        "Tier III": SomaticClinicalImpactClassificationDescription.UNKNOWN,
-        "Tier IV": SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
-    }
+    # Mapping from GKS classification to clinical impact classification
+    gks_class_to_impact_class = MappingProxyType(
+        {
+            "Tier I": SomaticClinicalImpactClassificationDescription.STRONG,
+            "Tier II": SomaticClinicalImpactClassificationDescription.POTENTIAL,
+            "Tier III": SomaticClinicalImpactClassificationDescription.UNKNOWN,
+            "Tier IV": SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
+        }
+    )
 
+    # Mapping from GKS predicate type to assertion type for clinical impact
     gks_predicate_to_assertion = {
         TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
         TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
@@ -84,7 +87,7 @@ class GksJsonTransformer(TransformIO):
     ) -> typing.List[VariantTherapeuticResponseStudyStatement]:
         """Get list of CIViC Variant Therapeutic Response Study Statements from a file
 
-        For now, diagnostic and prognostic CIViC assertions are not supported
+        For now, diagnostic and prognostic CIViC assertions are NOT supported
 
         :param inputf: Text file-like object containing input GKS Statement data
         :raises exceptions.InvalidFormat: If there was an error decoding JSON
