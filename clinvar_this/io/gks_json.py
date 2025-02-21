@@ -13,7 +13,7 @@ from ga4gh.core.models import MappableConcept
 from ga4gh.va_spec.aac_2017 import VariantTherapeuticResponseStudyStatement
 from ga4gh.va_spec.base import TherapeuticResponsePredicate, EvidenceLine, TherapyGroup
 from ga4gh.vrs.models import Syntax, Expression, Variation
-from pydantic import ConfigDict, ValidationError
+from pydantic import ValidationError
 import requests
 
 from clinvar_api.models import (
