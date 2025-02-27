@@ -432,7 +432,7 @@
                     "value": "TIER_I_LEVEL_A"
                 }
             ],
-            "primaryCode": "Tier I"
+            "primaryCode": "Tier I - Strong"
         },
         "hasEvidenceLines": [
             {
@@ -3848,7 +3848,7 @@
                     "value": "TIER_I_LEVEL_A"
                 }
             ],
-            "primaryCode": "Tier I"
+            "primaryCode": "Tier I - Strong"
         },
         "hasEvidenceLines": [
             {
@@ -6747,7 +6747,7 @@
                     "value": "TIER_I_LEVEL_A"
                 }
             ],
-            "primaryCode": "Tier I"
+            "primaryCode": "Tier I - Strong"
         },
         "hasEvidenceLines": [
             {
@@ -9061,7 +9061,7 @@
                     "value": "TIER_II_LEVEL_C"
                 }
             ],
-            "primaryCode": "Tier II"
+            "primaryCode": "Tier II - Potential"
         },
         "hasEvidenceLines": [
             {

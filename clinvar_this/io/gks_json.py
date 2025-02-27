@@ -65,16 +65,6 @@ class GksJsonTransformer(TransformIO):
         affected_status=AffectedStatus.UNKNOWN,
     )
 
-    # Mapping from GKS classification to clinical impact classification
-    gks_class_to_impact_class = MappingProxyType(
-        {
-            "Tier I": SomaticClinicalImpactClassificationDescription.STRONG,
-            "Tier II": SomaticClinicalImpactClassificationDescription.POTENTIAL,
-            "Tier III": SomaticClinicalImpactClassificationDescription.UNKNOWN,
-            "Tier IV": SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
-        }
-    )
-
     # Mapping from GKS predicate type to assertion type for clinical impact
     gks_predicate_to_assertion = {
         TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
@@ -360,9 +350,7 @@ class GksJsonTransformer(TransformIO):
                 ]
             ),
             clinical_impact_classification=SomaticClinicalImpactClassification(
-                clinical_impact_classification_description=self.gks_class_to_impact_class[
-                    record.classification.primaryCode.root
-                ],
+                clinical_impact_classification_description=SomaticClinicalImpactClassificationDescription(record.classification.primaryCode.root),
                 assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
                     proposition.predicate
                 ],
