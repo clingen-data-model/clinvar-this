@@ -5,15 +5,12 @@ MetaKB (https://github.com/cancervariants/metakb) to generate GKS JSON files.
 """
 
 import datetime
-import json
-from types import MappingProxyType
 import typing
 
-from ga4gh.core.models import MappableConcept
+from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.va_spec.aac_2017 import VariantTherapeuticResponseStudyStatement
-from ga4gh.va_spec.base import TherapeuticResponsePredicate, EvidenceLine, TherapyGroup
-from ga4gh.vrs.models import Syntax, Expression, Variation
-from pydantic import ValidationError
+from ga4gh.va_spec.base import EvidenceLine
+from ga4gh.vrs.models import Syntax, Expression
 import requests
 
 from clinvar_api.models import (
@@ -27,86 +24,38 @@ from clinvar_api.models import (
     SubmissionAssertionCriteria,
     SubmissionChromosomeCoordinates,
     SubmissionCitation,
-    SubmissionCondition,
     SubmissionContainer,
     SubmissionClinicalImpactSubmission,
-    SubmissionVariant,
-    SubmissionVariantSet,
 )
 from clinvar_api.models.sub_payload import (
     SomaticClinicalImpactClassification,
-    SubmissionConditionSetSomatic,
     SubmissionObservedInSomatic,
-    SubmissionVariantGene,
 )
 from clinvar_api.msg.sub_payload import (
-    SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
-from clinvar_this import exceptions
-from clinvar_this.io.base import TransformIO, BatchMetadata
+
+from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 
-class BatchMetadataGksJson(BatchMetadata):
-    """Batch-wide settings for GKS JSON import.
-
-    The properties will be assigned to all variants/samples in the batch.
-    """
-
-    affected_status: typing.Optional[AffectedStatus] = None
-
-
-class GksJsonTransformer(TransformIO):
+class CivicGksJsonTransformer(GksJsonTransformer):
     """Class for transforming GKS JSON input data from various formats into submission format"""
 
-    batch_metadata_defaults = BatchMetadataGksJson(
-        collection_method=CollectionMethod.CURATION,
-        allele_origin=AlleleOrigin.SOMATIC,
-        affected_status=AffectedStatus.UNKNOWN,
-    )
-
-    # Mapping from GKS predicate type to assertion type for clinical impact
-    gks_predicate_to_assertion = {
-        TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
-        TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
-    }
+    _observed_in = [
+        SubmissionObservedInSomatic(
+            allele_origin=AlleleOrigin.SOMATIC,
+            collection_method=CollectionMethod.CURATION,
+            affected_status=AffectedStatus.UNKNOWN,
+        )
+    ]
 
     @staticmethod
-    def _read_file(
-        inputf: typing.TextIO,
-    ) -> typing.List[VariantTherapeuticResponseStudyStatement]:
-        """Get list of CIViC Variant Therapeutic Response Study Statements from a file
-
-        For now, diagnostic and prognostic CIViC assertions are NOT supported
-
-        :param inputf: Text file-like object containing input GKS Statement data
-        :raises exceptions.InvalidFormat: If there was an error decoding JSON
-        :return: A list of CIViC Assertions represented as Variant Therapeutic Response
-            Study Statements
-        """
-        tr_assertions: typing.List[dict] = []
-
-        try:
-            civic_assertions = json.load(inputf)
-        except json.JSONDecodeError as e:
-            err_msg = "Error decoding JSON"
-            raise exceptions.InvalidFormat(err_msg) from e
-
-        for civic_assertion in civic_assertions:
-            try:
-                tr_assertions.append(
-                    VariantTherapeuticResponseStudyStatement(**civic_assertion)
-                )
-            except ValidationError:
-                pass
-
-        return tr_assertions
-
-    @staticmethod
-    def _get_variant_hgvs(variant: Variation) -> str | None:
+    def _get_variant_hgvs(
+        variant: CategoricalVariant,
+    ) -> str | None:
         """Get HGVS expression for a variant
 
-        :param variant: Variant record from CIViC
+        :param variant: Variant record
         :return: cDNA RefSeq HGVS expression or genomic RefSeq HGVS expression for a
             variant, if provided.
         """
@@ -131,9 +80,11 @@ class GksJsonTransformer(TransformIO):
             if hgvs:
                 return sorted(hgvs)[0]
 
+        expressions = None
         if getattr(variant, "constraints", None):
             expressions = variant.constraints[0].root.allele.expressions
         else:
+            # Not able to normalize
             try:
                 expressions_ext = next(
                     ext for ext in variant.extensions if ext.name == "expressions"
@@ -148,7 +99,7 @@ class GksJsonTransformer(TransformIO):
 
     @staticmethod
     def _get_variant_coords(
-        variant: Variation,
+        variant: CategoricalVariant,
     ) -> SubmissionChromosomeCoordinates | None:
         """Get the chromosome coordinates for a variant
 
@@ -173,22 +124,6 @@ class GksJsonTransformer(TransformIO):
             start=rep_coords_ext["start"],
             stop=rep_coords_ext["stop"],
         )
-
-    @staticmethod
-    def _get_variant_aliases(variant: Variation) -> typing.List[str] | None:
-        """Get the aliases for a variant
-
-        Looks in the variant's extensions to find an extension with the name 'aliases'
-
-        :param variant: Variant record from CIViC
-        :return: Aliases for a variant, if found
-        """
-        try:
-            return next(
-                ext for ext in variant.extensions if ext.name == "aliases"
-            ).value
-        except StopIteration:
-            return
 
     @staticmethod
     def _get_citations(
@@ -222,19 +157,6 @@ class GksJsonTransformer(TransformIO):
                         )
 
         return citations
-
-    @staticmethod
-    def _get_drugs(therapeutic: TherapyGroup | MappableConcept) -> str:
-        """Get the name for drug(s)
-
-        :param therapeutic: CIViC therapeutic record
-        :return: The formatted name for a CIViC therapeutic record. Multiple therapies
-            for combination and substitution will be separated by semicolons.
-        """
-        if isinstance(therapeutic, MappableConcept):
-            return therapeutic.name
-
-        return ";".join([t.name for t in therapeutic.therapies])
 
     @staticmethod
     def _get_submitted_date(record_id: int) -> str | None:
@@ -287,9 +209,6 @@ class GksJsonTransformer(TransformIO):
         Assertions with Substitutes therapies will be separated by semicolons
         and the CIViC assertion's description will be updated to include this note.
 
-        Allele origin, collection method, and affected status will always use the
-        ``batch_metadata_defaults``
-
         :param record: The CIViC therapeutic assertion
         :param variant_hgvs: The HGVS expression for a variant, if found. If not found,
             ``variant_coords`` must be provided. This takes priority over
@@ -300,63 +219,27 @@ class GksJsonTransformer(TransformIO):
         """
         proposition = record.proposition
         therapeutic = proposition.objectTherapeutic.root
-
-        if (
-            isinstance(therapeutic, TherapyGroup)
-            and therapeutic.groupType.name == "TherapeuticSubstituteGroup"
-        ):
-            description = (
-                f"{record.description} NOTE: These therapies are in substitution."
-            )
-        else:
-            description = record.description
-
         mp_id = proposition.subjectVariant.id
 
         return SubmissionClinicalImpactSubmission(
             record_status=RecordStatus.NOVEL,
             local_id=mp_id,
             local_key=record.id.replace(".aid:", ".AID:"),
-            observed_in=[
-                SubmissionObservedInSomatic(
-                    allele_origin=self.batch_metadata_defaults.allele_origin,
-                    collection_method=self.batch_metadata_defaults.collection_method,
-                    affected_status=self.batch_metadata_defaults.affected_status,
-                )
-            ],
-            condition_set=SubmissionConditionSetSomatic(
-                condition=[
-                    SubmissionCondition(
-                        name=proposition.conditionQualifier.root.name,
-                    )
-                ]
-            ),
-            variant_set=SubmissionVariantSet(
-                variant=[
-                    SubmissionVariant(
-                        hgvs=variant_hgvs,
-                        chromosome_coordinates=variant_coords
-                        if variant_hgvs is None
-                        else None,
-                        gene=[
-                            SubmissionVariantGene(
-                                symbol=proposition.geneContextQualifier.name
-                            )
-                        ],
-                        alternate_designations=self._get_variant_aliases(
-                            proposition.subjectVariant
-                        ),
-                    )
-                ]
+            observed_in=self._observed_in,
+            condition_set=self.get_condition_set(proposition),
+            variant_set=self.get_variant_set(
+                proposition, variant_hgvs=variant_hgvs, variant_coords=variant_coords
             ),
             clinical_impact_classification=SomaticClinicalImpactClassification(
-                clinical_impact_classification_description=SomaticClinicalImpactClassificationDescription(record.classification.primaryCode.root),
+                clinical_impact_classification_description=SomaticClinicalImpactClassificationDescription(
+                    record.classification.primaryCode.root
+                ),
                 assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
                     proposition.predicate
                 ],
-                comment=description,
+                comment=self.get_comment(record),
                 citation=self._get_citations(mp_id, record.hasEvidenceLines),
-                drug_for_therapeutic_assertion=self._get_drugs(therapeutic),
+                drug_for_therapeutic_assertion=self.get_drugs(therapeutic),
                 date_last_evaluated=self._get_submitted_date(
                     int(record.id.split("civic.aid:")[-1])
                 ),
@@ -365,20 +248,20 @@ class GksJsonTransformer(TransformIO):
 
     def records_to_submission_container(
         self,
-        civic_tr_assertions: typing.List[VariantTherapeuticResponseStudyStatement],
+        civic_study_statements: typing.List[VariantTherapeuticResponseStudyStatement],
     ) -> typing.List[SubmissionContainer]:
         """Transform GKS records to submission container data structures
 
         Will only submit using clinical impact submissions
 
-        :param civic_tr_assertions: List of CIViC Therapeutic Assertions represented
+        :param civic_study_statements: List of CIViC Therapeutic Assertions represented
             as GKS Variant Therapeutic Response Study Statements
         :return: A list of submission container data structures
         """
         clinical_impact_submissions: typing.List[SubmissionContainer] = []
 
-        for civic_tr_assertion in civic_tr_assertions:
-            variant = civic_tr_assertion.proposition.subjectVariant
+        for civic_study_statement in civic_study_statements:
+            variant = civic_study_statement.proposition.subjectVariant
             variant_hgvs = self._get_variant_hgvs(variant)
             variant_coords = None
             if not variant_hgvs:
@@ -387,7 +270,7 @@ class GksJsonTransformer(TransformIO):
                     continue
 
             clinical_impact_submission = self._get_clinical_impact_submission(
-                civic_tr_assertion,
+                civic_study_statement,
                 variant_hgvs=variant_hgvs,
                 variant_coords=variant_coords,
             )

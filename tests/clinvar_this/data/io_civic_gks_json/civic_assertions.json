@@ -25,15 +25,12 @@
                 "type": "CategoricalVariant",
                 "name": "EGFR L858R",
                 "description": "EGFR L858R has long been recognized as a functionally significant mutation in cancer, and is one of the most prevalent single mutations in lung cancer. Best described in non-small cell lung cancer (NSCLC), the mutation seems to confer sensitivity to first and second generation TKI's like gefitinib and neratinib. NSCLC patients with this mutation treated with TKI's show increased overall and progression-free survival, as compared to chemotherapy alone. Third generation TKI's are currently in clinical trials that specifically focus on mutant forms of EGFR, a few of which have shown efficacy in treating patients that failed to respond to earlier generation TKI therapies.",
+                "aliases": [
+                    "LEU858ARG",
+                    "L813R",
+                    "LEU813ARG"
+                ],
                 "extensions": [
-                    {
-                        "name": "aliases",
-                        "value": [
-                            "LEU858ARG",
-                            "L813R",
-                            "LEU813ARG"
-                        ]
-                    },
                     {
                         "name": "CIViC Molecular Profile Score",
                         "value": 379.0
@@ -473,15 +470,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "EGFR L858R",
                                 "description": "EGFR L858R has long been recognized as a functionally significant mutation in cancer, and is one of the most prevalent single mutations in lung cancer. Best described in non-small cell lung cancer (NSCLC), the mutation seems to confer sensitivity to first and second generation TKI's like gefitinib and neratinib. NSCLC patients with this mutation treated with TKI's show increased overall and progression-free survival, as compared to chemotherapy alone. Third generation TKI's are currently in clinical trials that specifically focus on mutant forms of EGFR, a few of which have shown efficacy in treating patients that failed to respond to earlier generation TKI therapies.",
+                                "aliases": [
+                                    "LEU858ARG",
+                                    "L813R",
+                                    "LEU813ARG"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "LEU858ARG",
-                                            "L813R",
-                                            "LEU813ARG"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 379.0
@@ -938,15 +932,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "EGFR L858R",
                                 "description": "EGFR L858R has long been recognized as a functionally significant mutation in cancer, and is one of the most prevalent single mutations in lung cancer. Best described in non-small cell lung cancer (NSCLC), the mutation seems to confer sensitivity to first and second generation TKI's like gefitinib and neratinib. NSCLC patients with this mutation treated with TKI's show increased overall and progression-free survival, as compared to chemotherapy alone. Third generation TKI's are currently in clinical trials that specifically focus on mutant forms of EGFR, a few of which have shown efficacy in treating patients that failed to respond to earlier generation TKI therapies.",
+                                "aliases": [
+                                    "LEU858ARG",
+                                    "L813R",
+                                    "LEU813ARG"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "LEU858ARG",
-                                            "L813R",
-                                            "LEU813ARG"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 379.0
@@ -1353,17 +1344,17 @@
                                 },
                                 {
                                     "coding": {
-                                        "id": "civic.evidence_level:D",
-                                        "system": "https://civic.readthedocs.io/en/latest/model/evidence/level.html",
-                                        "code": "D"
+                                        "id": "moa.assertion_level:preclinical_evidence",
+                                        "system": "https://moalmanac.org/about",
+                                        "code": "Preclinical evidence"
                                     },
                                     "relation": "exactMatch"
                                 },
                                 {
                                     "coding": {
-                                        "id": "moa.assertion_level:preclinical_evidence",
-                                        "system": "https://moalmanac.org/about",
-                                        "code": "Preclinical evidence"
+                                        "id": "civic.evidence_level:D",
+                                        "system": "https://civic.readthedocs.io/en/latest/model/evidence/level.html",
+                                        "code": "D"
                                     },
                                     "relation": "exactMatch"
                                 }
@@ -1411,15 +1402,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "EGFR L858R",
                                 "description": "EGFR L858R has long been recognized as a functionally significant mutation in cancer, and is one of the most prevalent single mutations in lung cancer. Best described in non-small cell lung cancer (NSCLC), the mutation seems to confer sensitivity to first and second generation TKI's like gefitinib and neratinib. NSCLC patients with this mutation treated with TKI's show increased overall and progression-free survival, as compared to chemotherapy alone. Third generation TKI's are currently in clinical trials that specifically focus on mutant forms of EGFR, a few of which have shown efficacy in treating patients that failed to respond to earlier generation TKI therapies.",
+                                "aliases": [
+                                    "LEU858ARG",
+                                    "L813R",
+                                    "LEU813ARG"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "LEU858ARG",
-                                            "L813R",
-                                            "LEU813ARG"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 379.0
@@ -1876,15 +1864,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "EGFR L858R",
                                 "description": "EGFR L858R has long been recognized as a functionally significant mutation in cancer, and is one of the most prevalent single mutations in lung cancer. Best described in non-small cell lung cancer (NSCLC), the mutation seems to confer sensitivity to first and second generation TKI's like gefitinib and neratinib. NSCLC patients with this mutation treated with TKI's show increased overall and progression-free survival, as compared to chemotherapy alone. Third generation TKI's are currently in clinical trials that specifically focus on mutant forms of EGFR, a few of which have shown efficacy in treating patients that failed to respond to earlier generation TKI therapies.",
+                                "aliases": [
+                                    "LEU858ARG",
+                                    "L813R",
+                                    "LEU813ARG"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "LEU858ARG",
-                                            "L813R",
-                                            "LEU813ARG"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 379.0
@@ -2291,17 +2276,17 @@
                                 },
                                 {
                                     "coding": {
-                                        "id": "civic.evidence_level:D",
-                                        "system": "https://civic.readthedocs.io/en/latest/model/evidence/level.html",
-                                        "code": "D"
+                                        "id": "moa.assertion_level:preclinical_evidence",
+                                        "system": "https://moalmanac.org/about",
+                                        "code": "Preclinical evidence"
                                     },
                                     "relation": "exactMatch"
                                 },
                                 {
                                     "coding": {
-                                        "id": "moa.assertion_level:preclinical_evidence",
-                                        "system": "https://moalmanac.org/about",
-                                        "code": "Preclinical evidence"
+                                        "id": "civic.evidence_level:D",
+                                        "system": "https://civic.readthedocs.io/en/latest/model/evidence/level.html",
+                                        "code": "D"
                                     },
                                     "relation": "exactMatch"
                                 }
@@ -2349,15 +2334,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "EGFR L858R",
                                 "description": "EGFR L858R has long been recognized as a functionally significant mutation in cancer, and is one of the most prevalent single mutations in lung cancer. Best described in non-small cell lung cancer (NSCLC), the mutation seems to confer sensitivity to first and second generation TKI's like gefitinib and neratinib. NSCLC patients with this mutation treated with TKI's show increased overall and progression-free survival, as compared to chemotherapy alone. Third generation TKI's are currently in clinical trials that specifically focus on mutant forms of EGFR, a few of which have shown efficacy in treating patients that failed to respond to earlier generation TKI therapies.",
+                                "aliases": [
+                                    "LEU858ARG",
+                                    "L813R",
+                                    "LEU813ARG"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "LEU858ARG",
-                                            "L813R",
-                                            "LEU813ARG"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 379.0
@@ -2814,15 +2796,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "EGFR L858R",
                                 "description": "EGFR L858R has long been recognized as a functionally significant mutation in cancer, and is one of the most prevalent single mutations in lung cancer. Best described in non-small cell lung cancer (NSCLC), the mutation seems to confer sensitivity to first and second generation TKI's like gefitinib and neratinib. NSCLC patients with this mutation treated with TKI's show increased overall and progression-free survival, as compared to chemotherapy alone. Third generation TKI's are currently in clinical trials that specifically focus on mutant forms of EGFR, a few of which have shown efficacy in treating patients that failed to respond to earlier generation TKI therapies.",
+                                "aliases": [
+                                    "LEU858ARG",
+                                    "L813R",
+                                    "LEU813ARG"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "LEU858ARG",
-                                            "L813R",
-                                            "LEU813ARG"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 379.0
@@ -3269,15 +3248,12 @@
                 "type": "CategoricalVariant",
                 "name": "BRAF V600E",
                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                "aliases": [
+                    "VAL600GLU",
+                    "V640E",
+                    "VAL640GLU"
+                ],
                 "extensions": [
-                    {
-                        "name": "aliases",
-                        "value": [
-                            "VAL600GLU",
-                            "V640E",
-                            "VAL640GLU"
-                        ]
-                    },
                     {
                         "name": "CIViC Molecular Profile Score",
                         "value": 1433.5
@@ -3889,15 +3865,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -4526,15 +4499,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -5163,15 +5133,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -5800,15 +5767,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -6427,15 +6391,12 @@
                 "type": "CategoricalVariant",
                 "name": "BRAF V600E",
                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                "aliases": [
+                    "VAL600GLU",
+                    "V640E",
+                    "VAL640GLU"
+                ],
                 "extensions": [
-                    {
-                        "name": "aliases",
-                        "value": [
-                            "VAL600GLU",
-                            "V640E",
-                            "VAL640GLU"
-                        ]
-                    },
                     {
                         "name": "CIViC Molecular Profile Score",
                         "value": 1433.5
@@ -7280,15 +7241,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -7658,15 +7616,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -8036,15 +7991,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -8414,15 +8366,12 @@
                                 "type": "CategoricalVariant",
                                 "name": "BRAF V600E",
                                 "description": "BRAF V600E has been shown to be recurrent in many cancer types. It is one of the most widely studied variants in cancer. This variant is correlated with poor prognosis in certain cancer types, including colorectal cancer and papillary thyroid cancer. The targeted therapeutic dabrafenib has been shown to be effective in clinical trials with an array of BRAF mutations and cancer types. Dabrafenib has also shown to be effective when combined with the MEK inhibitor trametinib in colorectal cancer and melanoma. However, in patients with TP53, CDKN2A and KRAS mutations, dabrafenib resistance has been reported. Ipilimumab, regorafenib, vemurafenib, and a number of combination therapies have been successful in treating V600E mutations. However, cetuximab and panitumumab have been largely shown to be ineffective without supplementary treatment.",
+                                "aliases": [
+                                    "VAL600GLU",
+                                    "V640E",
+                                    "VAL640GLU"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "VAL600GLU",
-                                            "V640E",
-                                            "VAL640GLU"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 1433.5
@@ -8781,13 +8730,10 @@
                 "id": "civic.mpid:1594",
                 "type": "CategoricalVariant",
                 "name": "ACVR1 G328V",
+                "aliases": [
+                    "GLY328VAL"
+                ],
                 "extensions": [
-                    {
-                        "name": "aliases",
-                        "value": [
-                            "GLY328VAL"
-                        ]
-                    },
                     {
                         "name": "CIViC Molecular Profile Score",
                         "value": 35.0
@@ -9101,13 +9047,10 @@
                                 "id": "civic.mpid:1594",
                                 "type": "CategoricalVariant",
                                 "name": "ACVR1 G328V",
+                                "aliases": [
+                                    "GLY328VAL"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "GLY328VAL"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 35.0
@@ -9438,13 +9381,10 @@
                                 "id": "civic.mpid:1594",
                                 "type": "CategoricalVariant",
                                 "name": "ACVR1 G328V",
+                                "aliases": [
+                                    "GLY328VAL"
+                                ],
                                 "extensions": [
-                                    {
-                                        "name": "aliases",
-                                        "value": [
-                                            "GLY328VAL"
-                                        ]
-                                    },
                                     {
                                         "name": "CIViC Molecular Profile Score",
                                         "value": 35.0

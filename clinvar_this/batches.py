@@ -2,6 +2,7 @@
 
 import datetime
 import pathlib
+import re
 import typing
 
 from logzero import logger
@@ -9,7 +10,8 @@ from tabulate import tabulate
 
 from clinvar_api import client, models
 from clinvar_this import config, exceptions
-from clinvar_this.io import tsv, gks_json
+from clinvar_this.io import tsv
+from clinvar_this.io.gks_json import CivicGksJsonTransformer
 
 
 def get_share_dir():
@@ -155,10 +157,10 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
         else:
             raise exceptions.IOException(f"Could not guess TSV file type from header for {path}")
         _write_payload(submission_container, config.profile, name)
-    elif path.endswith(".json"):
-        gks_json_io = gks_json.GksJsonTransformer()
-        new_submission_container = gks_json_io.records_to_submission_container(
-            gks_json_io.read_file(path=path)
+    elif re.match(r".*civic.*\.json$", path):
+        civic_gks_transformer = CivicGksJsonTransformer()
+        new_submission_container = civic_gks_transformer.records_to_submission_container(
+            civic_gks_transformer.read_file(path=path)
         )
         if previous_submission_container:
             submission_container = _merge_submission_container(

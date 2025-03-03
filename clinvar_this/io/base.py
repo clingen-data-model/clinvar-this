@@ -4,28 +4,12 @@ from abc import ABC, abstractmethod
 import pathlib
 import typing
 
-from pydantic import BaseModel, ConfigDict
 
 from clinvar_api.models import SubmissionContainer
-from clinvar_api.msg.sub_payload import AlleleOrigin, CollectionMethod
-
-
-class BatchMetadata(BaseModel):
-    """Batch-wide settings for import.
-
-    The properties will be assigned to all variants/samples in the batch.
-    """
-
-    model_config = ConfigDict(frozen=True)
-
-    collection_method: typing.Optional[CollectionMethod] = None
-    allele_origin: typing.Optional[AlleleOrigin] = None
 
 
 class TransformIO(ABC):
     """Base class for transforming input data from various formats into submission format"""
-
-    batch_metadata_defaults: typing.Dict[str, typing.Any]
 
     @abstractmethod
     def _read_file(inputf: typing.TextIO) -> typing.List:

@@ -1,4 +1,4 @@
-"""Module for testing GKS JSON transformer"""
+"""Module for testing CIViC GKS JSON transformer"""
 
 from deepdiff import DeepDiff
 import json
@@ -28,40 +28,48 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactClassificationDescription,
 )
 import pytest
+from ga4gh.core.models import Extension
+from ga4gh.cat_vrs.models import CategoricalVariant
+from ga4gh.vrs.models import Allele, MolecularVariation
 from ga4gh.va_spec.aac_2017 import (
     VariantTherapeuticResponseStudyStatement,
 )
 
 from clinvar_this import exceptions
-from clinvar_this.io.gks_json import GksJsonTransformer
+from clinvar_this.io.gks_json.civic import CivicGksJsonTransformer
 
 
-DATA_DIR = pathlib.Path(__file__).parent / "data/io_gks_json"
-
-
-@pytest.fixture(scope="module")
-def gks_json_transformer():
-    """Create test fixture for GksJsonTransformer"""
-    return GksJsonTransformer()
+DATA_DIR = pathlib.Path(__file__).parent / "data" / "io_civic_gks_json"
 
 
 @pytest.fixture(scope="module")
-def gks_json_data():
-    """Create test fixture for GKS JSON data"""
-    with (DATA_DIR / "civic_assertions.json").open() as f:
+def civic_gks_json_transformer():
+    """Create test fixture for CivicGksJsonTransformer"""
+    return CivicGksJsonTransformer()
+
+
+@pytest.fixture(scope="module")
+def civic_gks_json_data():
+    """Create test fixture for CIViC GKS JSON data"""
+    with (
+        pathlib.Path(__file__).parent
+        / "data"
+        / "io_civic_gks_json"
+        / "civic_assertions.json"
+    ).open() as f:
         return json.load(f)
 
 
 @pytest.fixture(scope="module")
-def civic_aid6(gks_json_data):
+def civic_aid6(civic_gks_json_data):
     """Create test fixture for CIViC AID6"""
-    return VariantTherapeuticResponseStudyStatement(**gks_json_data[0])
+    return VariantTherapeuticResponseStudyStatement(**civic_gks_json_data[0])
 
 
 @pytest.fixture(scope="module")
-def civic_aid7(gks_json_data):
+def civic_aid7(civic_gks_json_data):
     """Create test fixture for CIViC AID7"""
-    return VariantTherapeuticResponseStudyStatement(**gks_json_data[1])
+    return VariantTherapeuticResponseStudyStatement(**civic_gks_json_data[1])
 
 
 @pytest.fixture(scope="module")
@@ -203,28 +211,106 @@ def civic_tr_submissions(civic_aid7_submission):
     )
 
 
-def test_read_file(gks_json_transformer, civic_aid6, civic_aid7):
+@pytest.fixture(scope="module")
+def civic_mpid_495():
+    """Create test fixture for CIViC MP 395"""
+    mp = {
+        "id": "civic.mpid:395",
+        "type": "CategoricalVariant",
+        "name": "BRAF Mutation",
+        "extensions": [
+            {"name": "vicc_normalizer_failure", "value": True},
+            {"name": "CIViC Molecular Profile Score", "value": 166.0},
+            {
+                "name": "CIViC representative coordinate",
+                "value": {
+                    "ensembl_version": 75,
+                    "reference_build": "GRCh37",
+                    "representative_transcript": "ENST00000288602.6",
+                    "chromosome": "7",
+                    "start": 140453136,
+                    "stop": 140481403,
+                    "type": "coordinates",
+                },
+            },
+            {
+                "name": "Variant types",
+                "value": [
+                    {
+                        "id": "SO:0001564",
+                        "name": "gene_variant",
+                        "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                        "code": "SO:0001564",
+                    },
+                    {
+                        "id": "SO:0002053",
+                        "name": "gain_of_function_variant",
+                        "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                        "code": "SO:0002053",
+                    },
+                ],
+            },
+        ],
+        "mappings": [
+            {
+                "coding": {
+                    "id": "civic.vid:399",
+                    "system": "https://civicdb.org/variants/",
+                    "code": "399",
+                },
+                "relation": "exactMatch",
+            }
+        ],
+    }
+    return CategoricalVariant(**mp)
+
+
+@pytest.fixture(scope="module")
+def vrs_molecular_variation():
+    """Create test fixture for VRS Allele"""
+    allele = {
+    "location": {
+        "end": 44908822,
+        "start": 44908821,
+        "sequenceReference": {
+            "refgetAccession": "SQ.IIB53T8CNeJJdUqzn9V_JnRtQadwWCbl",
+            "type": "SequenceReference",
+        },
+        "type": "SequenceLocation",
+    },
+    "state": {"sequence": "T", "type": "LiteralSequenceExpression"},
+    "type": "Allele",
+    "expressions": [
+        {
+            "syntax": "hgvs.g",
+            "value": "NC_000019.10:g.44908822C>T",
+        }
+    ]
+}
+    return MolecularVariation(**allele)
+
+
+def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7):
     """Ensure that read_file method works correctly"""
     path = DATA_DIR / "civic_assertions.json"
     expected_assertions = [civic_aid6, civic_aid7]
 
     with path.open("rt") as inputf:
-        actual = gks_json_transformer.read_file(file=inputf)
+        actual = civic_gks_json_transformer.read_file(file=inputf)
     assert actual == expected_assertions
 
-    actual = gks_json_transformer.read_file(path=path)
+    actual = civic_gks_json_transformer.read_file(path=path)
     assert actual == expected_assertions
 
     with pytest.raises(exceptions.InvalidFormat, match=r"Error decoding JSON"):
-        gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
-
+        civic_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
 
 def test_records_to_submission_container(
-    gks_json_transformer, civic_aid6, civic_aid7, civic_tr_submissions
+    civic_gks_json_transformer, civic_aid6, civic_aid7, civic_tr_submissions
 ):
     """Ensure that records_to_submission_container works correctly"""
     # Test single therapy and CombinationTherapy
-    actual = gks_json_transformer.records_to_submission_container(
+    actual = civic_gks_json_transformer.records_to_submission_container(
         [civic_aid6, civic_aid7]
     )
     diff = DeepDiff(
@@ -239,7 +325,9 @@ def test_records_to_submission_container(
     civic_aid7_cpy.proposition.objectTherapeutic.root.groupType.name = (
         "TherapeuticSubstituteGroup"
     )
-    actual = gks_json_transformer.records_to_submission_container([civic_aid7_cpy])
+    actual = civic_gks_json_transformer.records_to_submission_container(
+        [civic_aid7_cpy]
+    )
     civic_tr_submissions_cpy = civic_tr_submissions.model_copy()
     civic_tr_submissions_cpy.clinical_impact_submission.pop(0)
     civic_tr_submissions_cpy = civic_tr_submissions_cpy.model_dump(exclude_none=True)
