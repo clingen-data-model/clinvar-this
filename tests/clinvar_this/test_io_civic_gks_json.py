@@ -28,10 +28,10 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactClassificationDescription,
 )
 import pytest
-from ga4gh.core.models import Extension
 from ga4gh.cat_vrs.models import CategoricalVariant
-from ga4gh.vrs.models import Allele, MolecularVariation
+from ga4gh.vrs.models import MolecularVariation
 from ga4gh.va_spec.aac_2017 import (
+    VariantDiagnosticStudyStatement,
     VariantTherapeuticResponseStudyStatement,
 )
 
@@ -70,6 +70,21 @@ def civic_aid6(civic_gks_json_data):
 def civic_aid7(civic_gks_json_data):
     """Create test fixture for CIViC AID7"""
     return VariantTherapeuticResponseStudyStatement(**civic_gks_json_data[1])
+
+
+@pytest.fixture(scope="module")
+def civic_aid9(civic_gks_json_data):
+    """Create test fixture for CIViC AID9"""
+    return VariantDiagnosticStudyStatement(**civic_gks_json_data[3])
+
+
+@pytest.fixture(scope="module")
+def amp_asco_cap_assertion_criteria():
+    """Create test fixture for AMP/ASCO/CAP 2017 assertion criteria"""
+    return SubmissionAssertionCriteria(
+        db=CitationDb.PUBMED,
+        id="27993330",  # AMP/ASCO/CAP
+    )
 
 
 @pytest.fixture(scope="module")
@@ -124,13 +139,10 @@ def civic_aid7_submission():
 
 
 @pytest.fixture(scope="module")
-def civic_tr_submissions(civic_aid7_submission):
+def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria):
     """Create test fixture for CIViC AID6 and AID7 submissions"""
     return SubmissionContainer(
-        assertion_criteria=SubmissionAssertionCriteria(
-            db=CitationDb.PUBMED,
-            id="27993330",  # AMP/ASCO/CAP
-        ),
+        assertion_criteria=amp_asco_cap_assertion_criteria,
         clinical_impact_submission=[
             SubmissionClinicalImpactSubmission(
                 record_status=RecordStatus.NOVEL,
@@ -212,6 +224,63 @@ def civic_tr_submissions(civic_aid7_submission):
 
 
 @pytest.fixture(scope="module")
+def civic_aid9_submission():
+    """Create test fixture for CIViC AID9 submission"""
+    return SubmissionClinicalImpactSubmission(
+        record_status=RecordStatus.NOVEL,
+        local_id="civic.mpid:1594",
+        local_key="civic.AID:9",
+        observed_in=[
+            SubmissionObservedInSomatic(
+                affected_status=AffectedStatus.UNKNOWN,
+                allele_origin=AlleleOrigin.SOMATIC,
+                collection_method=CollectionMethod.CURATION,
+            )
+        ],
+        condition_set=SubmissionConditionSetSomatic(
+            condition=[
+                SubmissionCondition(
+                    name="Diffuse Midline Glioma, H3 K27M-mutant",
+                )
+            ]
+        ),
+        variant_set=SubmissionVariantSet(
+            variant=[
+                SubmissionVariant(
+                    hgvs="NM_001105.4:c.983G>T",
+                    gene=[SubmissionVariantGene(symbol="ACVR1")],
+                    alternate_designations=["GLY328VAL"],
+                )
+            ]
+        ),
+        clinical_impact_classification=SomaticClinicalImpactClassification(
+            clinical_impact_classification_description=SomaticClinicalImpactClassificationDescription.POTENTIAL,
+            assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.DIAGNOSTIC_SUPPORTS_DIAGNOSIS,
+            comment="ACVR1 G328V mutations occur within the kinase domain, leading to activation of downstream signaling. Exclusively seen in high-grade pediatric gliomas, supporting diagnosis of diffuse intrinsic pontine glioma.",
+            citation=[
+                SubmissionCitation(url="https://identifiers.org/civic.mpid:1594"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/4846"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24705250"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24705254"),
+            ],
+            date_last_evaluated="2018-10-16",
+        ),
+    )
+
+
+@pytest.fixture(scope="module")
+def civic_diagnostic_submissions(
+    civic_aid9_submission, amp_asco_cap_assertion_criteria
+):
+    """Create test fixture for CIViC AID9 submission"""
+    return SubmissionContainer(
+        assertion_criteria=amp_asco_cap_assertion_criteria,
+        clinical_impact_submission=[civic_aid9_submission],
+    )
+
+
+@pytest.fixture(scope="module")
 def civic_mpid_495():
     """Create test fixture for CIViC MP 395"""
     mp = {
@@ -269,31 +338,31 @@ def civic_mpid_495():
 def vrs_molecular_variation():
     """Create test fixture for VRS Allele"""
     allele = {
-    "location": {
-        "end": 44908822,
-        "start": 44908821,
-        "sequenceReference": {
-            "refgetAccession": "SQ.IIB53T8CNeJJdUqzn9V_JnRtQadwWCbl",
-            "type": "SequenceReference",
+        "location": {
+            "end": 44908822,
+            "start": 44908821,
+            "sequenceReference": {
+                "refgetAccession": "SQ.IIB53T8CNeJJdUqzn9V_JnRtQadwWCbl",
+                "type": "SequenceReference",
+            },
+            "type": "SequenceLocation",
         },
-        "type": "SequenceLocation",
-    },
-    "state": {"sequence": "T", "type": "LiteralSequenceExpression"},
-    "type": "Allele",
-    "expressions": [
-        {
-            "syntax": "hgvs.g",
-            "value": "NC_000019.10:g.44908822C>T",
-        }
-    ]
-}
+        "state": {"sequence": "T", "type": "LiteralSequenceExpression"},
+        "type": "Allele",
+        "expressions": [
+            {
+                "syntax": "hgvs.g",
+                "value": "NC_000019.10:g.44908822C>T",
+            }
+        ],
+    }
     return MolecularVariation(**allele)
 
 
-def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7):
+def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7, civic_aid9):
     """Ensure that read_file method works correctly"""
     path = DATA_DIR / "civic_assertions.json"
-    expected_assertions = [civic_aid6, civic_aid7]
+    expected_assertions = [civic_aid6, civic_aid7, civic_aid9]
 
     with path.open("rt") as inputf:
         actual = civic_gks_json_transformer.read_file(file=inputf)
@@ -305,10 +374,11 @@ def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7):
     with pytest.raises(exceptions.InvalidFormat, match=r"Error decoding JSON"):
         civic_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
 
-def test_records_to_submission_container(
+
+def test_records_to_submission_container_therapeutic(
     civic_gks_json_transformer, civic_aid6, civic_aid7, civic_tr_submissions
 ):
-    """Ensure that records_to_submission_container works correctly"""
+    """Ensure that records_to_submission_container works correctly for therapeutic study statements"""
     # Test single therapy and CombinationTherapy
     actual = civic_gks_json_transformer.records_to_submission_container(
         [civic_aid6, civic_aid7]
@@ -339,6 +409,19 @@ def test_records_to_submission_container(
     diff = DeepDiff(
         actual.model_dump(exclude_none=True),
         civic_tr_submissions_cpy,
+        ignore_order=True,
+    )
+    assert diff == {}
+
+
+def test_records_to_submission_container_diagnostic(
+    civic_gks_json_transformer, civic_aid9, civic_diagnostic_submissions
+):
+    """Ensure that records_to_submission_container works correctly for diagnostic study statements"""
+    actual = civic_gks_json_transformer.records_to_submission_container([civic_aid9])
+    diff = DeepDiff(
+        actual.model_dump(exclude_none=True),
+        civic_diagnostic_submissions.model_dump(exclude_none=True),
         ignore_order=True,
     )
     assert diff == {}
