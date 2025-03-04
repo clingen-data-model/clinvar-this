@@ -56,16 +56,9 @@ class GksJsonTransformer(TransformIO, ABC):
 
         Will only submit using clinical impact submissions
 
-        :param civic_tr_assertions: List of GKS study statements
+        :param study_statements: List of GKS study statements
         :return: A list of submission container data structures
         """
-
-    def _write_file(
-        study_statements: typing.Iterable[VariantTherapeuticResponseStudyStatement],
-        outputf: typing.TextIO,
-    ) -> None:
-        """Write study statement records as GKS JSON to the given file"""
-        json.dump(study_statements.model_dump(exclude_none=True), outputf, indent=4)
 
     @staticmethod
     def _read_file(
