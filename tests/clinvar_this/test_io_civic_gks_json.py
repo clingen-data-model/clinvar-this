@@ -32,6 +32,7 @@ from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.vrs.models import MolecularVariation
 from ga4gh.va_spec.aac_2017 import (
     VariantDiagnosticStudyStatement,
+    VariantPrognosticStudyStatement,
     VariantTherapeuticResponseStudyStatement,
 )
 
@@ -70,6 +71,12 @@ def civic_aid6(civic_gks_json_data):
 def civic_aid7(civic_gks_json_data):
     """Create test fixture for CIViC AID7"""
     return VariantTherapeuticResponseStudyStatement(**civic_gks_json_data[1])
+
+
+@pytest.fixture(scope="module")
+def civic_aid20(civic_gks_json_data):
+    """Create test fixture for CIViC AID20"""
+    return VariantPrognosticStudyStatement(**civic_gks_json_data[2])
 
 
 @pytest.fixture(scope="module")
@@ -281,6 +288,71 @@ def civic_diagnostic_submissions(
 
 
 @pytest.fixture(scope="module")
+def civic_aid20_submission():
+    """Create test fixture for CIViC AID20 submission"""
+    return SubmissionClinicalImpactSubmission(
+        record_status=RecordStatus.NOVEL,
+        local_id="civic.mpid:12",
+        local_key="civic.AID:20",
+        observed_in=[
+            SubmissionObservedInSomatic(
+                affected_status=AffectedStatus.UNKNOWN,
+                allele_origin=AlleleOrigin.SOMATIC,
+                collection_method=CollectionMethod.CURATION,
+            )
+        ],
+        condition_set=SubmissionConditionSetSomatic(
+            condition=[
+                SubmissionCondition(
+                    name="Colorectal Cancer",
+                )
+            ]
+        ),
+        variant_set=SubmissionVariantSet(
+            variant=[
+                SubmissionVariant(
+                    hgvs="NM_004333.4:c.1799T>A",
+                    gene=[SubmissionVariantGene(symbol="BRAF")],
+                    alternate_designations=["VAL600GLU", "V640E", "VAL640GLU"],
+                )
+            ]
+        ),
+        clinical_impact_classification=SomaticClinicalImpactClassification(
+            clinical_impact_classification_description=SomaticClinicalImpactClassificationDescription.STRONG,
+            assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
+            comment="BRAF V600E was associated with worse prognosis in Phase II and III colorectal cancer, with a stronger effect in MSI-Low or MSI-Stable tumors. In metastatic CRC, V600E was associated with worse prognosis, and meta-analysis showed BRAF mutation in CRC associated with multiple negative prognostic markers.",
+            citation=[
+                SubmissionCitation(url="https://identifiers.org/civic.mpid:12"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/7159"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24112392"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/7158"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/21641636"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/7157"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/21502544"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/7156"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/20008640"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/103"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24594804"),
+                SubmissionCitation(url="https://civicdb.org/links/evidence/1552"),
+                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/27404270"),
+            ],
+            date_last_evaluated="2019-02-28",
+        ),
+    )
+
+
+@pytest.fixture(scope="module")
+def civic_prognostic_submissions(
+    civic_aid20_submission, amp_asco_cap_assertion_criteria
+):
+    """Create test fixture for CIViC AID20 submission"""
+    return SubmissionContainer(
+        assertion_criteria=amp_asco_cap_assertion_criteria,
+        clinical_impact_submission=[civic_aid20_submission],
+    )
+
+
+@pytest.fixture(scope="module")
 def civic_mpid_495():
     """Create test fixture for CIViC MP 395"""
     mp = {
@@ -359,10 +431,12 @@ def vrs_molecular_variation():
     return MolecularVariation(**allele)
 
 
-def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7, civic_aid9):
+def test_read_file(
+    civic_gks_json_transformer, civic_aid6, civic_aid7, civic_aid9, civic_aid20
+):
     """Ensure that read_file method works correctly"""
     path = DATA_DIR / "civic_assertions.json"
-    expected_assertions = [civic_aid6, civic_aid7, civic_aid9]
+    expected_assertions = [civic_aid6, civic_aid7, civic_aid20, civic_aid9]
 
     with path.open("rt") as inputf:
         actual = civic_gks_json_transformer.read_file(file=inputf)
@@ -422,6 +496,19 @@ def test_records_to_submission_container_diagnostic(
     diff = DeepDiff(
         actual.model_dump(exclude_none=True),
         civic_diagnostic_submissions.model_dump(exclude_none=True),
+        ignore_order=True,
+    )
+    assert diff == {}
+
+
+def test_records_to_submission_container_prognostic(
+    civic_gks_json_transformer, civic_aid20, civic_prognostic_submissions
+):
+    """Ensure that records_to_submission_container works correctly for prognostic study statements"""
+    actual = civic_gks_json_transformer.records_to_submission_container([civic_aid20])
+    diff = DeepDiff(
+        actual.model_dump(exclude_none=True),
+        civic_prognostic_submissions.model_dump(exclude_none=True),
         ignore_order=True,
     )
     assert diff == {}

@@ -1,6 +1,6 @@
 """Support for I/O of the GKS JSON format to define submissions.
 
-Currently only supports Therapeutic and Diagnostic Assertions.
+Currently only supports Therapeutic, Diagnostic, and Prognostic Assertions.
 """
 
 from abc import ABC, abstractmethod
@@ -11,11 +11,14 @@ from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.core.models import MappableConcept
 from ga4gh.va_spec.aac_2017 import (
     VariantDiagnosticStudyStatement,
+    VariantPrognosticStudyStatement,
     VariantTherapeuticResponseStudyStatement,
 )
 from ga4gh.va_spec.base import (
     DiagnosticPredicate,
     VariantDiagnosticProposition,
+    VariantPrognosticProposition,
+    PrognosticPredicate,
     TherapeuticResponsePredicate,
     TherapyGroup,
     VariantTherapeuticResponseProposition,
@@ -52,13 +55,17 @@ class GksJsonTransformer(TransformIO, ABC):
         TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
         DiagnosticPredicate.EXCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_EXCLUDES_DIAGNOSIS,
         DiagnosticPredicate.INCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_SUPPORTS_DIAGNOSIS,
+        PrognosticPredicate.BETTER_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_BETTER_OUTCOME,
+        PrognosticPredicate.WORSE_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
     }
 
     @abstractmethod
     def records_to_submission_container(
         self,
         study_statements: typing.List[
-            VariantTherapeuticResponseStudyStatement | VariantDiagnosticStudyStatement
+            VariantTherapeuticResponseStudyStatement
+            | VariantDiagnosticStudyStatement
+            | VariantPrognosticStudyStatement
         ],
     ) -> typing.List[SubmissionContainer]:
         """Transform GKS records to submission container data structures
@@ -73,18 +80,22 @@ class GksJsonTransformer(TransformIO, ABC):
     def _read_file(
         inputf: typing.TextIO,
     ) -> typing.List[
-        VariantTherapeuticResponseStudyStatement | VariantDiagnosticStudyStatement
+        VariantTherapeuticResponseStudyStatement
+        | VariantDiagnosticStudyStatement
+        | VariantPrognosticStudyStatement
     ]:
-        """Get list of Variant Therapeutic Response or Diagnostic Study Statements from a file
+        """Get list of Variant Therapeutic Response, Diagnostic, or Prognostic Study Statements from a file
 
         For now, prognostic study statements are NOT supported
 
         :param inputf: Text file-like object containing input GKS Statement data
         :raises exceptions.InvalidFormat: If there was an error decoding JSON
-        :return: A list of Variant Therapeutic Response or Diagnostic Study Statements
+        :return: A list of Variant Therapeutic Response, Diagnostic, or Prognostic Study Statements
         """
         study_statements: typing.List[
-            VariantTherapeuticResponseStudyStatement | VariantDiagnosticStudyStatement
+            VariantTherapeuticResponseStudyStatement
+            | VariantDiagnosticStudyStatement
+            | VariantPrognosticStudyStatement
         ] = []
 
         try:
@@ -96,6 +107,7 @@ class GksJsonTransformer(TransformIO, ABC):
         supported_study_stmts: typing.List[callable] = [
             VariantTherapeuticResponseStudyStatement,
             VariantDiagnosticStudyStatement,
+            VariantPrognosticStudyStatement,
         ]
 
         for statement in statements:
@@ -137,7 +149,8 @@ class GksJsonTransformer(TransformIO, ABC):
     @staticmethod
     def get_comment(
         record: VariantTherapeuticResponseStudyStatement
-        | VariantDiagnosticStudyStatement,
+        | VariantDiagnosticStudyStatement
+        | VariantPrognosticStudyStatement,
     ) -> str | None:
         """Get comment from a study statement
 
@@ -159,7 +172,8 @@ class GksJsonTransformer(TransformIO, ABC):
     @staticmethod
     def get_condition_set(
         proposition: VariantTherapeuticResponseProposition
-        | VariantDiagnosticProposition,
+        | VariantDiagnosticProposition
+        | VariantPrognosticProposition,
     ) -> SubmissionConditionSetSomatic:
         """Get condition from a proposition
 
@@ -185,7 +199,8 @@ class GksJsonTransformer(TransformIO, ABC):
     @staticmethod
     def get_clinical_impact_classification_description(
         record: VariantTherapeuticResponseStudyStatement
-        | VariantDiagnosticStudyStatement,
+        | VariantDiagnosticStudyStatement
+        | VariantPrognosticStudyStatement,
     ) -> SomaticClinicalImpactClassificationDescription:
         """Get AMP/ASCO/CAP classification
 
@@ -200,7 +215,8 @@ class GksJsonTransformer(TransformIO, ABC):
     def get_variant_set(
         self,
         proposition: VariantTherapeuticResponseProposition
-        | VariantDiagnosticProposition,
+        | VariantDiagnosticProposition
+        | VariantPrognosticProposition,
         variant_hgvs: str | None = None,
         variant_coords: SubmissionChromosomeCoordinates | None = None,
     ) -> SubmissionVariantSet:
@@ -238,7 +254,8 @@ class GksJsonTransformer(TransformIO, ABC):
     def get_assertion_type_for_clinical_impact(
         self,
         proposition: VariantTherapeuticResponseProposition
-        | VariantDiagnosticProposition,
+        | VariantDiagnosticProposition
+        | VariantPrognosticProposition,
     ) -> SomaticClinicalImpactAssertionType:
         """Get assertion type for clinical impact for a given proposition
 

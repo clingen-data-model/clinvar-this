@@ -1,7 +1,8 @@
 """Support for I/O of the GKS JSON format to define submissions.
 
-Currently only supports CIViC Therapeutic and Diagnostic Assertions. This assumes you
-are using MetaKB (https://github.com/cancervariants/metakb) to generate GKS JSON files.
+Currently only supports CIViC Therapeutic, Diagnostic, and Prognostic Assertions. This
+assumes you are using MetaKB (https://github.com/cancervariants/metakb) to generate GKS
+JSON files.
 """
 
 import datetime
@@ -11,6 +12,7 @@ from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.va_spec.aac_2017 import (
     VariantTherapeuticResponseStudyStatement,
     VariantDiagnosticStudyStatement,
+    VariantPrognosticStudyStatement,
 )
 from ga4gh.va_spec.base import EvidenceLine
 from ga4gh.vrs.models import Syntax, Expression
@@ -204,23 +206,24 @@ class CivicGksJsonTransformer(GksJsonTransformer):
     def _get_clinical_impact_submission(
         self,
         record: VariantTherapeuticResponseStudyStatement
-        | VariantDiagnosticStudyStatement,
+        | VariantDiagnosticStudyStatement
+        | VariantPrognosticStudyStatement,
         variant_hgvs: str | None = None,
         variant_coords: SubmissionChromosomeCoordinates | None = None,
     ) -> SubmissionClinicalImpactSubmission:
-        """Get clinical impact submission for a CIViC therapeutic or diagnostic assertion
+        """Get clinical impact submission for a CIViC therapeutic, diagnostic, or prognostic assertion
 
         Assertions with Substitutes therapies will be separated by semicolons
         and the CIViC assertion's description will be updated to include this note.
 
-        :param record: The CIViC therapeutic or diagnostic assertion
+        :param record: The CIViC therapeutic, diagnostic, or prognostic assertion
         :param variant_hgvs: The HGVS expression for a variant, if found. If not found,
             ``variant_coords`` must be provided. This takes priority over
             ``variant_coords``.
         :param variant_coords: The chromosome coordinates for a variant, if found. If
             not found, ``variant_hgvs`` must be provided
-        :return: The clinical impact submission for a CIViC therapeutic or diagnostic
-            assertion
+        :return: The clinical impact submission for a CIViC therapeutic, diagnostic, or
+            prognostic assertion
         """
         proposition = record.proposition
 
@@ -259,16 +262,17 @@ class CivicGksJsonTransformer(GksJsonTransformer):
     def records_to_submission_container(
         self,
         civic_study_statements: typing.List[
-            VariantTherapeuticResponseStudyStatement | VariantDiagnosticStudyStatement
+            VariantTherapeuticResponseStudyStatement
+            | VariantDiagnosticStudyStatement
+            | VariantPrognosticStudyStatement
         ],
     ) -> typing.List[SubmissionContainer]:
         """Transform GKS records to submission container data structures
 
         Will only submit using clinical impact submissions
 
-        :param civic_study_statements: List of CIViC Therapeutic or Diagnostic
-            Assertions represented
-            as GKS Variant Therapeutic Response or Diagnostic Study Statements
+        :param civic_study_statements: List of CIViC Therapeutic, Diagnostic, or
+            Diagnostic Study Statements
         :return: A list of submission container data structures
         """
         clinical_impact_submissions: typing.List[SubmissionContainer] = []
