@@ -1,6 +1,6 @@
 """Support for I/O of the GKS JSON format to define submissions.
 
-Currently only supports Therapeutic Assertions.
+Currently only supports Therapeutic and Diagnostic Assertions.
 """
 
 from abc import ABC, abstractmethod
