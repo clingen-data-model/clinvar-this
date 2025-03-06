@@ -10,3 +10,4 @@ xmltodict >=0.13.0, <0.15
 tqdm >=4.0
 protobuf >=3.20.2, <6.0
 pysam
+ga4gh.va_spec ==0.2.0a1

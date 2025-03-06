@@ -125,9 +125,7 @@ class GksJsonTransformer(TransformIO, ABC):
     ) -> typing.List[str] | None:
         """Get the aliases for a variant
 
-        Looks in the variant's extensions to find an extension with the name 'aliases'
-
-        :param variant: Variant
+        :param variant: Variant record
         :return: Aliases for a variant, if found
         """
         return variant.aliases
@@ -157,7 +155,9 @@ class GksJsonTransformer(TransformIO, ABC):
         :param record: GKS study statement
             Assumes ``name`` is provided in ``MappableConcept`` objects.
         :return: Comment for a given study statement.
-            If the
+            If the therapeutic is a substitute group, the original comment will be
+            updated to make note that these are in substitution (deviating from clinvar
+            api schema which notes that the therapies are in combination)
         """
         comment = record.description
         if isinstance(record, VariantTherapeuticResponseStudyStatement):
