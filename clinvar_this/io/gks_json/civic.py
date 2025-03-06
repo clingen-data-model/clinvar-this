@@ -266,9 +266,9 @@ class CivicGksJsonTransformer(GksJsonTransformer):
 
         Will only submit using clinical impact submissions
 
-        :param civic_study_statements: List of CIViC Therapeutic or Diagnostic
-            Assertions represented
-            as GKS Variant Therapeutic Response or Diagnostic Study Statements
+        :param civic_study_statements: List of CIViC Therapeutic Response or Diagnostic
+            Assertions represented as GKS Variant Therapeutic Response or Diagnostic
+            Study Statements
         :return: A list of submission container data structures
         """
         clinical_impact_submissions: typing.List[SubmissionContainer] = []
