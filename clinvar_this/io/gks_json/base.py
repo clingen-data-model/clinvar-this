@@ -19,6 +19,7 @@ from ga4gh.va_spec.base import (
     VariantDiagnosticProposition,
     VariantPrognosticProposition,
     PrognosticPredicate,
+    MembershipOperator,
     TherapeuticResponsePredicate,
     TherapyGroup,
     VariantTherapeuticResponseProposition,
@@ -142,7 +143,7 @@ class GksJsonTransformer(TransformIO, ABC):
         if isinstance(therapeutic, MappableConcept):
             return therapeutic.name
 
-        return ";".join([t.name for t in therapeutic.therapies])
+        return ";".join(sorted([t.name for t in therapeutic.therapies]))
 
     @staticmethod
     def get_comment(
@@ -164,7 +165,7 @@ class GksJsonTransformer(TransformIO, ABC):
             therapeutic = record.proposition.objectTherapeutic.root
             if (
                 isinstance(therapeutic, TherapyGroup)
-                and therapeutic.groupType.name == "TherapeuticSubstituteGroup"
+                and therapeutic.membershipOperator == MembershipOperator.OR
             ):
                 comment = f"{record.description or ''} NOTE: These therapies are in substitution.".strip()
         return comment
