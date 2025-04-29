@@ -28,9 +28,6 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactClassificationDescription,
 )
 import pytest
-from ga4gh.core.models import Extension
-from ga4gh.cat_vrs.models import CategoricalVariant
-from ga4gh.vrs.models import Allele, MolecularVariation
 from ga4gh.va_spec.aac_2017 import (
     VariantTherapeuticResponseStudyStatement,
 )
@@ -225,6 +222,7 @@ def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7):
 
     with pytest.raises(exceptions.InvalidFormat, match=r"Error decoding JSON"):
         civic_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
+
 
 def test_records_to_submission_container(
     civic_gks_json_transformer, civic_aid6, civic_aid7, civic_tr_submissions
