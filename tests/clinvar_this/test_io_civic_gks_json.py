@@ -117,7 +117,7 @@ def civic_aid7_submission():
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6938"),
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25265492"),
             ],
-            drug_for_therapeutic_assertion="Trametinib;Dabrafenib",
+            drug_for_therapeutic_assertion="Dabrafenib;Trametinib",
             date_last_evaluated="2018-05-15",
         ),
     )
@@ -211,85 +211,6 @@ def civic_tr_submissions(civic_aid7_submission):
     )
 
 
-@pytest.fixture(scope="module")
-def civic_mpid_495():
-    """Create test fixture for CIViC MP 395"""
-    mp = {
-        "id": "civic.mpid:395",
-        "type": "CategoricalVariant",
-        "name": "BRAF Mutation",
-        "extensions": [
-            {"name": "vicc_normalizer_failure", "value": True},
-            {"name": "CIViC Molecular Profile Score", "value": 166.0},
-            {
-                "name": "CIViC representative coordinate",
-                "value": {
-                    "ensembl_version": 75,
-                    "reference_build": "GRCh37",
-                    "representative_transcript": "ENST00000288602.6",
-                    "chromosome": "7",
-                    "start": 140453136,
-                    "stop": 140481403,
-                    "type": "coordinates",
-                },
-            },
-            {
-                "name": "Variant types",
-                "value": [
-                    {
-                        "id": "SO:0001564",
-                        "name": "gene_variant",
-                        "system": "http://www.sequenceontology.org/browser/current_svn/term/",
-                        "code": "SO:0001564",
-                    },
-                    {
-                        "id": "SO:0002053",
-                        "name": "gain_of_function_variant",
-                        "system": "http://www.sequenceontology.org/browser/current_svn/term/",
-                        "code": "SO:0002053",
-                    },
-                ],
-            },
-        ],
-        "mappings": [
-            {
-                "coding": {
-                    "id": "civic.vid:399",
-                    "system": "https://civicdb.org/variants/",
-                    "code": "399",
-                },
-                "relation": "exactMatch",
-            }
-        ],
-    }
-    return CategoricalVariant(**mp)
-
-
-@pytest.fixture(scope="module")
-def vrs_molecular_variation():
-    """Create test fixture for VRS Allele"""
-    allele = {
-    "location": {
-        "end": 44908822,
-        "start": 44908821,
-        "sequenceReference": {
-            "refgetAccession": "SQ.IIB53T8CNeJJdUqzn9V_JnRtQadwWCbl",
-            "type": "SequenceReference",
-        },
-        "type": "SequenceLocation",
-    },
-    "state": {"sequence": "T", "type": "LiteralSequenceExpression"},
-    "type": "Allele",
-    "expressions": [
-        {
-            "syntax": "hgvs.g",
-            "value": "NC_000019.10:g.44908822C>T",
-        }
-    ]
-}
-    return MolecularVariation(**allele)
-
-
 def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7):
     """Ensure that read_file method works correctly"""
     path = DATA_DIR / "civic_assertions.json"
@@ -322,9 +243,7 @@ def test_records_to_submission_container(
 
     # Test TherapeuticSubstituteGroup
     civic_aid7_cpy = civic_aid7.model_copy()
-    civic_aid7_cpy.proposition.objectTherapeutic.root.groupType.name = (
-        "TherapeuticSubstituteGroup"
-    )
+    civic_aid7_cpy.proposition.objectTherapeutic.root.membershipOperator = "OR"
     actual = civic_gks_json_transformer.records_to_submission_container(
         [civic_aid7_cpy]
     )

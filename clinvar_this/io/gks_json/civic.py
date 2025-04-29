@@ -5,8 +5,10 @@ MetaKB (https://github.com/cancervariants/metakb) to generate GKS JSON files.
 """
 
 import datetime
+from types import MappingProxyType
 import typing
 
+from ga4gh.core.models import MappableConcept
 from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.va_spec.aac_2017 import VariantTherapeuticResponseStudyStatement
 from ga4gh.va_spec.base import EvidenceLine
@@ -38,16 +40,30 @@ from clinvar_api.msg.sub_payload import (
 from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 
+# Mapping from CIViC variant origin to allele origin
+_ALLELE_ORIGIN_MAPPING = MappingProxyType({
+    "COMBINED": None,
+    "COMMON_GERMLINE": AlleleOrigin.GERMLINE,
+    "MIXED": None,
+    "NA": AlleleOrigin.NOT_APPLICABLE,
+    "RARE_GERMLINE": AlleleOrigin.GERMLINE,
+    "SOMATIC": AlleleOrigin.SOMATIC,
+    "UNKNOWN": AlleleOrigin.UNKNOWN
+})
+
+# Mapping from GKS classification to clinical impact classification
+_IMPACT_CLASS_MAPPING = MappingProxyType(
+        {
+            "Tier I": SomaticClinicalImpactClassificationDescription.STRONG,
+            "Tier II": SomaticClinicalImpactClassificationDescription.POTENTIAL,
+            "Tier III": SomaticClinicalImpactClassificationDescription.UNKNOWN,
+            "Tier IV": SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
+        }
+    )
+
+
 class CivicGksJsonTransformer(GksJsonTransformer):
     """Class for transforming GKS JSON input data from various formats into submission format"""
-
-    _observed_in = [
-        SubmissionObservedInSomatic(
-            allele_origin=AlleleOrigin.SOMATIC,
-            collection_method=CollectionMethod.CURATION,
-            affected_status=AffectedStatus.UNKNOWN,
-        )
-    ]
 
     @staticmethod
     def _get_variant_hgvs(
@@ -125,6 +141,28 @@ class CivicGksJsonTransformer(GksJsonTransformer):
             stop=rep_coords_ext["stop"],
         )
 
+
+    @staticmethod
+    def _get_observed_in(allele_origin_qualifier: MappableConcept) -> list[SubmissionObservedInSomatic] | None:
+        """Get observed in value
+
+        `collection_method` and `affected_status` are hard coded
+
+        :param allele_origin_qualifier: CIViC allele origin qualifier
+        :return: The observed in value, if CIViC has corresponding allele origin value
+        """
+        allele_origin = _ALLELE_ORIGIN_MAPPING[allele_origin_qualifier.name]
+        if not allele_origin:
+            return None
+
+        return [
+            SubmissionObservedInSomatic(
+                allele_origin=allele_origin,
+                collection_method=CollectionMethod.CURATION,
+                affected_status=AffectedStatus.UNKNOWN,
+            )
+        ]
+
     @staticmethod
     def _get_citations(
         mp_id: str,
@@ -201,6 +239,7 @@ class CivicGksJsonTransformer(GksJsonTransformer):
     def _get_clinical_impact_submission(
         self,
         record: VariantTherapeuticResponseStudyStatement,
+        observed_in: list[SubmissionObservedInSomatic],
         variant_hgvs: str | None = None,
         variant_coords: SubmissionChromosomeCoordinates | None = None,
     ) -> SubmissionClinicalImpactSubmission:
@@ -210,6 +249,7 @@ class CivicGksJsonTransformer(GksJsonTransformer):
         and the CIViC assertion's description will be updated to include this note.
 
         :param record: The CIViC therapeutic assertion
+        :param observed_in: List of distinct observations
         :param variant_hgvs: The HGVS expression for a variant, if found. If not found,
             ``variant_coords`` must be provided. This takes priority over
             ``variant_coords``.
@@ -225,15 +265,15 @@ class CivicGksJsonTransformer(GksJsonTransformer):
             record_status=RecordStatus.NOVEL,
             local_id=mp_id,
             local_key=record.id.replace(".aid:", ".AID:"),
-            observed_in=self._observed_in,
+            observed_in=observed_in,
             condition_set=self.get_condition_set(proposition),
             variant_set=self.get_variant_set(
                 proposition, variant_hgvs=variant_hgvs, variant_coords=variant_coords
             ),
             clinical_impact_classification=SomaticClinicalImpactClassification(
-                clinical_impact_classification_description=SomaticClinicalImpactClassificationDescription(
-                    record.classification.primaryCode.root
-                ),
+                clinical_impact_classification_description=_IMPACT_CLASS_MAPPING[record.classification.primaryCoding.code.root]
+
+                ,
                 assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
                     proposition.predicate
                 ],
@@ -269,8 +309,13 @@ class CivicGksJsonTransformer(GksJsonTransformer):
                 if not variant_coords:
                     continue
 
+            observed_in = self._get_observed_in(civic_study_statement.proposition.alleleOriginQualifier)
+            if not observed_in:
+                continue
+
             clinical_impact_submission = self._get_clinical_impact_submission(
                 civic_study_statement,
+                observed_in,
                 variant_hgvs=variant_hgvs,
                 variant_coords=variant_coords,
             )
