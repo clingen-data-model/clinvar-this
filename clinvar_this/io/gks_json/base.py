@@ -21,7 +21,6 @@ from pydantic import ValidationError
 
 
 from clinvar_api.models import (
-    SubmissionChromosomeCoordinates,
     SubmissionCondition,
     SubmissionContainer,
     SubmissionVariant,
@@ -174,27 +173,19 @@ class GksJsonTransformer(TransformIO, ABC):
         self,
         proposition: VariantTherapeuticResponseProposition,
         variant_hgvs: str | None = None,
-        variant_coords: SubmissionChromosomeCoordinates | None = None,
     ) -> SubmissionVariantSet:
         """Get variant set
 
         This assumes only a single submission variant.
 
         :param proposition: Proposition for a given study statement.
-        :param variant_hgvs: The HGVS expression for a variant, if found. If not found,
-            ``variant_coords`` must be provided. This takes priority over
-            ``variant_coords``.
-        :param variant_coords: The chromosome coordinates for a variant, if found. If
-            not found, ``variant_hgvs`` must be provided
+        :param variant_hgvs: The HGVS expression for a variant, if found.
         :return: Variant set for a proposition
         """
         return SubmissionVariantSet(
             variant=[
                 SubmissionVariant(
                     hgvs=variant_hgvs,
-                    chromosome_coordinates=variant_coords
-                    if variant_hgvs is None
-                    else None,
                     gene=[
                         SubmissionVariantGene(
                             symbol=proposition.geneContextQualifier.name

@@ -1,30 +1,24 @@
-"""Support for I/O of the GKS JSON format to define submissions.
+"""Support for I/O of the AMP/ASCO/CAP 2017 GKS Study Statements format to define submissions.
 
-Currently only supports CIViC Therapeutic Assertions. This assumes you are using
-MetaKB (https://github.com/cancervariants/metakb) to generate GKS JSON files.
+Currently only supports Therapeutic Assertions
 """
 
-import datetime
 from types import MappingProxyType
 import typing
 
 from ga4gh.core.models import MappableConcept
 from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.va_spec.aac_2017 import VariantTherapeuticResponseStudyStatement
-from ga4gh.va_spec.base import EvidenceLine
+from ga4gh.va_spec.base import Contribution, EvidenceLine
 from ga4gh.vrs.models import Syntax, Expression
-import requests
 
 from clinvar_api.models import (
     AffectedStatus,
     AlleleOrigin,
-    Assembly,
-    Chromosome,
     CitationDb,
     CollectionMethod,
     RecordStatus,
     SubmissionAssertionCriteria,
-    SubmissionChromosomeCoordinates,
     SubmissionCitation,
     SubmissionContainer,
     SubmissionClinicalImpactSubmission,
@@ -40,7 +34,7 @@ from clinvar_api.msg.sub_payload import (
 from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 
-# Mapping from CIViC variant origin to allele origin
+# Mapping from variant origin to allele origin
 _ALLELE_ORIGIN_MAPPING = MappingProxyType(
     {
         "COMBINED": None,
@@ -64,8 +58,8 @@ _IMPACT_CLASS_MAPPING = MappingProxyType(
 )
 
 
-class CivicGksJsonTransformer(GksJsonTransformer):
-    """Class for transforming GKS JSON input data from various formats into submission format"""
+class Aac2017GksJsonTransformer(GksJsonTransformer):
+    """Class for transforming AMP/ASCO/CAP 2017 GKS Study Statements into submission format"""
 
     @staticmethod
     def _get_variant_hgvs(
@@ -116,34 +110,6 @@ class CivicGksJsonTransformer(GksJsonTransformer):
         )
 
     @staticmethod
-    def _get_variant_coords(
-        variant: CategoricalVariant,
-    ) -> SubmissionChromosomeCoordinates | None:
-        """Get the chromosome coordinates for a variant
-
-        Looks in the variant's extensions to find an extension with the name
-        'CIViC representative coordinate'
-
-        :param variant: Variant record from CIViC
-        :return: Chromosome coordinates for a variant, if found
-        """
-        try:
-            rep_coords_ext = next(
-                ext
-                for ext in variant.extensions
-                if ext.name == "CIViC representative coordinate"
-            ).value
-        except StopIteration:
-            return
-
-        return SubmissionChromosomeCoordinates(
-            assembly=Assembly(rep_coords_ext["reference_build"]),
-            chromosome=Chromosome(rep_coords_ext["chromosome"]),
-            start=rep_coords_ext["start"],
-            stop=rep_coords_ext["stop"],
-        )
-
-    @staticmethod
     def _get_observed_in(
         allele_origin_qualifier: MappableConcept,
     ) -> list[SubmissionObservedInSomatic] | None:
@@ -151,8 +117,8 @@ class CivicGksJsonTransformer(GksJsonTransformer):
 
         `collection_method` and `affected_status` are hard coded
 
-        :param allele_origin_qualifier: CIViC allele origin qualifier
-        :return: The observed in value, if CIViC has corresponding allele origin value
+        :param allele_origin_qualifier: Allele origin qualifier
+        :return: The observed in value, allele origin mapping exists
         """
         allele_origin = _ALLELE_ORIGIN_MAPPING[allele_origin_qualifier.name]
         if not allele_origin:
@@ -171,7 +137,7 @@ class CivicGksJsonTransformer(GksJsonTransformer):
         mp_id: str,
         evidence_lines: typing.List[EvidenceLine],
     ) -> typing.List[SubmissionCitation]:
-        """Get list of PubMed citations and supporting CIViC evidence for an assertion
+        """Get list of PubMed citations and supporting evidence for an assertion
 
         :param mp_id: CIViC molecular profile ID for assertion
         :param evidence_lines: A list of evidence-based arguments that may support or
@@ -200,65 +166,35 @@ class CivicGksJsonTransformer(GksJsonTransformer):
         return citations
 
     @staticmethod
-    def _get_submitted_date(record_id: int) -> str | None:
-        """Get the date (yyyy-mm-dd) for the submission for an assertion
+    def _get_date_last_evaluated(contributions: list[Contribution]) -> str | None:
+        """The date that the classification was last evaluated by the submitter
 
-        Since CIViCPy does not include event information, use the CIVIC GraphQL API
-
-        :param record_id: The ID for the CIViC assertion
-        :return: The date (yyyy-mm-dd) for the submission for an assertion
+        :param contributions: List of contributions
+        :return: The date (yyyy-mm-dd) the classification was last evaluated by the
+            submitter
         """
-        query = f"""
-            {{
-                assertion(id: {record_id}) {{
-                    submissionEvent {{
-                        createdAt
-                    }}
-                }}
-            }}
-        """
+        try:
+            contribution: Contribution = contributions[0]
+        except IndexError:
+            return
 
-        resp = requests.post(
-            "https://civicdb.org/api/graphql",
-            json={"query": query},
-            headers={"Content-Type": "application/json"},
-        )
-
-        if resp.status_code == 200:
-            resp = resp.json()
-            submitted_date = (
-                resp.get("data", {})
-                .get("assertion", {})
-                .get("submissionEvent", {})
-                .get("createdAt", "")
-            )
-            submitted_date = datetime.datetime.strptime(
-                submitted_date, "%Y-%m-%dT%H:%M:%SZ"
-            )
-            submitted_date = submitted_date.strftime("%Y-%m-%d")
-            return submitted_date
-        return
+        return contribution.date.strftime("%Y-%m-%d")
 
     def _get_clinical_impact_submission(
         self,
         record: VariantTherapeuticResponseStudyStatement,
         observed_in: list[SubmissionObservedInSomatic],
         variant_hgvs: str | None = None,
-        variant_coords: SubmissionChromosomeCoordinates | None = None,
     ) -> SubmissionClinicalImpactSubmission:
-        """Get clinical impact submission for a CIViC therapeutic assertion
+        """Get clinical impact submission for a therapeutic assertion
 
         Assertions with Substitutes therapies will be separated by semicolons
-        and the CIViC assertion's description will be updated to include this note.
+        and the Study Statement's description will be updated to include this note.
 
-        :param record: The CIViC therapeutic assertion
+        :param record: The GKS therapeutic assertion
         :param observed_in: List of distinct observations
-        :param variant_hgvs: The HGVS expression for a variant, if found. If not found,
-            ``variant_coords`` must be provided. This takes priority over
-            ``variant_coords``.
-        :param variant_coords: The chromosome coordinates for a variant, if found. If
-            not found, ``variant_hgvs`` must be provided
-        :return: The clinical impact submission for a CIViC therapeutic assertion
+        :param variant_hgvs: The HGVS expression for a variant, if found
+        :return: The clinical impact submission for a therapeutic assertion
         """
         proposition = record.proposition
         therapeutic = proposition.objectTherapeutic.root
@@ -267,12 +203,10 @@ class CivicGksJsonTransformer(GksJsonTransformer):
         return SubmissionClinicalImpactSubmission(
             record_status=RecordStatus.NOVEL,
             local_id=mp_id,
-            local_key=record.id.replace(".aid:", ".AID:"),
+            local_key=record.id,
             observed_in=observed_in,
             condition_set=self.get_condition_set(proposition),
-            variant_set=self.get_variant_set(
-                proposition, variant_hgvs=variant_hgvs, variant_coords=variant_coords
-            ),
+            variant_set=self.get_variant_set(proposition, variant_hgvs=variant_hgvs),
             clinical_impact_classification=SomaticClinicalImpactClassification(
                 clinical_impact_classification_description=_IMPACT_CLASS_MAPPING[
                     record.classification.primaryCoding.code.root
@@ -283,46 +217,40 @@ class CivicGksJsonTransformer(GksJsonTransformer):
                 comment=self.get_comment(record),
                 citation=self._get_citations(mp_id, record.hasEvidenceLines),
                 drug_for_therapeutic_assertion=self.get_drugs(therapeutic),
-                date_last_evaluated=self._get_submitted_date(
-                    int(record.id.split("civic.aid:")[-1])
-                ),
+                date_last_evaluated=self._get_date_last_evaluated(record.contributions),
             ),
         )
 
     def records_to_submission_container(
         self,
-        civic_study_statements: typing.List[VariantTherapeuticResponseStudyStatement],
+        study_statements: typing.List[VariantTherapeuticResponseStudyStatement],
     ) -> typing.List[SubmissionContainer]:
         """Transform GKS records to submission container data structures
 
         Will only submit using clinical impact submissions
 
-        :param civic_study_statements: List of CIViC Therapeutic Assertions represented
-            as GKS Variant Therapeutic Response Study Statements
+        :param study_statements: List of GKS Variant Therapeutic Response Study
+            Statements
         :return: A list of submission container data structures
         """
         clinical_impact_submissions: typing.List[SubmissionContainer] = []
 
-        for civic_study_statement in civic_study_statements:
-            variant = civic_study_statement.proposition.subjectVariant
+        for study_statement in study_statements:
+            variant = study_statement.proposition.subjectVariant
             variant_hgvs = self._get_variant_hgvs(variant)
-            variant_coords = None
             if not variant_hgvs:
-                variant_coords = self._get_variant_coords(variant)
-                if not variant_coords:
-                    continue
+                continue
 
             observed_in = self._get_observed_in(
-                civic_study_statement.proposition.alleleOriginQualifier
+                study_statement.proposition.alleleOriginQualifier
             )
             if not observed_in:
                 continue
 
             clinical_impact_submission = self._get_clinical_impact_submission(
-                civic_study_statement,
+                study_statement,
                 observed_in,
                 variant_hgvs=variant_hgvs,
-                variant_coords=variant_coords,
             )
             clinical_impact_submissions.append(clinical_impact_submission)
 

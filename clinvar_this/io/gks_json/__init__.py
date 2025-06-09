@@ -1,6 +1,6 @@
 """Init namespace module"""
 
-from .civic import CivicGksJsonTransformer
+from .aac_2017 import Aac2017GksJsonTransformer
 
 
-__all__ = ["CivicGksJsonTransformer"]
+__all__ = ["Aac2017GksJsonTransformer"]

@@ -2,6 +2,19 @@
     {
         "id": "civic.aid:6",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2025-05-27"
+            }
+        ],
         "description": "L858R is among the most common sensitizing EGFR mutations in NSCLC, and is assessed via DNA mutational analysis, including Sanger sequencing and next generation sequencing methods. Tyrosine kinase inhibitor afatinib is FDA approved as a first line systemic therapy in NSCLC with sensitizing EGFR mutation (civic.EID:2997).",
         "specifiedBy": {
             "id": "civic.method:2019",
@@ -1292,6 +1305,19 @@
     {
         "id": "civic.aid:7",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2025-06-09"
+            }
+        ],
         "description": "Combination treatment of BRAF inhibitor dabrafenib and MEK inhibitor trametinib is recommended for adjuvant treatment of stage III or recurrent melanoma with BRAF V600E mutation detected by the approved THxID kit, as well as first line treatment for metastatic melanoma. The treatments are FDA approved based on studies including the Phase III COMBI-V, COMBI-D and COMBI-AD Trials. Combination therapy is now recommended above BRAF inhibitor monotherapy. Cutaneous squamous-cell carcinoma and keratoacanthoma occur at lower rates with combination therapy than with BRAF inhibitor alone.",
         "specifiedBy": {
             "id": "civic.method:2019",
@@ -2389,6 +2415,19 @@
     {
         "id": "civic.aid:20",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2024-04-27"
+            }
+        ],
         "description": "BRAF V600E was associated with worse prognosis in Phase II and III colorectal cancer, with a stronger effect in MSI-Low or MSI-Stable tumors. In metastatic CRC, V600E was associated with worse prognosis, and meta-analysis showed BRAF mutation in CRC associated with multiple negative prognostic markers.",
         "specifiedBy": {
             "id": "civic.method:2019",
@@ -3418,6 +3457,19 @@
     {
         "id": "civic.aid:9",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2024-12-20"
+            }
+        ],
         "description": "ACVR1 G328V mutations occur within the kinase domain, leading to activation of downstream signaling. Exclusively seen in high-grade pediatric gliomas, supporting diagnosis of diffuse intrinsic pontine glioma.",
         "specifiedBy": {
             "id": "civic.method:2019",
