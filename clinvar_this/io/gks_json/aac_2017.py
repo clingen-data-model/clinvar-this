@@ -34,19 +34,6 @@ from clinvar_api.msg.sub_payload import (
 from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 
-# Mapping from variant origin to allele origin
-_ALLELE_ORIGIN_MAPPING = MappingProxyType(
-    {
-        "COMBINED": None,
-        "COMMON_GERMLINE": AlleleOrigin.GERMLINE,
-        "MIXED": None,
-        "NA": AlleleOrigin.NOT_APPLICABLE,
-        "RARE_GERMLINE": AlleleOrigin.GERMLINE,
-        "SOMATIC": AlleleOrigin.SOMATIC,
-        "UNKNOWN": AlleleOrigin.UNKNOWN,
-    }
-)
-
 # Mapping from GKS classification to clinical impact classification
 _IMPACT_CLASS_MAPPING = MappingProxyType(
     {
@@ -112,22 +99,29 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
     @staticmethod
     def _get_observed_in(
         allele_origin_qualifier: MappableConcept,
+        method_type: str
     ) -> list[SubmissionObservedInSomatic] | None:
         """Get observed in value
 
         `collection_method` and `affected_status` are hard coded
 
         :param allele_origin_qualifier: Allele origin qualifier
+        :param method_type: The specific type of method used for the study statement
         :return: The observed in value, allele origin mapping exists
         """
-        allele_origin = _ALLELE_ORIGIN_MAPPING[allele_origin_qualifier.name]
+        allele_origin = allele_origin_qualifier.name
         if not allele_origin:
+            return None
+
+        try:
+            collection_method = CollectionMethod(method_type)
+        except ValueError:
             return None
 
         return [
             SubmissionObservedInSomatic(
                 allele_origin=allele_origin,
-                collection_method=CollectionMethod.CURATION,
+                collection_method=collection_method,
                 affected_status=AffectedStatus.UNKNOWN,
             )
         ]
@@ -242,7 +236,8 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
                 continue
 
             observed_in = self._get_observed_in(
-                study_statement.proposition.alleleOriginQualifier
+                study_statement.proposition.alleleOriginQualifier,
+                study_statement.specifiedBy.methodType
             )
             if not observed_in:
                 continue

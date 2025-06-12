@@ -20,7 +20,7 @@
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
@@ -127,7 +127,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "predictsSensitivityTo",
             "objectTherapeutic": {
@@ -207,7 +213,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -391,7 +397,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -575,7 +581,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -759,7 +765,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -943,7 +949,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -1127,7 +1133,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -1323,7 +1329,7 @@
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
@@ -1429,7 +1435,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "predictsSensitivityTo",
             "objectTherapeutic": {
@@ -1545,7 +1557,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -1764,7 +1776,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -1983,7 +1995,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -2202,7 +2214,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -2433,7 +2445,7 @@
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
@@ -2539,7 +2551,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "associatedWithWorseOutcomeFor",
             "objectCondition": {
@@ -2593,7 +2611,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -2750,7 +2768,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -2907,7 +2925,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -3064,7 +3082,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -3185,7 +3203,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -3306,7 +3324,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -3475,7 +3493,7 @@
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
@@ -3575,7 +3593,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "isDiagnosticInclusionCriterionFor",
             "objectCondition": {
@@ -3629,7 +3653,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
@@ -3780,7 +3804,7 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
