@@ -2,18 +2,31 @@
     {
         "id": "civic.aid:6",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2025-05-27"
+            }
+        ],
         "description": "L858R is among the most common sensitizing EGFR mutations in NSCLC, and is assessed via DNA mutational analysis, including Sanger sequencing and next generation sequencing methods. Tyrosine kinase inhibitor afatinib is FDA approved as a first line systemic therapy in NSCLC with sensitizing EGFR mutation (civic.EID:2997).",
         "specifiedBy": {
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                 "doi": "10.1186/s13073-019-0687-x",
-                "pmid": 31779674
+                "pmid": "31779674"
             }
         },
         "proposition": {
@@ -114,7 +127,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "predictsSensitivityTo",
             "objectTherapeutic": {
@@ -194,13 +213,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -209,7 +228,7 @@
                                 "type": "Document",
                                 "name": "Dungo et al., 2013",
                                 "title": "Afatinib: first global approval.",
-                                "pmid": 23982599
+                                "pmid": "23982599"
                             }
                         ],
                         "proposition": {
@@ -378,13 +397,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -393,7 +412,7 @@
                                 "type": "Document",
                                 "name": "Sequist et al., 2013",
                                 "title": "Phase III study of afatinib or cisplatin plus pemetrexed in patients with metastatic lung adenocarcinoma with EGFR mutations.",
-                                "pmid": 23816960
+                                "pmid": "23816960"
                             }
                         ],
                         "proposition": {
@@ -562,13 +581,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -577,7 +596,7 @@
                                 "type": "Document",
                                 "name": "Wu et al., 2014",
                                 "title": "Afatinib versus cisplatin plus gemcitabine for first-line treatment of Asian patients with advanced non-small-cell lung cancer harbouring EGFR mutations (LUX-Lung 6): an open-label, randomised phase 3 trial.",
-                                "pmid": 24439929
+                                "pmid": "24439929"
                             }
                         ],
                         "proposition": {
@@ -746,13 +765,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -761,7 +780,7 @@
                                 "type": "Document",
                                 "name": "Yang et al., 2012",
                                 "title": "Afatinib for patients with lung adenocarcinoma and epidermal growth factor receptor mutations (LUX-Lung 2): a phase 2 trial.",
-                                "pmid": 22452895
+                                "pmid": "22452895"
                             }
                         ],
                         "proposition": {
@@ -930,13 +949,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -945,7 +964,7 @@
                                 "type": "Document",
                                 "name": "Hirano et al., 2015",
                                 "title": "In vitro modeling to determine mutation specificity of EGFR tyrosine kinase inhibitors against clinically relevant EGFR mutants in non-small-cell lung cancer.",
-                                "pmid": 26515464
+                                "pmid": "26515464"
                             }
                         ],
                         "proposition": {
@@ -1114,13 +1133,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -1129,7 +1148,7 @@
                                 "type": "Document",
                                 "name": "Li et al., 2008",
                                 "title": "BIBW2992, an irreversible EGFR/HER2 inhibitor highly effective in preclinical lung cancer models.",
-                                "pmid": 18408761
+                                "pmid": "18408761"
                             }
                         ],
                         "proposition": {
@@ -1292,18 +1311,31 @@
     {
         "id": "civic.aid:7",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2025-06-09"
+            }
+        ],
         "description": "Combination treatment of BRAF inhibitor dabrafenib and MEK inhibitor trametinib is recommended for adjuvant treatment of stage III or recurrent melanoma with BRAF V600E mutation detected by the approved THxID kit, as well as first line treatment for metastatic melanoma. The treatments are FDA approved based on studies including the Phase III COMBI-V, COMBI-D and COMBI-AD Trials. Combination therapy is now recommended above BRAF inhibitor monotherapy. Cutaneous squamous-cell carcinoma and keratoacanthoma occur at lower rates with combination therapy than with BRAF inhibitor alone.",
         "specifiedBy": {
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                 "doi": "10.1186/s13073-019-0687-x",
-                "pmid": 31779674
+                "pmid": "31779674"
             }
         },
         "proposition": {
@@ -1403,7 +1435,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "predictsSensitivityTo",
             "objectTherapeutic": {
@@ -1519,13 +1557,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -1534,7 +1572,7 @@
                                 "type": "Document",
                                 "name": "Long et al., 2017",
                                 "title": "Adjuvant Dabrafenib plus Trametinib in Stage III BRAF-Mutated Melanoma.",
-                                "pmid": 28891408
+                                "pmid": "28891408"
                             }
                         ],
                         "proposition": {
@@ -1738,13 +1776,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -1753,7 +1791,7 @@
                                 "type": "Document",
                                 "name": "Long et al., 2014",
                                 "title": "Combined BRAF and MEK inhibition versus BRAF inhibition alone in melanoma.",
-                                "pmid": 25265492
+                                "pmid": "25265492"
                             }
                         ],
                         "proposition": {
@@ -1957,13 +1995,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -1972,7 +2010,7 @@
                                 "type": "Document",
                                 "name": "Robert et al., 2015",
                                 "title": "Improved overall survival in melanoma with combined dabrafenib and trametinib.",
-                                "pmid": 25399551
+                                "pmid": "25399551"
                             }
                         ],
                         "proposition": {
@@ -2176,13 +2214,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -2191,7 +2229,7 @@
                                 "type": "Document",
                                 "name": "Flaherty et al., 2012",
                                 "title": "Combined BRAF and MEK inhibition in melanoma with BRAF V600 mutations.",
-                                "pmid": 23020132
+                                "pmid": "23020132"
                             }
                         ],
                         "proposition": {
@@ -2389,18 +2427,31 @@
     {
         "id": "civic.aid:20",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2024-04-27"
+            }
+        ],
         "description": "BRAF V600E was associated with worse prognosis in Phase II and III colorectal cancer, with a stronger effect in MSI-Low or MSI-Stable tumors. In metastatic CRC, V600E was associated with worse prognosis, and meta-analysis showed BRAF mutation in CRC associated with multiple negative prognostic markers.",
         "specifiedBy": {
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                 "doi": "10.1186/s13073-019-0687-x",
-                "pmid": 31779674
+                "pmid": "31779674"
             }
         },
         "proposition": {
@@ -2500,7 +2551,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "associatedWithWorseOutcomeFor",
             "objectCondition": {
@@ -2554,13 +2611,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -2569,7 +2626,7 @@
                                 "type": "Document",
                                 "name": "Chen et al., 2014",
                                 "title": "BRAFV600E mutation and its association with clinicopathological features of colorectal cancer: a systematic review and meta-analysis.",
-                                "pmid": 24594804
+                                "pmid": "24594804"
                             }
                         ],
                         "proposition": {
@@ -2711,13 +2768,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -2726,7 +2783,7 @@
                                 "type": "Document",
                                 "name": "Roth et al., 2010",
                                 "title": "Prognostic role of KRAS and BRAF in stage II and III resected colon cancer: results of the translational study on the PETACC-3, EORTC 40993, SAKK 60-00 trial.",
-                                "pmid": 20008640
+                                "pmid": "20008640"
                             }
                         ],
                         "proposition": {
@@ -2868,13 +2925,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -2883,7 +2940,7 @@
                                 "type": "Document",
                                 "name": "Van Cutsem et al., 2011",
                                 "title": "Cetuximab plus irinotecan, fluorouracil, and leucovorin as first-line treatment for metastatic colorectal cancer: updated analysis of overall survival according to tumor KRAS and BRAF mutation status.",
-                                "pmid": 21502544
+                                "pmid": "21502544"
                             }
                         ],
                         "proposition": {
@@ -3025,13 +3082,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -3040,7 +3097,7 @@
                                 "type": "Document",
                                 "name": "Maughan et al., 2011",
                                 "title": "Addition of cetuximab to oxaliplatin-based first-line combination chemotherapy for treatment of advanced colorectal cancer: results of the randomised phase 3 MRC COIN trial.",
-                                "pmid": 21641636
+                                "pmid": "21641636"
                             }
                         ],
                         "proposition": {
@@ -3146,13 +3203,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -3161,7 +3218,7 @@
                                 "type": "Document",
                                 "name": "Clancy et al., 2013",
                                 "title": "BRAF mutation is associated with distinct clinicopathological characteristics in colorectal cancer: a systematic review and meta-analysis.",
-                                "pmid": 24112392
+                                "pmid": "24112392"
                             }
                         ],
                         "proposition": {
@@ -3267,13 +3324,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -3282,7 +3339,7 @@
                                 "type": "Document",
                                 "name": "Amaki-Takao et al., 2016",
                                 "title": "Colorectal Cancer with BRAF D594G Mutation Is Not Associated with Microsatellite Instability or Poor Prognosis.",
-                                "pmid": 27404270
+                                "pmid": "27404270"
                             }
                         ],
                         "proposition": {
@@ -3418,18 +3475,31 @@
     {
         "id": "civic.aid:9",
         "type": "Statement",
+        "contributions": [
+            {
+                "type": "Contribution",
+                "contributor": {
+                    "id": "civic.organization:1",
+                    "type": "Agent",
+                    "name": "The McDonnell Genome Institute",
+                    "description": "The McDonnell Genome Institute (MGI) is a world leader in the fast-paced, constantly changing field of genomics. A truly unique institution, we are pushing the limits of academic research by creating, testing, and implementing new approaches to the study of biology with the goal of understanding human health and disease, as well as evolution and the biology of other organisms."
+                },
+                "activityType": "endorsement.last_reviewed",
+                "date": "2024-12-20"
+            }
+        ],
         "description": "ACVR1 G328V mutations occur within the kinase domain, leading to activation of downstream signaling. Exclusively seen in high-grade pediatric gliomas, supporting diagnosis of diffuse intrinsic pontine glioma.",
         "specifiedBy": {
             "id": "civic.method:2019",
             "type": "Method",
             "name": "CIViC Curation SOP (2019)",
-            "methodType": "variant curation standard operating procedure",
+            "methodType": "curation",
             "reportedIn": {
                 "type": "Document",
                 "name": "Danos et al., 2019, Genome Med.",
                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                 "doi": "10.1186/s13073-019-0687-x",
-                "pmid": 31779674
+                "pmid": "31779674"
             }
         },
         "proposition": {
@@ -3523,7 +3593,13 @@
                 ]
             },
             "alleleOriginQualifier": {
-                "name": "SOMATIC"
+                "name": "somatic",
+                "extensions": [
+                    {
+                        "name": "civic_variant_origin",
+                        "value": "SOMATIC"
+                    }
+                ]
             },
             "predicate": "isDiagnosticInclusionCriterionFor",
             "objectCondition": {
@@ -3577,13 +3653,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -3592,7 +3668,7 @@
                                 "type": "Document",
                                 "name": "Fontebasso et al., 2014",
                                 "title": "Recurrent somatic mutations in ACVR1 in pediatric midline high-grade astrocytoma.",
-                                "pmid": 24705250
+                                "pmid": "24705250"
                             }
                         ],
                         "proposition": {
@@ -3728,13 +3804,13 @@
                             "id": "civic.method:2019",
                             "type": "Method",
                             "name": "CIViC Curation SOP (2019)",
-                            "methodType": "variant curation standard operating procedure",
+                            "methodType": "curation",
                             "reportedIn": {
                                 "type": "Document",
                                 "name": "Danos et al., 2019, Genome Med.",
                                 "title": "Standard operating procedure for curation and clinical interpretation of variants in cancer",
                                 "doi": "10.1186/s13073-019-0687-x",
-                                "pmid": 31779674
+                                "pmid": "31779674"
                             }
                         },
                         "reportedIn": [
@@ -3743,7 +3819,7 @@
                                 "type": "Document",
                                 "name": "Buczkowicz et al., 2014",
                                 "title": "Genomic analysis of diffuse intrinsic pontine gliomas identifies three molecular subgroups and recurrent activating ACVR1 mutations.",
-                                "pmid": 24705254
+                                "pmid": "24705254"
                             }
                         ],
                         "proposition": {

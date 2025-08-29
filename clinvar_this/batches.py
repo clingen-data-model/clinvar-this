@@ -11,7 +11,7 @@ from tabulate import tabulate
 from clinvar_api import client, models
 from clinvar_this import config, exceptions
 from clinvar_this.io import tsv
-from clinvar_this.io.gks_json import CivicGksJsonTransformer
+from clinvar_this.io.gks_json import Aac2017GksJsonTransformer
 
 
 def get_share_dir():
@@ -157,10 +157,10 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
         else:
             raise exceptions.IOException(f"Could not guess TSV file type from header for {path}")
         _write_payload(submission_container, config.profile, name)
-    elif re.match(r".*civic.*\.json$", path):
-        civic_gks_transformer = CivicGksJsonTransformer()
-        new_submission_container = civic_gks_transformer.records_to_submission_container(
-            civic_gks_transformer.read_file(path=path)
+    elif re.match(r".*aac_2017.*\.json$", path):
+        gks_transformer = Aac2017GksJsonTransformer()
+        new_submission_container = gks_transformer.records_to_submission_container(
+            gks_transformer.read_file(path=path)
         )
         if previous_submission_container:
             submission_container = _merge_submission_container(
