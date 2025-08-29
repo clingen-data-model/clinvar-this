@@ -27,6 +27,5 @@ sphinx_rtd_theme
 sphinx-mdinclude <0.7  # incompatible with sphinx-rtd-theme via docutils
 sphinx-click
 
-protolint-bin
 types-protobuf
 mypy-protobuf

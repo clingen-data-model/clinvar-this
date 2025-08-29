@@ -22,11 +22,10 @@ from ga4gh.va_spec.base import (
     VariantTherapeuticResponseProposition,
 )
 from ga4gh.vrs.models import MolecularVariation
-from pydantic import ValidationError
+from pydantic import BaseModel, ConfigDict, ValidationError
 
 
 from clinvar_api.models import (
-    SubmissionChromosomeCoordinates,
     SubmissionCondition,
     SubmissionContainer,
     SubmissionVariant,
@@ -37,11 +36,24 @@ from clinvar_api.models.sub_payload import (
     SubmissionVariantGene,
 )
 from clinvar_api.msg.sub_payload import (
+    AffectedStatus,
     SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
 from clinvar_this import exceptions
 from clinvar_this.io.base import TransformIO
+
+
+class BatchMetadata(BaseModel):
+    """Batch-wide settings for GKS JSON import.
+
+    The properties will be assigned to all variants/samples in the batch.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+
+    affected_status: typing.Optional[AffectedStatus] = None
 
 
 class GksJsonTransformer(TransformIO, ABC):
@@ -203,27 +215,19 @@ class GksJsonTransformer(TransformIO, ABC):
         proposition: VariantTherapeuticResponseProposition
         | VariantDiagnosticProposition,
         variant_hgvs: str | None = None,
-        variant_coords: SubmissionChromosomeCoordinates | None = None,
     ) -> SubmissionVariantSet:
         """Get variant set
 
         This assumes only a single submission variant.
 
         :param proposition: Proposition for a given study statement.
-        :param variant_hgvs: The HGVS expression for a variant, if found. If not found,
-            ``variant_coords`` must be provided. This takes priority over
-            ``variant_coords``.
-        :param variant_coords: The chromosome coordinates for a variant, if found. If
-            not found, ``variant_hgvs`` must be provided
+        :param variant_hgvs: The HGVS expression for a variant, if found.
         :return: Variant set for a proposition
         """
         return SubmissionVariantSet(
             variant=[
                 SubmissionVariant(
                     hgvs=variant_hgvs,
-                    chromosome_coordinates=variant_coords
-                    if variant_hgvs is None
-                    else None,
                     gene=[
                         SubmissionVariantGene(
                             symbol=proposition.geneContextQualifier.name

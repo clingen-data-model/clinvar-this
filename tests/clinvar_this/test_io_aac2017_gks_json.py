@@ -1,4 +1,4 @@
-"""Module for testing CIViC GKS JSON transformer"""
+"""Module for testing GKS AAC 2017 transformer"""
 
 from deepdiff import DeepDiff
 import json
@@ -34,46 +34,46 @@ from ga4gh.va_spec.aac_2017 import (
 )
 
 from clinvar_this import exceptions
-from clinvar_this.io.gks_json.civic import CivicGksJsonTransformer
+from clinvar_this.io.gks_json.aac_2017 import Aac2017GksJsonTransformer
 
 
-DATA_DIR = pathlib.Path(__file__).parent / "data" / "io_civic_gks_json"
-
-
-@pytest.fixture(scope="module")
-def civic_gks_json_transformer():
-    """Create test fixture for CivicGksJsonTransformer"""
-    return CivicGksJsonTransformer()
+DATA_DIR = pathlib.Path(__file__).parent / "data" / "io_gks_json"
 
 
 @pytest.fixture(scope="module")
-def civic_gks_json_data():
-    """Create test fixture for CIViC GKS JSON data"""
+def aac_2017_gks_json_transformer():
+    """Create test fixture for Aac2017GksJsonTransformer"""
+    return Aac2017GksJsonTransformer()
+
+
+@pytest.fixture(scope="module")
+def aac_2017_gks_json_data():
+    """Create test fixture for AAC 2017 GKS JSON data"""
     with (
         pathlib.Path(__file__).parent
         / "data"
-        / "io_civic_gks_json"
-        / "civic_assertions.json"
+        / "io_gks_json"
+        / "aac_2017_civic_assertions.json"
     ).open() as f:
         return json.load(f)
 
 
 @pytest.fixture(scope="module")
-def civic_aid6(civic_gks_json_data):
+def civic_aid6(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID6"""
-    return VariantTherapeuticResponseStudyStatement(**civic_gks_json_data[0])
+    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data[0])
 
 
 @pytest.fixture(scope="module")
-def civic_aid7(civic_gks_json_data):
+def civic_aid7(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID7"""
-    return VariantTherapeuticResponseStudyStatement(**civic_gks_json_data[1])
+    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data[1])
 
 
 @pytest.fixture(scope="module")
-def civic_aid9(civic_gks_json_data):
+def civic_aid9(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID9"""
-    return VariantDiagnosticStudyStatement(**civic_gks_json_data[3])
+    return VariantDiagnosticStudyStatement(**aac_2017_gks_json_data[3])
 
 
 @pytest.fixture(scope="module")
@@ -91,7 +91,7 @@ def civic_aid7_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:12",
-        local_key="civic.AID:7",
+        local_key="civic.aid:7",
         observed_in=[
             SubmissionObservedInSomatic(
                 affected_status=AffectedStatus.UNKNOWN,
@@ -131,7 +131,7 @@ def civic_aid7_submission():
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25265492"),
             ],
             drug_for_therapeutic_assertion="Dabrafenib;Trametinib",
-            date_last_evaluated="2018-05-15",
+            date_last_evaluated="2025-06-09",
         ),
     )
 
@@ -145,7 +145,7 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
             SubmissionClinicalImpactSubmission(
                 record_status=RecordStatus.NOVEL,
                 local_id="civic.mpid:33",
-                local_key="civic.AID:6",
+                local_key="civic.aid:6",
                 observed_in=[
                     SubmissionObservedInSomatic(
                         affected_status=AffectedStatus.UNKNOWN,
@@ -213,7 +213,7 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
                         ),
                     ],
                     drug_for_therapeutic_assertion="Afatinib",
-                    date_last_evaluated="2018-02-23",
+                    date_last_evaluated="2025-05-27",
                 ),
             ),
             civic_aid7_submission,
@@ -227,7 +227,7 @@ def civic_aid9_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:1594",
-        local_key="civic.AID:9",
+        local_key="civic.aid:9",
         observed_in=[
             SubmissionObservedInSomatic(
                 affected_status=AffectedStatus.UNKNOWN,
@@ -262,7 +262,7 @@ def civic_aid9_submission():
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24705254"),
             ],
-            date_last_evaluated="2018-10-16",
+            date_last_evaluated="2024-12-20",
         ),
     )
 
@@ -278,28 +278,28 @@ def civic_diagnostic_submissions(
     )
 
 
-def test_read_file(civic_gks_json_transformer, civic_aid6, civic_aid7, civic_aid9):
+def test_read_file(aac_2017_gks_json_transformer, civic_aid6, civic_aid7, civic_aid9):
     """Ensure that read_file method works correctly"""
-    path = DATA_DIR / "civic_assertions.json"
+    path = DATA_DIR / "aac_2017_civic_assertions.json"
     expected_assertions = [civic_aid6, civic_aid7, civic_aid9]
 
     with path.open("rt") as inputf:
-        actual = civic_gks_json_transformer.read_file(file=inputf)
+        actual = aac_2017_gks_json_transformer.read_file(file=inputf)
     assert actual == expected_assertions
 
-    actual = civic_gks_json_transformer.read_file(path=path)
+    actual = aac_2017_gks_json_transformer.read_file(path=path)
     assert actual == expected_assertions
 
     with pytest.raises(exceptions.InvalidFormat, match=r"Error decoding JSON"):
-        civic_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
+        aac_2017_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
 
 
-def test_records_to_submission_container_therapeutic(
-    civic_gks_json_transformer, civic_aid6, civic_aid7, civic_tr_submissions
+def test_records_to_submission_container(
+    aac_2017_gks_json_transformer, civic_aid6, civic_aid7, civic_tr_submissions
 ):
     """Ensure that records_to_submission_container works correctly for therapeutic study statements"""
     # Test single therapy and CombinationTherapy
-    actual = civic_gks_json_transformer.records_to_submission_container(
+    actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid6, civic_aid7]
     )
     diff = DeepDiff(
@@ -312,7 +312,7 @@ def test_records_to_submission_container_therapeutic(
     # Test TherapeuticSubstituteGroup
     civic_aid7_cpy = civic_aid7.model_copy()
     civic_aid7_cpy.proposition.objectTherapeutic.root.membershipOperator = "OR"
-    actual = civic_gks_json_transformer.records_to_submission_container(
+    actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid7_cpy]
     )
     civic_tr_submissions_cpy = civic_tr_submissions.model_copy()
@@ -332,10 +332,10 @@ def test_records_to_submission_container_therapeutic(
 
 
 def test_records_to_submission_container_diagnostic(
-    civic_gks_json_transformer, civic_aid9, civic_diagnostic_submissions
+    aac_2017_gks_json_transformer, civic_aid9, civic_diagnostic_submissions
 ):
     """Ensure that records_to_submission_container works correctly for diagnostic study statements"""
-    actual = civic_gks_json_transformer.records_to_submission_container([civic_aid9])
+    actual = aac_2017_gks_json_transformer.records_to_submission_container([civic_aid9])
     diff = DeepDiff(
         actual.model_dump(exclude_none=True),
         civic_diagnostic_submissions.model_dump(exclude_none=True),

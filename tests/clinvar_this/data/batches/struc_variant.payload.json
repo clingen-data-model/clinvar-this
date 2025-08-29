@@ -60,6 +60,7 @@
       "variant_set": {
         "variant": [
           {
+            "alternate_designations": null,
             "chromosome_coordinates": {
               "accession": null,
               "alternate_allele": null,
