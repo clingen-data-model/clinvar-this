@@ -17,7 +17,7 @@ from ga4gh.va_spec.base import (
     VariantTherapeuticResponseProposition,
 )
 from ga4gh.vrs.models import MolecularVariation
-from pydantic import ValidationError
+from pydantic import BaseModel, ConfigDict, ValidationError
 
 
 from clinvar_api.models import (
@@ -31,11 +31,24 @@ from clinvar_api.models.sub_payload import (
     SubmissionVariantGene,
 )
 from clinvar_api.msg.sub_payload import (
+    AffectedStatus,
     SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
 from clinvar_this import exceptions
 from clinvar_this.io.base import TransformIO
+
+
+class BatchMetadata(BaseModel):
+    """Batch-wide settings for GKS JSON import.
+
+    The properties will be assigned to all variants/samples in the batch.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+
+    affected_status: typing.Optional[AffectedStatus] = None
 
 
 class GksJsonTransformer(TransformIO, ABC):
