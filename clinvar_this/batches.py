@@ -2,6 +2,7 @@
 
 import datetime
 import pathlib
+import re
 import typing
 
 from logzero import logger
@@ -10,6 +11,8 @@ from tabulate import tabulate
 from clinvar_api import client, models
 from clinvar_this import config, exceptions
 from clinvar_this.io import tsv
+from clinvar_this.io.gks_json import Aac2017GksJsonTransformer
+from clinvar_this.io.gks_json.base import BatchMetadata as GksBatchMetadata, batch_metadata_from_mapping as gks_batch_metadata_from_mapping
 
 
 def get_share_dir():
@@ -83,18 +86,29 @@ def _merge_submission_container(
     logger.info("Merging submission information...")
 
     def merge_submission(
-        base: models.SubmissionClinvarSubmission,
-        patch: models.SubmissionClinvarSubmission,
+        base: models.SubmissionClinvarSubmission
+        | models.SubmissionClinicalImpactSubmission,
+        patch: models.SubmissionClinvarSubmission
+        | models.SubmissionClinicalImpactSubmission,
     ) -> models.SubmissionClinvarSubmission:
-        clinvar_accession = base.clinvar_accession or patch.clinvar_accession
-        return base.model_copy(
-            update={
-                "clinvar_accession": clinvar_accession,
-                "condition_set": patch.condition_set,
-                "clinical_significance": patch.clinical_significance,
-                "observed_in": patch.observed_in,
-            }
-        )
+        if isinstance(base, models.SubmissionClinvarSubmission):
+            clinvar_accession = base.clinvar_accession or patch.clinvar_accession
+            return base.model_copy(
+                update={
+                    "clinvar_accession": clinvar_accession,
+                    "condition_set": patch.condition_set,
+                    "clinical_significance": patch.clinical_significance,
+                    "observed_in": patch.observed_in,
+                }
+            )
+        else:
+            return base.model_copy(
+                update={
+                    "clinical_impact_classification_description": patch.clinical_impact_classification_description,
+                    "assertion_type_for_clinical_impact": patch.assertion_type_for_clinical_impact,
+                    "drug_for_therapeutic_assertion": patch.drug_for_therapeutic_assertion,
+                }
+            )
 
     patch_clinvar_submission = {
         clinvar_submission.local_key: clinvar_submission
@@ -143,6 +157,21 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
                 submission_container = new_submission_container
         else:
             raise exceptions.IOException(f"Could not guess TSV file type from header for {path}")
+        _write_payload(submission_container, config.profile, name)
+    elif re.match(r".*aac_2017.*\.json$", path):
+        gks_transformer = Aac2017GksJsonTransformer()
+        gks_batch_metadata: GksBatchMetadata = gks_batch_metadata_from_mapping(metadata)
+        new_submission_container = gks_transformer.records_to_submission_container(
+            gks_transformer.read_file(path=path), gks_batch_metadata
+        )
+        if previous_submission_container:
+            submission_container = _merge_submission_container(
+                base=previous_submission_container,
+                patch=new_submission_container,
+            )
+        else:
+            submission_container = new_submission_container
+
         _write_payload(submission_container, config.profile, name)
     else:  # pragma: no cover
         raise exceptions.IOException(f"File extension of {path} cannot be handled.")

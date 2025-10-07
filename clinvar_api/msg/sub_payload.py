@@ -278,6 +278,7 @@ class SubmissionVariant(BaseModel):
     hgvs: typing.Optional[str] = None
     referenceCopyNumber: typing.Optional[int] = None
     variantType: typing.Optional[VariantType] = None
+    alternateDesignations: typing.Optional[typing.List[str]] = None
 
 
 class SubmissionVariantSet(BaseModel):

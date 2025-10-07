@@ -113,6 +113,7 @@ class SubmissionVariant(BaseModel):
     hgvs: typing.Optional[str] = None
     reference_copy_number: typing.Optional[int] = None
     variant_type: typing.Optional[VariantType] = None
+    alternate_designations: typing.Optional[typing.List[str]] = None
 
     def to_msg(self) -> msg.SubmissionVariant:
         chromosome_coordinates = None
@@ -128,6 +129,7 @@ class SubmissionVariant(BaseModel):
             hgvs=self.hgvs,
             referenceCopyNumber=self.reference_copy_number,
             variantType=self.variant_type,
+            alternateDesignations=self.alternate_designations
         )
 
 

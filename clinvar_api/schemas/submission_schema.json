@@ -2,236 +2,309 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "allOf": [
-       {
-          "if": {
-              "required": ["clinvarSubmission"]
-          },
-          "then": {
-              "allOf": [
-                  {"not":  {"required": ["clinicalImpactSubmission"]},
-                   "errors": {"not": "old format clinvarSubmission and new format clinicalImpactSubmission cannot appear in a single submission"}
-                  },
-                  {"not":  {"required": ["oncogenicitySubmission"]},
-                   "errors": {"not": "old format clinvarSubmission and new format oncogenicitySubmission cannot appear in a single submission"}
-                  },
-                  {"not":  {"required": ["germlineSubmission"]},
-                   "errors": {"not": "old format clinvarSubmission and new format germlineSubmission cannot appear in a single submission"}
-                  }
+    {
+      "if": {
+        "required": [
+          "clinvarSubmission"
+        ]
+      },
+      "then": {
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "clinicalImpactSubmission"
               ]
+            },
+            "errors": {
+              "not": "old format clinvarSubmission and new format clinicalImpactSubmission cannot appear in a single submission"
+            }
           },
-          "else": {
-              "allOf": [
-                  {"not":  {"required": ["clinicalImpactSubmission","oncogenicitySubmission"]},
-                   "errors": {"not": "clinicalImpactSubmission and oncogenicitySubmission cannot appear in a single submission"}
-                  },
-                  {"not":  {"required": ["oncogenicitySubmission", "germlineSubmission"]},
-                   "errors": {"not": "germlineSubmission and oncogenicitySubmission cannot appear in a single submission"}
-                  },
-                  {"not":  {"required": ["germlineSubmission", "clinicalImpactSubmission"]},
-                   "errors": {"not": "germlineSubmission and clinicalImpactSubmission cannot appear in a single submission"}
-                  }
+          {
+            "not": {
+              "required": [
+                "oncogenicitySubmission"
               ]
-         }
-       }
+            },
+            "errors": {
+              "not": "old format clinvarSubmission and new format oncogenicitySubmission cannot appear in a single submission"
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "germlineSubmission"
+              ]
+            },
+            "errors": {
+              "not": "old format clinvarSubmission and new format germlineSubmission cannot appear in a single submission"
+            }
+          }
+        ]
+      },
+      "else": {
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "clinicalImpactSubmission",
+                "oncogenicitySubmission"
+              ]
+            },
+            "errors": {
+              "not": "clinicalImpactSubmission and oncogenicitySubmission cannot appear in a single submission"
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "oncogenicitySubmission",
+                "germlineSubmission"
+              ]
+            },
+            "errors": {
+              "not": "germlineSubmission and oncogenicitySubmission cannot appear in a single submission"
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "germlineSubmission",
+                "clinicalImpactSubmission"
+              ]
+            },
+            "errors": {
+              "not": "germlineSubmission and clinicalImpactSubmission cannot appear in a single submission"
+            }
+          }
+        ]
+      }
+    }
   ],
   "properties": {
     "clinvarDeletion": {
       "type": "object",
-      "required": ["accessionSet"],
-        "title": "ClinVar Deletions",
-        "properties": {
-          "accessionSet": {
-            "type": "array",
-            "minItems": 1,
-            "maxItems": 10000,
-            "items": {
-              "type": "object",
-              "title": "Clinvar accession and reason for deleting",
-              "required": ["accession"],
-              "properties": {
-                "accession": {
-                  "type": "string",
-                  "pattern": "^SCV[0123456789]{9}$",
-                  "description": "The SCV accession for your submitted record to delete (not the RCV or the VCV), e.g. SCV000123456."
-                },
-                "reason": {
-                  "type": "string",
-                  "description": "A public comment explaining why this record is being deleted."
-                }
+      "required": [
+        "accessionSet"
+      ],
+      "title": "ClinVar Deletions",
+      "properties": {
+        "accessionSet": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "title": "Clinvar accession and reason for deleting",
+            "required": [
+              "accession"
+            ],
+            "properties": {
+              "accession": {
+                "type": "string",
+                "pattern": "^SCV[0123456789]{9}$",
+                "description": "The SCV accession for your submitted record to delete (not the RCV or the VCV), e.g. SCV000123456."
+              },
+              "reason": {
+                "type": "string",
+                "description": "A public comment explaining why this record is being deleted."
               }
-            },
-            "errors": {
-              "minItems": "Empty list of assertionSet for clinvarDeletion not allowed",
-              "maxItems": "no more than 10000 assertionSet for clinvarDeletion allowed"
             }
+          },
+          "errors": {
+            "minItems": "Empty list of assertionSet for clinvarDeletion not allowed",
+            "maxItems": "no more than 10000 assertionSet for clinvarDeletion allowed"
           }
         }
+      }
     },
     "clinvarSubmission": {
       "type": "array",
       "title": "ClinVar Submission Set",
       "minItems": 1,
       "maxItems": 10000,
-      "items":
-        {
-          "type": "object",
-          "title": "ClinVar Submission",
-          "$ref": "#/definitions/baseSubmissionType",
-          "required": [
-            "clinicalSignificance",
-            "observedIn",
-            "conditionSet"
-          ],
-          "properties": {
-            "clinicalSignificance": {
-              "type": "object",
-              "description": "Clinical significance",
-              "required": [
-                "clinicalSignificanceDescription"
-              ],
-              "$ref": "#/definitions/baseClassificationType",
-              "properties": {
-                "clinicalSignificanceDescription": {
-                  "type": "string",
-                  "description": "The interpretation, or clinical significance, of the variant for the submitted condition, equivalent to Clinical significance in the submission spreadsheet.",
-                  "enum": [
-                    "Pathogenic",
-                    "Likely pathogenic",
-                    "Uncertain significance",
-                    "Likely benign",
-                    "Benign",
-                    "Pathogenic, low penetrance",
-                    "Uncertain risk allele",
-                    "Likely pathogenic, low penetrance",
-                    "Established risk allele",
-                    "Likely risk allele",
-                    "affects",
-                    "association",
-                    "drug response",
-                    "confers sensitivity",
-                    "protective",
-                    "other",
-                    "not provided"
-                  ]
-                },
-                "modeOfInheritance": {
-                  "type": "string",
-                  "description": "The mode of inheritance specific to the variant-disease pair, not generally for the disease.",
-                  "enum": [
-                    "Autosomal dominant inheritance",
-                    "Autosomal recessive inheritance",
-                    "Mitochondrial inheritance",
-                    "Genetic anticipation",
-                    "Sporadic",
-                    "Sex-limited autosomal dominant",
-                    "X-linked recessive inheritance",
-                    "X-linked dominant inheritance",
-                    "Y-linked inheritance",
-                    "Other",
-                    "X-linked inheritance",
-                    "Codominant",
-                    "Semidominant inheritance",
-                    "Autosomal unknown",
-                    "Autosomal dominant inheritance with maternal imprinting",
-                    "Autosomal dominant inheritance with paternal imprinting",
-                    "Multifactorial inheritance",
-                    "Unknown mechanism",
-                    "Oligogenic inheritance"
-                  ]
-                },
-                "customAssertionScore": {
-                  "type": "number",
-                  "description": "The final score, or point value, calculated when the assertion method uses a point-based scoring system, e.g. ACMG/ClinGen CNV Guidelines, 2019 (PMID: 31690835).  The assertion method must also be provided. "
-                },
-                "explanationOfDrugResponse": {
-                  "type": "string",
-                  "description": "Required for a record with clinical significance of  'drug response'.  Please provide a value describing  the drug response, e.g. 'likely responsive'. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
-                },
-                "explanationOfOtherClinicalSignificance": {
-                  "type": "string",
-                  "description": "Required if 'other' is selected for clinical significance. Please provide the new value for clinical significance, e.g. pseudodeficiency allele. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
-                }
+      "items": {
+        "type": "object",
+        "title": "ClinVar Submission",
+        "$ref": "#/definitions/baseSubmissionType",
+        "required": [
+          "clinicalSignificance",
+          "observedIn",
+          "conditionSet"
+        ],
+        "properties": {
+          "clinicalSignificance": {
+            "type": "object",
+            "description": "Clinical significance",
+            "required": [
+              "clinicalSignificanceDescription"
+            ],
+            "$ref": "#/definitions/baseClassificationType",
+            "properties": {
+              "clinicalSignificanceDescription": {
+                "type": "string",
+                "description": "The interpretation, or clinical significance, of the variant for the submitted condition, equivalent to Clinical significance in the submission spreadsheet.",
+                "enum": [
+                  "Pathogenic",
+                  "Likely pathogenic",
+                  "Uncertain significance",
+                  "Likely benign",
+                  "Benign",
+                  "Pathogenic, low penetrance",
+                  "Uncertain risk allele",
+                  "Likely pathogenic, low penetrance",
+                  "Established risk allele",
+                  "Likely risk allele",
+                  "affects",
+                  "association",
+                  "drug response",
+                  "confers sensitivity",
+                  "protective",
+                  "other",
+                  "not provided"
+                ]
               },
+              "modeOfInheritance": {
+                "type": "string",
+                "description": "The mode of inheritance specific to the variant-disease pair, not generally for the disease.",
+                "enum": [
+                  "Autosomal dominant inheritance",
+                  "Autosomal recessive inheritance",
+                  "Mitochondrial inheritance",
+                  "Genetic anticipation",
+                  "Sporadic",
+                  "Sex-limited autosomal dominant",
+                  "X-linked recessive inheritance",
+                  "X-linked dominant inheritance",
+                  "Y-linked inheritance",
+                  "Other",
+                  "X-linked inheritance",
+                  "Codominant",
+                  "Semidominant inheritance",
+                  "Autosomal unknown",
+                  "Autosomal dominant inheritance with maternal imprinting",
+                  "Autosomal dominant inheritance with paternal imprinting",
+                  "Multifactorial inheritance",
+                  "Unknown mechanism",
+                  "Oligogenic inheritance"
+                ]
+              },
+              "customAssertionScore": {
+                "type": "number",
+                "description": "The final score, or point value, calculated when the assertion method uses a point-based scoring system, e.g. ACMG/ClinGen CNV Guidelines, 2019 (PMID: 31690835).  The assertion method must also be provided. "
+              },
+              "explanationOfDrugResponse": {
+                "type": "string",
+                "description": "Required for a record with clinical significance of  'drug response'.  Please provide a value describing  the drug response, e.g. 'likely responsive'. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
+              },
+              "explanationOfOtherClinicalSignificance": {
+                "type": "string",
+                "description": "Required if 'other' is selected for clinical significance. Please provide the new value for clinical significance, e.g. pseudodeficiency allele. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
+              }
+            },
+            "unevaluatedProperties": false
+          },
+          "conditionSet": {
+            "type": "object",
+            "description": "The condition for which the variant is interpreted. Detailed information about reporting condition is available at https://www.ncbi.nlm.nih.gov/clinvar/docs/faq_submitters/#pheno  If multiple conditions are submitted for a variant, this indicates that the variant was interpreted for the combination of conditions in the same individual(s).  i.e. this variant causes both condition A and condition B in the same individual. This scenario is most common for a new disease or syndrome that does not yet have a name and is described by several clinical features.  If you want to indicate that the variant has been interpreted for more than one condition, please submit these as separate records. i.e. this variant causes condition A in some individuals and causes disease B in other individuals. Provide only one name or identifier for a condition; do not provide multiple names or identifiers for the same condition.",
+            "oneOf": [
+              {
+                "required": [
+                  "condition"
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "required": [
+                      "drugResponse"
+                    ]
+                  },
+                  {
+                    "not": {
+                      "required": [
+                        "multipleConditionExplanation"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ],
+            "properties": {
+              "multipleConditionExplanation": {
+                "type": "string",
+                "enum": [
+                  "Novel disease",
+                  "Uncertain",
+                  "Co-occurring"
+                ],
+                "description": "Variants in ClinVar are typically classified for a single condition (disease or drug response). If more than one condition is provided  in the conditionSet, this field is required and explains why multiple conditions are valid. Options are \"Novel disease\" when a new disease is unnamed and only described by a set of clinical features (HPO ids); \"Uncertain\" when a variant is classified for several related diseases and it may be uncertain whether the variant causes one or several of them; and \"Co-occurring\" when a variant causes more than one disease in the same individual (this is expected to be rare)."
+              },
+              "condition": {
+                "description": "The condition must be provided as either a database identifier or a name, but not both. A database identifier is preferred by ClinVar; a name should be provided only if there is no database identifier available.",
+                "$ref": "#/definitions/conditionType"
+              },
+              "drugResponse": {
+                "description": "The drug Response evaluated specified by database ID or drug name, but not both",
+                "$ref": "#/definitions/drugResponseType"
+              }
+            },
+            "additionalProperties": false
+          },
+          "observedIn": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "$ref": "#/definitions/baseObservationType",
               "unevaluatedProperties": false
             },
-            "conditionSet": {
-              "type": "object",
-              "description": "The condition for which the variant is interpreted. Detailed information about reporting condition is available at https://www.ncbi.nlm.nih.gov/clinvar/docs/faq_submitters/#pheno  If multiple conditions are submitted for a variant, this indicates that the variant was interpreted for the combination of conditions in the same individual(s).  i.e. this variant causes both condition A and condition B in the same individual. This scenario is most common for a new disease or syndrome that does not yet have a name and is described by several clinical features.  If you want to indicate that the variant has been interpreted for more than one condition, please submit these as separate records. i.e. this variant causes condition A in some individuals and causes disease B in other individuals. Provide only one name or identifier for a condition; do not provide multiple names or identifiers for the same condition.",
-              "oneOf": [
-                  {
-                      "required": ["condition"]
-                  },
-                  {
-                      "allOf": [
-                          {"required": ["drugResponse"]},
-                          {"not": { "required": ["multipleConditionExplanation"]}}
-                      ]
-                  }
-              ],
-              "properties": {
-                  "multipleConditionExplanation": {
-                      "type": "string",
-                      "enum": [
-                          "Novel disease",
-                          "Uncertain",
-                          "Co-occurring"
-                      ],
-                      "description": "Variants in ClinVar are typically classified for a single condition (disease or drug response). If more than one condition is provided  in the conditionSet, this field is required and explains why multiple conditions are valid. Options are \"Novel disease\" when a new disease is unnamed and only described by a set of clinical features (HPO ids); \"Uncertain\" when a variant is classified for several related diseases and it may be uncertain whether the variant causes one or several of them; and \"Co-occurring\" when a variant causes more than one disease in the same individual (this is expected to be rare)."
-                  },
-                  "condition": {
-                      "description": "The condition must be provided as either a database identifier or a name, but not both. A database identifier is preferred by ClinVar; a name should be provided only if there is no database identifier available.",
-                      "$ref": "#/definitions/conditionType"
-                  },
-                  "drugResponse": {
-                      "description": "The drug Response evaluated specified by database ID or drug name, but not both",
-                      "$ref": "#/definitions/drugResponseType"
-                  }
-              },
-              "additionalProperties": false
-            },
-            "observedIn": {
-              "type": "array",
-              "minItems": 1,
-              "items":
-                {
-                  "type": "object",
-                  "$ref": "#/definitions/baseObservationType",
-                  "unevaluatedProperties": false
-                },
-              "errors": {"minItems": "Empty list of observedIn not allowed"}
+            "errors": {
+              "minItems": "Empty list of observedIn not allowed"
             }
-          },
-          "unevaluatedProperties": false,
-          "if": {
-              "properties": {
-                  "clinicalSignificance": {
-                      "properties" : {
-                          "clinicalSignificanceDescription": { "const": "drug response" }
-                      }
-                  }
-              }
-          },
-          "then": {
-              "properties": {
-                  "conditionSet": {
-                      "required": ["drugResponse"],
-                      "errors": {"required": "when clinicalSignificanceDescription is \"drug response\", conditionSet.drugResponse is a required property"}
-                  }
-              }
-          },
-          "else" : {
-              "properties": {
-                  "conditionSet": {
-                      "required": ["condition"],
-                      "errors": {"required": "conditionSet.drugResponse is allowed only when clinicalSignificanceDescription is \"drug response\""}
-                  }
-               }
           }
         },
-        "errors": {
-            "minItems": "Empty list of clinvarSubmission not allowed",
-            "maxItems": "no more than 10000 clinvarSubmission allowed"
+        "unevaluatedProperties": false,
+        "if": {
+          "properties": {
+            "clinicalSignificance": {
+              "properties": {
+                "clinicalSignificanceDescription": {
+                  "const": "drug response"
+                }
+              }
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "conditionSet": {
+              "required": [
+                "drugResponse"
+              ],
+              "errors": {
+                "required": "when clinicalSignificanceDescription is \"drug response\", conditionSet.drugResponse is a required property"
+              }
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "conditionSet": {
+              "required": [
+                "condition"
+              ],
+              "errors": {
+                "required": "conditionSet.drugResponse is allowed only when clinicalSignificanceDescription is \"drug response\""
+              }
+            }
+          }
         }
+      },
+      "errors": {
+        "minItems": "Empty list of clinvarSubmission not allowed",
+        "maxItems": "no more than 10000 clinvarSubmission allowed"
+      }
     },
     "germlineSubmission": {
       "title": "ClinVar Submission Set for germline variants",
@@ -239,200 +312,84 @@
       "type": "array",
       "minItems": 1,
       "maxItems": 10000,
-      "items":
-        {
-          "type": "object",
-          "title": "ClinVar Germline Submission",
-          "description": "Submissions to ClinVar are considered 'variant-level' (not case-level or patient-specific), because they are focused on the variant or set of variants that was classified. One of variantSet, haplotypeSet, haplotypeSingleVariantSet, phaseUnknownSet, distinctChromosomesSet, diplotypeSet, compoundHeterozygoteSet is required to define the variant or set of variants that was classified.",
-          "required": [
-              "germlineClassification",
-              "observedIn",
-              "conditionSet"
-            ],
-          "$ref": "#/definitions/baseSubmissionType",
-          "properties": {
-                "germlineClassification": {
-                  "type": "object",
-                  "description": "Germline classification",
-                  "$ref": "#/definitions/baseClassificationType",
-                  "required": ["germlineClassificationDescription"],
-                  "properties": {
-                    "germlineClassificationDescription": {
-                      "type": "string",
-                      "description": "The Germline classification of the variant for the submitted condition, equivalent to Germline classification in the submission spreadsheet.",
-                      "enum": [
-                        "Pathogenic",
-                        "Likely pathogenic",
-                        "Uncertain significance",
-                        "Likely benign",
-                        "Benign",
-                        "Pathogenic, low penetrance",
-                        "Uncertain risk allele",
-                        "Likely pathogenic, low penetrance",
-                        "Established risk allele",
-                        "Likely risk allele",
-                        "affects",
-                        "association",
-                        "drug response",
-                        "confers sensitivity",
-                        "protective",
-                        "other",
-                        "not provided"
-                      ]
-                    },
-                    "modeOfInheritance": {
-                      "type": "string",
-                      "description": "The mode of inheritance specific to the variant-disease pair, not generally for the disease.",
-                      "enum": [
-                        "Autosomal dominant inheritance",
-                        "Autosomal recessive inheritance",
-                        "Mitochondrial inheritance",
-                        "Genetic anticipation",
-                        "Sporadic",
-                        "Sex-limited autosomal dominant",
-                        "X-linked recessive inheritance",
-                        "X-linked dominant inheritance",
-                        "Y-linked inheritance",
-                        "Other",
-                        "X-linked inheritance",
-                        "Codominant",
-                        "Semidominant inheritance",
-                        "Autosomal unknown",
-                        "Autosomal dominant inheritance with maternal imprinting",
-                        "Autosomal dominant inheritance with paternal imprinting",
-                        "Multifactorial inheritance",
-                        "Unknown mechanism",
-                        "Oligogenic inheritance"
-                      ]
-                    },
-                    "customClassificationScore": {
-                      "type": "number",
-                      "description": "The final score, or point value, calculated when the assertion method uses a point-based scoring system, e.g. ACMG/ClinGen CNV Guidelines, 2019 (PMID: 31690835).  The assertion method must also be provided. "
-                    },
-                    "explanationOfDrugResponse": {
-                      "type": "string",
-                      "description": "Required for a record with clinical significance of  'drug response'.  Please provide a value describing  the drug response, e.g. 'likely responsive'. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
-                    },
-                    "explanationOfOtherClassification": {
-                      "type": "string",
-                      "description": "Required if 'other' is selected for clinical significance. Please provide the new value for clinical significance, e.g. pseudodeficiency allele. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
-                    }
-                  },
-                  "unevaluatedProperties": false
-                },
-                "observedIn": {
-                  "type": "array",
-                  "minItems": 1,
-                  "items":
-                  {
-                    "type": "object",
-                    "$ref": "#/definitions/baseObservationType",
-                    "unevaluatedProperties": false
-                  },
-                  "errors": {"minItems": "Empty list of observedIn not allowed"}
-                },
-                "conditionSet": {
-                  "type": "object",
-                  "description": "The condition for which the variant is interpreted. Detailed information about reporting condition is available at https://www.ncbi.nlm.nih.gov/clinvar/docs/faq_submitters/#pheno  If multiple conditions are submitted for a variant, this indicates that the variant was interpreted for the combination of conditions in the same individual(s).  i.e. this variant causes both condition A and condition B in the same individual. This scenario is most common for a new disease or syndrome that does not yet have a name and is described by several clinical features.  If you want to indicate that the variant has been interpreted for more than one condition, please submit these as separate records. i.e. this variant causes condition A in some individuals and causes disease B in other individuals. Provide only one name or identifier for a condition; do not provide multiple names or identifiers for the same condition.",
-                  "oneOf": [
-                    {
-                      "required": ["condition"]
-                    },
-                    {
-                      "allOf": [
-                        {"required": ["drugResponse"]},
-                        {"not": { "required": ["multipleConditionExplanation"]}}
-                      ]
-                    }
-                  ],
-                  "properties": {
-                    "multipleConditionExplanation": {
-                      "type": "string",
-                      "enum": [
-                          "Novel disease",
-                          "Uncertain",
-                          "Co-occurring"
-                        ],
-                      "description": "Variants in ClinVar are typically classified for a single condition (disease or drug response). If more than one condition is provided  in the conditionSet, this field is required and explains why multiple conditions are valid. Options are \"Novel disease\" when a new disease is unnamed and only described by a set of clinical features (HPO ids); \"Uncertain\" when a variant is classified for several related diseases and it may be uncertain whether the variant causes one or several of them; and \"Co-occurring\" when a variant causes more than one disease in the same individual (this is expected to be rare)."
-                    },
-                    "condition": {
-                      "description": "The condition must be provided as either a database identifier or a name, but not both. A database identifier is preferred by ClinVar; a name should be provided only if there is no database identifier available.",
-                      "$ref": "#/definitions/conditionType"
-                    },
-                    "drugResponse": {
-                      "description": "The drug Response evaluated specified by database ID or drug name, but not both",
-                      "$ref": "#/definitions/drugResponseType"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-          },
-          "unevaluatedProperties": false,
-          "if": {
-              "properties": {
-                  "germlineClassification": {
-                      "properties" : {
-                          "germlineClassificationDescription": { "const": "drug response" }
-                      }
-                  }
-              }
-          },
-          "then": {
-              "properties": {
-                  "conditionSet": {
-                      "required": ["drugResponse"],
-                      "errors": {"required": "when germlineClassificationDescription is \"drug response\", conditionSet.drugResponse is a required property"}
-                  }
-              }
-          },
-          "else" : {
-              "properties": {
-                  "conditionSet": {
-                      "required": ["condition"],
-                      "errors": {"required": "conditionSet.drugResponse is allowed only when germlineClassificationDescription is \"drug response\""}
-                  }
-               }
-          }
-        },
-        "errors": {
-            "minItems": "Empty list of germlineSubmission not allowed",
-            "maxItems": "no more than 10000 germlineSubmission allowed"
-        }
-    },
-    "oncogenicitySubmission": {
-      "title": "ClinVar Submission Set for somatic variants with oncogenicityClassification",
-      "description": "A set of somatic variants with oncogenicityClassification",
-      "type": "array",
-      "minItems": 1,
-      "maxItems": 10000,
-      "items":
-      {
+      "items": {
         "type": "object",
-        "title": "ClinVar somatic oncogenicity Submission",
+        "title": "ClinVar Germline Submission",
         "description": "Submissions to ClinVar are considered 'variant-level' (not case-level or patient-specific), because they are focused on the variant or set of variants that was classified. One of variantSet, haplotypeSet, haplotypeSingleVariantSet, phaseUnknownSet, distinctChromosomesSet, diplotypeSet, compoundHeterozygoteSet is required to define the variant or set of variants that was classified.",
-        "$ref": "#/definitions/baseSubmissionType",
         "required": [
-            "oncogenicityClassification",
-            "observedIn",
-            "conditionSet"
+          "germlineClassification",
+          "observedIn",
+          "conditionSet"
         ],
+        "$ref": "#/definitions/baseSubmissionType",
         "properties": {
-          "oncogenicityClassification": {
+          "germlineClassification": {
             "type": "object",
-            "description": "Oncogenicity classification",
+            "description": "Germline classification",
             "$ref": "#/definitions/baseClassificationType",
-            "required": ["oncogenicityClassificationDescription"],
+            "required": [
+              "germlineClassificationDescription"
+            ],
             "properties": {
-              "oncogenicityClassificationDescription": {
-                    "type": "string",
-                    "description": "For somatic variants, either “somaticClassificationClinicalImpact” or “oncogenicityClassification” is required. If you have both types of classifications for the same variant and tumor type, provide the classifications on separate entries. ",
-                    "enum": [
-                      "Oncogenic",
-                      "Likely oncogenic",
-                      "Uncertain significance",
-                      "Likely benign",
-                      "Benign"
-                    ]
+              "germlineClassificationDescription": {
+                "type": "string",
+                "description": "The Germline classification of the variant for the submitted condition, equivalent to Germline classification in the submission spreadsheet.",
+                "enum": [
+                  "Pathogenic",
+                  "Likely pathogenic",
+                  "Uncertain significance",
+                  "Likely benign",
+                  "Benign",
+                  "Pathogenic, low penetrance",
+                  "Uncertain risk allele",
+                  "Likely pathogenic, low penetrance",
+                  "Established risk allele",
+                  "Likely risk allele",
+                  "affects",
+                  "association",
+                  "drug response",
+                  "confers sensitivity",
+                  "protective",
+                  "other",
+                  "not provided"
+                ]
+              },
+              "modeOfInheritance": {
+                "type": "string",
+                "description": "The mode of inheritance specific to the variant-disease pair, not generally for the disease.",
+                "enum": [
+                  "Autosomal dominant inheritance",
+                  "Autosomal recessive inheritance",
+                  "Mitochondrial inheritance",
+                  "Genetic anticipation",
+                  "Sporadic",
+                  "Sex-limited autosomal dominant",
+                  "X-linked recessive inheritance",
+                  "X-linked dominant inheritance",
+                  "Y-linked inheritance",
+                  "Other",
+                  "X-linked inheritance",
+                  "Codominant",
+                  "Semidominant inheritance",
+                  "Autosomal unknown",
+                  "Autosomal dominant inheritance with maternal imprinting",
+                  "Autosomal dominant inheritance with paternal imprinting",
+                  "Multifactorial inheritance",
+                  "Unknown mechanism",
+                  "Oligogenic inheritance"
+                ]
+              },
+              "customClassificationScore": {
+                "type": "number",
+                "description": "The final score, or point value, calculated when the assertion method uses a point-based scoring system, e.g. ACMG/ClinGen CNV Guidelines, 2019 (PMID: 31690835).  The assertion method must also be provided. "
+              },
+              "explanationOfDrugResponse": {
+                "type": "string",
+                "description": "Required for a record with clinical significance of  'drug response'.  Please provide a value describing  the drug response, e.g. 'likely responsive'. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
+              },
+              "explanationOfOtherClassification": {
+                "type": "string",
+                "description": "Required if 'other' is selected for clinical significance. Please provide the new value for clinical significance, e.g. pseudodeficiency allele. This value must be short for display purposes. A longer explanation should be provided in the 'Comment on clinical significance'."
               }
             },
             "unevaluatedProperties": false
@@ -440,15 +397,157 @@
           "observedIn": {
             "type": "array",
             "minItems": 1,
-            "items":
-            {
+            "items": {
+              "type": "object",
+              "$ref": "#/definitions/baseObservationType",
+              "unevaluatedProperties": false
+            },
+            "errors": {
+              "minItems": "Empty list of observedIn not allowed"
+            }
+          },
+          "conditionSet": {
+            "type": "object",
+            "description": "The condition for which the variant is interpreted. Detailed information about reporting condition is available at https://www.ncbi.nlm.nih.gov/clinvar/docs/faq_submitters/#pheno  If multiple conditions are submitted for a variant, this indicates that the variant was interpreted for the combination of conditions in the same individual(s).  i.e. this variant causes both condition A and condition B in the same individual. This scenario is most common for a new disease or syndrome that does not yet have a name and is described by several clinical features.  If you want to indicate that the variant has been interpreted for more than one condition, please submit these as separate records. i.e. this variant causes condition A in some individuals and causes disease B in other individuals. Provide only one name or identifier for a condition; do not provide multiple names or identifiers for the same condition.",
+            "oneOf": [
+              {
+                "required": [
+                  "condition"
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "required": [
+                      "drugResponse"
+                    ]
+                  },
+                  {
+                    "not": {
+                      "required": [
+                        "multipleConditionExplanation"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ],
+            "properties": {
+              "multipleConditionExplanation": {
+                "type": "string",
+                "enum": [
+                  "Novel disease",
+                  "Uncertain",
+                  "Co-occurring"
+                ],
+                "description": "Variants in ClinVar are typically classified for a single condition (disease or drug response). If more than one condition is provided  in the conditionSet, this field is required and explains why multiple conditions are valid. Options are \"Novel disease\" when a new disease is unnamed and only described by a set of clinical features (HPO ids); \"Uncertain\" when a variant is classified for several related diseases and it may be uncertain whether the variant causes one or several of them; and \"Co-occurring\" when a variant causes more than one disease in the same individual (this is expected to be rare)."
+              },
+              "condition": {
+                "description": "The condition must be provided as either a database identifier or a name, but not both. A database identifier is preferred by ClinVar; a name should be provided only if there is no database identifier available.",
+                "$ref": "#/definitions/conditionType"
+              },
+              "drugResponse": {
+                "description": "The drug Response evaluated specified by database ID or drug name, but not both",
+                "$ref": "#/definitions/drugResponseType"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "unevaluatedProperties": false,
+        "if": {
+          "properties": {
+            "germlineClassification": {
+              "properties": {
+                "germlineClassificationDescription": {
+                  "const": "drug response"
+                }
+              }
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "conditionSet": {
+              "required": [
+                "drugResponse"
+              ],
+              "errors": {
+                "required": "when germlineClassificationDescription is \"drug response\", conditionSet.drugResponse is a required property"
+              }
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "conditionSet": {
+              "required": [
+                "condition"
+              ],
+              "errors": {
+                "required": "conditionSet.drugResponse is allowed only when germlineClassificationDescription is \"drug response\""
+              }
+            }
+          }
+        }
+      },
+      "errors": {
+        "minItems": "Empty list of germlineSubmission not allowed",
+        "maxItems": "no more than 10000 germlineSubmission allowed"
+      }
+    },
+    "oncogenicitySubmission": {
+      "title": "ClinVar Submission Set for somatic variants with oncogenicityClassification",
+      "description": "A set of somatic variants with oncogenicityClassification",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "title": "ClinVar somatic oncogenicity Submission",
+        "description": "Submissions to ClinVar are considered 'variant-level' (not case-level or patient-specific), because they are focused on the variant or set of variants that was classified. One of variantSet, haplotypeSet, haplotypeSingleVariantSet, phaseUnknownSet, distinctChromosomesSet, diplotypeSet, compoundHeterozygoteSet is required to define the variant or set of variants that was classified.",
+        "$ref": "#/definitions/baseSubmissionType",
+        "required": [
+          "oncogenicityClassification",
+          "observedIn",
+          "conditionSet"
+        ],
+        "properties": {
+          "oncogenicityClassification": {
+            "type": "object",
+            "description": "Oncogenicity classification",
+            "$ref": "#/definitions/baseClassificationType",
+            "required": [
+              "oncogenicityClassificationDescription"
+            ],
+            "properties": {
+              "oncogenicityClassificationDescription": {
+                "type": "string",
+                "description": "For somatic variants, either “somaticClassificationClinicalImpact” or “oncogenicityClassification” is required. If you have both types of classifications for the same variant and tumor type, provide the classifications on separate entries. ",
+                "enum": [
+                  "Oncogenic",
+                  "Likely oncogenic",
+                  "Uncertain significance",
+                  "Likely benign",
+                  "Benign"
+                ]
+              }
+            },
+            "unevaluatedProperties": false
+          },
+          "observedIn": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
               "$ref": "#/definitions/baseObservationType",
               "properties": {
                 "presenceOfSomaticVariantInNormalTissue": {
                   "type": "string",
                   "description": "Optional. Indicate whether the variant was present or absent in normal tissue, or that normal tissue was not tested.",
                   "enum": [
-                    "present", "absent", "not tested"
+                    "present",
+                    "absent",
+                    "not tested"
                   ]
                 },
                 "somaticVariantAlleleFraction": {
@@ -458,12 +557,16 @@
               },
               "unevaluatedProperties": false
             },
-            "errors": {"minItems": "Empty list of observedIn not allowed"}
+            "errors": {
+              "minItems": "Empty list of observedIn not allowed"
+            }
           },
           "conditionSet": {
             "type": "object",
             "description": "The condition for which the variant is classified. Detailed information about reporting condition is available at https://www.ncbi.nlm.nih.gov/clinvar/docs/faq_submitters/#pheno  If multiple conditions are submitted for a variant, this indicates that the variant was interpreted for the combination of conditions in the same individual(s).  i.e. this variant causes both condition A and condition B in the same individual. This scenario is most common for a new disease or syndrome that does not yet have a name and is described by several clinical features.  If you want to indicate that the variant has been interpreted for more than one condition, please submit these as separate records. i.e. this variant causes condition A in some individuals and causes disease B in other individuals. Provide only one name or identifier for a condition; do not provide multiple names or identifiers for the same condition.",
-            "required": ["condition"],
+            "required": [
+              "condition"
+            ],
             "properties": {
               "condition": {
                 "description": "The condition must be provided as either a database identifier or a name, but not both. A database identifier is preferred by ClinVar; a name should be provided only if there is no database identifier available.",
@@ -476,8 +579,8 @@
         "unevaluatedProperties": false
       },
       "errors": {
-           "minItems": "Empty list of oncogenicitySubmission not allowed",
-           "maxItems": "no more than 10000 oncogenicitySubmission allowed"
+        "minItems": "Empty list of oncogenicitySubmission not allowed",
+        "maxItems": "no more than 10000 oncogenicitySubmission allowed"
       }
     },
     "clinicalImpactSubmission": {
@@ -486,33 +589,34 @@
       "type": "array",
       "minItems": 1,
       "maxItems": 10000,
-      "items":
-      {
+      "items": {
         "type": "object",
         "title": "ClinVar somatic clinicalImpact Submission",
         "description": "Submissions to ClinVar are considered 'variant-level' (not case-level or patient-specific), because they are focused on the variant or set of variants that was classified. One of variantSet, haplotypeSet, haplotypeSingleVariantSet, phaseUnknownSet, distinctChromosomesSet, diplotypeSet, compoundHeterozygoteSet is required to define the variant or set of variants that was classified.",
         "$ref": "#/definitions/baseSubmissionType",
         "required": [
-              "clinicalImpactClassification",
-              "observedIn",
-              "conditionSet"
+          "clinicalImpactClassification",
+          "observedIn",
+          "conditionSet"
         ],
         "properties": {
           "clinicalImpactClassification": {
             "type": "object",
             "description": "Clinical Impact classification of somatic variants",
             "$ref": "#/definitions/baseClassificationType",
-            "required": ["clinicalImpactClassificationDescription"],
+            "required": [
+              "clinicalImpactClassificationDescription"
+            ],
             "properties": {
               "clinicalImpactClassificationDescription": {
-              "type": "string",
-              "description": "The strength of clincal impact expressed in tiers.",
+                "type": "string",
+                "description": "The strength of clincal impact expressed in tiers.",
                 "enum": [
                   "Tier I - Strong",
                   "Tier II - Potential",
                   "Tier III - Unknown",
                   "Tier IV - Benign/Likely benign"
-                 ]
+                ]
               },
               "assertionTypeForClinicalImpact": {
                 "type": "string",
@@ -537,30 +641,35 @@
           "observedIn": {
             "type": "array",
             "minItems": 1,
-            "items":
-            {
+            "items": {
               "$ref": "#/definitions/baseObservationType",
               "properties": {
                 "presenceOfSomaticVariantInNormalTissue": {
                   "type": "string",
                   "description": "Optional. Indicate whether the variant was present or absent in normal tissue, or that normal tissue was not tested.",
                   "enum": [
-                    "present", "absent", "not tested"
+                    "present",
+                    "absent",
+                    "not tested"
                   ]
                 },
                 "somaticVariantAlleleFraction": {
                   "type": "number",
-                  "description": "Optional. Indicate the variant allele fraction (or frequency) observed in this tumor, expressed as a float, e.g. 0.2."
+                  "description": "Optional. Indicate the variant allele fraction (or frequency) observed in this tumor, expressed as a percentage, e.g. 20."
                 }
               },
               "unevaluatedProperties": false
             },
-            "errors": {"minItems": "Empty list of observedIn not allowed"}
+            "errors": {
+              "minItems": "Empty list of observedIn not allowed"
+            }
           },
           "conditionSet": {
             "type": "object",
             "description": "The condition for which the variant is classified. Detailed information about reporting condition is available at https://www.ncbi.nlm.nih.gov/clinvar/docs/faq_submitters/#pheno  If multiple conditions are submitted for a variant, this indicates that the variant was interpreted for the combination of conditions in the same individual(s).  i.e. this variant causes both condition A and condition B in the same individual. This scenario is most common for a new disease or syndrome that does not yet have a name and is described by several clinical features.  If you want to indicate that the variant has been interpreted for more than one condition, please submit these as separate records. i.e. this variant causes condition A in some individuals and causes disease B in other individuals. Provide only one name or identifier for a condition; do not provide multiple names or identifiers for the same condition.",
-            "required": ["condition"],
+            "required": [
+              "condition"
+            ],
             "properties": {
               "condition": {
                 "description": "The condition must be provided as either a database identifier or a name, but not both. A database identifier is preferred by ClinVar; a name should be provided only if there is no database identifier available.",
@@ -573,8 +682,8 @@
         "unevaluatedProperties": false
       },
       "errors": {
-           "minItems": "Empty list of clinicalImpactSubmission not allowed",
-           "maxItems": "no more than 10000 clinicalImpactSubmission allowed"
+        "minItems": "Empty list of clinicalImpactSubmission not allowed",
+        "maxItems": "no more than 10000 clinicalImpactSubmission allowed"
       }
     },
     "submissionName": {
@@ -789,7 +898,9 @@
               }
             ]
           },
-          "errors": {"minItems": "Empty list of gene in variant not allowed"}
+          "errors": {
+            "minItems": "Empty list of gene in variant not allowed"
+          }
         },
         "hgvs": {
           "type": "string",
@@ -814,6 +925,13 @@
             "Translocation",
             "Complex"
           ]
+        },
+        "alternateDesignations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Optional. Alternate, common, or legacy names for the variant. This is most important for variants that have legacy names that cannot be automatically calculated from current data, such as \"deltaF508\" or names that use old numbering systems. While you can provide other valid HGVS expressions in this column, such as the p. description, and protein changes like V600E, it is not necessary because ClinVar calculates protein changes and other valid HGVS expressions for genomic DNA, cDNA, and protein automatically. Examples of useful alternate names include: deltaF508 - common name for NM_000492.3:c.1521_1523delCTT; Z allele - common name for NM_001127701.1:c.1096G>A; 3120G->A - legacy name for NM_000492.3:c.2988G>A."
+          }
         }
       },
       "additionalProperties": false,
@@ -1042,87 +1160,97 @@
       "additionalProperties": false
     },
     "conditionType": {
-        "type": "array",
-        "minItems": 1,
-        "items": {
-            "type": "object",
-            "properties": {
-                "db": {
-                    "type": "string",
-                    "enum": [
-                        "OMIM",
-                        "MedGen",
-                        "Orphanet",
-                        "MeSH",
-                        "HP",
-                        "MONDO"
-                    ]
-                },
-                "id": {
-                  "type": "string",
-                  "description": "The database identifier for the condition.  Formats are:\nOMIM: the six digit OMIM number for the disease (not the gene), e.g. 300957; or the Phenotypic Series number including the PS prefix, e.g. PS200600\nMedGen: the MedGen UID, e.g. 751520.\nOrphanet: the Orphanet ID including the prefix, e.g. ORPHA71290\nMeSH: the MeSH ID, e.g. D009634\nHP: the HPO ID including the prefix, e.g. HP:0000815\nMondo: the Mondo ID including the prefix, e.g. MONDO:0100038\n"
-                },
-                "name": {"type": "string"}
-            },
-            "additionalProperties": false,
-            "oneOf": [
-                {
-                    "required": [
-                        "id",
-                        "db"
-                    ]
-                },
-                {
-                    "required": ["name"]
-                }
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "db": {
+            "type": "string",
+            "enum": [
+              "OMIM",
+              "MedGen",
+              "Orphanet",
+              "MeSH",
+              "HP",
+              "MONDO"
             ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The database identifier for the condition.  Formats are:\nOMIM: the six digit OMIM number for the disease (not the gene), e.g. 300957; or the Phenotypic Series number including the PS prefix, e.g. PS200600\nMedGen: the MedGen UID, e.g. 751520.\nOrphanet: the Orphanet ID including the prefix, e.g. ORPHA71290\nMeSH: the MeSH ID, e.g. D009634\nHP: the HPO ID including the prefix, e.g. HP:0000815\nMondo: the Mondo ID including the prefix, e.g. MONDO:0100038\n"
+          },
+          "name": {
+            "type": "string"
+          }
         },
-        "errors": {"minItems": "Empty condition not allowed"}
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "id",
+              "db"
+            ]
+          },
+          {
+            "required": [
+              "name"
+            ]
+          }
+        ]
+      },
+      "errors": {
+        "minItems": "Empty condition not allowed"
+      }
     },
     "drugResponseType": {
-        "type": "array",
-        "minItems": 1,
-        "items": {
-            "type": "object",
-            "properties": {
-                "db": {
-                    "type": "string",
-                    "enum": [
-                        "OMIM",
-                        "MedGen",
-                        "Orphanet",
-                        "MeSH",
-                        "HP",
-                        "MONDO"
-                    ]
-                },
-                "id": {
-                    "description": "The MedGen UID for the drug response, e.g. 148193",
-                    "type": "string"
-                },
-                "drugName": {
-                    "description": "Name of the drug for which the response is evaluated.",
-                    "type": "string"
-                },
-                "condition": {
-                    "description": "The conditions for which the drug is used  specified by database ID or name, but not both.",
-                    "$ref": "#/definitions/conditionType"
-                }
-            },
-            "additionalProperties": false,
-            "oneOf": [
-                {
-                    "required": [
-                        "id",
-                        "db"
-                    ]
-                },
-                {
-                    "required": ["drugName"]
-                }
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "db": {
+            "type": "string",
+            "enum": [
+              "OMIM",
+              "MedGen",
+              "Orphanet",
+              "MeSH",
+              "HP",
+              "MONDO"
             ]
+          },
+          "id": {
+            "description": "The MedGen UID for the drug response, e.g. 148193",
+            "type": "string"
+          },
+          "drugName": {
+            "description": "Name of the drug for which the response is evaluated.",
+            "type": "string"
+          },
+          "condition": {
+            "description": "The conditions for which the drug is used  specified by database ID or name, but not both.",
+            "$ref": "#/definitions/conditionType"
+          }
         },
-        "errors": {"minItems": "Empty drugResponse  not allowed"}
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "id",
+              "db"
+            ]
+          },
+          {
+            "required": [
+              "drugName"
+            ]
+          }
+        ]
+      },
+      "errors": {
+        "minItems": "Empty drugResponse  not allowed"
+      }
     },
     "baseObservationType": {
       "type": "object",
@@ -1132,7 +1260,7 @@
         "collectionMethod"
       ],
       "properties": {
-         "affectedStatus": {
+        "affectedStatus": {
           "type": "string",
           "description": "Indicates whether or not the individual(s) in each observation were affected by the condition for the interpretation",
           "enum": [
@@ -1159,85 +1287,86 @@
           ]
         },
         "clinicalFeatures": {
-        "type": "array",
-        "minItems": 1,
-        "items":
-        {
-          "type": "object",
-          "description": "Clinical features that were observed by the submitter in an individual with the variant. More than one feature may be provided. Each clinical feature may be described by a database identifier or by a name, but not both. These fields are equivalent to the \"Clinical features\" column in the spreadsheet.",
-          "properties": {
-            "db": {
-              "type": "string",
-              "enum": [
-                "HP"
-              ]
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "description": "Clinical features that were observed by the submitter in an individual with the variant. More than one feature may be provided. Each clinical feature may be described by a database identifier or by a name, but not both. These fields are equivalent to the \"Clinical features\" column in the spreadsheet.",
+            "properties": {
+              "db": {
+                "type": "string",
+                "enum": [
+                  "HP"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "description": "The HPO identifier including the prefix, e.g. HP:0000815"
+              },
+              "name": {
+                "type": "string"
+              },
+              "clinicalFeaturesAffectedStatus": {
+                "type": "string",
+                "description": "To indicate whether each clinical feature was present, absent, or not tested in the individual(s) observed. ",
+                "enum": [
+                  "present",
+                  "absent",
+                  "not tested"
+                ]
+              }
             },
-            "id": {
-              "type": "string",
-              "description": "The HPO identifier including the prefix, e.g. HP:0000815"
-            },
-            "name": {
-              "type": "string"
-            },
-            "clinicalFeaturesAffectedStatus": {
-              "type": "string",
-              "description": "To indicate whether each clinical feature was present, absent, or not tested in the individual(s) observed. ",
-              "enum": [
-                "present",
-                "absent",
-                "not tested"
-              ]
-            }
+            "required": [
+              "clinicalFeaturesAffectedStatus"
+            ],
+            "additionalProperties": false,
+            "oneOf": [
+              {
+                "required": [
+                  "id",
+                  "db"
+                ]
+              },
+              {
+                "required": [
+                  "name"
+                ]
+              }
+            ]
           },
-          "required": [
-            "clinicalFeaturesAffectedStatus"
-          ],
-          "additionalProperties": false,
-          "oneOf": [
-            {
-              "required": [
-                "id",
-                "db"
-              ]
-            },
-            {
-              "required": [
-                "name"
-              ]
-            }
-          ]
-        },
-        "errors": {"minItems": "Empty list of clinicalFeatures in observedIn not allowed"}
+          "errors": {
+            "minItems": "Empty list of clinicalFeatures in observedIn not allowed"
+          }
         },
         "clinicalFeaturesComment": {
           "type": "string",
           "description": "To provide a free text explanation of clinical features provided in the previous column, e.g. to describe the progression of disease or diagnosis. Please use this comment to expand on the information in 'clinicalFeatures'"
         },
         "collectionMethod": {
-        "type": "string",
-        "description": "The method used to collect the data for each observation, e.g. clinical testing or research.  See https://www.ncbi.nlm.nih.gov/clinvar/docs/spreadsheet/#collection",
-        "enum": [
-          "curation",
-          "literature only",
-          "reference population",
-          "provider interpretation",
-          "phenotyping only",
-          "case-control",
-          "clinical testing",
-          "in vitro",
-          "in vivo",
-          "research",
-           "not provided"
-        ]
+          "type": "string",
+          "description": "The method used to collect the data for each observation, e.g. clinical testing or research.  See https://www.ncbi.nlm.nih.gov/clinvar/docs/spreadsheet/#collection",
+          "enum": [
+            "curation",
+            "literature only",
+            "reference population",
+            "provider interpretation",
+            "phenotyping only",
+            "case-control",
+            "clinical testing",
+            "in vitro",
+            "in vivo",
+            "research",
+            "not provided"
+          ]
         },
         "numberOfIndividuals": {
-        "type": "integer",
-        "minimum": 0,
-        "description": "The total number of individuals with the variant observed by the submitter."
+          "type": "integer",
+          "minimum": 0,
+          "description": "The total number of individuals with the variant observed by the submitter."
         },
         "structVarMethodType": {
-        "type": "string",
-        "description": "The method and type of analysis used to identify a structural variant, i.e. any variant >50 nt, equivalent to \"Structural variant method/analysis type\" in the submission spreadsheet. Allowed values are enumerated in the schema. Although optional in the JSON, this field is required for variants that are >50 nt (and in scope for dbVar).",
+          "type": "string",
+          "description": "The method and type of analysis used to identify a structural variant, i.e. any variant >50 nt, equivalent to \"Structural variant method/analysis type\" in the submission spreadsheet. Allowed values are enumerated in the schema. Although optional in the JSON, this field is required for variants that are >50 nt (and in scope for dbVar).",
           "enum": [
             "SNP array",
             "Oligo array",
@@ -1259,13 +1388,41 @@
         "recordStatus"
       ],
       "oneOf": [
-        {"required": ["variantSet"]},
-        {"required": ["haplotypeSet"]},
-        {"required": ["haplotypeSingleVariantSet"]},
-        {"required": ["phaseUnknownSet"]},
-        {"required": ["distinctChromosomesSet"]},
-        {"required": ["diplotypeSet"]},
-        {"required": ["compoundHeterozygoteSet"]}
+        {
+          "required": [
+            "variantSet"
+          ]
+        },
+        {
+          "required": [
+            "haplotypeSet"
+          ]
+        },
+        {
+          "required": [
+            "haplotypeSingleVariantSet"
+          ]
+        },
+        {
+          "required": [
+            "phaseUnknownSet"
+          ]
+        },
+        {
+          "required": [
+            "distinctChromosomesSet"
+          ]
+        },
+        {
+          "required": [
+            "diplotypeSet"
+          ]
+        },
+        {
+          "required": [
+            "compoundHeterozygoteSet"
+          ]
+        }
       ],
       "properties": {
         "clinvarAccession": {
@@ -1283,10 +1440,10 @@
         "recordStatus": {
           "type": "string",
           "description": "If you include SCV accessions for 'clinvarAccession', you must indicate whether each record is novel (and accessions were reserved prior to submission) or is an update to an existing SCV record.",
-            "enum": [
-              "novel",
-              "update"
-            ]
+          "enum": [
+            "novel",
+            "update"
+          ]
         },
         "variantSet": {
           "$ref": "#/definitions/variantSetType"
@@ -1318,8 +1475,7 @@
         "citation": {
           "type": "array",
           "minItems": 1,
-          "items":
-          {
+          "items": {
             "type": "object",
             "description": "Citations that were used by the submitter to evaluate the classification of the variant. More than one citation may be provided. Each citation can be provided as a database identifier, like a PubMed ID, or a URL, but not both.",
             "properties": {
@@ -1348,19 +1504,20 @@
                   "id"
                 ]
               },
-                {
+              {
                 "required": [
                   "url"
                 ]
-
               }
             ]
           },
-          "errors": {"minItems": "Empty list of citation in clinicalSignificance not allowed"}
+          "errors": {
+            "minItems": "Empty list of citation in clinicalSignificance not allowed"
+          }
         },
         "comment": {
           "type": "string",
-          "description": "Optional, but highly encouraged. Free text describing the rationale for the classification."
+          "description": "Optional, but highly encouraged. Free text describing the rationale for the classification. The comment should include the detailed evidence for the classification, although it should not contain personally identifiable information (PII). It may also include the evidence codes used, e.g. codes from the ACMG guidelines, although the codes alone are insufficient. See VCV000163461 (https://www.ncbi.nlm.nih.gov/clinvar/variation/163461/) for several examples of useful comments on classification."
         },
         "dateLastEvaluated": {
           "type": "string",
