@@ -28,11 +28,7 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactClassificationDescription,
 )
 import pytest
-from ga4gh.va_spec.aac_2017 import (
-    VariantDiagnosticStudyStatement,
-    VariantPrognosticStudyStatement,
-    VariantTherapeuticResponseStudyStatement,
-)
+from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
 
 from clinvar_this import exceptions
 from clinvar_this.io.gks_json.aac_2017 import Aac2017GksJsonTransformer
@@ -72,25 +68,25 @@ def aac_2017_gks_json_data():
 @pytest.fixture(scope="module")
 def civic_aid6(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID6"""
-    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data[0])
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[0])
 
 
 @pytest.fixture(scope="module")
 def civic_aid7(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID7"""
-    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data[1])
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[1])
 
 
 @pytest.fixture(scope="module")
 def civic_aid20(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID20"""
-    return VariantPrognosticStudyStatement(**aac_2017_gks_json_data[2])
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[2])
 
 
 @pytest.fixture(scope="module")
 def civic_aid9(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID9"""
-    return VariantDiagnosticStudyStatement(**aac_2017_gks_json_data[3])
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[3])
 
 
 @pytest.fixture(scope="module")
@@ -399,7 +395,9 @@ def test_records_to_submission_container(
 
     # Test TherapeuticSubstituteGroup
     civic_aid7_cpy = civic_aid7.model_copy()
-    civic_aid7_cpy.proposition.objectTherapeutic.root.membershipOperator = "OR"
+    civic_aid7_cpy.hasEvidenceLines[
+        0
+    ].targetProposition.objectTherapeutic.root.membershipOperator = "OR"
     actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid7_cpy], civic_metadata
     )

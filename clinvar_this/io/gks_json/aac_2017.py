@@ -11,13 +11,12 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 
 from types import MappingProxyType
 import typing
-from logzero import logger
+from logzero import logger, logfile
 from ga4gh.core.models import MappableConcept, iriReference
 from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.va_spec.aac_2017 import (
-    VariantTherapeuticResponseStudyStatement,
-    VariantDiagnosticStudyStatement,
-    VariantPrognosticStudyStatement,
+    VariantClinicalSignificanceStatement,
+    AmpAscoCapClassificationCode,
 )
 from ga4gh.va_spec.base import Contribution, Document, EvidenceLine
 from ga4gh.vrs.models import Syntax, Expression
@@ -42,14 +41,16 @@ from clinvar_api.msg.sub_payload import (
 
 from clinvar_this.io.gks_json.base import BatchMetadata, GksJsonTransformer
 
+logfile("aac_2017.log")
+
 
 # Mapping from GKS classification to clinical impact classification
 _IMPACT_CLASS_MAPPING = MappingProxyType(
     {
-        "Tier I": SomaticClinicalImpactClassificationDescription.STRONG,
-        "Tier II": SomaticClinicalImpactClassificationDescription.POTENTIAL,
-        "Tier III": SomaticClinicalImpactClassificationDescription.UNKNOWN,
-        "Tier IV": SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
+        AmpAscoCapClassificationCode.TIER_1: SomaticClinicalImpactClassificationDescription.STRONG,
+        AmpAscoCapClassificationCode.TIER_2: SomaticClinicalImpactClassificationDescription.POTENTIAL,
+        AmpAscoCapClassificationCode.TIER_3: SomaticClinicalImpactClassificationDescription.UNKNOWN,
+        AmpAscoCapClassificationCode.TIER_4: SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
     }
 )
 
@@ -196,9 +197,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
 
     def _get_clinical_impact_submission(
         self,
-        record: VariantTherapeuticResponseStudyStatement
-        | VariantDiagnosticStudyStatement
-        | VariantPrognosticStudyStatement,
+        record: VariantClinicalSignificanceStatement,
         observed_in: list[SubmissionObservedInSomatic],
         variant_hgvs: str | None = None,
     ) -> SubmissionClinicalImpactSubmission:
@@ -218,9 +217,9 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
             prognostic assertion
         """
         proposition = record.proposition
-
-        if hasattr(proposition, "objectTherapeutic"):
-            therapeutic = proposition.objectTherapeutic.root
+        target_proposition = record.hasEvidenceLines[0].targetProposition
+        if hasattr(target_proposition, "objectTherapeutic"):
+            therapeutic = target_proposition.objectTherapeutic.root
             drug_for_therapeutic_assertion = self.get_drugs(therapeutic)
         else:
             drug_for_therapeutic_assertion = None
@@ -237,22 +236,20 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
                     record.classification.primaryCoding.code.root
                 ],
                 assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
-                    proposition.predicate
+                    target_proposition.predicate
                 ],
                 comment=self.get_comment(record),
                 citation=self._get_citations(record.hasEvidenceLines),
                 drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
-                date_last_evaluated=self._get_date_last_evaluated(record.contributions),
+                date_last_evaluated=self._get_date_last_evaluated(
+                    record.contributions or []
+                ),
             ),
         )
 
     def records_to_submission_container(
         self,
-        study_statements: typing.List[
-            VariantTherapeuticResponseStudyStatement
-            | VariantDiagnosticStudyStatement
-            | VariantPrognosticStudyStatement
-        ],
+        study_statements: typing.List[VariantClinicalSignificanceStatement],
         batch_metadata: BatchMetadata,
     ) -> SubmissionContainer:
         """Transform GKS records to submission container data structures
