@@ -35,6 +35,7 @@ from clinvar_api.models import (
     SubmissionVariantSet,
     CollectionMethod,
     AffectedStatus,
+    Assembly
 )
 from clinvar_api.models.sub_payload import (
     SubmissionConditionSetSomatic,
@@ -59,6 +60,7 @@ class BatchMetadata(BaseModel):
 
     affected_status: AffectedStatus = AffectedStatus.UNKNOWN
     collection_method: CollectionMethod = CollectionMethod.NOT_PROVIDED
+    submitted_assembly: Assembly = Assembly.GRCH38
 
 
 def batch_metadata_from_mapping(

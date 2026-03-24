@@ -5,7 +5,7 @@ assumes you are using MetaKB (https://github.com/cancervariants/metakb) to gener
 JSON files.
 
 Example usage:
-$ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collection_method=clinical testing"
+$ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
 
 """
 
@@ -24,6 +24,7 @@ from ga4gh.vrs.models import Syntax, Expression
 
 from clinvar_api.models import (
     AffectedStatus,
+    Assembly,
     CitationDb,
     CollectionMethod,
     RecordStatus,
@@ -201,6 +202,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         | VariantPrognosticStudyStatement,
         observed_in: list[SubmissionObservedInSomatic],
         variant_hgvs: str | None = None,
+        submitted_assembly: Assembly | None = None
     ) -> SubmissionClinicalImpactSubmission:
         """Get clinical impact submission for a therapeutic, diagnostic, or prognostic assertion
 
@@ -212,8 +214,8 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         :param variant_hgvs: The HGVS expression for a variant, if found. If not found,
             ``variant_coords`` must be provided. This takes priority over
             ``variant_coords``.
-        :param variant_coords: The chromosome coordinates for a variant, if found. If
-            not found, ``variant_hgvs`` must be provided
+        :param submitted_assembly: The genome assembly used to call the variant.
+            Required if `variant_hgvs` is non-null
         :return: The clinical impact submission for a therapeutic, diagnostic, or
             prognostic assertion
         """
@@ -228,6 +230,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         return SubmissionClinicalImpactSubmission(
             record_status=RecordStatus.NOVEL,
             local_id=proposition.subjectVariant.id or proposition.subjectVariant.name,
+            submitted_assembly=submitted_assembly,
             local_key=record.id,
             observed_in=observed_in,
             condition_set=self.get_condition_set(proposition),
@@ -262,7 +265,8 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         :param study_statements: List of Therapeutic Response, Diagnostic,
             or Prognostic Assertions represented as GKS Variant Therapeutic Response,
             Diagnostic, or Prognostic Study Statements
-        :param batch_metadata:
+        :param batch_metadata: Batch-wide settings
+            The properties will be assigned to all variants/samples in the batch.
         :return: Submission container data structures
         """
         clinical_impact_submissions: typing.List[
@@ -297,6 +301,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
                     study_statement,
                     observed_in,
                     variant_hgvs=variant_hgvs,
+                    submitted_assembly=batch_metadata.submitted_assembly
                 )
             )
             clinical_impact_submissions.append(clinical_impact_submission)

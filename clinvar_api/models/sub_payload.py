@@ -479,6 +479,7 @@ class _SubmissionClinvarSubmissionBase(BaseModel):
     #: Has exactly one elements in `variants`
     haplotype_single_variant_set: typing.Optional[SubmissionHaplotypeSet] = None
     local_id: typing.Optional[str] = None
+    submitted_assembly: typing.Optional[Assembly] = None
     local_key: typing.Optional[str] = None
     phase_unknown_set: typing.Optional[SubmissionPhaseUnknownSet] = None
     variant_set: typing.Optional[SubmissionVariantSet] = None

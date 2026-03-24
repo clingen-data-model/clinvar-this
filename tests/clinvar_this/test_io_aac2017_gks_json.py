@@ -24,6 +24,7 @@ from clinvar_api.models.sub_payload import (
     SubmissionVariantGene,
 )
 from clinvar_api.msg.sub_payload import (
+    Assembly,
     SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
@@ -54,6 +55,7 @@ def civic_metadata():
     return BatchMetadata(
         affected_status=AffectedStatus.UNKNOWN,
         collection_method=CollectionMethod.CURATION,
+        submitted_assembly=Assembly.GRCH37
     )
 
 
@@ -108,6 +110,7 @@ def civic_aid7_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:12",
+        submitted_assembly=Assembly.GRCH37,
         local_key="civic.aid:7",
         observed_in=[
             SubmissionObservedInSomatic(
@@ -162,6 +165,7 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
             SubmissionClinicalImpactSubmission(
                 record_status=RecordStatus.NOVEL,
                 local_id="civic.mpid:33",
+                submitted_assembly=Assembly.GRCH37,
                 local_key="civic.aid:6",
                 observed_in=[
                     SubmissionObservedInSomatic(
@@ -244,6 +248,7 @@ def civic_aid9_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:1594",
+        submitted_assembly=Assembly.GRCH37,
         local_key="civic.aid:9",
         observed_in=[
             SubmissionObservedInSomatic(
@@ -301,6 +306,7 @@ def civic_aid20_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:12",
+        submitted_assembly=Assembly.GRCH37,
         local_key="civic.aid:20",
         observed_in=[
             SubmissionObservedInSomatic(
