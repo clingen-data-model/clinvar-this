@@ -1,5 +1,7 @@
 """Module for testing GKS AAC 2017 transformer"""
 
+import re
+
 from deepdiff import DeepDiff
 import json
 import pathlib
@@ -74,25 +76,25 @@ def aac_2017_gks_json_data():
 @pytest.fixture(scope="module")
 def civic_aid6(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID6"""
-    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data[0])
+    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data["gks_records"][0])
 
 
 @pytest.fixture(scope="module")
 def civic_aid7(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID7"""
-    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data[1])
+    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data["gks_records"][1])
 
 
 @pytest.fixture(scope="module")
 def civic_aid20(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID20"""
-    return VariantPrognosticStudyStatement(**aac_2017_gks_json_data[2])
+    return VariantPrognosticStudyStatement(**aac_2017_gks_json_data["gks_records"][2])
 
 
 @pytest.fixture(scope="module")
 def civic_aid9(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID9"""
-    return VariantDiagnosticStudyStatement(**aac_2017_gks_json_data[3])
+    return VariantDiagnosticStudyStatement(**aac_2017_gks_json_data["gks_records"][3])
 
 
 @pytest.fixture(scope="module")
@@ -380,9 +382,11 @@ def test_read_file(
     actual = aac_2017_gks_json_transformer.read_file(path=path)
     assert actual == expected_assertions
 
-    with pytest.raises(exceptions.InvalidFormat, match=r"Error decoding JSON"):
+    with pytest.raises(exceptions.InvalidFormat, match="Error decoding GKS JSON"):
         aac_2017_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
 
+    with pytest.raises(KeyError, match=re.escape("'Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)'")):
+        aac_2017_gks_json_transformer.read_file(path=DATA_DIR / "no_gks_records.json")
 
 def test_records_to_submission_container(
     aac_2017_gks_json_transformer,

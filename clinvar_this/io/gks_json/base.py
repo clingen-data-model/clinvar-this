@@ -141,10 +141,16 @@ class GksJsonTransformer(TransformIO, ABC):
         ] = []
 
         try:
-            statements = json.load(inputf)
+            data = json.load(inputf)
         except json.JSONDecodeError as e:
-            err_msg = "Error decoding JSON"
+            err_msg = "Error decoding GKS JSON"
             raise exceptions.InvalidFormat(err_msg) from e
+
+        if "gks_records" not in data:
+            err_msg = "Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)"
+            raise KeyError(err_msg)
+
+        statements = data["gks_records"]
 
         supported_study_stmts: typing.List[callable] = [
             VariantTherapeuticResponseStudyStatement,
