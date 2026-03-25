@@ -600,6 +600,7 @@ class SubmissionClinicalImpactSubmission(_SubmissionClinvarSubmissionBase):
             haplotypeSet=haplotype_set,
             haplotypeSingleVariantSet=haplotype_single_variant_set,
             localID=self.local_id,
+            submittedAssembly=self.submitted_assembly,
             localKey=self.local_key,
             phaseUnknownSet=phase_unknown_set,
             variantSet=variant_set,
