@@ -146,10 +146,21 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
             statement
         """
         citations = []
-
         reported_in_documents: list[Document] = []
+
         for evidence_line in evidence_lines:
-            if reported_in := evidence_line.reportedIn or []:
+            # Temporarily allow citations to be extracted from extension
+            # Expects name to be `citations` and value to be list of strings
+            for ext in evidence_line.extensions or []:
+                if ext.name != "citations" or not isinstance(ext.value, list):
+                    continue
+
+                for citation_url in ext.value:
+                    submission_citation = SubmissionCitation(url=citation_url)
+                    if submission_citation not in citations:
+                        citations.append(submission_citation)
+
+            if reported_in := evidence_line.reportedIn:
                 reported_in_documents.extend(reported_in)
 
             if evidence_items := evidence_line.hasEvidenceItems:

@@ -57,7 +57,7 @@ def civic_metadata():
     return BatchMetadata(
         affected_status=AffectedStatus.UNKNOWN,
         collection_method=CollectionMethod.CURATION,
-        submitted_assembly=Assembly.GRCH37
+        submitted_assembly=Assembly.GRCH37,
     )
 
 
@@ -76,13 +76,17 @@ def aac_2017_gks_json_data():
 @pytest.fixture(scope="module")
 def civic_aid6(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID6"""
-    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data["gks_records"][0])
+    return VariantTherapeuticResponseStudyStatement(
+        **aac_2017_gks_json_data["gks_records"][0]
+    )
 
 
 @pytest.fixture(scope="module")
 def civic_aid7(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID7"""
-    return VariantTherapeuticResponseStudyStatement(**aac_2017_gks_json_data["gks_records"][1])
+    return VariantTherapeuticResponseStudyStatement(
+        **aac_2017_gks_json_data["gks_records"][1]
+    )
 
 
 @pytest.fixture(scope="module")
@@ -153,7 +157,7 @@ def civic_aid7_submission():
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25265492"),
             ],
             drug_for_therapeutic_assertion="Dabrafenib;Trametinib",
-            date_last_evaluated="2025-06-09",
+            date_last_evaluated="2026-04-02",
         ),
     )
 
@@ -286,7 +290,7 @@ def civic_aid9_submission():
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24705254"),
             ],
-            date_last_evaluated="2024-12-20",
+            date_last_evaluated="2026-04-02",
         ),
     )
 
@@ -352,7 +356,7 @@ def civic_aid20_submission():
                 SubmissionCitation(url="https://civicdb.org/links/evidence/1552"),
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/27404270"),
             ],
-            date_last_evaluated="2024-04-27",
+            date_last_evaluated="2026-04-02",
         ),
     )
 
@@ -385,8 +389,14 @@ def test_read_file(
     with pytest.raises(exceptions.InvalidFormat, match="Error decoding GKS JSON"):
         aac_2017_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
 
-    with pytest.raises(KeyError, match=re.escape("'Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)'")):
+    with pytest.raises(
+        KeyError,
+        match=re.escape(
+            "'Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)'"
+        ),
+    ):
         aac_2017_gks_json_transformer.read_file(path=DATA_DIR / "no_gks_records.json")
+
 
 def test_records_to_submission_container(
     aac_2017_gks_json_transformer,
@@ -460,6 +470,45 @@ def test_records_to_submission_container_prognostic(
     diff = DeepDiff(
         actual.model_dump(exclude_none=True),
         civic_prognostic_submissions.model_dump(exclude_none=True),
+        ignore_order=True,
+    )
+    assert diff == {}
+
+
+def test_citations(
+    aac_2017_gks_json_transformer,
+    civic_metadata,
+    civic_aid20,
+    amp_asco_cap_assertion_criteria,
+    civic_aid20_submission,
+):
+    """Test that citations work correctly when evidence line does not have `hasEvidenceItems` and only has extension for citations"""
+    # only care about civic urls in this use case
+    civic_aid20_submission_cpy = civic_aid20_submission.model_dump()
+    new_citations = []
+    for citation in civic_aid20_submission_cpy["clinical_impact_classification"][
+        "citation"
+    ]:
+        if citation["url"].startswith("https://civicdb.org"):
+            new_citations.append(citation)
+    civic_aid20_submission_cpy["clinical_impact_classification"]["citation"] = (
+        new_citations
+    )
+
+    expected = SubmissionContainer(
+        assertion_criteria=amp_asco_cap_assertion_criteria,
+        clinical_impact_submission=[civic_aid20_submission_cpy],
+    )
+
+    # Ensure hasEvidenceItems is none
+    civic_aid20_cpy = civic_aid20.model_copy(deep=True)
+    civic_aid20_cpy.hasEvidenceLines[0].hasEvidenceItems = None
+    actual = aac_2017_gks_json_transformer.records_to_submission_container(
+        [civic_aid20_cpy], civic_metadata
+    )
+    diff = DeepDiff(
+        actual.model_dump(exclude_none=True),
+        expected.model_dump(exclude_none=True),
         ignore_order=True,
     )
     assert diff == {}
