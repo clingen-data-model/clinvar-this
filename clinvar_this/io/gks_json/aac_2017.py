@@ -171,13 +171,15 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
             for document in reported_in_documents:
                 if isinstance(document, Document):
                     if document_pmid := document.pmid:
-                        citations.append(
-                            SubmissionCitation(
-                                url=f"https://pubmed.ncbi.nlm.nih.gov/{document_pmid}"
-                            )
+                        submission_citation = SubmissionCitation(
+                            url=f"https://pubmed.ncbi.nlm.nih.gov/{document_pmid}"
                         )
+                        if submission_citation not in citations:
+                            citations.append(submission_citation)
                 elif isinstance(document, iriReference):
-                    citations.append(SubmissionCitation(url=document.root))
+                    submission_citation = SubmissionCitation(url=document.root)
+                    if submission_citation not in citations:
+                        citations.append(submission_citation)
 
         return citations
 
