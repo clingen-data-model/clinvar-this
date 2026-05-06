@@ -1,6 +1,7 @@
 """Support for I/O of the GKS JSON format to define submissions.
 
-Currently only supports Therapeutic, Diagnostic, and Prognostic Assertions.
+Currently only supports Therapeutic, Diagnostic, and Prognostic Assertions that follow
+AMP/ASCO/CAP 2017 guidelines.
 """
 
 from abc import ABC, abstractmethod
@@ -31,6 +32,7 @@ from clinvar_api.models import (
     SubmissionVariantSet,
     CollectionMethod,
     AffectedStatus,
+    Assembly,
 )
 from clinvar_api.models.sub_payload import (
     SubmissionConditionSetSomatic,
@@ -55,6 +57,7 @@ class BatchMetadata(BaseModel):
 
     affected_status: AffectedStatus = AffectedStatus.UNKNOWN
     collection_method: CollectionMethod = CollectionMethod.NOT_PROVIDED
+    submitted_assembly: Assembly = Assembly.GRCH38
 
 
 def batch_metadata_from_mapping(
@@ -84,7 +87,7 @@ def batch_metadata_from_mapping(
 class GksJsonTransformer(TransformIO, ABC):
     """Class for transforming GKS JSON input data from various formats into submission format"""
 
-    # Mapping from GKS predicate type to assertion type for clinical impact
+    # Mapping from GKS predicate type to ClinVar assertion type for clinical impact
     gks_predicate_to_assertion = {
         TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
         TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
@@ -97,14 +100,14 @@ class GksJsonTransformer(TransformIO, ABC):
     @abstractmethod
     def records_to_submission_container(
         self,
-        study_statements: typing.List[VariantClinicalSignificanceStatement],
+        statements: typing.List[VariantClinicalSignificanceStatement],
         batch_metadata: BatchMetadata,
     ) -> SubmissionContainer:
         """Transform GKS records to submission container data structures
 
         Will only submit using clinical impact submissions
 
-        :param study_statements: List of GKS study statements
+        :param statements: List of GKS statements
         :return: Submission container data structures
         """
 
@@ -112,26 +115,32 @@ class GksJsonTransformer(TransformIO, ABC):
     def _read_file(
         inputf: typing.TextIO,
     ) -> typing.List[VariantClinicalSignificanceStatement]:
-        """Get list of Variant Therapeutic Response, Diagnostic, or Prognostic Study Statements from a file
+        """Get list of Variant Variant Clinical Significance Statements from a file
 
-        For now, prognostic study statements are NOT supported
+        Expects `gks_records` key to contain list of GKS formatted statements
 
         :param inputf: Text file-like object containing input GKS Statement data
-        :raises exceptions.InvalidFormat: If there was an error decoding JSON
-        :return: A list of Variant Therapeutic Response, Diagnostic, or Prognostic Study Statements
+        :raise exceptions.InvalidFormat: If there was an error decoding JSON
+        :raise KeyError: If JSON is missing `gks_records` key
+        :return: A list of Variant Clinical Significance Statements
         """
-        study_statements: typing.List[VariantClinicalSignificanceStatement] = []
+        statements: typing.List[VariantClinicalSignificanceStatement] = []
 
         try:
-            statements = json.load(inputf)
+            data = json.load(inputf)
         except json.JSONDecodeError as e:
-            err_msg = "Error decoding JSON"
+            err_msg = "Error decoding GKS JSON"
             raise exceptions.InvalidFormat(err_msg) from e
 
-        for statement in statements:
-            study_statements.append(VariantClinicalSignificanceStatement(**statement))
+        if "gks_records" not in data:
+            err_msg = "Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)"
+            raise KeyError(err_msg)
 
-        return study_statements
+        gks_records = data["gks_records"]
+
+        for gks_record in gks_records:
+            statements.append(VariantClinicalSignificanceStatement(**gks_record))
+        return statements
 
     @staticmethod
     def get_variant_aliases(
@@ -160,14 +169,14 @@ class GksJsonTransformer(TransformIO, ABC):
 
     @staticmethod
     def get_comment(record: VariantClinicalSignificanceStatement) -> str | None:
-        """Get comment from a study statement
+        """Get comment from a statement
 
-        :param record: GKS study statement
+        :param record: GKS statement
             Assumes ``name`` is provided in ``MappableConcept`` objects.
-        :return: Comment for a given study statement.
+        :return: Comment for a given statement.
             If the therapeutic is a substitute group, the original comment will be
-            updated to make note that these are in substitution (deviating from clinvar
-            api schema which notes that the therapies are in combination)
+            updated to make note that these are in substitution (deviating from ClinVar
+            API schema which notes that the therapies are in combination)
         """
         comment = record.description
         if record.hasEvidenceLines:
@@ -183,60 +192,76 @@ class GksJsonTransformer(TransformIO, ABC):
 
     @staticmethod
     def get_condition_set(
-        proposition: VariantTherapeuticResponseProposition
-        | VariantDiagnosticProposition
-        | VariantPrognosticProposition,
+        proposition: (
+            VariantTherapeuticResponseProposition
+            | VariantDiagnosticProposition
+            | VariantPrognosticProposition
+        ),
     ) -> SubmissionConditionSetSomatic:
-        """Get condition from a proposition
+        """Build a somatic condition set from a proposition.
 
-        We will prioritize sending DB/IDs over names
+        Database identifiers are preferred over condition names when supported
+        ontology mappings are available.
 
-        :param proposition: Proposition for a given study statement.
-            Assumes a single condition is used for the study statement and that
-            ``name`` is provided in ``MappableConcept`` objects.
-        :return: The condition for which the variant is interpreted
+        Assumes:
+        - A single condition is associated with the proposition
+        - `MappableConcept.name` is populated when no supported mapping exists
+
+        :param proposition: Proposition for a given statement
+        :return: Condition set for the interpreted variant.
         """
+
         condition = (
             proposition.conditionQualifier
             if isinstance(proposition, VariantTherapeuticResponseProposition)
             else proposition.objectCondition
         )
 
-        condition_db = None
-        condition_id = None
-        condition_name = None
+        condition_db: ConditionDb | None = None
+        condition_id: str | None = None
+        condition_name: str | None = None
 
-        if condition_primary_coding := condition.root.primaryCoding:
-            condition_primary_coding_id = condition_primary_coding.id
-            condition_primary_coding_code = condition_primary_coding.code.root
+        if primary_coding := condition.root.primaryCoding:
+            coding_id = primary_coding.id
+            coding_code = primary_coding.code.root
 
-            if condition_primary_coding_id.startswith(f"{ConditionDb.MONDO.value}_"):
-                condition_db = ConditionDb.MONDO
-                condition_id = condition_primary_coding_code
-            elif condition_primary_coding_id.startswith("MIM:"):
-                condition_db = ConditionDb.OMIM
-                condition_id = condition_primary_coding_code
-            elif condition_primary_coding_id.startswith(
-                f"{ConditionDb.MEDGEN.value.lower()}:"
-            ):
-                condition_db = ConditionDb.MEDGEN
-                condition_id = condition_primary_coding_code
-            elif condition_primary_coding_id.startswith(
-                f"{ConditionDb.ORPHANET.value.lower()}:"
-            ):
-                condition_db = ConditionDb.ORPHANET
-                condition_id = f"ORPHA{condition_primary_coding_code}"
-            elif condition_primary_coding_id.startswith(
-                f"{ConditionDb.MESH.value.lower()}:"
-            ):
-                condition_db = ConditionDb.MESH
-                condition_id = condition_primary_coding_code
-            elif condition_primary_coding_code.startswith(f"{ConditionDb.HP.value}:"):
+            # Mapping of supported condition database prefixes to:
+            # (coding ID prefix, submission database enum, transformed submission identifier)
+            db_mappings: tuple[
+                tuple[str, ConditionDb, str],
+                ...,
+            ] = (
+                (f"{ConditionDb.MONDO.value}_", ConditionDb.MONDO, coding_code),
+                ("MIM:", ConditionDb.OMIM, coding_code),
+                (
+                    f"{ConditionDb.MEDGEN.value.lower()}:",
+                    ConditionDb.MEDGEN,
+                    coding_code,
+                ),
+                (
+                    f"{ConditionDb.ORPHANET.value.lower()}:",
+                    ConditionDb.ORPHANET,
+                    f"ORPHA{coding_code}",
+                ),
+                (
+                    f"{ConditionDb.MESH.value.lower()}:",
+                    ConditionDb.MESH,
+                    coding_code,
+                ),
+            )
+
+            for coding_id_prefix, db, mapped_id in db_mappings:
+                if coding_id.startswith(coding_id_prefix):
+                    condition_db = db
+                    condition_id = mapped_id
+                    break
+
+            if coding_code.startswith(f"{ConditionDb.HP.value}:"):
                 condition_db = ConditionDb.HP
-                condition_id = condition_primary_coding_code
+                condition_id = coding_code
 
             if not condition_db and not condition_id:
-                condition_name = condition_primary_coding.name
+                condition_name = primary_coding.name
 
         if not condition_db and not condition_id:
             condition_name = condition.root.name
@@ -244,7 +269,9 @@ class GksJsonTransformer(TransformIO, ABC):
         return SubmissionConditionSetSomatic(
             condition=[
                 SubmissionCondition(
-                    name=condition_name, db=condition_db, id=condition_id
+                    name=condition_name,
+                    db=condition_db,
+                    id=condition_id,
                 )
             ]
         )
@@ -255,7 +282,7 @@ class GksJsonTransformer(TransformIO, ABC):
     ) -> SomaticClinicalImpactClassificationDescription:
         """Get AMP/ASCO/CAP classification
 
-        :param record: GKS study statement
+        :param record: GKS statement
             Assumes ``classification`` uses ``primaryCode``
         :return: _description_
         """
@@ -274,7 +301,7 @@ class GksJsonTransformer(TransformIO, ABC):
 
         This assumes only a single submission variant.
 
-        :param proposition: Proposition for a given study statement.
+        :param proposition: Proposition for a given statement.
         :param variant_hgvs: The HGVS expression for a variant, if found.
         :return: Variant set for a proposition
         """
@@ -302,7 +329,7 @@ class GksJsonTransformer(TransformIO, ABC):
     ) -> SomaticClinicalImpactAssertionType:
         """Get assertion type for clinical impact for a given proposition
 
-        :param proposition: Proposition for a given study statement.
+        :param proposition: Proposition for a given statement.
         :return: Assertion type for clinical impact
         """
         return self.gks_predicate_to_assertion[proposition.predicate]
