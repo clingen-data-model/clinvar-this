@@ -20,9 +20,7 @@ class TransformIO(ABC):
         """
 
     @abstractmethod
-    def records_to_submission_container(
-        self, *args, **kwargs
-    ) -> SubmissionContainer:
+    def records_to_submission_container(self, *args, **kwargs) -> SubmissionContainer:
         """Transform structured records to submission container data structures
 
         :return: Submission container data structures

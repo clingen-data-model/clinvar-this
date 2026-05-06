@@ -405,7 +405,7 @@ def test_records_to_submission_container(
     civic_aid7,
     civic_tr_submissions,
 ):
-    """Ensure that records_to_submission_container works correctly for therapeutic study statements"""
+    """Ensure that records_to_submission_container works correctly for therapeutic statements"""
     # Test single therapy and CombinationTherapy
     actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid6, civic_aid7], civic_metadata
@@ -445,7 +445,7 @@ def test_records_to_submission_container_diagnostic(
     civic_aid9,
     civic_diagnostic_submissions,
 ):
-    """Ensure that records_to_submission_container works correctly for diagnostic study statements"""
+    """Ensure that records_to_submission_container works correctly for diagnostic statements"""
     actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid9], civic_metadata
     )
@@ -463,7 +463,7 @@ def test_records_to_submission_container_prognostic(
     civic_aid20,
     civic_prognostic_submissions,
 ):
-    """Ensure that records_to_submission_container works correctly for prognostic study statements"""
+    """Ensure that records_to_submission_container works correctly for prognostic statements"""
     actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid20], civic_metadata
     )
