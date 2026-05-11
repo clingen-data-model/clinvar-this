@@ -133,6 +133,101 @@ The following shows an example:
 
 Note that you cannot submission TSV imports with batches that contain removals already.
 
+--------
+GKS JSON
+--------
+
+GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact submissions.
+
+The currently supported VA-Spec version is `1.1.0-snapshot.2026-02.1 <https://github.com/ga4gh/va-spec/releases>`_.
+
+Input files must be JSON objects containing a top-level ``gks_records`` key. The value of ``gks_records`` must be a list of GKS statements.
+
+Supported Statement Types:
+
+- `VariantClinicalSignificanceStatement <https://w3id.org/ga4gh/schema/va-spec/1.1.0-snapshot.2026-02.1/aac-2017/json/VariantClinicalSignificanceStatement>`_: Used to represent AMP/ASCO/CAP 2017 therapeutic, diagnostic, and prognostic assertions for ClinVar clinical impact submissions. The ``assertion_criteria`` will be hard-coded to the AMP/ASCO/CAP PubMed ID.
+
+At this time, only single-member variant, gene, and condition sets are supported for ClinVar submission.
+
+The following information is required or must be derivable from each statement:
+
+- ``id``
+
+  - Used as the ClinVar submission local key.
+
+- ``proposition.subjectVariant``
+
+  - Expects a GA4GH VA-Spec Categorical Variant.
+  - HGVS expressions are extracted from the first ``DefiningAlleleConstraint`` in ``proposition.subjectVariant.constraints``.
+  - If no supported constraint is present, HGVS expressions may be provided in an ``expressions`` extension on ``proposition.subjectVariant``.
+  - RefSeq transcript HGVS expressions are preferred over RefSeq genomic HGVS expressions.
+  - The selected HGVS expression is used for the ClinVar variant description.
+  - ``proposition.subjectVariant.id`` or ``proposition.subjectVariant.name`` is used as the ClinVar local ID.
+  - ``proposition.subjectVariant.aliases`` are submitted as alternate designations when present.
+
+- ``proposition.geneContextQualifier``
+
+  - ``proposition.geneContextQualifier.name`` is submitted as the gene symbol.
+
+- ``proposition.alleleOriginQualifier``
+
+  - ``proposition.alleleOriginQualifier.name`` is used to populate the ClinVar observed-in allele origin.
+  - If no allele origin name is provided, the statement is skipped.
+
+- ``specifiedBy.methodType``
+
+  - Used as the ClinVar observed-in collection method when present.
+  - Otherwise, the batch-wide ``collection_method`` metadata value is used.
+
+- ``proposition.conditionQualifier`` or ``proposition.objectCondition``
+
+  - Therapeutic assertions use ``proposition.conditionQualifier``.
+  - Diagnostic and prognostic assertions use ``proposition.objectCondition``.
+  - Supported condition identifiers from concept codings are mapped to ClinVar condition database identifiers when available.
+  - Otherwise, the condition ``name`` is used.
+
+- ``classification``
+
+  - ``classification.primaryCoding.code`` is mapped to the ClinVar clinical impact classification description.
+
+- ``predicate``
+
+  - Used to determine the ClinVar clinical impact assertion type, including therapeutic, diagnostic, and prognostic significance.
+
+- ``hasEvidenceLines``
+
+  - At least one evidence line is required to determine the ClinVar clinical impact assertion type and supporting citations.
+  - Therapeutic assertion drugs are derived from ``targetProposition.objectTherapeutic.root`` when present.
+  - Citations may be sourced from:
+
+    - ``citations`` extensions attached to evidence lines
+    - PubMed IDs (``pmid``) on reported documents
+    - IRI reference URLs attached to reported documents
+
+- ``description``
+
+  - Used as the ClinVar clinical impact comment.
+  - If the therapeutic assertion uses a substitute therapy group, the comment is updated to note that the therapies are in substitution.
+
+- ``contributions``
+
+  - The latest contribution date is used as the ClinVar ``date_last_evaluated``.
+
+The generated submission includes AMP/ASCO/CAP 2017 assertion criteria using PubMed ID ``27993330``.
+
+Example input structure
+=======================
+
+.. code-block:: json
+
+    {
+      "gks_records": [
+        {
+          "type": "Statement"
+        }
+      ]
+    }
+
 ------------
 Phenopackets
 ------------
