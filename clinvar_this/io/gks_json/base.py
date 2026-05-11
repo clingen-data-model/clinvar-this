@@ -12,12 +12,9 @@ from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.core.models import MappableConcept
 from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
 from ga4gh.va_spec.base import (
-    DiagnosticPredicate,
     VariantDiagnosticProposition,
     VariantPrognosticProposition,
-    PrognosticPredicate,
     MembershipOperator,
-    TherapeuticResponsePredicate,
     TherapyGroup,
     VariantTherapeuticResponseProposition,
 )
@@ -38,11 +35,7 @@ from clinvar_api.models.sub_payload import (
     SubmissionConditionSetSomatic,
     SubmissionVariantGene,
 )
-from clinvar_api.msg.sub_payload import (
-    ConditionDb,
-    SomaticClinicalImpactAssertionType,
-    SomaticClinicalImpactClassificationDescription,
-)
+from clinvar_api.msg.sub_payload import ConditionDb
 from clinvar_this import exceptions
 from clinvar_this.io.base import TransformIO
 
@@ -86,16 +79,6 @@ def batch_metadata_from_mapping(
 
 class GksJsonTransformer(TransformIO, ABC):
     """Class for transforming GKS JSON input data from various formats into submission format"""
-
-    # Mapping from GKS predicate type to ClinVar assertion type for clinical impact
-    gks_predicate_to_assertion = {
-        TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
-        TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
-        DiagnosticPredicate.EXCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_EXCLUDES_DIAGNOSIS,
-        DiagnosticPredicate.INCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_SUPPORTS_DIAGNOSIS,
-        PrognosticPredicate.BETTER_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_BETTER_OUTCOME,
-        PrognosticPredicate.WORSE_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
-    }
 
     @abstractmethod
     def records_to_submission_container(
@@ -276,20 +259,6 @@ class GksJsonTransformer(TransformIO, ABC):
             ]
         )
 
-    @staticmethod
-    def get_clinical_impact_classification_description(
-        record: VariantClinicalSignificanceStatement,
-    ) -> SomaticClinicalImpactClassificationDescription:
-        """Get AMP/ASCO/CAP classification
-
-        :param record: GKS statement
-            Assumes ``classification`` uses ``primaryCode``
-        :return: _description_
-        """
-        return SomaticClinicalImpactClassificationDescription(
-            record.classification.primaryCode.root
-        )
-
     def get_variant_set(
         self,
         proposition: VariantTherapeuticResponseProposition
@@ -320,16 +289,3 @@ class GksJsonTransformer(TransformIO, ABC):
                 )
             ]
         )
-
-    def get_assertion_type_for_clinical_impact(
-        self,
-        proposition: VariantTherapeuticResponseProposition
-        | VariantDiagnosticProposition
-        | VariantPrognosticProposition,
-    ) -> SomaticClinicalImpactAssertionType:
-        """Get assertion type for clinical impact for a given proposition
-
-        :param proposition: Proposition for a given statement.
-        :return: Assertion type for clinical impact
-        """
-        return self.gks_predicate_to_assertion[proposition.predicate]
