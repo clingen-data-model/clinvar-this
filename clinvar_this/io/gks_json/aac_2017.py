@@ -14,7 +14,14 @@ from ga4gh.va_spec.aac_2017 import (
     VariantClinicalSignificanceStatement,
     AmpAscoCapClassificationCode,
 )
-from ga4gh.va_spec.base import Contribution, Document, EvidenceLine
+from ga4gh.va_spec.base import (
+    Contribution,
+    DiagnosticPredicate,
+    Document,
+    EvidenceLine,
+    PrognosticPredicate,
+    TherapeuticResponsePredicate,
+)
 from ga4gh.vrs.models import Syntax, Expression
 
 from clinvar_api.models import (
@@ -34,6 +41,7 @@ from clinvar_api.models.sub_payload import (
 )
 from clinvar_api.msg.sub_payload import (
     AlleleOrigin,
+    SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
 
@@ -55,6 +63,16 @@ _IMPACT_CLASS_MAPPING = MappingProxyType(
 
 class Aac2017GksJsonTransformer(GksJsonTransformer):
     """Class for transforming AMP/ASCO/CAP 2017 GKS formatted data to define submissions"""
+
+    # Mapping from GKS predicate type to ClinVar assertion type for clinical impact
+    gks_predicate_to_assertion = {
+        TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
+        TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
+        DiagnosticPredicate.EXCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_EXCLUDES_DIAGNOSIS,
+        DiagnosticPredicate.INCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_SUPPORTS_DIAGNOSIS,
+        PrognosticPredicate.BETTER_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_BETTER_OUTCOME,
+        PrognosticPredicate.WORSE_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
+    }
 
     @staticmethod
     def _get_variant_hgvs(
