@@ -10,4 +10,4 @@ xmltodict >=0.13.0, <0.15
 tqdm >=4.0
 protobuf >=3.20.2, <6.0
 pysam
-ga4gh.va_spec @ git+https://github.com/ga4gh/va-spec-python.git@5ab6da0c09b6a9f01ddffa378f485a0d0aeeeb44
+ga4gh.va_spec~=0.5.0-a0
