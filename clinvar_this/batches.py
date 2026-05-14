@@ -2,7 +2,6 @@
 
 import datetime
 import pathlib
-import re
 import typing
 
 from logzero import logger
@@ -11,8 +10,12 @@ from tabulate import tabulate
 from clinvar_api import client, models
 from clinvar_this import config, exceptions
 from clinvar_this.io import tsv
-from clinvar_this.io.gks_json import Aac2017GksJsonTransformer
-from clinvar_this.io.gks_json.base import BatchMetadata as GksBatchMetadata, batch_metadata_from_mapping as gks_batch_metadata_from_mapping
+from clinvar_this.io.gks_json import (
+    batch_metadata_from_mapping as gks_batch_metadata_from_mapping,
+    AmbiguousGksStatementType,
+    UnsupportedGksStatementType,
+    read_gks_json_file,
+)
 
 
 def get_share_dir():
@@ -70,59 +73,128 @@ def _write_payload(submission_container: models.SubmissionContainer, profile: st
         outputf.write("\n")
 
 
+ClinvarSubmissionT = typing.TypeVar(
+    "ClinvarSubmissionT",
+    models.SubmissionClinvarSubmission,
+    models.SubmissionClinicalImpactSubmission,
+)
+
+
 def _merge_submission_container(
     base: models.SubmissionContainer,
     patch: models.SubmissionContainer,
 ) -> models.SubmissionContainer:
-    """Update base submission container with new one.
+    """Merge updated submission data into an existing submission container.
 
-    The following attributes will be copied from ``patch`` to ``base``:
+    Submissions are matched by ``local_key``. When a matching submission exists
+    in ``patch``, selected fields from ``patch`` replace the corresponding
+    fields in ``base``.
 
-    - mode of inheritance
-    - clinical significance
-        - clinical significance description (ACMG grading)
-        - condition
+    :param base: Existing submission container
+    :param patch: Submission container containing updated submission data
+    :raise exceptions.IOException: If incompatible submission types are merged
+    :return: Merged submission container
     """
-    logger.info("Merging submission information...")
 
     def merge_submission(
-        base: models.SubmissionClinvarSubmission
-        | models.SubmissionClinicalImpactSubmission,
-        patch: models.SubmissionClinvarSubmission
-        | models.SubmissionClinicalImpactSubmission,
-    ) -> models.SubmissionClinvarSubmission:
-        if isinstance(base, models.SubmissionClinvarSubmission):
-            clinvar_accession = base.clinvar_accession or patch.clinvar_accession
-            return base.model_copy(
+        base_submission: ClinvarSubmissionT,
+        patch_submission: ClinvarSubmissionT,
+    ) -> ClinvarSubmissionT:
+        """Merge two submissions of the same type.
+
+        :param base_submission: Existing submission
+        :param patch_submission: Updated submission with matching ``local_key``
+        :raise exceptions.IOException: If the submissions have incompatible types
+        :return: Merged submission
+        """
+        clinvar_accession = (
+            base_submission.clinvar_accession or patch_submission.clinvar_accession
+        )
+
+        if isinstance(
+            base_submission,
+            models.SubmissionClinvarSubmission,
+        ) and isinstance(
+            patch_submission,
+            models.SubmissionClinvarSubmission,
+        ):
+            return base_submission.model_copy(
                 update={
                     "clinvar_accession": clinvar_accession,
-                    "condition_set": patch.condition_set,
-                    "clinical_significance": patch.clinical_significance,
-                    "observed_in": patch.observed_in,
-                }
-            )
-        else:
-            return base.model_copy(
-                update={
-                    "clinical_impact_classification_description": patch.clinical_impact_classification_description,
-                    "assertion_type_for_clinical_impact": patch.assertion_type_for_clinical_impact,
-                    "drug_for_therapeutic_assertion": patch.drug_for_therapeutic_assertion,
+                    "condition_set": patch_submission.condition_set,
+                    "clinical_significance": (patch_submission.clinical_significance),
+                    "observed_in": patch_submission.observed_in,
                 }
             )
 
-    patch_clinvar_submission = {
-        clinvar_submission.local_key: clinvar_submission
-        for clinvar_submission in (patch.clinvar_submission or [])
-    }
-    clinvar_submissions = []
-    for submission in base.clinvar_submission or []:
-        if submission.local_key in patch_clinvar_submission:
-            clinvar_submissions.append(
-                merge_submission(submission, patch_clinvar_submission[submission.local_key])
+        if isinstance(
+            base_submission,
+            models.SubmissionClinicalImpactSubmission,
+        ) and isinstance(
+            patch_submission,
+            models.SubmissionClinicalImpactSubmission,
+        ):
+            return base_submission.model_copy(
+                update={
+                    "clinvar_accession": clinvar_accession,
+                    "clinical_impact_classification": (
+                        patch_submission.clinical_impact_classification
+                    ),
+                    "condition_set": patch_submission.condition_set,
+                    "observed_in": patch_submission.observed_in,
+                }
             )
-        else:
-            clinvar_submissions.append(submission)
-    result = base.model_copy(update={"clinvar_submission": clinvar_submissions})
+
+        raise exceptions.IOException(
+            "Cannot merge submissions of different or unsupported types"
+        )
+
+    def merge_submission_list(
+        base_submissions: list[ClinvarSubmissionT] | None,
+        patch_submissions: list[ClinvarSubmissionT] | None,
+    ) -> list[ClinvarSubmissionT]:
+        """Merge matching submissions from two submission lists.
+
+        :param base_submissions: Existing submissions
+        :param patch_submissions: Updated submissions
+        :return: Merged submission list
+        """
+        patch_by_local_key: dict[str, ClinvarSubmissionT] = {
+            submission.local_key: submission
+            for submission in patch_submissions or []
+            if submission.local_key is not None
+        }
+        return [
+            merge_submission(
+                submission,
+                patch_by_local_key[submission.local_key],
+            )
+            if submission.local_key in patch_by_local_key
+            else submission
+            for submission in base_submissions or []
+        ]
+
+    clinvar_submissions: list[models.SubmissionClinvarSubmission] = (
+        merge_submission_list(
+            base.clinvar_submission,
+            patch.clinvar_submission,
+        )
+    )
+
+    clinical_impact_submissions: list[models.SubmissionClinicalImpactSubmission] = (
+        merge_submission_list(
+            base.clinical_impact_submission,
+            patch.clinical_impact_submission,
+        )
+    )
+
+    result = base.model_copy(
+        update={
+            "clinvar_submission": clinvar_submissions,
+            "clinical_impact_submission": (clinical_impact_submissions),
+        }
+    )
+
     logger.info("... done merging submission information")
     return result
 
@@ -158,12 +230,21 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
         else:
             raise exceptions.IOException(f"Could not guess TSV file type from header for {path}")
         _write_payload(submission_container, config.profile, name)
-    elif re.match(r".*aac_2017.*\.json$", path):
-        gks_transformer = Aac2017GksJsonTransformer()
-        gks_batch_metadata: GksBatchMetadata = gks_batch_metadata_from_mapping(metadata)
+    elif path.endswith(".json"):
+        try:
+            gks_transformer, statements = read_gks_json_file(path)
+        except (
+            UnsupportedGksStatementType,
+            AmbiguousGksStatementType,
+        ) as e:
+            raise exceptions.IOException(str(e)) from e
+
+        gks_batch_metadata = gks_batch_metadata_from_mapping(metadata)
         new_submission_container = gks_transformer.records_to_submission_container(
-            gks_transformer.read_file(path=path), gks_batch_metadata
+            statements,
+            gks_batch_metadata,
         )
+
         if previous_submission_container:
             submission_container = _merge_submission_container(
                 base=previous_submission_container,
@@ -181,7 +262,9 @@ def _load_latest_payload(profile: str, name: str):
     submission_path = get_share_dir() / profile / name
     payload_paths = list(sorted(submission_path.glob("payload.*.json")))
     if not payload_paths:  # pragma: no cover
-        raise exceptions.ClinvarThisException(f"Found no payload JSON file at {submission_path}")
+        raise exceptions.ClinvarThisException(
+            f"Found no payload JSON file at {submission_path}"
+        )
 
     payload_path = submission_path / payload_paths[-1]
     with payload_path.open("rt") as inputf:

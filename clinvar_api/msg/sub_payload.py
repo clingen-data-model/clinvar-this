@@ -193,9 +193,9 @@ class ModeOfInheritance(Enum):
 
 class OncogenicityClassificationDescription(Enum):
     ONCOGENIC = "Oncogenic"
-    LIKELY_ONCOGENIC = "Likely Oncogenic"
-    UNCERTAIN_SIGNIFICANCE = ("Uncertain significance",)
-    LIKELY_BENIGN = ("Likely benign",)
+    LIKELY_ONCOGENIC = "Likely oncogenic"
+    UNCERTAIN_SIGNIFICANCE = "Uncertain significance"
+    LIKELY_BENIGN = "Likely benign"
     BENIGN = "Benign"
 
 

@@ -1,6 +1,21 @@
 """Init namespace module"""
 
-from .aac_2017 import Aac2017GksJsonTransformer
+from .base import GksJsonTransformer, BatchMetadata, batch_metadata_from_mapping
+from .clinical_impact_transformer import ClinicalImpactTransformer
+from .oncogenicity_transformer import OncogenicityTransformer
+from .resolver import (
+    AmbiguousGksStatementType,
+    UnsupportedGksStatementType,
+    read_gks_json_file,
+)
 
-
-__all__ = ["Aac2017GksJsonTransformer"]
+__all__ = [
+    "GksJsonTransformer",
+    "BatchMetadata",
+    "batch_metadata_from_mapping",
+    "ClinicalImpactTransformer",
+    "OncogenicityTransformer",
+    "AmbiguousGksStatementType",
+    "UnsupportedGksStatementType",
+    "read_gks_json_file",
+]
