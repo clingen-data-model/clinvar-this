@@ -137,7 +137,7 @@ Note that you cannot submission TSV imports with batches that contain removals a
 GKS JSON
 --------
 
-GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact submissions.
+GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact and oncogenicity submissions.
 
 The currently supported VA-Spec version is `1.1.0-snapshot.2026-02.1 <https://github.com/ga4gh/va-spec/releases>`_.
 
@@ -145,7 +145,8 @@ Input files must be JSON objects containing a top-level ``gks_records`` key. The
 
 Supported Statement Types:
 
-- `VariantClinicalSignificanceStatement <https://w3id.org/ga4gh/schema/va-spec/1.1.0-snapshot.2026-02.1/aac-2017/json/VariantClinicalSignificanceStatement>`_: Used to represent AMP/ASCO/CAP 2017 therapeutic, diagnostic, and prognostic assertions for ClinVar clinical impact submissions. The ``assertion_criteria`` will be hard-coded to the AMP/ASCO/CAP PubMed ID.
+- `VariantClinicalSignificanceStatement <https://w3id.org/ga4gh/schema/va-spec/1.1.0-snapshot.2026-02.1/aac-2017/json/VariantClinicalSignificanceStatement>`_: Used to represent AMP/ASCO/CAP 2017 therapeutic, diagnostic, and prognostic assertions for ClinVar clinical impact submissions. The ``assertion_criteria`` will be hard-coded to the AMP/ASCO/CAP PubMed ID (``27993330``).
+- `VariantOncogenicityStatement <https://raw.githubusercontent.com/ga4gh/va-spec/1.1.0-snapshot.2026-02.1/schema/va-spec/ccv-2022/json/VariantOncogenicityStatement>`_: Used to represent ClinGen/CGC/VICC 2022 oncogenicity assertions for ClinVar oncogenicity submissions. The ``assertion_criteria`` will be hard-coded to the ClinGen/CGC/VICC PubMed ID (``36063163``).
 
 At this time, only single-member variant, gene, and condition sets are supported for ClinVar submission.
 
@@ -179,10 +180,11 @@ The following information is required or must be derivable from each statement:
   - Used as the ClinVar observed-in collection method when present.
   - Otherwise, the batch-wide ``collection_method`` metadata value is used.
 
-- ``proposition.conditionQualifier`` or ``proposition.objectCondition``
+- ``proposition.conditionQualifier``, ``proposition.objectCondition``, or ``proposition.objectTumorType``
 
   - Therapeutic assertions use ``proposition.conditionQualifier``.
   - Diagnostic and prognostic assertions use ``proposition.objectCondition``.
+  - Oncogenicity assertions use ``proposition.objectTumorType``.
   - Supported condition identifiers from concept codings are mapped to ClinVar condition database identifiers when available.
   - Otherwise, the condition ``name`` is used.
 
@@ -212,8 +214,6 @@ The following information is required or must be derivable from each statement:
 - ``contributions``
 
   - The latest contribution date is used as the ClinVar ``date_last_evaluated``.
-
-The generated submission includes AMP/ASCO/CAP 2017 assertion criteria using PubMed ID ``27993330``.
 
 Example input structure
 =======================
