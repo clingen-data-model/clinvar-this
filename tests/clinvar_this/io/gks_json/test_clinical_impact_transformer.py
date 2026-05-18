@@ -388,9 +388,9 @@ def test_read_file(
         clinical_impact_transformer.read_file(path=DATA_DIR / "example_bad.json")
 
     with pytest.raises(
-        KeyError,
+        exceptions.InvalidFormat,
         match=re.escape(
-            "'Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)'"
+            "Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)"
         ),
     ):
         clinical_impact_transformer.read_file(path=DATA_DIR / "no_gks_records.json")
