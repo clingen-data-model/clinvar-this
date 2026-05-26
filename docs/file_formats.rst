@@ -157,7 +157,7 @@ The following information is required or must be derivable from each statement:
 
 - ``proposition.subjectVariant``
 
-  - Expects a GA4GH VA-Spec Categorical Variant.
+  - Expects a GA4GH Cat-VRS Categorical Variant.
   - HGVS expressions are extracted from the first ``DefiningAlleleConstraint`` in ``proposition.subjectVariant.constraints``.
   - If no supported constraint is present, HGVS expressions may be provided in an ``expressions`` extension on ``proposition.subjectVariant``.
   - RefSeq transcript HGVS expressions are preferred over RefSeq genomic HGVS expressions.
