@@ -387,7 +387,7 @@ def test_read_file(
     assert actual == expected_assertions
 
     with pytest.raises(exceptions.InvalidFormat, match="Error decoding GKS JSON"):
-        aac_2017_gks_json_transformer.read_file(path=DATA_DIR / "example_bad.json")
+        aac_2017_gks_json_transformer.read_file(path=DATA_DIR / "invalid_json.json")
 
     with pytest.raises(
         KeyError,
