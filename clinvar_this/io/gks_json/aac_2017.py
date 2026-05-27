@@ -21,6 +21,9 @@ from ga4gh.va_spec.base import (
     EvidenceLine,
     PrognosticPredicate,
     TherapeuticResponsePredicate,
+    VariantDiagnosticProposition,
+    VariantPrognosticProposition,
+    VariantTherapeuticResponseProposition,
 )
 from ga4gh.vrs.models import Syntax, Expression
 
@@ -264,6 +267,16 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
 
         Local Key will use the `record`'s ID.
 
+        Therapeutics and clinical impact assertion type are derived from the statement's
+        evidence lines.
+
+        The first evidence line with a supported clinical impact target proposition is
+        used to set `assertion_type_for_clinical_impact` from
+        `targetProposition.predicate`.
+
+        If that target proposition includes `objectTherapeutic`, its therapeutics are
+        used to set `drug_for_therapeutic_assertion`.
+
         :param record: The therapeutic, diagnostic, or prognostic assertion
         :param observed_in: List of distinct observations
         :param variant_hgvs: The HGVS expression for a variant, if found
@@ -272,13 +285,28 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         :return: The clinical impact submission for a therapeutic, diagnostic, or
             prognostic assertion
         """
+
+        target_proposition = None
+        drug_for_therapeutic_assertion = None
+        assertion_type_for_clinical_impact = None
+
+        for el in record.hasEvidenceLines or []:
+            target_proposition = el.targetProposition
+
+            if not isinstance(target_proposition, VariantDiagnosticProposition | VariantPrognosticProposition | VariantTherapeuticResponseProposition):
+                continue
+
+            assertion_type_for_clinical_impact = self.gks_predicate_to_assertion[
+                target_proposition.predicate
+            ]
+
+            if isinstance(target_proposition, VariantTherapeuticResponseProposition):
+                therapeutic = target_proposition.objectTherapeutic.root
+                drug_for_therapeutic_assertion = self.get_drugs(therapeutic)
+
+            break
+
         proposition = record.proposition
-        target_proposition = record.hasEvidenceLines[0].targetProposition
-        if hasattr(target_proposition, "objectTherapeutic"):
-            therapeutic = target_proposition.objectTherapeutic.root
-            drug_for_therapeutic_assertion = self.get_drugs(therapeutic)
-        else:
-            drug_for_therapeutic_assertion = None
 
         return SubmissionClinicalImpactSubmission(
             record_status=RecordStatus.NOVEL,
@@ -292,11 +320,9 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
                 clinical_impact_classification_description=_IMPACT_CLASS_MAPPING[
                     record.classification.primaryCoding.code.root
                 ],
-                assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
-                    target_proposition.predicate
-                ],
+                assertion_type_for_clinical_impact=assertion_type_for_clinical_impact,
                 comment=self.get_comment(record),
-                citation=self._get_citations(record.hasEvidenceLines),
+                citation=self._get_citations(record.hasEvidenceLines or []) ,
                 drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
                 date_last_evaluated=self._get_date_last_evaluated(
                     record.contributions or []
