@@ -287,6 +287,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         """
 
         target_proposition = None
+        therapeutic = None
         drug_for_therapeutic_assertion = None
         assertion_type_for_clinical_impact = None
 
@@ -326,7 +327,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
                     record.classification.primaryCoding.code.root
                 ],
                 assertion_type_for_clinical_impact=assertion_type_for_clinical_impact,
-                comment=self.get_comment(record),
+                comment=self.get_comment(record.description, therapeutic),
                 citation=self._get_citations(record.hasEvidenceLines or []),
                 drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
                 date_last_evaluated=self._get_date_last_evaluated(
