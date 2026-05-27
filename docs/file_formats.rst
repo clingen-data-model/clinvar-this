@@ -165,12 +165,9 @@ Supported Statement Types
 Statement Field Mappings
 ========================
 
-Currently, only single-member variant, gene, and condition sets are
-supported.
+Currently, only single-member variant, gene, and condition sets are supported.
 
-Fields marked with ``*`` are required by ClinVar This for
-ClinVar submission generation. Some may be optional in the
-underlying VA-Spec model.
+Fields marked with ``*`` are required by ClinVar This for ClinVar submission generation.
 
 .. list-table::
    :header-rows: 1
