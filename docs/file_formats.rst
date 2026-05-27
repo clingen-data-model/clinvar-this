@@ -137,15 +137,24 @@ Note that you cannot submission TSV imports with batches that contain removals a
 GKS JSON
 --------
 
-GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact submissions.
+GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) <https://www.ga4gh.org/>`_ `Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact submissions.
 
-The currently supported VA-Spec version is `1.1.0-snapshot.2026-02.1 <https://github.com/ga4gh/va-spec/releases>`_.
+The currently supported VA-Spec version is `1.1.0-snapshot.2026-02.1 <https://github.com/ga4gh/va-spec/releases/tag/1.1.0-snapshot.2026-02.1>`_.
 
-Input files must be JSON objects containing a top-level ``gks_records`` key. The value of ``gks_records`` must be a list of GKS statements.
+Input files must be JSON objects containing a top-level ``gks_records`` key. The value of ``gks_records`` must be a list of GKS statements. For example:
+
+  .. code-block::
+
+      {
+        "gks_records": [
+          <GKS Statement>,
+          <GKS Statement>
+        ]
+      }
 
 Supported Statement Types:
 
-- `VariantClinicalSignificanceStatement <https://w3id.org/ga4gh/schema/va-spec/1.1.0-snapshot.2026-02.1/aac-2017/json/VariantClinicalSignificanceStatement>`_: Used to represent AMP/ASCO/CAP 2017 therapeutic, diagnostic, and prognostic assertions for ClinVar clinical impact submissions. The ``assertion_criteria`` will be hard-coded to the AMP/ASCO/CAP PubMed ID.
+- `VariantClinicalSignificanceStatement <https://w3id.org/ga4gh/schema/va-spec/1.1.0-snapshot.2026-02.1/aac-2017/json/VariantClinicalSignificanceStatement>`_: Used to represent AMP/ASCO/CAP 2017 therapeutic, diagnostic, and prognostic assertions for ClinVar clinical impact submissions. The ``assertion_criteria`` will be hard-coded to the `AMP/ASCO/CAP PubMed ID <https://pubmed.ncbi.nlm.nih.gov/27993330/>`_.
 
 At this time, only single-member variant, gene, and condition sets are supported for ClinVar submission.
 
@@ -212,21 +221,6 @@ The following information is required or must be derivable from each statement:
 - ``contributions``
 
   - The latest contribution date is used as the ClinVar ``date_last_evaluated``.
-
-The generated submission includes AMP/ASCO/CAP 2017 assertion criteria using PubMed ID ``27993330``.
-
-Example input structure
-=======================
-
-.. code-block:: json
-
-    {
-      "gks_records": [
-        {
-          "type": "Statement"
-        }
-      ]
-    }
 
 ------------
 Phenopackets
