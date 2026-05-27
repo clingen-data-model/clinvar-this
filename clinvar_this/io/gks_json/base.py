@@ -42,7 +42,7 @@ from clinvar_api.models.sub_payload import (
     SubmissionConditionSetSomatic,
     SubmissionVariantGene,
 )
-from clinvar_api.msg.sub_payload import ConditionDb
+from clinvar_api.msg.sub_payload import ConditionDb, RecordStatus
 from clinvar_this import exceptions
 from clinvar_this.io.base import TransformIO
 from ga4gh.core.models import iriReference
@@ -177,6 +177,10 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
                 raise ValueError(msg) from e
 
         return statements
+
+    @staticmethod
+    def _get_local_id(variant: CategoricalVariant):
+        return variant.id or variant.name
 
     @staticmethod
     def _get_variant_hgvs(
@@ -476,18 +480,70 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
 
         return contribution.date.strftime("%Y-%m-%d")
 
+    def _build_shared_submission_kwargs(
+        self,
+        statement: GksStatementT,
+        observed_in: list[SubmissionObservedInSomatic],
+        variant_hgvs: str | None = None,
+        submitted_assembly: Assembly | None = None,
+    ):
+        """Build submission kwargs that are used in both clinical impact and
+        oncogenicity submissions
+
+        :param statement: GKS statement
+        :param observed_in: List of distinct observations
+        :param variant_hgvs: The HGVS expression for a variant, if found
+        :param submitted_assembly: The genome assembly used to call the variant.
+            Required if `variant_hgvs` is non-null
+        :return: _description_
+        """
+        proposition = statement.proposition
+        variant = proposition.subjectVariant
+
+        return {
+            "record_status": RecordStatus.NOVEL,
+            "local_id": self._get_local_id(variant),
+            "submitted_assembly": submitted_assembly,
+            "local_key": statement.id,
+            "observed_in": observed_in,
+            "condition_set": self._get_condition_set(proposition),
+            "variant_set": self._get_variant_set(
+                proposition.geneContextQualifier,
+                variant,
+                variant_hgvs=variant_hgvs,
+            ),
+        }
+
+    def _build_shared_classification_kwargs(self, statement):
+        return {
+            "comment": self._get_comment(statement),
+            "citation": self._get_citations(statement.hasEvidenceLines),
+            "date_last_evaluated": self._get_date_last_evaluated(
+                statement.contributions or []
+            ),
+        }
+
+    def _get_drug_for_therapeutic_assertion(self, statement):
+        target_proposition = statement.hasEvidenceLines[0].targetProposition
+
+        if not hasattr(target_proposition, "objectTherapeutic"):
+            return None
+
+        therapeutic = target_proposition.objectTherapeutic.root
+        return self._get_drugs(therapeutic)
+
     def _get_variant_set(
         self,
-        proposition: VariantTherapeuticResponseProposition
-        | VariantDiagnosticProposition
-        | VariantPrognosticProposition,
+        gene_context: MappableConcept,
+        variant: CategoricalVariant,
         variant_hgvs: str | None = None,
     ) -> SubmissionVariantSet:
         """Get variant set
 
         This assumes only a single submission variant.
 
-        :param proposition: Proposition for a given statement.
+        :param gene_context: Gene associated to statement.
+        :param variant: Variant associated to statement.
         :param variant_hgvs: The HGVS expression for a variant, if found.
         :return: Variant set for a proposition
         """
@@ -495,12 +551,8 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
             variant=[
                 SubmissionVariant(
                     hgvs=variant_hgvs,
-                    gene=[
-                        SubmissionVariantGene(
-                            symbol=proposition.geneContextQualifier.name
-                        )
-                    ],
-                    alternate_designations=proposition.subjectVariant.aliases,
+                    gene=[SubmissionVariantGene(symbol=gene_context.name)],
+                    alternate_designations=variant.aliases,
                 )
             ]
         )

@@ -53,22 +53,15 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
         :return: The oncogenicity submission corresponding to a GKS Oncogenicity
             statement
         """
-        proposition = statement.proposition
-
         return SubmissionOncogenicitySubmission(
-            record_status=RecordStatus.NOVEL,
-            local_id=proposition.subjectVariant.id or proposition.subjectVariant.name,
-            submitted_assembly=submitted_assembly,
-            local_key=statement.id,
-            observed_in=observed_in,
-            condition_set=self._get_condition_set(proposition),
-            variant_set=self._get_variant_set(proposition, variant_hgvs=variant_hgvs),
+            **self._build_shared_submission_kwargs(
+                statement=statement,
+                submitted_assembly=submitted_assembly,
+                observed_in=observed_in,
+                variant_hgvs=variant_hgvs,
+            ),
             oncogenicity_classification=SomaticOncogenicityClassification(
+                **self._build_shared_classification_kwargs(statement),
                 oncogenicity_classification_description=statement.classification.primaryCoding.code.root.capitalize(),
-                comment=self._get_comment(statement),
-                citation=self._get_citations(statement.hasEvidenceLines),
-                date_last_evaluated=self._get_date_last_evaluated(
-                    statement.contributions or []
-                ),
             ),
         )

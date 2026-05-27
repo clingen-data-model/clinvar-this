@@ -107,34 +107,24 @@ class ClinicalImpactTransformer(
         :return: The clinical impact submission corresponding to a GKS Clinical
             Significance statement
         """
-        proposition = statement.proposition
         target_proposition = statement.hasEvidenceLines[0].targetProposition
-        if hasattr(target_proposition, "objectTherapeutic"):
-            therapeutic = target_proposition.objectTherapeutic.root
-            drug_for_therapeutic_assertion = self._get_drugs(therapeutic)
-        else:
-            drug_for_therapeutic_assertion = None
-
         return SubmissionClinicalImpactSubmission(
-            record_status=RecordStatus.NOVEL,
-            local_id=proposition.subjectVariant.id or proposition.subjectVariant.name,
-            submitted_assembly=submitted_assembly,
-            local_key=statement.id,
-            observed_in=observed_in,
-            condition_set=self._get_condition_set(proposition),
-            variant_set=self._get_variant_set(proposition, variant_hgvs=variant_hgvs),
+            **self._build_shared_submission_kwargs(
+                statement=statement,
+                submitted_assembly=submitted_assembly,
+                observed_in=observed_in,
+                variant_hgvs=variant_hgvs,
+            ),
             clinical_impact_classification=SomaticClinicalImpactClassification(
+                **self._build_shared_classification_kwargs(statement),
                 clinical_impact_classification_description=_IMPACT_CLASS_MAPPING[
                     statement.classification.primaryCoding.code.root
                 ],
                 assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
                     target_proposition.predicate
                 ],
-                comment=self._get_comment(statement),
-                citation=self._get_citations(statement.hasEvidenceLines),
-                drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
-                date_last_evaluated=self._get_date_last_evaluated(
-                    statement.contributions or []
+                drug_for_therapeutic_assertion=self._get_drug_for_therapeutic_assertion(
+                    statement
                 ),
             ),
         )
