@@ -278,6 +278,7 @@ class SubmissionVariant(BaseModel):
     hgvs: typing.Optional[str] = None
     referenceCopyNumber: typing.Optional[int] = None
     variantType: typing.Optional[VariantType] = None
+    alternateDesignations: typing.Optional[typing.List[str]] = None
 
 
 class SubmissionVariantSet(BaseModel):
@@ -459,6 +460,7 @@ class _SubmissionClinvarSubmissionBase(BaseModel):
     #: Has exactly one elements in `variants`
     haplotypeSingleVariantSet: typing.Optional[SubmissionHaplotypeSet] = None
     localID: typing.Optional[str] = None
+    submittedAssembly: typing.Optional[Assembly] = None
     localKey: typing.Optional[str] = None
     variantSet: typing.Optional[SubmissionVariantSet] = None
     phaseUnknownSet: typing.Optional[SubmissionPhaseUnknownSet] = None

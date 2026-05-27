@@ -1,6 +1,7 @@
 -r base.txt
 
 black ==24.10.0
+deepdiff
 isort >=5.10.1, <6.0
 flake8 >=5.0.4, <8.0
 pytest
@@ -26,6 +27,5 @@ sphinx_rtd_theme
 sphinx-mdinclude <0.7  # incompatible with sphinx-rtd-theme via docutils
 sphinx-click
 
-protolint-bin
 types-protobuf
 mypy-protobuf

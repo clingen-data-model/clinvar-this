@@ -113,6 +113,7 @@ class SubmissionVariant(BaseModel):
     hgvs: typing.Optional[str] = None
     reference_copy_number: typing.Optional[int] = None
     variant_type: typing.Optional[VariantType] = None
+    alternate_designations: typing.Optional[typing.List[str]] = None
 
     def to_msg(self) -> msg.SubmissionVariant:
         chromosome_coordinates = None
@@ -128,6 +129,7 @@ class SubmissionVariant(BaseModel):
             hgvs=self.hgvs,
             referenceCopyNumber=self.reference_copy_number,
             variantType=self.variant_type,
+            alternateDesignations=self.alternate_designations
         )
 
 
@@ -477,6 +479,7 @@ class _SubmissionClinvarSubmissionBase(BaseModel):
     #: Has exactly one elements in `variants`
     haplotype_single_variant_set: typing.Optional[SubmissionHaplotypeSet] = None
     local_id: typing.Optional[str] = None
+    submitted_assembly: typing.Optional[Assembly] = None
     local_key: typing.Optional[str] = None
     phase_unknown_set: typing.Optional[SubmissionPhaseUnknownSet] = None
     variant_set: typing.Optional[SubmissionVariantSet] = None
@@ -597,6 +600,7 @@ class SubmissionClinicalImpactSubmission(_SubmissionClinvarSubmissionBase):
             haplotypeSet=haplotype_set,
             haplotypeSingleVariantSet=haplotype_single_variant_set,
             localID=self.local_id,
+            submittedAssembly=self.submitted_assembly,
             localKey=self.local_key,
             phaseUnknownSet=phase_unknown_set,
             variantSet=variant_set,
