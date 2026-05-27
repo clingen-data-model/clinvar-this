@@ -151,27 +151,25 @@ class GksJsonTransformer(TransformIO, ABC):
         return ";".join(sorted([t.name for t in therapeutic.therapies]))
 
     @staticmethod
-    def get_comment(record: VariantClinicalSignificanceStatement) -> str | None:
+    def get_comment(
+        description: str | None,
+        therapeutic: TherapyGroup | MappableConcept | None,
+    ) -> str | None:
         """Get comment from a statement
 
-        :param record: GKS statement
-            Assumes ``name`` is provided in ``MappableConcept`` objects.
+        :param description: Description for GKS statement
+        :param therapeutic: Therapeutic for GKS statement, if one exists
         :return: Comment for a given statement.
             If the therapeutic is a substitute group, the original comment will be
             updated to make note that these are in substitution (deviating from ClinVar
             API schema which notes that the therapies are in combination)
         """
-        comment = record.description
-        if record.hasEvidenceLines:
-            target_proposition = record.hasEvidenceLines[0].targetProposition
-            if isinstance(target_proposition, VariantTherapeuticResponseProposition):
-                therapeutic = target_proposition.objectTherapeutic.root
-                if (
-                    isinstance(therapeutic, TherapyGroup)
-                    and therapeutic.membershipOperator == MembershipOperator.OR
-                ):
-                    comment = f"{record.description or ''} NOTE: These therapies are in substitution.".strip()
-        return comment
+        if therapeutic and (
+            isinstance(therapeutic, TherapyGroup)
+            and therapeutic.membershipOperator == MembershipOperator.OR
+        ):
+            description = f"{description or ''} NOTE: These therapies are in substitution.".strip()
+        return description
 
     @staticmethod
     def get_condition_set(
