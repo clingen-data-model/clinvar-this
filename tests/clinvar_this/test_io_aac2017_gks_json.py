@@ -1,5 +1,6 @@
 """Module for testing GKS AAC 2017 transformer"""
 
+from copy import deepcopy
 import re
 
 from deepdiff import DeepDiff
@@ -31,11 +32,7 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactClassificationDescription,
 )
 import pytest
-from ga4gh.va_spec.aac_2017 import (
-    VariantDiagnosticStudyStatement,
-    VariantPrognosticStudyStatement,
-    VariantTherapeuticResponseStudyStatement,
-)
+from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
 
 from clinvar_this import exceptions
 from clinvar_this.io.gks_json.aac_2017 import Aac2017GksJsonTransformer
@@ -70,35 +67,36 @@ def aac_2017_gks_json_data():
         / "io_gks_json"
         / "aac_2017_civic_assertions.json"
     ).open() as f:
-        return json.load(f)
+        return json.load(f)["gks_records"]
 
 
 @pytest.fixture(scope="module")
 def civic_aid6(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID6"""
-    return VariantTherapeuticResponseStudyStatement(
-        **aac_2017_gks_json_data["gks_records"][0]
-    )
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[0])
 
 
 @pytest.fixture(scope="module")
 def civic_aid7(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID7"""
-    return VariantTherapeuticResponseStudyStatement(
-        **aac_2017_gks_json_data["gks_records"][1]
-    )
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[1])
 
 
 @pytest.fixture(scope="module")
 def civic_aid20(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID20"""
-    return VariantPrognosticStudyStatement(**aac_2017_gks_json_data["gks_records"][2])
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[2])
 
 
 @pytest.fixture(scope="module")
 def civic_aid9(aac_2017_gks_json_data):
     """Create test fixture for CIViC AID9"""
-    return VariantDiagnosticStudyStatement(**aac_2017_gks_json_data["gks_records"][3])
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[3])
+
+@pytest.fixture(scope="module")
+def civic_aid200(aac_2017_gks_json_data):
+    """Create test fixture for CIViC AID200"""
+    return VariantClinicalSignificanceStatement(**aac_2017_gks_json_data[4])
 
 
 @pytest.fixture(scope="module")
@@ -157,7 +155,6 @@ def civic_aid7_submission():
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25265492"),
             ],
             drug_for_therapeutic_assertion="Dabrafenib;Trametinib",
-            date_last_evaluated="2026-04-02",
         ),
     )
 
@@ -240,7 +237,6 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
                         ),
                     ],
                     drug_for_therapeutic_assertion="Afatinib",
-                    date_last_evaluated="2025-05-27",
                 ),
             ),
             civic_aid7_submission,
@@ -290,7 +286,6 @@ def civic_aid9_submission():
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24705254"),
             ],
-            date_last_evaluated="2026-04-02",
         ),
     )
 
@@ -356,7 +351,6 @@ def civic_aid20_submission():
                 SubmissionCitation(url="https://civicdb.org/links/evidence/1552"),
                 SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/27404270"),
             ],
-            date_last_evaluated="2026-04-02",
         ),
     )
 
@@ -373,11 +367,11 @@ def civic_prognostic_submissions(
 
 
 def test_read_file(
-    aac_2017_gks_json_transformer, civic_aid6, civic_aid7, civic_aid9, civic_aid20
+    aac_2017_gks_json_transformer, civic_aid6, civic_aid7, civic_aid9, civic_aid20, civic_aid200
 ):
     """Ensure that read_file method works correctly"""
     path = DATA_DIR / "aac_2017_civic_assertions.json"
-    expected_assertions = [civic_aid6, civic_aid7, civic_aid20, civic_aid9]
+    expected_assertions = [civic_aid6, civic_aid7, civic_aid20, civic_aid9, civic_aid200]
 
     with path.open("rt") as inputf:
         actual = aac_2017_gks_json_transformer.read_file(file=inputf)
@@ -419,7 +413,9 @@ def test_records_to_submission_container(
 
     # Test TherapeuticSubstituteGroup
     civic_aid7_cpy = civic_aid7.model_copy()
-    civic_aid7_cpy.proposition.objectTherapeutic.root.membershipOperator = "OR"
+    civic_aid7_cpy.hasEvidenceLines[
+        0
+    ].targetProposition.objectTherapeutic.root.membershipOperator = "OR"
     actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid7_cpy], civic_metadata
     )
@@ -505,6 +501,43 @@ def test_citations(
     civic_aid20_cpy.hasEvidenceLines[0].hasEvidenceItems = None
     actual = aac_2017_gks_json_transformer.records_to_submission_container(
         [civic_aid20_cpy], civic_metadata
+    )
+    diff = DeepDiff(
+        actual.model_dump(exclude_none=True),
+        expected.model_dump(exclude_none=True),
+        ignore_order=True,
+    )
+    assert diff == {}
+
+
+def test_contributions(aac_2017_gks_json_transformer, civic_aid200, civic_metadata):
+    """Test that contributions work correctly"""
+    actual = aac_2017_gks_json_transformer.records_to_submission_container(
+        [civic_aid200], civic_metadata
+    )
+    assert len(actual.clinical_impact_submission) == 1
+
+    assert actual.clinical_impact_submission[0].clinical_impact_classification.date_last_evaluated == "2026-04-16"
+
+
+def test_no_evidence_lines(aac_2017_gks_json_transformer, civic_aid20_submission, amp_asco_cap_assertion_criteria,civic_aid20, civic_metadata):
+    """Test that statement with no evidence lines works correctly
+
+    Do not expect any citation or assertion_type_for_clinical_impact
+    """
+    assertion_copy = civic_aid20.model_copy(deep=True)
+    assertion_copy.hasEvidenceLines = None
+
+    actual = aac_2017_gks_json_transformer.records_to_submission_container(
+        [assertion_copy], civic_metadata
+    )
+
+    submission_copy = civic_aid20_submission.model_dump()
+    submission_copy["clinical_impact_classification"]["citation"] = []
+    submission_copy["clinical_impact_classification"]["assertion_type_for_clinical_impact"] = None
+    expected = SubmissionContainer(
+        assertion_criteria=amp_asco_cap_assertion_criteria,
+        clinical_impact_submission=[SubmissionClinicalImpactSubmission(**submission_copy)],
     )
     diff = DeepDiff(
         actual.model_dump(exclude_none=True),

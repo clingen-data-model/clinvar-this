@@ -7,15 +7,24 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 
 from types import MappingProxyType
 import typing
-from logzero import logger
+from logzero import logger, logfile
 from ga4gh.core.models import MappableConcept, iriReference
 from ga4gh.cat_vrs.models import CategoricalVariant, DefiningAlleleConstraint
 from ga4gh.va_spec.aac_2017 import (
-    VariantTherapeuticResponseStudyStatement,
-    VariantDiagnosticStudyStatement,
-    VariantPrognosticStudyStatement,
+    VariantClinicalSignificanceStatement,
+    AmpAscoCapClassificationCode,
 )
-from ga4gh.va_spec.base import Contribution, Document, EvidenceLine
+from ga4gh.va_spec.base import (
+    Contribution,
+    DiagnosticPredicate,
+    Document,
+    EvidenceLine,
+    PrognosticPredicate,
+    TherapeuticResponsePredicate,
+    VariantDiagnosticProposition,
+    VariantPrognosticProposition,
+    VariantTherapeuticResponseProposition,
+)
 from ga4gh.vrs.models import Syntax, Expression
 
 from clinvar_api.models import (
@@ -35,25 +44,38 @@ from clinvar_api.models.sub_payload import (
 )
 from clinvar_api.msg.sub_payload import (
     AlleleOrigin,
+    SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
 
 from clinvar_this.io.gks_json.base import BatchMetadata, GksJsonTransformer
 
+logfile("aac_2017.log")
+
 
 # Mapping from GKS classification code to ClinVar clinical impact classification
 _IMPACT_CLASS_MAPPING = MappingProxyType(
     {
-        "Tier I": SomaticClinicalImpactClassificationDescription.STRONG,
-        "Tier II": SomaticClinicalImpactClassificationDescription.POTENTIAL,
-        "Tier III": SomaticClinicalImpactClassificationDescription.UNKNOWN,
-        "Tier IV": SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
+        AmpAscoCapClassificationCode.TIER_1: SomaticClinicalImpactClassificationDescription.STRONG,
+        AmpAscoCapClassificationCode.TIER_2: SomaticClinicalImpactClassificationDescription.POTENTIAL,
+        AmpAscoCapClassificationCode.TIER_3: SomaticClinicalImpactClassificationDescription.UNKNOWN,
+        AmpAscoCapClassificationCode.TIER_4: SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
     }
 )
 
 
 class Aac2017GksJsonTransformer(GksJsonTransformer):
     """Class for transforming AMP/ASCO/CAP 2017 GKS formatted data to define submissions"""
+
+    # Mapping from GKS predicate type to ClinVar assertion type for clinical impact
+    gks_predicate_to_assertion = {
+        TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
+        TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
+        DiagnosticPredicate.EXCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_EXCLUDES_DIAGNOSIS,
+        DiagnosticPredicate.INCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_SUPPORTS_DIAGNOSIS,
+        PrognosticPredicate.BETTER_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_BETTER_OUTCOME,
+        PrognosticPredicate.WORSE_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
+    }
 
     @staticmethod
     def _get_variant_hgvs(
@@ -231,9 +253,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
 
     def _get_clinical_impact_submission(
         self,
-        record: VariantTherapeuticResponseStudyStatement
-        | VariantDiagnosticStudyStatement
-        | VariantPrognosticStudyStatement,
+        record: VariantClinicalSignificanceStatement,
         observed_in: list[SubmissionObservedInSomatic],
         variant_hgvs: str | None = None,
         submitted_assembly: Assembly | None = None,
@@ -247,6 +267,16 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
 
         Local Key will use the `record`'s ID.
 
+        Therapeutics and clinical impact assertion type are derived from the statement's
+        evidence lines.
+
+        The first evidence line with a supported clinical impact target proposition is
+        used to set `assertion_type_for_clinical_impact` from
+        `targetProposition.predicate`.
+
+        If that target proposition includes `objectTherapeutic`, its therapeutics are
+        used to set `drug_for_therapeutic_assertion`.
+
         :param record: The therapeutic, diagnostic, or prognostic assertion
         :param observed_in: List of distinct observations
         :param variant_hgvs: The HGVS expression for a variant, if found
@@ -255,13 +285,34 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         :return: The clinical impact submission for a therapeutic, diagnostic, or
             prognostic assertion
         """
-        proposition = record.proposition
 
-        if hasattr(proposition, "objectTherapeutic"):
-            therapeutic = proposition.objectTherapeutic.root
-            drug_for_therapeutic_assertion = self.get_drugs(therapeutic)
-        else:
-            drug_for_therapeutic_assertion = None
+        target_proposition = None
+        therapeutic = None
+        drug_for_therapeutic_assertion = None
+        assertion_type_for_clinical_impact = None
+
+        for el in record.hasEvidenceLines or []:
+            target_proposition = el.targetProposition
+
+            if not isinstance(
+                target_proposition,
+                VariantDiagnosticProposition
+                | VariantPrognosticProposition
+                | VariantTherapeuticResponseProposition,
+            ):
+                continue
+
+            assertion_type_for_clinical_impact = self.gks_predicate_to_assertion[
+                target_proposition.predicate
+            ]
+
+            if isinstance(target_proposition, VariantTherapeuticResponseProposition):
+                therapeutic = target_proposition.objectTherapeutic.root
+                drug_for_therapeutic_assertion = self.get_drugs(therapeutic)
+
+            break
+
+        proposition = record.proposition
 
         return SubmissionClinicalImpactSubmission(
             record_status=RecordStatus.NOVEL,
@@ -275,23 +326,19 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
                 clinical_impact_classification_description=_IMPACT_CLASS_MAPPING[
                     record.classification.primaryCoding.code.root
                 ],
-                assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
-                    proposition.predicate
-                ],
-                comment=self.get_comment(record),
-                citation=self._get_citations(record.hasEvidenceLines),
+                assertion_type_for_clinical_impact=assertion_type_for_clinical_impact,
+                comment=self.get_comment(record.description, therapeutic),
+                citation=self._get_citations(record.hasEvidenceLines or []),
                 drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
-                date_last_evaluated=self._get_date_last_evaluated(record.contributions),
+                date_last_evaluated=self._get_date_last_evaluated(
+                    record.contributions or []
+                ),
             ),
         )
 
     def records_to_submission_container(
         self,
-        statements: typing.List[
-            VariantTherapeuticResponseStudyStatement
-            | VariantDiagnosticStudyStatement
-            | VariantPrognosticStudyStatement
-        ],
+        statements: typing.List[VariantClinicalSignificanceStatement],
         batch_metadata: BatchMetadata,
     ) -> SubmissionContainer:
         """Transform GKS records to submission container data structures
