@@ -293,7 +293,12 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
         for el in record.hasEvidenceLines or []:
             target_proposition = el.targetProposition
 
-            if not isinstance(target_proposition, VariantDiagnosticProposition | VariantPrognosticProposition | VariantTherapeuticResponseProposition):
+            if not isinstance(
+                target_proposition,
+                VariantDiagnosticProposition
+                | VariantPrognosticProposition
+                | VariantTherapeuticResponseProposition,
+            ):
                 continue
 
             assertion_type_for_clinical_impact = self.gks_predicate_to_assertion[
@@ -322,7 +327,7 @@ class Aac2017GksJsonTransformer(GksJsonTransformer):
                 ],
                 assertion_type_for_clinical_impact=assertion_type_for_clinical_impact,
                 comment=self.get_comment(record),
-                citation=self._get_citations(record.hasEvidenceLines or []) ,
+                citation=self._get_citations(record.hasEvidenceLines or []),
                 drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
                 date_last_evaluated=self._get_date_last_evaluated(
                     record.contributions or []
