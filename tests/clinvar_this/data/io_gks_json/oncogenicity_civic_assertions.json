@@ -1,0 +1,1335 @@
+{
+  "gks_records": [
+    {
+      "id": "civic.aid:202",
+      "type": "Statement",
+      "description": "Published sequencing studies have shown that RET mutations are very common in medullary thryoid carcinoma (MTC) and M918T is the most common specific variant, especially in the MEN2B clinical subtype of familial disease (civic.EID:78) but also in sporadic cases(civic.EID:12800). M918T mutations may predict worse outcomes (civic.EID:74). Biochemical and functional characterization demonstrates that the M918T mutation leads to functional activation of RET relative to wild-type through multiple complementary mechanisms, including increased ATP affinity (>10-fold) and complex stability, reduced conformational rigidity, and the promotion of ligand-independent dimerization and autophosphorylation (civic.EID:12805). Exogenous expression has been shown to induce transformation of Ba/F3 cells (civic.EID:11723), and drive colony formation in NIH3T3 cells (civic.EID:12709, OS2). RET M918T occurs in the region of the tyrosine kinase domain which is associated with multiple endocrine neoplasia type 2 B (OM1). RET M918T is predicted to be deleterious (CHASMplus score 0.314 > VECS gene-specific cutoff of 0.22, OP1). Eleven instances of the variant occur in cancerhotspots.org (V2): 6 Thyroid, 4 Adrenal Gland, 1 Breast (OP3). The variant is absent in gnomAD database (v4.1.0, OP4). Together these criteria indicate that M918T is likely oncogenic, with a score of 9.",
+      "specifiedBy": {
+        "type": "Method",
+        "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+        "methodType": "guideline",
+        "reportedIn": {
+          "id": "pmid:35101336",
+          "type": "Document",
+          "name": "Horak et al., 2022, Genet Med.",
+          "title": "Standards for the classification of pathogenicity of somatic variants in cancer (oncogenicity): Joint recommendations of Clinical Genome Resource (ClinGen), Cancer Genomics Consortium (CGC), and Variant Interpretation for Cancer Consortium (VICC)",
+          "urls": [
+            "https://doi.org/10.1016/j.gim.2022.01.001",
+            "https://pubmed.ncbi.nlm.nih.gov/35101336/"
+          ],
+          "doi": "10.1016/j.gim.2022.01.001",
+          "pmid": "35101336"
+        }
+      },
+      "contributions": [
+        {
+          "type": "Contribution",
+          "contributor": {
+            "id": "civic.organization:1",
+            "type": "Agent",
+            "name": "CIViC",
+            "description": "The CIViC Organization (formerly \u201cThe McDonnell Genome Institute\u201d CIViC organization) comprises the founders, developers, editors, curators, and administrators who build and maintain the knowledgebase, based at Washington University in St. Louis. This group is dedicated to ensuring that high-quality cancer variant interpretations are broadly accessible for precision oncology. One of their main roles is evaluating and synthesizing crowdsourced community contributions into formal clinical Assertions. Once these Assertions meet the strict criteria of the CIViC standard operating procedure, core approval members approve them for 1-star submission to the ClinVar CIViC organization.",
+            "extensions": [
+              {
+                "name": "is_approved_vcep",
+                "value": false
+              }
+            ]
+          },
+          "activityType": "approval.last_reviewed",
+          "date": "2026-04-16"
+        }
+      ],
+      "reportedIn": [
+        "https://civicdb.org/links/assertion/202"
+      ],
+      "proposition": {
+        "type": "VariantOncogenicityProposition",
+        "subjectVariant": {
+          "id": "civic.mpid:113",
+          "type": "CategoricalVariant",
+          "name": "RET M918T",
+          "description": "RET M918T is the most common somatically acquired mutation in medullary thyroid cancer (MTC). While there currently are no RET-specific inhibiting agents, promiscuous kinase inhibitors have seen some success in treating RET overactivity. Data suggests however, that the M918T mutation may lead to drug resistance, especially against the VEGFR-inhibitor motesanib. It has also been suggested that RET M918T leads to more aggressive MTC with a poorer prognosis.",
+          "aliases": [
+            "MET918THR"
+          ],
+          "extensions": [
+            {
+              "name": "CIViC Molecular Profile Score",
+              "value": 139.0
+            },
+            {
+              "name": "expressions",
+              "value": [
+                {
+                  "syntax": "hgvs.c",
+                  "value": "NM_020975.4:c.2753T>C"
+                },
+                {
+                  "syntax": "hgvs.p",
+                  "value": "NP_065681.1:p.Met918Thr"
+                },
+                {
+                  "syntax": "hgvs.c",
+                  "value": "ENST00000355710.3:c.2753T>C"
+                },
+                {
+                  "syntax": "hgvs.g",
+                  "value": "NC_000010.10:g.43617416T>C"
+                }
+              ]
+            },
+            {
+              "name": "CIViC representative coordinate",
+              "value": {
+                "chromosome": "10",
+                "start": 43617416,
+                "stop": 43617416,
+                "reference_bases": "T",
+                "variant_bases": "C",
+                "ensembl_version": 75,
+                "representative_transcript": "ENST00000355710.3",
+                "reference_build": "GRCh37",
+                "type": "coordinates"
+              }
+            }
+          ],
+          "mappings": [
+            {
+              "coding": {
+                "id": "civic.mpid:113",
+                "system": "https://civicdb.org/links/molecular_profile/",
+                "code": "113"
+              },
+              "relation": "exactMatch"
+            },
+            {
+              "coding": {
+                "id": "civic.vid:113",
+                "extensions": [
+                  {
+                    "name": "subtype",
+                    "value": "gene_variant"
+                  },
+                  {
+                    "name": "variant_types",
+                    "value": [
+                      {
+                        "coding": {
+                          "id": "civic.variant_type:47",
+                          "name": "Missense Variant",
+                          "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                          "code": "SO:0001583"
+                        },
+                        "relation": "exactMatch"
+                      }
+                    ]
+                  }
+                ],
+                "name": "M918T",
+                "system": "https://civicdb.org/links/variant/",
+                "code": "113"
+              },
+              "relation": "exactMatch"
+            },
+            {
+              "coding": {
+                "system": "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=",
+                "code": "CA009082"
+              },
+              "relation": "relatedMatch"
+            },
+            {
+              "coding": {
+                "system": "https://www.ncbi.nlm.nih.gov/clinvar/variation/",
+                "code": "13919"
+              },
+              "relation": "relatedMatch"
+            },
+            {
+              "coding": {
+                "system": "https://www.ncbi.nlm.nih.gov/snp/",
+                "code": "rs74799832"
+              },
+              "relation": "relatedMatch"
+            }
+          ]
+        },
+        "geneContextQualifier": {
+          "id": "civic.gid:42",
+          "extensions": [
+            {
+              "name": "aliases",
+              "value": [
+                "CDHF12",
+                "CDHR16",
+                "HSCR1",
+                "MEN2A",
+                "MEN2B",
+                "MTC1",
+                "PTC",
+                "RET",
+                "RET-ELE1"
+              ]
+            },
+            {
+              "name": "description",
+              "value": "RET mutations and the RET fusion RET-PTC lead to activation of this tyrosine kinase receptor and are associated with thyroid cancers. RET point mutations are the most common mutations identified in medullary thyroid cancer (MTC) with germline and somatic mutations in RET associated with hereditary and sporadic forms, respectively. The most common somatic form mutation is M918T (exon 16) and a variety of other mutations effecting exons 10, 11 and 15 have been described. The prognostic significance of these mutations have been hotly debated in the field, however, data suggests that some RET mutation may confer drug resistance. Highly selective and well-tolerated RET inhibitors, selpercatinib (LOXO-292) and pralsetinib (BLU-667), have been FDA approved recently for the treatment of RET fusion-positive non-small-cell lung cancer, RET fusion-positive thyroid cancer and RET-mutant medullary thyroid cancer."
+            }
+          ],
+          "conceptType": "Gene",
+          "name": "RET",
+          "mappings": [
+            {
+              "coding": {
+                "id": "ncbigene:5979",
+                "system": "https://www.ncbi.nlm.nih.gov/gene/",
+                "code": "5979"
+              },
+              "relation": "exactMatch"
+            }
+          ]
+        },
+        "alleleOriginQualifier": {
+          "extensions": [
+            {
+              "name": "civic_variant_origin",
+              "value": "SOMATIC"
+            }
+          ],
+          "name": "somatic"
+        },
+        "predicate": "isOncogenicFor",
+        "objectTumorType": {
+          "id": "civic.did:15",
+          "conceptType": "Disease",
+          "name": "Medullary Thyroid Carcinoma",
+          "mappings": [
+            {
+              "coding": {
+                "system": "https://disease-ontology.org/?id=",
+                "code": "DOID:3973"
+              },
+              "relation": "exactMatch"
+            }
+          ]
+        }
+      },
+      "direction": "supports",
+      "strength": {
+        "primaryCoding": {
+          "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+          "code": "likely"
+        }
+      },
+      "classification": {
+        "primaryCoding": {
+          "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+          "code": "likely oncogenic"
+        }
+      },
+      "hasEvidenceLines": [
+        {
+          "type": "EvidenceLine",
+          "extensions": [
+            {
+              "name": "citations",
+              "value": [
+                "https://civicdb.org/links/evidence/74",
+                "https://civicdb.org/links/evidence/12800",
+                "https://civicdb.org/links/evidence/78",
+                "https://civicdb.org/links/evidence/12711",
+                "https://civicdb.org/links/evidence/12805",
+                "https://civicdb.org/links/evidence/11723",
+                "https://civicdb.org/links/evidence/12709"
+              ]
+            }
+          ],
+          "specifiedBy": {
+            "type": "Method",
+            "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+            "methodType": "OM1",
+            "reportedIn": {
+              "id": "pmid:35101336",
+              "type": "Document",
+              "name": "Horak et al., 2022, Genet Med.",
+              "title": "Standards for the classification of pathogenicity of somatic variants in cancer (oncogenicity): Joint recommendations of Clinical Genome Resource (ClinGen), Cancer Genomics Consortium (CGC), and Variant Interpretation for Cancer Consortium (VICC)",
+              "urls": [
+                "https://doi.org/10.1016/j.gim.2022.01.001",
+                "https://pubmed.ncbi.nlm.nih.gov/35101336/"
+              ],
+              "doi": "10.1016/j.gim.2022.01.001",
+              "pmid": "35101336"
+            }
+          },
+          "targetProposition": {
+            "type": "VariantOncogenicityProposition",
+            "subjectVariant": {
+              "id": "civic.mpid:113",
+              "type": "CategoricalVariant",
+              "name": "RET M918T",
+              "description": "RET M918T is the most common somatically acquired mutation in medullary thyroid cancer (MTC). While there currently are no RET-specific inhibiting agents, promiscuous kinase inhibitors have seen some success in treating RET overactivity. Data suggests however, that the M918T mutation may lead to drug resistance, especially against the VEGFR-inhibitor motesanib. It has also been suggested that RET M918T leads to more aggressive MTC with a poorer prognosis.",
+              "aliases": [
+                "MET918THR"
+              ],
+              "extensions": [
+                {
+                  "name": "CIViC Molecular Profile Score",
+                  "value": 139.0
+                },
+                {
+                  "name": "expressions",
+                  "value": [
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "NM_020975.4:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.p",
+                      "value": "NP_065681.1:p.Met918Thr"
+                    },
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "ENST00000355710.3:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.g",
+                      "value": "NC_000010.10:g.43617416T>C"
+                    }
+                  ]
+                },
+                {
+                  "name": "CIViC representative coordinate",
+                  "value": {
+                    "chromosome": "10",
+                    "start": 43617416,
+                    "stop": 43617416,
+                    "reference_bases": "T",
+                    "variant_bases": "C",
+                    "ensembl_version": 75,
+                    "representative_transcript": "ENST00000355710.3",
+                    "reference_build": "GRCh37",
+                    "type": "coordinates"
+                  }
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "civic.mpid:113",
+                    "system": "https://civicdb.org/links/molecular_profile/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "id": "civic.vid:113",
+                    "extensions": [
+                      {
+                        "name": "subtype",
+                        "value": "gene_variant"
+                      },
+                      {
+                        "name": "variant_types",
+                        "value": [
+                          {
+                            "coding": {
+                              "id": "civic.variant_type:47",
+                              "name": "Missense Variant",
+                              "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                              "code": "SO:0001583"
+                            },
+                            "relation": "exactMatch"
+                          }
+                        ]
+                      }
+                    ],
+                    "name": "M918T",
+                    "system": "https://civicdb.org/links/variant/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=",
+                    "code": "CA009082"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/clinvar/variation/",
+                    "code": "13919"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/snp/",
+                    "code": "rs74799832"
+                  },
+                  "relation": "relatedMatch"
+                }
+              ]
+            },
+            "geneContextQualifier": {
+              "id": "civic.gid:42",
+              "extensions": [
+                {
+                  "name": "aliases",
+                  "value": [
+                    "CDHF12",
+                    "CDHR16",
+                    "HSCR1",
+                    "MEN2A",
+                    "MEN2B",
+                    "MTC1",
+                    "PTC",
+                    "RET",
+                    "RET-ELE1"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "value": "RET mutations and the RET fusion RET-PTC lead to activation of this tyrosine kinase receptor and are associated with thyroid cancers. RET point mutations are the most common mutations identified in medullary thyroid cancer (MTC) with germline and somatic mutations in RET associated with hereditary and sporadic forms, respectively. The most common somatic form mutation is M918T (exon 16) and a variety of other mutations effecting exons 10, 11 and 15 have been described. The prognostic significance of these mutations have been hotly debated in the field, however, data suggests that some RET mutation may confer drug resistance. Highly selective and well-tolerated RET inhibitors, selpercatinib (LOXO-292) and pralsetinib (BLU-667), have been FDA approved recently for the treatment of RET fusion-positive non-small-cell lung cancer, RET fusion-positive thyroid cancer and RET-mutant medullary thyroid cancer."
+                }
+              ],
+              "conceptType": "Gene",
+              "name": "RET",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncbigene:5979",
+                    "system": "https://www.ncbi.nlm.nih.gov/gene/",
+                    "code": "5979"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            "alleleOriginQualifier": {
+              "extensions": [
+                {
+                  "name": "civic_variant_origin",
+                  "value": "SOMATIC"
+                }
+              ],
+              "name": "somatic"
+            },
+            "predicate": "isOncogenicFor",
+            "objectTumorType": {
+              "id": "civic.did:15",
+              "conceptType": "Disease",
+              "name": "Medullary Thyroid Carcinoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "system": "https://disease-ontology.org/?id=",
+                    "code": "DOID:3973"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            }
+          },
+          "directionOfEvidenceProvided": "supports",
+          "strengthOfEvidenceProvided": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "moderate"
+            }
+          },
+          "scoreOfEvidenceProvided": 2.0,
+          "evidenceOutcome": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "OM1"
+            }
+          }
+        },
+        {
+          "type": "EvidenceLine",
+          "extensions": [
+            {
+              "name": "citations",
+              "value": [
+                "https://civicdb.org/links/evidence/74",
+                "https://civicdb.org/links/evidence/12800",
+                "https://civicdb.org/links/evidence/78",
+                "https://civicdb.org/links/evidence/12711",
+                "https://civicdb.org/links/evidence/12805",
+                "https://civicdb.org/links/evidence/11723",
+                "https://civicdb.org/links/evidence/12709"
+              ]
+            }
+          ],
+          "specifiedBy": {
+            "type": "Method",
+            "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+            "methodType": "OS2",
+            "reportedIn": {
+              "id": "pmid:35101336",
+              "type": "Document",
+              "name": "Horak et al., 2022, Genet Med.",
+              "title": "Standards for the classification of pathogenicity of somatic variants in cancer (oncogenicity): Joint recommendations of Clinical Genome Resource (ClinGen), Cancer Genomics Consortium (CGC), and Variant Interpretation for Cancer Consortium (VICC)",
+              "urls": [
+                "https://doi.org/10.1016/j.gim.2022.01.001",
+                "https://pubmed.ncbi.nlm.nih.gov/35101336/"
+              ],
+              "doi": "10.1016/j.gim.2022.01.001",
+              "pmid": "35101336"
+            }
+          },
+          "targetProposition": {
+            "type": "VariantOncogenicityProposition",
+            "subjectVariant": {
+              "id": "civic.mpid:113",
+              "type": "CategoricalVariant",
+              "name": "RET M918T",
+              "description": "RET M918T is the most common somatically acquired mutation in medullary thyroid cancer (MTC). While there currently are no RET-specific inhibiting agents, promiscuous kinase inhibitors have seen some success in treating RET overactivity. Data suggests however, that the M918T mutation may lead to drug resistance, especially against the VEGFR-inhibitor motesanib. It has also been suggested that RET M918T leads to more aggressive MTC with a poorer prognosis.",
+              "aliases": [
+                "MET918THR"
+              ],
+              "extensions": [
+                {
+                  "name": "CIViC Molecular Profile Score",
+                  "value": 139.0
+                },
+                {
+                  "name": "expressions",
+                  "value": [
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "NM_020975.4:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.p",
+                      "value": "NP_065681.1:p.Met918Thr"
+                    },
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "ENST00000355710.3:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.g",
+                      "value": "NC_000010.10:g.43617416T>C"
+                    }
+                  ]
+                },
+                {
+                  "name": "CIViC representative coordinate",
+                  "value": {
+                    "chromosome": "10",
+                    "start": 43617416,
+                    "stop": 43617416,
+                    "reference_bases": "T",
+                    "variant_bases": "C",
+                    "ensembl_version": 75,
+                    "representative_transcript": "ENST00000355710.3",
+                    "reference_build": "GRCh37",
+                    "type": "coordinates"
+                  }
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "civic.mpid:113",
+                    "system": "https://civicdb.org/links/molecular_profile/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "id": "civic.vid:113",
+                    "extensions": [
+                      {
+                        "name": "subtype",
+                        "value": "gene_variant"
+                      },
+                      {
+                        "name": "variant_types",
+                        "value": [
+                          {
+                            "coding": {
+                              "id": "civic.variant_type:47",
+                              "name": "Missense Variant",
+                              "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                              "code": "SO:0001583"
+                            },
+                            "relation": "exactMatch"
+                          }
+                        ]
+                      }
+                    ],
+                    "name": "M918T",
+                    "system": "https://civicdb.org/links/variant/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=",
+                    "code": "CA009082"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/clinvar/variation/",
+                    "code": "13919"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/snp/",
+                    "code": "rs74799832"
+                  },
+                  "relation": "relatedMatch"
+                }
+              ]
+            },
+            "geneContextQualifier": {
+              "id": "civic.gid:42",
+              "extensions": [
+                {
+                  "name": "aliases",
+                  "value": [
+                    "CDHF12",
+                    "CDHR16",
+                    "HSCR1",
+                    "MEN2A",
+                    "MEN2B",
+                    "MTC1",
+                    "PTC",
+                    "RET",
+                    "RET-ELE1"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "value": "RET mutations and the RET fusion RET-PTC lead to activation of this tyrosine kinase receptor and are associated with thyroid cancers. RET point mutations are the most common mutations identified in medullary thyroid cancer (MTC) with germline and somatic mutations in RET associated with hereditary and sporadic forms, respectively. The most common somatic form mutation is M918T (exon 16) and a variety of other mutations effecting exons 10, 11 and 15 have been described. The prognostic significance of these mutations have been hotly debated in the field, however, data suggests that some RET mutation may confer drug resistance. Highly selective and well-tolerated RET inhibitors, selpercatinib (LOXO-292) and pralsetinib (BLU-667), have been FDA approved recently for the treatment of RET fusion-positive non-small-cell lung cancer, RET fusion-positive thyroid cancer and RET-mutant medullary thyroid cancer."
+                }
+              ],
+              "conceptType": "Gene",
+              "name": "RET",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncbigene:5979",
+                    "system": "https://www.ncbi.nlm.nih.gov/gene/",
+                    "code": "5979"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            "alleleOriginQualifier": {
+              "extensions": [
+                {
+                  "name": "civic_variant_origin",
+                  "value": "SOMATIC"
+                }
+              ],
+              "name": "somatic"
+            },
+            "predicate": "isOncogenicFor",
+            "objectTumorType": {
+              "id": "civic.did:15",
+              "conceptType": "Disease",
+              "name": "Medullary Thyroid Carcinoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "system": "https://disease-ontology.org/?id=",
+                    "code": "DOID:3973"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            }
+          },
+          "directionOfEvidenceProvided": "supports",
+          "strengthOfEvidenceProvided": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "strong"
+            }
+          },
+          "scoreOfEvidenceProvided": 4.0,
+          "evidenceOutcome": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "OS2"
+            }
+          }
+        },
+        {
+          "type": "EvidenceLine",
+          "extensions": [
+            {
+              "name": "citations",
+              "value": [
+                "https://civicdb.org/links/evidence/74",
+                "https://civicdb.org/links/evidence/12800",
+                "https://civicdb.org/links/evidence/78",
+                "https://civicdb.org/links/evidence/12711",
+                "https://civicdb.org/links/evidence/12805",
+                "https://civicdb.org/links/evidence/11723",
+                "https://civicdb.org/links/evidence/12709"
+              ]
+            }
+          ],
+          "specifiedBy": {
+            "type": "Method",
+            "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+            "methodType": "OP4",
+            "reportedIn": {
+              "id": "pmid:35101336",
+              "type": "Document",
+              "name": "Horak et al., 2022, Genet Med.",
+              "title": "Standards for the classification of pathogenicity of somatic variants in cancer (oncogenicity): Joint recommendations of Clinical Genome Resource (ClinGen), Cancer Genomics Consortium (CGC), and Variant Interpretation for Cancer Consortium (VICC)",
+              "urls": [
+                "https://doi.org/10.1016/j.gim.2022.01.001",
+                "https://pubmed.ncbi.nlm.nih.gov/35101336/"
+              ],
+              "doi": "10.1016/j.gim.2022.01.001",
+              "pmid": "35101336"
+            }
+          },
+          "targetProposition": {
+            "type": "VariantOncogenicityProposition",
+            "subjectVariant": {
+              "id": "civic.mpid:113",
+              "type": "CategoricalVariant",
+              "name": "RET M918T",
+              "description": "RET M918T is the most common somatically acquired mutation in medullary thyroid cancer (MTC). While there currently are no RET-specific inhibiting agents, promiscuous kinase inhibitors have seen some success in treating RET overactivity. Data suggests however, that the M918T mutation may lead to drug resistance, especially against the VEGFR-inhibitor motesanib. It has also been suggested that RET M918T leads to more aggressive MTC with a poorer prognosis.",
+              "aliases": [
+                "MET918THR"
+              ],
+              "extensions": [
+                {
+                  "name": "CIViC Molecular Profile Score",
+                  "value": 139.0
+                },
+                {
+                  "name": "expressions",
+                  "value": [
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "NM_020975.4:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.p",
+                      "value": "NP_065681.1:p.Met918Thr"
+                    },
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "ENST00000355710.3:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.g",
+                      "value": "NC_000010.10:g.43617416T>C"
+                    }
+                  ]
+                },
+                {
+                  "name": "CIViC representative coordinate",
+                  "value": {
+                    "chromosome": "10",
+                    "start": 43617416,
+                    "stop": 43617416,
+                    "reference_bases": "T",
+                    "variant_bases": "C",
+                    "ensembl_version": 75,
+                    "representative_transcript": "ENST00000355710.3",
+                    "reference_build": "GRCh37",
+                    "type": "coordinates"
+                  }
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "civic.mpid:113",
+                    "system": "https://civicdb.org/links/molecular_profile/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "id": "civic.vid:113",
+                    "extensions": [
+                      {
+                        "name": "subtype",
+                        "value": "gene_variant"
+                      },
+                      {
+                        "name": "variant_types",
+                        "value": [
+                          {
+                            "coding": {
+                              "id": "civic.variant_type:47",
+                              "name": "Missense Variant",
+                              "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                              "code": "SO:0001583"
+                            },
+                            "relation": "exactMatch"
+                          }
+                        ]
+                      }
+                    ],
+                    "name": "M918T",
+                    "system": "https://civicdb.org/links/variant/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=",
+                    "code": "CA009082"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/clinvar/variation/",
+                    "code": "13919"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/snp/",
+                    "code": "rs74799832"
+                  },
+                  "relation": "relatedMatch"
+                }
+              ]
+            },
+            "geneContextQualifier": {
+              "id": "civic.gid:42",
+              "extensions": [
+                {
+                  "name": "aliases",
+                  "value": [
+                    "CDHF12",
+                    "CDHR16",
+                    "HSCR1",
+                    "MEN2A",
+                    "MEN2B",
+                    "MTC1",
+                    "PTC",
+                    "RET",
+                    "RET-ELE1"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "value": "RET mutations and the RET fusion RET-PTC lead to activation of this tyrosine kinase receptor and are associated with thyroid cancers. RET point mutations are the most common mutations identified in medullary thyroid cancer (MTC) with germline and somatic mutations in RET associated with hereditary and sporadic forms, respectively. The most common somatic form mutation is M918T (exon 16) and a variety of other mutations effecting exons 10, 11 and 15 have been described. The prognostic significance of these mutations have been hotly debated in the field, however, data suggests that some RET mutation may confer drug resistance. Highly selective and well-tolerated RET inhibitors, selpercatinib (LOXO-292) and pralsetinib (BLU-667), have been FDA approved recently for the treatment of RET fusion-positive non-small-cell lung cancer, RET fusion-positive thyroid cancer and RET-mutant medullary thyroid cancer."
+                }
+              ],
+              "conceptType": "Gene",
+              "name": "RET",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncbigene:5979",
+                    "system": "https://www.ncbi.nlm.nih.gov/gene/",
+                    "code": "5979"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            "alleleOriginQualifier": {
+              "extensions": [
+                {
+                  "name": "civic_variant_origin",
+                  "value": "SOMATIC"
+                }
+              ],
+              "name": "somatic"
+            },
+            "predicate": "isOncogenicFor",
+            "objectTumorType": {
+              "id": "civic.did:15",
+              "conceptType": "Disease",
+              "name": "Medullary Thyroid Carcinoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "system": "https://disease-ontology.org/?id=",
+                    "code": "DOID:3973"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            }
+          },
+          "directionOfEvidenceProvided": "supports",
+          "strengthOfEvidenceProvided": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "supporting"
+            }
+          },
+          "scoreOfEvidenceProvided": 1.0,
+          "evidenceOutcome": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "OP4"
+            }
+          }
+        },
+        {
+          "type": "EvidenceLine",
+          "extensions": [
+            {
+              "name": "citations",
+              "value": [
+                "https://civicdb.org/links/evidence/74",
+                "https://civicdb.org/links/evidence/12800",
+                "https://civicdb.org/links/evidence/78",
+                "https://civicdb.org/links/evidence/12711",
+                "https://civicdb.org/links/evidence/12805",
+                "https://civicdb.org/links/evidence/11723",
+                "https://civicdb.org/links/evidence/12709"
+              ]
+            }
+          ],
+          "specifiedBy": {
+            "type": "Method",
+            "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+            "methodType": "OP1",
+            "reportedIn": {
+              "id": "pmid:35101336",
+              "type": "Document",
+              "name": "Horak et al., 2022, Genet Med.",
+              "title": "Standards for the classification of pathogenicity of somatic variants in cancer (oncogenicity): Joint recommendations of Clinical Genome Resource (ClinGen), Cancer Genomics Consortium (CGC), and Variant Interpretation for Cancer Consortium (VICC)",
+              "urls": [
+                "https://doi.org/10.1016/j.gim.2022.01.001",
+                "https://pubmed.ncbi.nlm.nih.gov/35101336/"
+              ],
+              "doi": "10.1016/j.gim.2022.01.001",
+              "pmid": "35101336"
+            }
+          },
+          "targetProposition": {
+            "type": "VariantOncogenicityProposition",
+            "subjectVariant": {
+              "id": "civic.mpid:113",
+              "type": "CategoricalVariant",
+              "name": "RET M918T",
+              "description": "RET M918T is the most common somatically acquired mutation in medullary thyroid cancer (MTC). While there currently are no RET-specific inhibiting agents, promiscuous kinase inhibitors have seen some success in treating RET overactivity. Data suggests however, that the M918T mutation may lead to drug resistance, especially against the VEGFR-inhibitor motesanib. It has also been suggested that RET M918T leads to more aggressive MTC with a poorer prognosis.",
+              "aliases": [
+                "MET918THR"
+              ],
+              "extensions": [
+                {
+                  "name": "CIViC Molecular Profile Score",
+                  "value": 139.0
+                },
+                {
+                  "name": "expressions",
+                  "value": [
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "NM_020975.4:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.p",
+                      "value": "NP_065681.1:p.Met918Thr"
+                    },
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "ENST00000355710.3:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.g",
+                      "value": "NC_000010.10:g.43617416T>C"
+                    }
+                  ]
+                },
+                {
+                  "name": "CIViC representative coordinate",
+                  "value": {
+                    "chromosome": "10",
+                    "start": 43617416,
+                    "stop": 43617416,
+                    "reference_bases": "T",
+                    "variant_bases": "C",
+                    "ensembl_version": 75,
+                    "representative_transcript": "ENST00000355710.3",
+                    "reference_build": "GRCh37",
+                    "type": "coordinates"
+                  }
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "civic.mpid:113",
+                    "system": "https://civicdb.org/links/molecular_profile/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "id": "civic.vid:113",
+                    "extensions": [
+                      {
+                        "name": "subtype",
+                        "value": "gene_variant"
+                      },
+                      {
+                        "name": "variant_types",
+                        "value": [
+                          {
+                            "coding": {
+                              "id": "civic.variant_type:47",
+                              "name": "Missense Variant",
+                              "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                              "code": "SO:0001583"
+                            },
+                            "relation": "exactMatch"
+                          }
+                        ]
+                      }
+                    ],
+                    "name": "M918T",
+                    "system": "https://civicdb.org/links/variant/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=",
+                    "code": "CA009082"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/clinvar/variation/",
+                    "code": "13919"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/snp/",
+                    "code": "rs74799832"
+                  },
+                  "relation": "relatedMatch"
+                }
+              ]
+            },
+            "geneContextQualifier": {
+              "id": "civic.gid:42",
+              "extensions": [
+                {
+                  "name": "aliases",
+                  "value": [
+                    "CDHF12",
+                    "CDHR16",
+                    "HSCR1",
+                    "MEN2A",
+                    "MEN2B",
+                    "MTC1",
+                    "PTC",
+                    "RET",
+                    "RET-ELE1"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "value": "RET mutations and the RET fusion RET-PTC lead to activation of this tyrosine kinase receptor and are associated with thyroid cancers. RET point mutations are the most common mutations identified in medullary thyroid cancer (MTC) with germline and somatic mutations in RET associated with hereditary and sporadic forms, respectively. The most common somatic form mutation is M918T (exon 16) and a variety of other mutations effecting exons 10, 11 and 15 have been described. The prognostic significance of these mutations have been hotly debated in the field, however, data suggests that some RET mutation may confer drug resistance. Highly selective and well-tolerated RET inhibitors, selpercatinib (LOXO-292) and pralsetinib (BLU-667), have been FDA approved recently for the treatment of RET fusion-positive non-small-cell lung cancer, RET fusion-positive thyroid cancer and RET-mutant medullary thyroid cancer."
+                }
+              ],
+              "conceptType": "Gene",
+              "name": "RET",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncbigene:5979",
+                    "system": "https://www.ncbi.nlm.nih.gov/gene/",
+                    "code": "5979"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            "alleleOriginQualifier": {
+              "extensions": [
+                {
+                  "name": "civic_variant_origin",
+                  "value": "SOMATIC"
+                }
+              ],
+              "name": "somatic"
+            },
+            "predicate": "isOncogenicFor",
+            "objectTumorType": {
+              "id": "civic.did:15",
+              "conceptType": "Disease",
+              "name": "Medullary Thyroid Carcinoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "system": "https://disease-ontology.org/?id=",
+                    "code": "DOID:3973"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            }
+          },
+          "directionOfEvidenceProvided": "supports",
+          "strengthOfEvidenceProvided": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "supporting"
+            }
+          },
+          "scoreOfEvidenceProvided": 1.0,
+          "evidenceOutcome": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "OP1"
+            }
+          }
+        },
+        {
+          "type": "EvidenceLine",
+          "extensions": [
+            {
+              "name": "citations",
+              "value": [
+                "https://civicdb.org/links/evidence/74",
+                "https://civicdb.org/links/evidence/12800",
+                "https://civicdb.org/links/evidence/78",
+                "https://civicdb.org/links/evidence/12711",
+                "https://civicdb.org/links/evidence/12805",
+                "https://civicdb.org/links/evidence/11723",
+                "https://civicdb.org/links/evidence/12709"
+              ]
+            }
+          ],
+          "specifiedBy": {
+            "type": "Method",
+            "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+            "methodType": "OP3",
+            "reportedIn": {
+              "id": "pmid:35101336",
+              "type": "Document",
+              "name": "Horak et al., 2022, Genet Med.",
+              "title": "Standards for the classification of pathogenicity of somatic variants in cancer (oncogenicity): Joint recommendations of Clinical Genome Resource (ClinGen), Cancer Genomics Consortium (CGC), and Variant Interpretation for Cancer Consortium (VICC)",
+              "urls": [
+                "https://doi.org/10.1016/j.gim.2022.01.001",
+                "https://pubmed.ncbi.nlm.nih.gov/35101336/"
+              ],
+              "doi": "10.1016/j.gim.2022.01.001",
+              "pmid": "35101336"
+            }
+          },
+          "targetProposition": {
+            "type": "VariantOncogenicityProposition",
+            "subjectVariant": {
+              "id": "civic.mpid:113",
+              "type": "CategoricalVariant",
+              "name": "RET M918T",
+              "description": "RET M918T is the most common somatically acquired mutation in medullary thyroid cancer (MTC). While there currently are no RET-specific inhibiting agents, promiscuous kinase inhibitors have seen some success in treating RET overactivity. Data suggests however, that the M918T mutation may lead to drug resistance, especially against the VEGFR-inhibitor motesanib. It has also been suggested that RET M918T leads to more aggressive MTC with a poorer prognosis.",
+              "aliases": [
+                "MET918THR"
+              ],
+              "extensions": [
+                {
+                  "name": "CIViC Molecular Profile Score",
+                  "value": 139.0
+                },
+                {
+                  "name": "expressions",
+                  "value": [
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "NM_020975.4:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.p",
+                      "value": "NP_065681.1:p.Met918Thr"
+                    },
+                    {
+                      "syntax": "hgvs.c",
+                      "value": "ENST00000355710.3:c.2753T>C"
+                    },
+                    {
+                      "syntax": "hgvs.g",
+                      "value": "NC_000010.10:g.43617416T>C"
+                    }
+                  ]
+                },
+                {
+                  "name": "CIViC representative coordinate",
+                  "value": {
+                    "chromosome": "10",
+                    "start": 43617416,
+                    "stop": 43617416,
+                    "reference_bases": "T",
+                    "variant_bases": "C",
+                    "ensembl_version": 75,
+                    "representative_transcript": "ENST00000355710.3",
+                    "reference_build": "GRCh37",
+                    "type": "coordinates"
+                  }
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "civic.mpid:113",
+                    "system": "https://civicdb.org/links/molecular_profile/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "id": "civic.vid:113",
+                    "extensions": [
+                      {
+                        "name": "subtype",
+                        "value": "gene_variant"
+                      },
+                      {
+                        "name": "variant_types",
+                        "value": [
+                          {
+                            "coding": {
+                              "id": "civic.variant_type:47",
+                              "name": "Missense Variant",
+                              "system": "http://www.sequenceontology.org/browser/current_svn/term/",
+                              "code": "SO:0001583"
+                            },
+                            "relation": "exactMatch"
+                          }
+                        ]
+                      }
+                    ],
+                    "name": "M918T",
+                    "system": "https://civicdb.org/links/variant/",
+                    "code": "113"
+                  },
+                  "relation": "exactMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=",
+                    "code": "CA009082"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/clinvar/variation/",
+                    "code": "13919"
+                  },
+                  "relation": "relatedMatch"
+                },
+                {
+                  "coding": {
+                    "system": "https://www.ncbi.nlm.nih.gov/snp/",
+                    "code": "rs74799832"
+                  },
+                  "relation": "relatedMatch"
+                }
+              ]
+            },
+            "geneContextQualifier": {
+              "id": "civic.gid:42",
+              "extensions": [
+                {
+                  "name": "aliases",
+                  "value": [
+                    "CDHF12",
+                    "CDHR16",
+                    "HSCR1",
+                    "MEN2A",
+                    "MEN2B",
+                    "MTC1",
+                    "PTC",
+                    "RET",
+                    "RET-ELE1"
+                  ]
+                },
+                {
+                  "name": "description",
+                  "value": "RET mutations and the RET fusion RET-PTC lead to activation of this tyrosine kinase receptor and are associated with thyroid cancers. RET point mutations are the most common mutations identified in medullary thyroid cancer (MTC) with germline and somatic mutations in RET associated with hereditary and sporadic forms, respectively. The most common somatic form mutation is M918T (exon 16) and a variety of other mutations effecting exons 10, 11 and 15 have been described. The prognostic significance of these mutations have been hotly debated in the field, however, data suggests that some RET mutation may confer drug resistance. Highly selective and well-tolerated RET inhibitors, selpercatinib (LOXO-292) and pralsetinib (BLU-667), have been FDA approved recently for the treatment of RET fusion-positive non-small-cell lung cancer, RET fusion-positive thyroid cancer and RET-mutant medullary thyroid cancer."
+                }
+              ],
+              "conceptType": "Gene",
+              "name": "RET",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncbigene:5979",
+                    "system": "https://www.ncbi.nlm.nih.gov/gene/",
+                    "code": "5979"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            "alleleOriginQualifier": {
+              "extensions": [
+                {
+                  "name": "civic_variant_origin",
+                  "value": "SOMATIC"
+                }
+              ],
+              "name": "somatic"
+            },
+            "predicate": "isOncogenicFor",
+            "objectTumorType": {
+              "id": "civic.did:15",
+              "conceptType": "Disease",
+              "name": "Medullary Thyroid Carcinoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "system": "https://disease-ontology.org/?id=",
+                    "code": "DOID:3973"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            }
+          },
+          "directionOfEvidenceProvided": "supports",
+          "strengthOfEvidenceProvided": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "supporting"
+            }
+          },
+          "scoreOfEvidenceProvided": 1.0,
+          "evidenceOutcome": {
+            "primaryCoding": {
+              "system": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
+              "code": "OP3"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

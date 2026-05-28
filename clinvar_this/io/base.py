@@ -1,9 +1,8 @@
 """Base module supporting for I/O of various formats to define submissions."""
 
-from abc import ABC, abstractmethod
 import pathlib
 import typing
-
+from abc import ABC, abstractmethod
 
 from clinvar_api.models import SubmissionContainer
 
@@ -11,8 +10,9 @@ from clinvar_api.models import SubmissionContainer
 class TransformIO(ABC):
     """Base class for transforming input data from various formats into submission format"""
 
+    @classmethod
     @abstractmethod
-    def _read_file(self, inputf: typing.TextIO) -> typing.List:
+    def _read_file(cls, inputf: typing.TextIO) -> typing.List:
         """Read input from a given file and transform to required input data structure
 
         :param inputf: Text file-like object containing input data
