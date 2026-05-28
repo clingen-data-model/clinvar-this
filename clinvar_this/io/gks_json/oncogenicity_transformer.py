@@ -5,18 +5,19 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 
 """
 
-from clinvar_this.io.gks_json.base import GksJsonTransformer
+from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
+
 from clinvar_api.models import (
     Assembly,
     CitationDb,
+    SomaticOncogenicityClassification,
     SubmissionAssertionCriteria,
     SubmissionOncogenicitySubmission,
-    SomaticOncogenicityClassification,
 )
-from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
 from clinvar_api.models.sub_payload import (
     SubmissionObservedInSomatic,
 )
+from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 
 class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):

@@ -1,6 +1,6 @@
 """Init namespace module"""
 
-from .base import GksJsonTransformer, BatchMetadata, batch_metadata_from_mapping
+from .base import BatchMetadata, GksJsonTransformer, batch_metadata_from_mapping
 from .clinical_impact_transformer import ClinicalImpactTransformer
 from .oncogenicity_transformer import OncogenicityTransformer
 from .resolver import (

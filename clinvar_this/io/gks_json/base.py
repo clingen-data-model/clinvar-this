@@ -9,68 +9,53 @@ Example usage:
 $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
 """
 
-from abc import ABC, abstractmethod
 import json
-from typing import Any, Generic, Iterable, TextIO, TypeVar, Literal, get_type_hints
+from abc import ABC, abstractmethod
+from typing import Any, Generic, Iterable, Literal, TextIO, TypeVar, get_type_hints
 
 from ga4gh.cat_vrs.models import CategoricalVariant, DefiningAlleleConstraint
-from ga4gh.core.models import MappableConcept
+from ga4gh.core.models import MappableConcept, iriReference
 from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
-from ga4gh.va_spec.base import (
-    Statement,
-    StudyResult,
-    VariantDiagnosticProposition,
-    VariantPrognosticProposition,
-    MembershipOperator,
-    TherapyGroup,
-    VariantTherapeuticResponseProposition,
-    VariantOncogenicityProposition,
-)
-from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
-from ga4gh.vrs.models import Allele, Expression, MolecularVariation, Syntax
-from pydantic import BaseModel, ConfigDict
-
-
-from clinvar_api.models import (
-    SubmissionCondition,
-    SubmissionContainer,
-    SubmissionVariant,
-    SubmissionVariantSet,
-    CollectionMethod,
-    AffectedStatus,
-    Assembly,
-)
-from clinvar_api.models.sub_payload import (
-    SubmissionConditionSetSomatic,
-    SubmissionVariantGene,
-)
-from clinvar_api.msg.sub_payload import ConditionDb, RecordStatus
-from clinvar_this import exceptions
-from clinvar_this.io.base import TransformIO
-from ga4gh.core.models import iriReference
 from ga4gh.va_spec.base import (
     Contribution,
     Document,
     EvidenceLine,
+    MembershipOperator,
+    Statement,
+    StudyResult,
+    TherapyGroup,
+    VariantDiagnosticProposition,
+    VariantOncogenicityProposition,
+    VariantPrognosticProposition,
+    VariantTherapeuticResponseProposition,
 )
+from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
+from ga4gh.vrs.models import Allele, Expression, MolecularVariation, Syntax
+from logzero import logfile, logger
+from pydantic import BaseModel, ConfigDict
 
 from clinvar_api.models import (
-    CitationDb,
-    SubmissionCitation,
-)
-from clinvar_api.models.sub_payload import (
-    SubmissionObservedInSomatic,
-)
-from clinvar_api.msg.sub_payload import (
+    AffectedStatus,
     AlleleOrigin,
-)
-from logzero import logger, logfile
-
-from clinvar_api.models import (
+    Assembly,
+    CitationDb,
+    CollectionMethod,
+    ConditionDb,
+    RecordStatus,
     SubmissionAssertionCriteria,
+    SubmissionCitation,
     SubmissionClinicalImpactSubmission,
+    SubmissionCondition,
+    SubmissionConditionSetSomatic,
+    SubmissionContainer,
+    SubmissionObservedInSomatic,
     SubmissionOncogenicitySubmission,
+    SubmissionVariant,
+    SubmissionVariantGene,
+    SubmissionVariantSet,
 )
+from clinvar_this import exceptions
+from clinvar_this.io.base import TransformIO
 
 logfile("gks_json.log")
 

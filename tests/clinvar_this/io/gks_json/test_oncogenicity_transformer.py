@@ -1,7 +1,12 @@
 """Module for testing GKS Oncogenicity Transformer"""
 
-from deepdiff import DeepDiff
 import json
+
+import pytest
+from conftest import DATA_DIR
+from deepdiff import DeepDiff
+from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
+
 from clinvar_api.models import (
     AffectedStatus,
     AlleleOrigin,
@@ -17,8 +22,8 @@ from clinvar_api.models import (
     SubmissionVariantSet,
 )
 from clinvar_api.models.sub_payload import (
-    SomaticOncogenicityClassification,
     OncogenicityClassificationDescription,
+    SomaticOncogenicityClassification,
     SubmissionConditionSetSomatic,
     SubmissionObservedInSomatic,
     SubmissionVariantGene,
@@ -26,15 +31,10 @@ from clinvar_api.models.sub_payload import (
 from clinvar_api.msg.sub_payload import (
     Assembly,
 )
-import pytest
-from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
-
+from clinvar_this.io.gks_json.base import BatchMetadata
 from clinvar_this.io.gks_json.oncogenicity_transformer import (
     OncogenicityTransformer,
 )
-from clinvar_this.io.gks_json.base import BatchMetadata
-
-from conftest import DATA_DIR
 
 
 @pytest.fixture(scope="module")

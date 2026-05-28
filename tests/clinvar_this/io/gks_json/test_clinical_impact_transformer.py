@@ -1,9 +1,13 @@
 """Module for testing GKS Clinical Impact Transformer"""
 
+import json
 import re
 
+import pytest
+from conftest import DATA_DIR
 from deepdiff import DeepDiff
-import json
+from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
+
 from clinvar_api.models import (
     AffectedStatus,
     AlleleOrigin,
@@ -12,9 +16,9 @@ from clinvar_api.models import (
     RecordStatus,
     SubmissionAssertionCriteria,
     SubmissionCitation,
+    SubmissionClinicalImpactSubmission,
     SubmissionCondition,
     SubmissionContainer,
-    SubmissionClinicalImpactSubmission,
     SubmissionVariant,
     SubmissionVariantSet,
 )
@@ -29,15 +33,11 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
-import pytest
-from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
-
 from clinvar_this import exceptions
+from clinvar_this.io.gks_json.base import BatchMetadata
 from clinvar_this.io.gks_json.clinical_impact_transformer import (
     ClinicalImpactTransformer,
 )
-from clinvar_this.io.gks_json.base import BatchMetadata
-from conftest import DATA_DIR
 
 
 @pytest.fixture(scope="module")

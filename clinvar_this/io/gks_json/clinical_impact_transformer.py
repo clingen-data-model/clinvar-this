@@ -6,22 +6,24 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 """
 
 from types import MappingProxyType
-from logzero import logfile
-from ga4gh.va_spec.aac_2017 import (
-    VariantClinicalSignificanceStatement,
-    AmpAscoCapClassificationCode,
-)
+
 from ga4gh.core.models import MappableConcept, iriReference
+from ga4gh.va_spec.aac_2017 import (
+    AmpAscoCapClassificationCode,
+    VariantClinicalSignificanceStatement,
+)
 from ga4gh.va_spec.base import (
     DiagnosticPredicate,
     EvidenceLine,
     PrognosticPredicate,
     TherapeuticResponsePredicate,
     TherapyGroup,
-    VariantPrognosticProposition,
     VariantDiagnosticProposition,
+    VariantPrognosticProposition,
     VariantTherapeuticResponseProposition,
 )
+from logzero import logfile
+from pydantic.dataclasses import dataclass
 
 from clinvar_api.models import (
     Assembly,
@@ -37,7 +39,6 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
-from pydantic.dataclasses import dataclass
 from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 logfile("aac_2017.log")

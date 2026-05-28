@@ -1,9 +1,8 @@
 """Base module supporting for I/O of various formats to define submissions."""
 
-from abc import ABC, abstractmethod
 import pathlib
 import typing
-
+from abc import ABC, abstractmethod
 
 from clinvar_api.models import SubmissionContainer
 
