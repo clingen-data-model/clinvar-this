@@ -9,7 +9,6 @@ from clinvar_this.io.gks_json.base import GksJsonTransformer
 from clinvar_api.models import (
     Assembly,
     CitationDb,
-    RecordStatus,
     SubmissionAssertionCriteria,
     SubmissionOncogenicitySubmission,
     SomaticOncogenicityClassification,
@@ -53,6 +52,7 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
         :return: The oncogenicity submission corresponding to a GKS Oncogenicity
             statement
         """
+        
         return SubmissionOncogenicitySubmission(
             **self._build_shared_submission_kwargs(
                 statement=statement,
@@ -61,7 +61,12 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
                 variant_hgvs=variant_hgvs,
             ),
             oncogenicity_classification=SomaticOncogenicityClassification(
-                **self._build_shared_classification_kwargs(statement),
+                **self._build_shared_classification_kwargs(
+                    statement.description,
+                    None,
+                    statement.hasEvidenceLines,
+                    statement.contributions
+                ),
                 oncogenicity_classification_description=statement.classification.primaryCoding.code.root.capitalize(),
             ),
         )

@@ -284,27 +284,25 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
         return ";".join(sorted([t.name for t in therapeutic.therapies]))
 
     @staticmethod
-    def _get_comment(record: VariantClinicalSignificanceStatement) -> str | None:
+    def _get_comment(
+        description: str | None,
+        therapeutic: TherapyGroup | MappableConcept | None,
+    ) -> str | None:
         """Get comment from a statement
 
-        :param record: GKS statement
-            Assumes ``name`` is provided in ``MappableConcept`` objects.
+        :param description: Description for GKS statement
+        :param therapeutic: Therapeutic for GKS statement, if one exists
         :return: Comment for a given statement.
             If the therapeutic is a substitute group, the original comment will be
             updated to make note that these are in substitution (deviating from ClinVar
             API schema which notes that the therapies are in combination)
         """
-        comment = record.description
-        if record.hasEvidenceLines:
-            target_proposition = record.hasEvidenceLines[0].targetProposition
-            if isinstance(target_proposition, VariantTherapeuticResponseProposition):
-                therapeutic = target_proposition.objectTherapeutic.root
-                if (
-                    isinstance(therapeutic, TherapyGroup)
-                    and therapeutic.membershipOperator == MembershipOperator.OR
-                ):
-                    comment = f"{record.description or ''} NOTE: These therapies are in substitution.".strip()
-        return comment
+        if therapeutic and (
+            isinstance(therapeutic, TherapyGroup)
+            and therapeutic.membershipOperator == MembershipOperator.OR
+        ):
+            description = f"{description or ''} NOTE: These therapies are in substitution.".strip()
+        return description
 
     @staticmethod
     def _get_condition_set(
@@ -514,23 +512,14 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
             ),
         }
 
-    def _build_shared_classification_kwargs(self, statement):
+    def _build_shared_classification_kwargs(self, description: str | None, therapeutic: TherapyGroup | MappableConcept | None, evidence_lines: list[EvidenceLine] | None, contributions: list[Contribution] | None):
         return {
-            "comment": self._get_comment(statement),
-            "citation": self._get_citations(statement.hasEvidenceLines),
+            "comment": self._get_comment(description, therapeutic),
+            "citation": self._get_citations(evidence_lines or []),
             "date_last_evaluated": self._get_date_last_evaluated(
-                statement.contributions or []
+                contributions or []
             ),
         }
-
-    def _get_drug_for_therapeutic_assertion(self, statement):
-        target_proposition = statement.hasEvidenceLines[0].targetProposition
-
-        if not hasattr(target_proposition, "objectTherapeutic"):
-            return None
-
-        therapeutic = target_proposition.objectTherapeutic.root
-        return self._get_drugs(therapeutic)
 
     def _get_variant_set(
         self,

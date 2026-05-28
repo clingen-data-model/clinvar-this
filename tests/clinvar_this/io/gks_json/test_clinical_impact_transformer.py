@@ -385,7 +385,7 @@ def test_read_file(
     assert actual == expected_assertions
 
     with pytest.raises(exceptions.InvalidFormat, match="Error decoding GKS JSON"):
-        clinical_impact_transformer.read_file(path=DATA_DIR / "example_bad.json")
+        clinical_impact_transformer.read_file(path=DATA_DIR / "invalid_json.json")
 
     with pytest.raises(
         exceptions.InvalidFormat,
@@ -527,3 +527,40 @@ def test_contributions(clinical_impact_transformer, civic_aid200, civic_metadata
         ].clinical_impact_classification.date_last_evaluated
         == "2026-04-16"
     )
+
+
+def test_no_evidence_lines(
+    clinical_impact_transformer,
+    civic_aid20_submission,
+    amp_asco_cap_assertion_criteria,
+    civic_aid20,
+    civic_metadata,
+):
+    """Test that statement with no evidence lines works correctly
+
+    Do not expect any citation or assertion_type_for_clinical_impact
+    """
+    assertion_copy = civic_aid20.model_copy(deep=True)
+    assertion_copy.hasEvidenceLines = None
+
+    actual = clinical_impact_transformer.records_to_submission_container(
+        [assertion_copy], civic_metadata
+    )
+
+    submission_copy = civic_aid20_submission.model_dump()
+    submission_copy["clinical_impact_classification"]["citation"] = []
+    submission_copy["clinical_impact_classification"][
+        "assertion_type_for_clinical_impact"
+    ] = None
+    expected = SubmissionContainer(
+        assertion_criteria=amp_asco_cap_assertion_criteria,
+        clinical_impact_submission=[
+            SubmissionClinicalImpactSubmission(**submission_copy)
+        ],
+    )
+    diff = DeepDiff(
+        actual.model_dump(exclude_none=True),
+        expected.model_dump(exclude_none=True),
+        ignore_order=True,
+    )
+    assert diff == {}

@@ -11,16 +11,21 @@ from ga4gh.va_spec.aac_2017 import (
     VariantClinicalSignificanceStatement,
     AmpAscoCapClassificationCode,
 )
+from ga4gh.core.models import MappableConcept, iriReference
 from ga4gh.va_spec.base import (
     DiagnosticPredicate,
+    EvidenceLine,
     PrognosticPredicate,
     TherapeuticResponsePredicate,
+    TherapyGroup,
+    VariantPrognosticProposition,
+    VariantDiagnosticProposition,
+    VariantTherapeuticResponseProposition
 )
 
 from clinvar_api.models import (
     Assembly,
     CitationDb,
-    RecordStatus,
     SubmissionAssertionCriteria,
     SubmissionClinicalImpactSubmission,
 )
@@ -81,6 +86,20 @@ class ClinicalImpactTransformer(
         PrognosticPredicate.WORSE_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
     }
 
+    @staticmethod
+    def _get_therapeutic(target_proposition):
+        if not hasattr(target_proposition, "objectTherapeutic"):
+            return None
+
+        return target_proposition.objectTherapeutic.root
+
+    def _get_drug_for_therapeutic_assertion(self, statement):
+        therapeutic = self._get_therapeutic(statement)
+        if not therapeutic:
+            return None
+
+        return self._get_drugs(therapeutic)
+
     def _get_submission(
         self,
         statement: VariantClinicalSignificanceStatement,
@@ -107,7 +126,40 @@ class ClinicalImpactTransformer(
         :return: The clinical impact submission corresponding to a GKS Clinical
             Significance statement
         """
-        target_proposition = statement.hasEvidenceLines[0].targetProposition
+        target_proposition = None
+        therapeutic: TherapyGroup | MappableConcept | None = None
+        drug_for_therapeutic_assertion = None
+        assertion_type_for_clinical_impact = None
+
+        _evidence_lines = statement.hasEvidenceLines or []
+        evidence_lines = [el for el in _evidence_lines if isinstance(el, EvidenceLine)]
+
+        for el in evidence_lines:
+            if isinstance(el, iriReference):
+                continue
+
+            target_proposition = el.targetProposition
+
+            if not isinstance(
+                target_proposition,
+                VariantDiagnosticProposition
+                | VariantPrognosticProposition
+                | VariantTherapeuticResponseProposition,
+            ):
+                continue
+
+            assertion_type_for_clinical_impact = self.gks_predicate_to_assertion[
+                target_proposition.predicate
+            ]
+
+            if isinstance(target_proposition, VariantTherapeuticResponseProposition):
+                _therapeutic = target_proposition.objectTherapeutic.root
+                if isinstance(_therapeutic, TherapyGroup | MappableConcept):
+                    therapeutic = _therapeutic
+                    drug_for_therapeutic_assertion = self._get_drugs(therapeutic)
+
+            break
+
         return SubmissionClinicalImpactSubmission(
             **self._build_shared_submission_kwargs(
                 statement=statement,
@@ -116,15 +168,16 @@ class ClinicalImpactTransformer(
                 variant_hgvs=variant_hgvs,
             ),
             clinical_impact_classification=SomaticClinicalImpactClassification(
-                **self._build_shared_classification_kwargs(statement),
+                **self._build_shared_classification_kwargs(
+                    statement.description,
+                    therapeutic,
+                    evidence_lines,
+                    statement.contributions
+                ),
                 clinical_impact_classification_description=_IMPACT_CLASS_MAPPING[
                     statement.classification.primaryCoding.code.root
                 ],
-                assertion_type_for_clinical_impact=self.gks_predicate_to_assertion[
-                    target_proposition.predicate
-                ],
-                drug_for_therapeutic_assertion=self._get_drug_for_therapeutic_assertion(
-                    statement
-                ),
+                assertion_type_for_clinical_impact=assertion_type_for_clinical_impact,
+                drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
             ),
         )
