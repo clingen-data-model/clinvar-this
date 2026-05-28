@@ -35,9 +35,7 @@ def convert(
 ) -> int:
     """Run conversion from ClinVar XML to JSONL"""
     if input_file.endswith((".gz", ".bgz")):
-        inputf: typing.Union[typing.BinaryIO, gzip.GzipFile] = gzip.open(
-            input_file, "rb"
-        )
+        inputf: typing.Union[typing.BinaryIO, gzip.GzipFile] = gzip.open(input_file, "rb")
     elif use_click:
         inputf = click.open_file(input_file, "rb")
     else:

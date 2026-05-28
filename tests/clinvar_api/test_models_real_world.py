@@ -29,7 +29,5 @@ def test_from_msg_data_submission_processed(data_submission_processed):
 def test_from_msg_data_partially_successful_submission(
     data_partially_successful_submission,
 ):
-    msg_record = msg.SubmissionStatus.model_validate(
-        data_partially_successful_submission
-    )
+    msg_record = msg.SubmissionStatus.model_validate(data_partially_successful_submission)
     assert models.SubmissionStatus.from_msg(msg_record)

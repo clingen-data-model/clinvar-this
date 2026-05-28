@@ -21,9 +21,7 @@ def clean_omim(terms: typing.Set[str]) -> typing.Set[str]:
     return {term.split(".")[0] for term in terms}
 
 
-def run_report(  # noqa: C901
-    path_input: str, path_output: str, needs_hpo_terms: bool = True
-):
+def run_report(path_input: str, path_output: str, needs_hpo_terms: bool = True):  # noqa: C901
     """Read in file at path_input and generate link records to path_output."""
 
     if path_input.endswith(".gz"):
@@ -54,9 +52,7 @@ def run_report(  # noqa: C901
             if not variation_archive.classified_record.HasField("simple_allele"):
                 continue
             simple_allele: Allele = classified_record.simple_allele
-            hgnc_ids = [
-                gene.hgnc_id for gene in simple_allele.genes if gene.HasField("hgnc_id")
-            ]
+            hgnc_ids = [gene.hgnc_id for gene in simple_allele.genes if gene.HasField("hgnc_id")]
 
             for clinical_assertion in classified_record.clinical_assertions:
                 scv = VersionedAccession(
@@ -66,9 +62,7 @@ def run_report(  # noqa: C901
                 germline_classification: str | None = None
                 if (
                     clinical_assertion.HasField("classifications")
-                    and clinical_assertion.classifications.HasField(
-                        "germline_classification"
-                    )
+                    and clinical_assertion.classifications.HasField("germline_classification")
                     # and "pathogenic" in classification.germline_classification.lower()
                 ):
                     germline_classification = (

@@ -11,18 +11,14 @@ FAKE_HEADERS = {
 
 
 def test_config_long_token():
-    config = client.Config(
-        auth_token=SecretStr("1234567890"), use_testing=False, use_dryrun=False
-    )
+    config = client.Config(auth_token=SecretStr("1234567890"), use_testing=False, use_dryrun=False)
     assert repr(config) == (
         "Config(auth_token=SecretStr('**********'), use_testing=False, use_dryrun=False, presubmission_validation=True, verify_ssl=True)"
     )
 
 
 def test_config_short_token():
-    config = client.Config(
-        auth_token=SecretStr("123"), use_testing=False, use_dryrun=False
-    )
+    config = client.Config(auth_token=SecretStr("123"), use_testing=False, use_dryrun=False)
     assert repr(config) == (
         "Config(auth_token=SecretStr('**********'), use_testing=False, use_dryrun=False, presubmission_validation=True, verify_ssl=True)"
     )
@@ -38,9 +34,7 @@ def test_submit_data_success(httpx_mock):
     )
     result = client.submit_data(
         models.SubmissionContainer(),
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        ),
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
     assert repr(result) == "Created(id='SUB999999')"
 
@@ -56,9 +50,7 @@ def test_submit_data_failed(httpx_mock):
     with pytest.raises(exceptions.SubmissionFailed):
         client.submit_data(
             models.SubmissionContainer(),
-            config=client.Config(
-                auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-            ),
+            config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
         )
 
 
@@ -82,9 +74,7 @@ def test_retrieve_status_success_no_extra_file(httpx_mock, data_submission_submi
     )
     result = client.retrieve_status(
         FAKE_ID,
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        ),
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
     assert repr(result).replace("tzlocal", "tzutc") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions("
@@ -114,9 +104,7 @@ def test_retrieve_status_success_with_extra_files(
     )
     result = client.retrieve_status(
         FAKE_ID,
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        ),
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
     assert repr(result) == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions(id='SUB999999-1', "
@@ -162,9 +150,7 @@ def test_retrieve_status_failed_initial_request(httpx_mock):
     with pytest.raises(exceptions.QueryFailed):
         client.retrieve_status(
             FAKE_ID,
-            config=client.Config(
-                auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-            ),
+            config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
         )
 
 
@@ -188,9 +174,7 @@ def test_retrieve_status_failed_extra_request(httpx_mock, data_submission_proces
     with pytest.raises(exceptions.QueryFailed):
         client.retrieve_status(
             FAKE_ID,
-            config=client.Config(
-                auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-            ),
+            config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
         )
 
 
@@ -203,17 +187,13 @@ def test_client_submit_success(httpx_mock):
         json={"id": "SUB999999"},
     )
     client_obj = client.Client(
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        )
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = client_obj.submit_data(models.SubmissionContainer())
     assert repr(result) == "Created(id='SUB999999')"
 
 
-def test_client_retrieve_status_success_no_extra_file(
-    httpx_mock, data_submission_submitted
-):
+def test_client_retrieve_status_success_no_extra_file(httpx_mock, data_submission_submitted):
     httpx_mock.add_response(
         method="GET",
         url=f"https://submit.ncbi.nlm.nih.gov/api/v1/submissions/{FAKE_ID}/actions/",
@@ -222,9 +202,7 @@ def test_client_retrieve_status_success_no_extra_file(
         json=data_submission_submitted,
     )
     client_obj = client.Client(
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        )
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = client_obj.retrieve_status(FAKE_ID)
     assert repr(result) == (
@@ -245,9 +223,7 @@ async def test_async_submit_data_success(httpx_mock):
     )
     result = await client.async_submit_data(
         models.SubmissionContainer(),
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        ),
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
     assert repr(result) == "Created(id='SUB999999')"
 
@@ -264,16 +240,12 @@ async def test_async_submit_data_failed(httpx_mock):
     with pytest.raises(exceptions.SubmissionFailed):
         await client.async_submit_data(
             models.SubmissionContainer(),
-            config=client.Config(
-                auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-            ),
+            config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
         )
 
 
 @pytest.mark.asyncio
-async def test_async_retrieve_status_success_no_extra_file(
-    httpx_mock, data_submission_submitted
-):
+async def test_async_retrieve_status_success_no_extra_file(httpx_mock, data_submission_submitted):
     httpx_mock.add_response(
         method="GET",
         url=f"https://submit.ncbi.nlm.nih.gov/api/v1/submissions/{FAKE_ID}/actions/",
@@ -283,9 +255,7 @@ async def test_async_retrieve_status_success_no_extra_file(
     )
     result = await client.async_retrieve_status(
         FAKE_ID,
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        ),
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
     assert repr(result).replace("tzlocal", "tzutc") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions("
@@ -316,9 +286,7 @@ async def test_async_retrieve_status_success_with_extra_files(
     )
     result = await client.async_retrieve_status(
         FAKE_ID,
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        ),
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
     assert repr(result) == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions(id='SUB999999-1', "
@@ -365,16 +333,12 @@ async def test_async_retrieve_status_failed_initial_request(httpx_mock):
     with pytest.raises(exceptions.QueryFailed):
         await client.async_retrieve_status(
             FAKE_ID,
-            config=client.Config(
-                auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-            ),
+            config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
         )
 
 
 @pytest.mark.asyncio
-async def test_async_retrieve_status_failed_extra_request(
-    httpx_mock, data_submission_processed
-):
+async def test_async_retrieve_status_failed_extra_request(httpx_mock, data_submission_processed):
     httpx_mock.add_response(
         method="GET",
         url=f"https://submit.ncbi.nlm.nih.gov/api/v1/submissions/{FAKE_ID}/actions/",
@@ -394,9 +358,7 @@ async def test_async_retrieve_status_failed_extra_request(
     with pytest.raises(exceptions.QueryFailed):
         await client.async_retrieve_status(
             FAKE_ID,
-            config=client.Config(
-                auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-            ),
+            config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
         )
 
 
@@ -410,9 +372,7 @@ async def test_async_client_submit_success(httpx_mock):
         json={"id": "SUB999999"},
     )
     client_obj = client.AsyncClient(
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        )
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = await client_obj.submit_data(models.SubmissionContainer())
     assert repr(result) == "Created(id='SUB999999')"
@@ -430,9 +390,7 @@ async def test_async_client_retrieve_status_success_no_extra_file(
         json=data_submission_submitted,
     )
     client_obj = client.AsyncClient(
-        config=client.Config(
-            auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False
-        )
+        config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = await client_obj.retrieve_status(FAKE_ID)
     assert repr(result) == (

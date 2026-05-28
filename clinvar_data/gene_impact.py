@@ -64,9 +64,7 @@ class ConvertClinicalSignificance:
     @classmethod
     def from_str(cls, string_value: str) -> ClinicalSignificance.ValueType:
         """Convert string to protobuf enum value."""
-        return cls.CONVERT.get(
-            string_value, ClinicalSignificance.CLINICAL_SIGNIFICANCE_OTHER
-        )
+        return cls.CONVERT.get(string_value, ClinicalSignificance.CLINICAL_SIGNIFICANCE_OTHER)
 
 
 #: Canonical ACMG clinical significance values.
@@ -172,9 +170,7 @@ def generate_counts(path_input: str) -> dict:  # noqa: C901
             # Obtain germline classification description or skip record if has none.
             if not va.classified_record.HasField("classifications"):
                 continue
-            elif not va.classified_record.classifications.HasField(
-                "germline_classification"
-            ):
+            elif not va.classified_record.classifications.HasField("germline_classification"):
                 continue
             elif not va.classified_record.classifications.germline_classification.HasField(
                 "description"
@@ -196,20 +192,13 @@ def generate_counts(path_input: str) -> dict:  # noqa: C901
                 for expression in va.classified_record.simple_allele.hgvs_expressions:
                     if expression.HasField(
                         "nucleotide_expression"
-                    ) and expression.nucleotide_expression.HasField(
-                        "sequence_accession"
-                    ):
+                    ) and expression.nucleotide_expression.HasField("sequence_accession"):
                         sequence_accession: str = (
                             expression.nucleotide_expression.sequence_accession
                         )
                         if variant_name.startswith(sequence_accession):
-                            for (
-                                molecular_consequences
-                            ) in expression.molecular_consequences:
-                                if (
-                                    molecular_consequences.type
-                                    in ConvertGeneImpact.CONVERT
-                                ):
+                            for molecular_consequences in expression.molecular_consequences:
+                                if molecular_consequences.type in ConvertGeneImpact.CONVERT:
                                     csq = molecular_consequences.type
                 if not csq:
                     print(

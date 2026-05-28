@@ -120,9 +120,7 @@ def civic_aid202_submission():
 
 
 @pytest.fixture(scope="module")
-def civic_oncogenicity_submissions(
-    civic_aid202_submission, oncogenicity_assertion_criteria
-):
+def civic_oncogenicity_submissions(civic_aid202_submission, oncogenicity_assertion_criteria):
     """Create test fixture for CIViC oncogenicity submissions"""
     return SubmissionContainer(
         assertion_criteria=oncogenicity_assertion_criteria,

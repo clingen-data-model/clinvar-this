@@ -60,8 +60,7 @@ def zero_counts(count: int):
     return {
         klass.number: [0] * (count + 1)
         for klass in CoarseClinicalSignificance.DESCRIPTOR.values
-        if klass.number
-        != CoarseClinicalSignificance.COARSE_CLINICAL_SIGNIFICANCE_UNSPECIFIED
+        if klass.number != CoarseClinicalSignificance.COARSE_CLINICAL_SIGNIFICANCE_UNSPECIFIED
     }
 
 
@@ -91,9 +90,7 @@ def generate_counts(path_input: str, thresholds: typing.List[float]):
             # Obtain germline classification description or skip record if has none.
             if not va.classified_record.HasField("classifications"):
                 continue
-            elif not va.classified_record.classifications.HasField(
-                "germline_classification"
-            ):
+            elif not va.classified_record.classifications.HasField("germline_classification"):
                 continue
             elif not va.classified_record.classifications.germline_classification.HasField(
                 "description"
@@ -106,10 +103,7 @@ def generate_counts(path_input: str, thresholds: typing.List[float]):
                 pathogenicity: CoarseClinicalSignificance.ValueType = (
                     ConvertCoarseClinicalSignificance.from_str(description)
                 )
-            if (
-                pathogenicity
-                == CoarseClinicalSignificance.COARSE_CLINICAL_SIGNIFICANCE_UNSPECIFIED
-            ):
+            if pathogenicity == CoarseClinicalSignificance.COARSE_CLINICAL_SIGNIFICANCE_UNSPECIFIED:
                 continue
 
             # Obtain minor allele frequency.
@@ -118,12 +112,8 @@ def generate_counts(path_input: str, thresholds: typing.List[float]):
                 continue
             elif not va.classified_record.HasField("simple_allele"):
                 continue
-            elif va.classified_record.simple_allele.HasField(
-                "global_minor_allele_frequency"
-            ):
-                gmaf = (
-                    va.classified_record.simple_allele.global_minor_allele_frequency.value
-                )
+            elif va.classified_record.simple_allele.HasField("global_minor_allele_frequency"):
+                gmaf = va.classified_record.simple_allele.global_minor_allele_frequency.value
 
             # Try to get VCF location and skip unless is sequence variant.
             is_seqvar = False

@@ -374,9 +374,7 @@ def data_summary_response_error_partial():
                 "processingStatus": "Error",
                 "errors": [
                     {
-                        "input": [
-                            {"value": "adefc5ed-7d59-4119-8b3d-07dcdc504c09_success2"}
-                        ],
+                        "input": [{"value": "adefc5ed-7d59-4119-8b3d-07dcdc504c09_success2"}],
                         "output": {
                             "errors": [
                                 {
@@ -595,9 +593,7 @@ def data_sample_api_submissions_sample_clinical_impact_hgvs_json():
                         "numberOfIndividuals": 1,
                     }
                 ],
-                "variantSet": {
-                    "variant": [{"hgvs": "NM_000283.3:c.3645A>T", "gene": [{"id": 2}]}]
-                },
+                "variantSet": {"variant": [{"hgvs": "NM_000283.3:c.3645A>T", "gene": [{"id": 2}]}]},
                 "conditionSet": {"condition": [{"db": "OMIM", "id": "613801"}]},
             }
         ],
@@ -631,9 +627,7 @@ def data_sample_api_submissions_sample_clinical_significance_hgvs_submission_jso
                         "numberOfIndividuals": 1,
                     }
                 ],
-                "variantSet": {
-                    "variant": [{"hgvs": "NM_000283.3:c.3645A>T", "gene": [{"id": 2}]}]
-                },
+                "variantSet": {"variant": [{"hgvs": "NM_000283.3:c.3645A>T", "gene": [{"id": 2}]}]},
                 "conditionSet": {"condition": [{"db": "OMIM", "id": "613801"}]},
             }
         ],
@@ -684,9 +678,7 @@ def data_sample_api_submissions_sample_germline_hgvs_submission_json():
                         "somaticVariantAlleleFraction": 20,
                     }
                 ],
-                "variantSet": {
-                    "variant": [{"hgvs": "NM_004333.6:c.1012A>G", "gene": [{"id": 2}]}]
-                },
+                "variantSet": {"variant": [{"hgvs": "NM_004333.6:c.1012A>G", "gene": [{"id": 2}]}]},
                 "conditionSet": {"condition": [{"name": "breast cancer"}]},
             },
         ],
@@ -747,9 +739,7 @@ def data_sample_api_submissions_sample_oncogenicity_hgvs_json():
                         "somaticVariantAlleleFraction": 43,
                     }
                 ],
-                "variantSet": {
-                    "variant": [{"hgvs": "NM_004333.6:c.1012A>G", "gene": [{"id": 2}]}]
-                },
+                "variantSet": {"variant": [{"hgvs": "NM_004333.6:c.1012A>G", "gene": [{"id": 2}]}]},
                 "conditionSet": {"condition": [{"name": "breast cancer"}]},
             },
         ],

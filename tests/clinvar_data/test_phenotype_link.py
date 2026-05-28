@@ -3,9 +3,7 @@ import pytest
 from clinvar_data import phenotype_link
 
 
-@pytest.mark.parametrize(
-    "inputf", ["records_with_hpo.jsonl", "record_with_submitter.jsonl"]
-)
+@pytest.mark.parametrize("inputf", ["records_with_hpo.jsonl", "record_with_submitter.jsonl"])
 def test_smoke_test_run(inputf, tmpdir, snapshot):
     path_input = f"tests/clinvar_data/data/{inputf}"
     path_output = f"{tmpdir}/output.jsonl"

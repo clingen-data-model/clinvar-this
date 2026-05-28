@@ -209,9 +209,7 @@ def main() -> int:
         with open(os.path.join(out_dir, f"{target.name}.xml"), "wt") as outputf:
             outputf.write("\n".join(leading + collected[target.name] + trailing) + "\n")
 
-    subprocess.run(
-        ["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml.gz"]
-    )
+    subprocess.run(["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml.gz"])
     for name in ["ex_kynu", "record_with_submitter", "records_with_hpo", "ten_records"]:
         subprocess.run(
             [
@@ -222,9 +220,7 @@ def main() -> int:
                 f"tests/clinvar_data/data/{name}.jsonl",
             ]
         )
-    subprocess.run(
-        ["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml"]
-    )
+    subprocess.run(["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml"])
 
     return 0
 

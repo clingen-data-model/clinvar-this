@@ -161,9 +161,7 @@ from clinvar_data.pbs.clinvar_public import (
         ),
     ],
 )
-def test_convert_gene_variant_relationship(
-    xmldict_value: str, expected: GeneVariantRelationship
-):
+def test_convert_gene_variant_relationship(xmldict_value: str, expected: GeneVariantRelationship):
     result = ConvertGeneVariantRelationship.xmldict_data_to_pb(xmldict_value)
     assert result == expected
 
@@ -385,9 +383,7 @@ def test_convert_aggregate_germline_review_status(
 def test_convert_aggregate_somatic_clinical_impact_review_status(
     xmldict_value: str, expected: AggregateSomaticClinicalImpactReviewStatus.ValueType
 ):
-    result = ConvertAggregateSomaticClinicalImpactReviewStatus.xmldict_data_to_pb(
-        xmldict_value
-    )
+    result = ConvertAggregateSomaticClinicalImpactReviewStatus.xmldict_data_to_pb(xmldict_value)
     assert result == expected
 
 
@@ -479,9 +475,7 @@ def test_convert_origin(xmldict_value: str, expected: Origin.ValueType):
         ("protein", NucleotideSequence.NUCLEOTIDE_SEQUENCE_PROTEIN),
     ],
 )
-def test_convert_nucleotide_sequence(
-    xmldict_value: str, expected: NucleotideSequence.ValueType
-):
+def test_convert_nucleotide_sequence(xmldict_value: str, expected: NucleotideSequence.ValueType):
     result = ConvertNucleotideSequence.xmldict_data_to_pb(xmldict_value)
     assert result == expected
 
@@ -492,9 +486,7 @@ def test_convert_nucleotide_sequence(
         ("protein", ProteinSequence.PROTEIN_SEQUENCE_PROTEIN),
     ],
 )
-def test_convert_protein_sequence(
-    xmldict_value: str, expected: ProteinSequence.ValueType
-):
+def test_convert_protein_sequence(xmldict_value: str, expected: ProteinSequence.ValueType):
     result = ConvertProteinSequence.xmldict_data_to_pb(xmldict_value)
     assert result == expected
 
@@ -512,9 +504,7 @@ def test_convert_protein_sequence(
         ("TraitChoice", PhenotypeSetType.PHENOTYPE_SET_TYPE_TRAIT_CHOICE),
     ],
 )
-def test_convert_phenotype_set_type(
-    xmldict_value: str, expected: PhenotypeSetType.ValueType
-):
+def test_convert_phenotype_set_type(xmldict_value: str, expected: PhenotypeSetType.ValueType):
     result = ConvertPhenotypeSetType.xmldict_data_to_pb(xmldict_value)
     assert result == expected
 
@@ -638,9 +628,7 @@ def test_convert_evidence_type(xmldict_value: str, expected: EvidenceType.ValueT
         ("phenotyping only", MethodListType.METHOD_LIST_TYPE_PHENOTYPING_ONLY),
     ],
 )
-def test_convert_method_list_type(
-    xmldict_value: str, expected: MethodListType.ValueType
-):
+def test_convert_method_list_type(xmldict_value: str, expected: MethodListType.ValueType):
     result = ConvertMethodListType.xmldict_data_to_pb(xmldict_value)
     assert result == expected
 
@@ -700,9 +688,7 @@ def test_convert_clinical_features_affected_status_type(
         ),
     ],
 )
-def test_convert_haplo_variation_type(
-    xmldict_value: str, expected: HaploVariationType.ValueType
-):
+def test_convert_haplo_variation_type(xmldict_value: str, expected: HaploVariationType.ValueType):
     result = ConvertHaploVariationType.xmldict_data_to_pb(xmldict_value)
     assert result == expected
 
@@ -966,9 +952,7 @@ def test_convert_hgvs_nucleotide_expression(xml_str: str, expected_json: Any):
         ),
     ],
 )
-def test_convert_hgvs_protein_expression_xmldict_data_to_pb(
-    xml_str: str, expected_json: Any
-):
+def test_convert_hgvs_protein_expression_xmldict_data_to_pb(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertHgvsProteinExpression.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -1319,9 +1303,7 @@ def test_convert_trait_trait_relationship_type(
             </TraitRelationship>
             """,
             {
-                "names": [
-                    {"type": "Preferred", "value": "malignant granular cell tumor"}
-                ],
+                "names": [{"type": "Preferred", "value": "malignant granular cell tumor"}],
                 "type": "TYPE_DRUG_RESPONSE_AND_DISEASE",
             },
         ),
@@ -1452,9 +1434,7 @@ def test_convert_indication_type(xml_str: str, expected: Indication.Type.ValueTy
         ),
     ],
 )
-def test_convert_trait_set_convert_type(
-    xml_str: str, expected: TraitSet.Type.ValueType
-):
+def test_convert_trait_set_convert_type(xml_str: str, expected: TraitSet.Type.ValueType):
     result = ConvertTraitSet.convert_type(xml_str)
     assert result == expected
 
@@ -1737,9 +1717,7 @@ def test_convert_trait_set_xmldict_data_to_pb(xml_str: str, snapshot):
     ],
     ids=["trait-set-29", "trait-set-6288", "trait-set-175"],
 )
-def test_convert_aggregated_germline_classification_xmldict_data_to_pb(
-    xml_str: str, snapshot
-):
+def test_convert_aggregated_germline_classification_xmldict_data_to_pb(xml_str: str, snapshot):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertAggregatedGermlineClassification.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -1853,9 +1831,7 @@ def test_convert_aggregated_germline_classification_xmldict_data_to_pb(
     ],
     ids=["trait-set-93559", "trait-set-4069"],
 )
-def test_convert_aggregated_somatic_clinical_impact_xmldict_data_to_pb(
-    xml_str: str, snapshot
-):
+def test_convert_aggregated_somatic_clinical_impact_xmldict_data_to_pb(xml_str: str, snapshot):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertAggregatedSomaticClinicalImpact.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -1985,13 +1961,9 @@ def test_convert_aggregated_somatic_clinical_impact_xmldict_data_to_pb(
     ],
     ids=["trait-set-6288"],
 )
-def test_convert_aggregated_oncogenicity_classification_xmldict_data_to_pb(
-    xml_str: str, snapshot
-):
+def test_convert_aggregated_oncogenicity_classification_xmldict_data_to_pb(xml_str: str, snapshot):
     xmldict_value = xmltodict.parse(xml_str)
-    result = ConvertAggregatedOncogenicityClassification.xmldict_data_to_pb(
-        xmldict_value
-    )
+    result = ConvertAggregatedOncogenicityClassification.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
     snapshot.assert_match(json.dumps(result_json, indent=2), "result")
 
@@ -2043,9 +2015,7 @@ def test_convert_aggregated_oncogenicity_classification_xmldict_data_to_pb(
     ],
     ids=["germline", "somatic", "onco", "all"],
 )
-def test_convert_aggregate_classification_set_xmldict_data_to_pb(
-    xml_str: str, snapshot
-):
+def test_convert_aggregate_classification_set_xmldict_data_to_pb(xml_str: str, snapshot):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertAggregateClassificationSet.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -2069,9 +2039,7 @@ def test_convert_aggregate_classification_set_xmldict_data_to_pb(
         ),
     ],
 )
-def test_convert_clinical_significance_xmldict_data_to_pb(
-    xml_str: str, expected_json: Any
-):
+def test_convert_clinical_significance_xmldict_data_to_pb(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClinicalSignificance.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -2115,9 +2083,7 @@ def test_convert_clinical_significance_xmldict_data_to_pb(
         ),
     ],
 )
-def test_convert_allele_description_xmldict_data_to_pb(
-    xml_str: str, expected_json: Any
-):
+def test_convert_allele_description_xmldict_data_to_pb(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertAlleleDescription.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -2194,9 +2160,7 @@ def test_convert_classification_scv_convert_somatic_clinical_impact(
         ),
     ],
 )
-def test_convert_classification_scv_convert_classification_score(
-    xml_str: str, expected_json: Any
-):
+def test_convert_classification_scv_convert_classification_score(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClassificationScv.convert_classification_score(xmldict_value)
     result_json = MessageToDict(result)
@@ -2268,9 +2232,7 @@ def test_convert_classification_scv_convert_classification_score(
         ),
     ],
 )
-def test_convert_classification_scv_xmldict_data_to_pb(
-    xml_str: str, expected_json: Any
-):
+def test_convert_classification_scv_xmldict_data_to_pb(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClassificationScv.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -2304,9 +2266,7 @@ def test_convert_classification_scv_xmldict_data_to_pb(
 )
 def test_convert_submitter_identifiers_xml_data_to_pb(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
-    result = ConvertSubmitterIdentifiers.xmldict_data_to_pb(
-        xmldict_value, "ClinVarAccession"
-    )
+    result = ConvertSubmitterIdentifiers.xmldict_data_to_pb(xmldict_value, "ClinVarAccession")
     result_json = MessageToDict(result)
     assert result_json == expected_json
 
@@ -2444,9 +2404,7 @@ def test_convert_clinical_assertion_record_history_xmldict_data_to_pb(
         ),
     ],
 )
-def test_convert_functional_consequence_xmldict_data_to_pb(
-    xml_str: str, expected_json: Any
-):
+def test_convert_functional_consequence_xmldict_data_to_pb(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertFunctionalConsequence.xmldict_data_to_pb(xmldict_value)
     result_json = MessageToDict(result)
@@ -2946,9 +2904,7 @@ def test_convert_sample_convert_somatic_variant_in_normal_tissue(
         ("months gestation", Sample.AgeUnit.AGE_UNIT_MONTHS_GESTATION),
     ],
 )
-def test_convert_sample_convert_age_unit(
-    xmldict_value: str, expected: Sample.AgeUnit.ValueType
-):
+def test_convert_sample_convert_age_unit(xmldict_value: str, expected: Sample.AgeUnit.ValueType):
     result = ConvertSample.convert_age_unit(xmldict_value)
     assert result == expected
 
@@ -2961,9 +2917,7 @@ def test_convert_sample_convert_age_unit(
         ("single", Sample.AgeType.AGE_TYPE_SINGLE),
     ],
 )
-def test_convert_sample_convert_age_type(
-    xmldict_value: str, expected: Sample.AgeType.ValueType
-):
+def test_convert_sample_convert_age_type(xmldict_value: str, expected: Sample.AgeType.ValueType):
     result = ConvertSample.convert_age_type(xmldict_value)
     assert result == expected
 
@@ -3025,9 +2979,7 @@ def test_convert_sample_convert_age(xml_str: str, expected_json: Any):
         ("mixed", Sample.Gender.GENDER_MIXED),
     ],
 )
-def test_convert_sample_convert_gender(
-    xmldict_value: str, expected: Sample.Gender.ValueType
-):
+def test_convert_sample_convert_gender(xmldict_value: str, expected: Sample.Gender.ValueType):
     result = ConvertSample.convert_gender(xmldict_value)
     assert result == expected
 
@@ -3363,9 +3315,7 @@ def test_convert_method_type_convert_obs_method_attribute_type(
         ),
     ],
 )
-def test_convert_method_type_convert_obs_method_attribute(
-    xml_str: str, expected_json: Any
-):
+def test_convert_method_type_convert_obs_method_attribute(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertMethodType.convert_obs_method_attribute(xmldict_value)
     result_json = MessageToDict(result)
@@ -3453,9 +3403,7 @@ def test_convert_method_type_xmldict_data_to_pb(xml_str: str, expected_json: Any
         ),
     ],
 )
-def test_convert_allele_scv_convert_molecular_consequence(
-    xml_str: str, expected_json: Any
-):
+def test_convert_allele_scv_convert_molecular_consequence(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertAlleleScv.convert_molecular_consequence(xmldict_value)
     result_json = MessageToDict(result)
@@ -3864,9 +3812,7 @@ def test_convert_observed_in_convert_observed_data_attribute_type(
         ),
     ],
 )
-def test_convert_observed_in_convert_observed_data_attribute(
-    xml_str: str, expected_json: Any
-):
+def test_convert_observed_in_convert_observed_data_attribute(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertObservedIn.convert_observed_data_attribute(xmldict_value)
     result_json = MessageToDict(result)
@@ -4023,9 +3969,7 @@ def test_convert_observed_data_xmldict_data_to_pb(xml_str: str, snapshot):
         ),
     ],
 )
-def test_convert_clinical_assertion_convert_clinvar_submission_id(
-    xml_str: str, expected_json: Any
-):
+def test_convert_clinical_assertion_convert_clinvar_submission_id(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClinicalAssertion.convert_clinvar_submission_id(xmldict_value)
     result_json = MessageToDict(result)
@@ -4107,9 +4051,7 @@ def test_convert_observed_in_convert_attribute_set_type(
         ),
     ],
 )
-def test_convert_clinical_assertion_convert_attribute_set(
-    xml_str: str, expected_json: Any
-):
+def test_convert_clinical_assertion_convert_attribute_set(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClinicalAssertion.convert_attribute_set(xmldict_value)
     result_json = MessageToDict(result)
@@ -4153,9 +4095,7 @@ def test_convert_clinical_assertion_convert_attribute_set(
         ),
     ],
 )
-def test_convert_clinical_assertion_convert_clinvar_accession(
-    xml_str: str, expected_json: Any
-):
+def test_convert_clinical_assertion_convert_clinvar_accession(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClinicalAssertion.convert_clinvar_accession(xmldict_value)
     result_json = MessageToDict(result)
@@ -4616,9 +4556,7 @@ def test_convert_allele_convert_name(xml_str: str, expected_json: Any):
         ),
     ],
 )
-def test_convert_allele_convert_global_minor_allele_frequency(
-    xml_str: str, expected_json: Any
-):
+def test_convert_allele_convert_global_minor_allele_frequency(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertAllele.convert_global_minor_allele_frequency(xmldict_value)
     result_json = MessageToDict(result)
@@ -5482,9 +5420,7 @@ def test_convert_genotype_xmldict_data_to_pb(xml_str: str, snapshot):
         ),
     ],
 )
-def test_convert_cv_accession_convert_classified_condition_list(
-    xml_str: str, expected_json: Any
-):
+def test_convert_cv_accession_convert_classified_condition_list(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertRcvAccession.convert_classified_condition_list(xmldict_value)
     result_json = MessageToDict(result)
@@ -5519,9 +5455,7 @@ def test_convert_cv_accession_convert_germline_classification_description(
     xml_str: str, expected_json: Any
 ):
     xmldict_value = xmltodict.parse(xml_str)
-    result = ConvertRcvAccession.convert_germline_classification_description(
-        xmldict_value
-    )
+    result = ConvertRcvAccession.convert_germline_classification_description(xmldict_value)
     result_json = MessageToDict(result)
     assert result_json == expected_json
 
@@ -5547,9 +5481,7 @@ def test_convert_cv_accession_convert_germline_classification_description(
         ),
     ],
 )
-def test_convert_cv_accession_convert_germline_classification(
-    xml_str: str, expected_json: Any
-):
+def test_convert_cv_accession_convert_germline_classification(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertRcvAccession.convert_germline_classification(xmldict_value)
     result_json = MessageToDict(result)
@@ -5585,9 +5517,7 @@ def test_convert_cv_accession_convert_somatic_clinical_impact_description(
     xml_str: str, expected_json: Any
 ):
     xmldict_value = xmltodict.parse(xml_str)
-    result = ConvertRcvAccession.convert_somatic_clinical_impact_description(
-        xmldict_value
-    )
+    result = ConvertRcvAccession.convert_somatic_clinical_impact_description(xmldict_value)
     result_json = MessageToDict(result)
     assert result_json == expected_json
 
@@ -5633,9 +5563,7 @@ def test_convert_cv_accession_convert_somatic_clinical_impact_description(
         ),
     ],
 )
-def test_convert_cv_accession_convert_somatic_clinical_impact(
-    xml_str: str, expected_json: Any
-):
+def test_convert_cv_accession_convert_somatic_clinical_impact(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertRcvAccession.convert_somatic_clinical_impact(xmldict_value)
     result_json = MessageToDict(result)
@@ -5669,9 +5597,7 @@ def test_convert_cv_accession_convert_oncogenicity_classification_description(
     xml_str: str, expected_json: Any
 ):
     xmldict_value = xmltodict.parse(xml_str)
-    result = ConvertRcvAccession.convert_oncogenicity_classification_description(
-        xmldict_value
-    )
+    result = ConvertRcvAccession.convert_oncogenicity_classification_description(xmldict_value)
     result_json = MessageToDict(result)
     assert result_json == expected_json
 
@@ -5711,9 +5637,7 @@ def test_convert_cv_accession_convert_oncogenicity_classification_description(
         ),
     ],
 )
-def test_convert_cv_accession_convert_oncogenicity_classification(
-    xml_str: str, expected_json: Any
-):
+def test_convert_cv_accession_convert_oncogenicity_classification(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertRcvAccession.convert_oncogenicity_classification(xmldict_value)
     result_json = MessageToDict(result)
@@ -5769,9 +5693,7 @@ def test_convert_cv_accession_convert_oncogenicity_classification(
         ),
     ],
 )
-def test_convert_cv_accession_convert_rcv_classifications(
-    xml_str: str, expected_json: Any
-):
+def test_convert_cv_accession_convert_rcv_classifications(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertRcvAccession.convert_rcv_classifications(xmldict_value)
     result_json = MessageToDict(result)
@@ -5963,9 +5885,7 @@ def test_convert_classified_record_convert_mapping_type(
         ),
     ],
 )
-def test_convert_classified_record_convert_trait_mapping_medgen(
-    xml_str: str, expected_json: Any
-):
+def test_convert_classified_record_convert_trait_mapping_medgen(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClassifiedRecord.convert_trait_mapping_medgen(xmldict_value)
     result_json = MessageToDict(result)
@@ -6017,9 +5937,7 @@ def test_convert_classified_record_convert_trait_mapping_medgen(
         ),
     ],
 )
-def test_convert_classified_record_convert_trait_mapping(
-    xml_str: str, expected_json: Any
-):
+def test_convert_classified_record_convert_trait_mapping(xml_str: str, expected_json: Any):
     xmldict_value = xmltodict.parse(xml_str)
     result = ConvertClassifiedRecord.convert_trait_mapping(xmldict_value)
     result_json = MessageToDict(result)

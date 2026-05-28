@@ -160,8 +160,8 @@ def run(path_input: str, output_dir: str, gzip_output: bool):
             simple_allele: Allele = classified_record.simple_allele
 
             name: str = variation_archive.variation_name
-            variation_type: VariationType.ValueType = (
-                ConvertVariationType.from_string_value(variation_archive.variation_type)
+            variation_type: VariationType.ValueType = ConvertVariationType.from_string_value(
+                variation_archive.variation_type
             )
             accession: VersionedAccession = VersionedAccession(
                 accession=variation_archive.accession,
@@ -191,14 +191,10 @@ def run(path_input: str, output_dir: str, gzip_output: bool):
                         name=name,
                         variation_type=variation_type,
                         classifications=(
-                            thin_out_aggregate_classification_set(
-                                classified_record.classifications
-                            )
+                            thin_out_aggregate_classification_set(classified_record.classifications)
                         ),
                         clinical_assertions=(
-                            thin_out_clinical_assertions(
-                                classified_record.clinical_assertions
-                            )
+                            thin_out_clinical_assertions(classified_record.clinical_assertions)
                         ),
                         sequence_location=sequence_location,
                         hgnc_ids=hgnc_ids,

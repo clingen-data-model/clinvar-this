@@ -28,9 +28,7 @@ def test_call_config():
 def test_call_config_get():
     with patch(
         "clinvar_this.cli.load_config",
-        MagicMock(
-            return_value=config.Config(profile="default", auth_token=SecretStr("fake"))
-        ),
+        MagicMock(return_value=config.Config(profile="default", auth_token=SecretStr("fake"))),
     ):
         runner = CliRunner()
         result = runner.invoke(cli.cli, ["config", "get", "auth_token"])
@@ -49,9 +47,7 @@ def test_call_config_set_success():
     mock_save_config = MagicMock()
     with patch(
         "clinvar_this.cli.load_config",
-        MagicMock(
-            return_value=config.Config(profile="default", auth_token=SecretStr("fake"))
-        ),
+        MagicMock(return_value=config.Config(profile="default", auth_token=SecretStr("fake"))),
     ), patch("clinvar_this.cli.save_config", mock_save_config):
         runner = CliRunner()
         result = runner.invoke(cli.cli, ["config", "set", "auth_token", "xxx"])

@@ -49,9 +49,7 @@ def load_config(profile: str = "default") -> Config:
                 f"Problem decoding configuration file {config_path}"
             ) from e
 
-    return Config(
-        profile=profile, auth_token=config_dict.get(profile, {}).get("auth_token")
-    )
+    return Config(profile=profile, auth_token=config_dict.get(profile, {}).get("auth_token"))
 
 
 def save_config(config: Config, profile: str = "default"):

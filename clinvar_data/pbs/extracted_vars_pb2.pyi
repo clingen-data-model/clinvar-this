@@ -25,9 +25,7 @@ class _VariationType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _VariationTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
-        _VariationType.ValueType
-    ],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_VariationType.ValueType],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -235,10 +233,7 @@ class ExtractedVcvRecord(google.protobuf.message.Message):
             clinvar_data.pbs.clinvar_public_pb2.AggregateClassificationSet | None
         ) = ...,
         clinical_assertions: (
-            collections.abc.Iterable[
-                clinvar_data.pbs.clinvar_public_pb2.ClinicalAssertion
-            ]
-            | None
+            collections.abc.Iterable[clinvar_data.pbs.clinvar_public_pb2.ClinicalAssertion] | None
         ) = ...,
         sequence_location: (
             clinvar_data.pbs.clinvar_public_pb2.Location.SequenceLocation | None

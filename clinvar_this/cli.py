@@ -32,9 +32,7 @@ from clinvar_this.config import Config, dump_config, load_config, save_config
     help="Whether to use UTC timezone (default: true)",
 )
 @click.pass_context
-def cli(
-    ctx: click.Context, verbose: bool, profile: str, verify_ssl: bool, use_utc: bool
-):
+def cli(ctx: click.Context, verbose: bool, profile: str, verify_ssl: bool, use_utc: bool):
     """Main entry point for CLI via click."""
     ctx.ensure_object(dict)
     ctx.obj["verbose"] = verbose
@@ -65,14 +63,10 @@ def config_set(ctx: click.Context, name: str, value: str):
     try:
         config_obj = load_config(profile)
     except exceptions.ConfigFileMissingException:
-        config_obj = Config(
-            profile=profile, auth_token=SecretStr("")
-        )  # swallow, will recreate
+        config_obj = Config(profile=profile, auth_token=SecretStr(""))  # swallow, will recreate
     allowed_names = ["auth_token"]
     if name not in allowed_names:
-        raise click.ClickException(
-            f"Invalid value {name}, must be one of {allowed_names}"
-        )
+        raise click.ClickException(f"Invalid value {name}, must be one of {allowed_names}")
     # We need to ignore type checking in the following line because of a false positive:
     #
     # error: Argument 2 to "evolve" of "Config" has incompatible type "**dict[str, str]";
@@ -130,9 +124,7 @@ def batch_list(ctx: click.Context):
     multiple=True,
     help="Provide meta data settings as KEY=VALUE settings",
 )
-@click.option(
-    "--name", required=False, default=None, help="Name of the batch to create or add to"
-)
+@click.option("--name", required=False, default=None, help="Name of the batch to create or add to")
 @click.pass_context
 def batch_import(
     ctx: click.Context,
@@ -155,9 +147,7 @@ def batch_import(
 @batch.command("export")
 @click.argument("name")
 @click.argument("path")
-@click.option(
-    "--force/--no-force", required=False, default=False, help="Overwrite existing files"
-)
+@click.option("--force/--no-force", required=False, default=False, help="Overwrite existing files")
 @click.option(
     "--struc-var/--no-struc-var",
     required=False,
@@ -325,9 +315,7 @@ def gene_phenotype_link(
     help="Whether to filter to rows with HPO terms (default: true)",
 )
 @click.pass_context
-def acmg_class_by_freq(
-    ctx: click.Context, input_file: str, output_file: str, thresholds: str
-):
+def acmg_class_by_freq(ctx: click.Context, input_file: str, output_file: str, thresholds: str):
     """Create links between gene and phenotype."""
     _ = ctx
     thresholds_float = list(map(float, thresholds.split(",")))
@@ -343,9 +331,7 @@ def acmg_class_by_freq(
     help="Whether to gzip output (default: true)",
 )
 @click.pass_context
-def cli_extract_vars(
-    ctx: click.Context, path_input: str, path_output_dir: str, gzip_output: bool
-):
+def cli_extract_vars(ctx: click.Context, path_input: str, path_output_dir: str, gzip_output: bool):
     """Write out variants from RCV records."""
     _ = ctx
     extract_vars.run(path_input, path_output_dir, gzip_output)

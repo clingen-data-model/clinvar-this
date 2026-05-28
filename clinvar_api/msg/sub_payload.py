@@ -483,12 +483,8 @@ class SubmissionClinvarSubmission(_SubmissionClinvarSubmissionBase):
 class SomaticClinicalImpactClassification(_SubmissionClinicalSignificanceBase):
     """Details of somatic clinical impact classification."""
 
-    clinicalImpactClassificationDescription: (
-        SomaticClinicalImpactClassificationDescription
-    )
-    assertionTypeForClinicalImpact: typing.Optional[
-        SomaticClinicalImpactAssertionType
-    ] = None
+    clinicalImpactClassificationDescription: SomaticClinicalImpactClassificationDescription
+    assertionTypeForClinicalImpact: typing.Optional[SomaticClinicalImpactAssertionType] = None
     drugForTherapeuticAssertion: typing.Optional[str] = None
 
 
@@ -544,16 +540,12 @@ class SubmissionContainer(BaseModel):
     #: "clinicalImpactSubmission", "oncogenicitySubmission", and "germlineSubmission".
     clinvarSubmission: typing.Optional[typing.List[SubmissionClinvarSubmission]] = None
     #: ClinVar Submission Set for germline variants
-    germlineSubmission: typing.Optional[typing.List[SubmissionGermlineSubmission]] = (
+    germlineSubmission: typing.Optional[typing.List[SubmissionGermlineSubmission]] = None
+    #: ClinVar Submission Set for somatic variants with oncogenicityClassification.
+    oncogenicitySubmission: typing.Optional[typing.List[SubmissionOncogenicitySubmission]] = None
+    #: ClinVar Submission Set for somatic variants with clinicalImpactClassification.
+    clinicalImpactSubmission: typing.Optional[typing.List[SubmissionClinicalImpactSubmission]] = (
         None
     )
-    #: ClinVar Submission Set for somatic variants with oncogenicityClassification.
-    oncogenicitySubmission: typing.Optional[
-        typing.List[SubmissionOncogenicitySubmission]
-    ] = None
-    #: ClinVar Submission Set for somatic variants with clinicalImpactClassification.
-    clinicalImpactSubmission: typing.Optional[
-        typing.List[SubmissionClinicalImpactSubmission]
-    ] = None
     clinvarSubmissionReleaseStatus: typing.Optional[ReleaseStatus] = None
     submissionName: typing.Optional[str] = None

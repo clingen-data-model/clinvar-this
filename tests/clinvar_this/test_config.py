@@ -69,9 +69,7 @@ def test_save_config_fresh(fs):
 
     with patch("clinvar_this.config.pathlib", fake_pathlib):
         base_path = config.pathlib.Path.home() / ".config" / "clinvar-this"
-        config.save_config(
-            config=config.Config(profile="default", auth_token=SecretStr("xxx"))
-        )
+        config.save_config(config=config.Config(profile="default", auth_token=SecretStr("xxx")))
 
         with (base_path / "config.toml").open("rt") as inputf:
             config_str = inputf.read()
@@ -90,9 +88,7 @@ def test_save_config_overwrite(fs):
             contents=CONFIG_CONTENT,
             create_missing_dirs=True,
         )
-        config.save_config(
-            config=config.Config(profile="default", auth_token=SecretStr("xxx"))
-        )
+        config.save_config(config=config.Config(profile="default", auth_token=SecretStr("xxx")))
 
         with (base_path / "config.toml").open("rt") as inputf:
             config_str = inputf.read()

@@ -192,42 +192,18 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
                     comment="L858R is among the most common sensitizing EGFR mutations in NSCLC, and is assessed via DNA mutational analysis, including Sanger sequencing and next generation sequencing methods. Tyrosine kinase inhibitor afatinib is FDA approved as a first line systemic therapy in NSCLC with sensitizing EGFR mutation (civic.EID:2997).",
                     citation=[
                         # SubmissionCitation(url="https://identifiers.org/civic.mpid:33"),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/2997"
-                        ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/23982599"
-                        ),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/2629"
-                        ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/18408761"
-                        ),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/982"
-                        ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/24439929"
-                        ),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/968"
-                        ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/26515464"
-                        ),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/883"
-                        ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/22452895"
-                        ),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/879"
-                        ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/23816960"
-                        ),
+                        SubmissionCitation(url="https://civicdb.org/links/evidence/2997"),
+                        SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/23982599"),
+                        SubmissionCitation(url="https://civicdb.org/links/evidence/2629"),
+                        SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/18408761"),
+                        SubmissionCitation(url="https://civicdb.org/links/evidence/982"),
+                        SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24439929"),
+                        SubmissionCitation(url="https://civicdb.org/links/evidence/968"),
+                        SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/26515464"),
+                        SubmissionCitation(url="https://civicdb.org/links/evidence/883"),
+                        SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/22452895"),
+                        SubmissionCitation(url="https://civicdb.org/links/evidence/879"),
+                        SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/23816960"),
                     ],
                     drug_for_therapeutic_assertion="Afatinib",
                 ),
@@ -284,9 +260,7 @@ def civic_aid9_submission():
 
 
 @pytest.fixture(scope="module")
-def civic_diagnostic_submissions(
-    civic_aid9_submission, amp_asco_cap_assertion_criteria
-):
+def civic_diagnostic_submissions(civic_aid9_submission, amp_asco_cap_assertion_criteria):
     """Create test fixture for CIViC AID9 submission"""
     return SubmissionContainer(
         assertion_criteria=amp_asco_cap_assertion_criteria,
@@ -349,9 +323,7 @@ def civic_aid20_submission():
 
 
 @pytest.fixture(scope="module")
-def civic_prognostic_submissions(
-    civic_aid20_submission, amp_asco_cap_assertion_criteria
-):
+def civic_prognostic_submissions(civic_aid20_submission, amp_asco_cap_assertion_criteria):
     """Create test fixture for CIViC AID20 submission"""
     return SubmissionContainer(
         assertion_criteria=amp_asco_cap_assertion_criteria,
@@ -426,9 +398,7 @@ def test_records_to_submission_container(
     civic_tr_submissions_cpy = civic_tr_submissions.model_copy()
     civic_tr_submissions_cpy.clinical_impact_submission.pop(0)
     civic_tr_submissions_cpy = civic_tr_submissions_cpy.model_dump(exclude_none=True)
-    civic_tr_submissions_cpy["clinical_impact_submission"][0][
-        "clinical_impact_classification"
-    ][
+    civic_tr_submissions_cpy["clinical_impact_submission"][0]["clinical_impact_classification"][
         "comment"
     ] = f"{civic_tr_submissions_cpy['clinical_impact_submission'][0]['clinical_impact_classification']['comment']} NOTE: These therapies are in substitution."
     diff = DeepDiff(
@@ -486,14 +456,10 @@ def test_citations(
     # only care about civic urls in this use case
     civic_aid20_submission_cpy = civic_aid20_submission.model_dump()
     new_citations = []
-    for citation in civic_aid20_submission_cpy["clinical_impact_classification"][
-        "citation"
-    ]:
+    for citation in civic_aid20_submission_cpy["clinical_impact_classification"]["citation"]:
         if citation["url"].startswith("https://civicdb.org"):
             new_citations.append(citation)
-    civic_aid20_submission_cpy["clinical_impact_classification"][
-        "citation"
-    ] = new_citations
+    civic_aid20_submission_cpy["clinical_impact_classification"]["citation"] = new_citations
 
     expected = SubmissionContainer(
         assertion_criteria=amp_asco_cap_assertion_criteria,
@@ -522,9 +488,7 @@ def test_contributions(clinical_impact_transformer, civic_aid200, civic_metadata
     assert len(actual.clinical_impact_submission) == 1
 
     assert (
-        actual.clinical_impact_submission[
-            0
-        ].clinical_impact_classification.date_last_evaluated
+        actual.clinical_impact_submission[0].clinical_impact_classification.date_last_evaluated
         == "2026-04-16"
     )
 
@@ -549,14 +513,10 @@ def test_no_evidence_lines(
 
     submission_copy = civic_aid20_submission.model_dump()
     submission_copy["clinical_impact_classification"]["citation"] = []
-    submission_copy["clinical_impact_classification"][
-        "assertion_type_for_clinical_impact"
-    ] = None
+    submission_copy["clinical_impact_classification"]["assertion_type_for_clinical_impact"] = None
     expected = SubmissionContainer(
         assertion_criteria=amp_asco_cap_assertion_criteria,
-        clinical_impact_submission=[
-            SubmissionClinicalImpactSubmission(**submission_copy)
-        ],
+        clinical_impact_submission=[SubmissionClinicalImpactSubmission(**submission_copy)],
     )
     diff = DeepDiff(
         actual.model_dump(exclude_none=True),
