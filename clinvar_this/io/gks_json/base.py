@@ -720,6 +720,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                     submitted_assembly=batch_metadata.submitted_assembly,
                 )
             )
+
         return SubmissionContainer(
             assertion_criteria=self.assertion_criteria,
             **{self.submission_container_attribute: submissions},
