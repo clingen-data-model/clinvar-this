@@ -174,6 +174,9 @@ class ClinicalImpactTransformer(
 
         Local Key will use the `record`'s ID.
 
+        If `clinvar_accession` extension exists in `statement`, then this variant will
+        have record status as `update` rather than `novel`.
+
         :param statement: GKS statement (therapeutic, diagnostic, or prognostic) to transform
         :param observed_in: List of distinct observations
         :param variant_hgvs: The HGVS expression for a variant, if found

@@ -179,6 +179,9 @@ Fields marked with ``*`` are required by ClinVar This for ClinVar submission gen
    * - ClinVar Field
      - VA-Spec Statement Field
 
+   * - ClinVar accession
+     - ``extensions``
+
    * - \* Local key
      - ``id``
 
@@ -223,6 +226,15 @@ Fields marked with ``*`` are required by ClinVar This for ClinVar submission gen
 
    * - Date last evaluated
      - ``contributions``
+
+ClinVar Accession Details
+-------------------------
+
+A ``clinvar_accession`` extension may be provided to identify an existing ClinVar record for update submission.
+
+When the extension contains a valid ClinVar accession, the generated record status is ``update``.
+
+When the extension is absent or invalid, the generated record status is ``novel``.
 
 Variant Details
 ---------------

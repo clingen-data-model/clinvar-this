@@ -5,6 +5,7 @@ import json
 import pytest
 from conftest import DATA_DIR
 from deepdiff import DeepDiff
+from ga4gh.core.models import Extension
 from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
 
 from clinvar_api.models import (
@@ -165,6 +166,61 @@ def test_records_to_submission_container(
     diff = DeepDiff(
         actual.model_dump(exclude_none=True),
         civic_oncogenicity_submissions.model_dump(exclude_none=True),
+        ignore_order=True,
+    )
+    assert diff == {}
+
+
+@pytest.mark.parametrize(
+    ("clinvar_accession", "expected_record_status"),
+    [
+        ("SCV000000001", RecordStatus.UPDATE),
+        ("not-a-clinvar-accession", RecordStatus.NOVEL),
+    ],
+)
+def test_clinvar_accession_extension(
+    oncogenicity_transformer,
+    civic_metadata,
+    civic_aid202,
+    civic_oncogenicity_submissions,
+    clinvar_accession,
+    expected_record_status,
+):
+    """Ensure ClinVar accession extensions determine submission record status."""
+    statement = civic_aid202.model_copy(
+        deep=True,
+        update={
+            "extensions": [
+                *(civic_aid202.extensions or []),
+                Extension(name="clinvar_accession", value=clinvar_accession),
+            ]
+        },
+    )
+
+    expected = civic_oncogenicity_submissions.model_copy(deep=True)
+
+    expected_submission_updates = {
+        "record_status": expected_record_status,
+    }
+
+    if expected_record_status == RecordStatus.UPDATE:
+        expected_submission_updates["clinvar_accession"] = clinvar_accession
+
+    updated_submissions = [
+        submission.model_copy(update=expected_submission_updates)
+        for submission in expected.oncogenicity_submission
+    ]
+
+    expected = expected.model_copy(
+        update={"oncogenicity_submission": updated_submissions}
+    )
+    actual = oncogenicity_transformer.records_to_submission_container(
+        [statement], civic_metadata
+    )
+
+    diff = DeepDiff(
+        actual.model_dump(exclude_none=True),
+        expected.model_dump(exclude_none=True),
         ignore_order=True,
     )
     assert diff == {}
