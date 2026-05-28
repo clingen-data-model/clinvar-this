@@ -137,7 +137,7 @@ Note that you cannot submission TSV imports with batches that contain removals a
 GKS JSON
 --------
 
-GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) <https://www.ga4gh.org/>`_ `Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact submissions.
+GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) <https://www.ga4gh.org/>`_ `Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact and oncogenicity submissions.
 
 This section describes how supported VA-Spec statement fields are mapped into ClinVar submission fields. For additional details on the statement model and terminology, see the `VA-Spec GitHub repository <https://github.com/ga4gh/va-spec/tree/1.1.0-snapshot.2026-02.1>`_.
 
@@ -161,6 +161,10 @@ Supported Statement Types
 
   - The ``assertion_criteria`` will be hard-coded to the `AMP/ASCO/CAP PubMed ID <https://pubmed.ncbi.nlm.nih.gov/27993330/>`_.
 
+
+- `VariantOncogenicityStatement <https://raw.githubusercontent.com/ga4gh/va-spec/1.1.0-snapshot.2026-02.1/schema/va-spec/ccv-2022/json/VariantOncogenicityStatement>`_: Used to represent ClinGen/CGC/VICC 2022 oncogenicity assertions for ClinVar oncogenicity submissions.
+
+  - The ``assertion_criteria`` will be hard-coded to the `ClinGen/CGC/VICC PubMed ID <https://pubmed.ncbi.nlm.nih.gov/36063163/>`_.
 
 Statement Field Mappings
 ========================
@@ -199,7 +203,8 @@ Fields marked with ``*`` are required by ClinVar This for ClinVar submission gen
 
    * - \* Condition
      - ``proposition.conditionQualifier`` or
-       ``proposition.objectCondition``
+       ``proposition.objectCondition`` or
+       ``proposition.objectTumorType``
 
    * - Drug
      - ``hasEvidenceLines[0].targetProposition.objectTherapeutic``
@@ -251,6 +256,8 @@ Condition Details
 Therapeutic assertions use ``proposition.conditionQualifier``.
 
 Diagnostic and prognostic assertions use ``proposition.objectCondition``.
+
+Ocogenicity assertions use ``proposition.objectTumorType``.
 
 Supported condition identifiers from concept codings are mapped to ClinVar condition database identifiers when available. Otherwise, the condition ``name`` is submitted.
 
