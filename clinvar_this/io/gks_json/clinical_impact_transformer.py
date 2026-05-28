@@ -64,9 +64,7 @@ class DrugContext:
     drug: str | None = None
 
 
-class ClinicalImpactTransformer(
-    GksJsonTransformer[VariantClinicalSignificanceStatement]
-):
+class ClinicalImpactTransformer(GksJsonTransformer[VariantClinicalSignificanceStatement]):
     """Class for transforming AMP/ASCO/CAP 2017 GKS formatted data to define Clinical Impact submissions"""
 
     submission_container_attribute = "clinical_impact_submission"
@@ -136,9 +134,7 @@ class ClinicalImpactTransformer(
             ):
                 continue
 
-            assertion_type = self.gks_predicate_to_assertion[
-                target_proposition.predicate
-            ]
+            assertion_type = self.gks_predicate_to_assertion[target_proposition.predicate]
 
             therapeutic = None
             drug = None
@@ -150,9 +146,7 @@ class ClinicalImpactTransformer(
                     therapeutic = therapeutic_root
                     drug = self._get_drug_for_therapeutic_assertion(therapeutic)
 
-            return DrugContext(
-                assertion_type=assertion_type, therapeutic=therapeutic, drug=drug
-            )
+            return DrugContext(assertion_type=assertion_type, therapeutic=therapeutic, drug=drug)
 
         return DrugContext()
 

@@ -100,9 +100,7 @@ def batch_metadata_from_mapping(
 
     If values are not provided, then will use defaults
     """
-    field_types = {
-        name: value for (name, value) in get_type_hints(BatchMetadata).items()
-    }
+    field_types = {name: value for (name, value) in get_type_hints(BatchMetadata).items()}
     kwargs = {}
     for key_value in keys_values:
         if "=" not in key_value:
@@ -237,9 +235,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             except (StopIteration, TypeError):
                 return None
 
-        return get_hgvs(expressions, Syntax.HGVS_C) or get_hgvs(
-            expressions, Syntax.HGVS_G
-        )
+        return get_hgvs(expressions, Syntax.HGVS_C) or get_hgvs(expressions, Syntax.HGVS_G)
 
     @staticmethod
     def _get_observed_in(
@@ -423,8 +419,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                 reported_in_documents.extend(reported_in or [])
 
         documents_have_all_pmids = all(
-            isinstance(document, Document) and document.pmid
-            for document in reported_in_documents
+            isinstance(document, Document) and document.pmid for document in reported_in_documents
         )
 
         if documents_have_all_pmids:
@@ -442,9 +437,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             if isinstance(document, Document):
                 if document.pmid:
                     add_citation(
-                        SubmissionCitation(
-                            url=f"https://pubmed.ncbi.nlm.nih.gov/{document.pmid}"
-                        )
+                        SubmissionCitation(url=f"https://pubmed.ncbi.nlm.nih.gov/{document.pmid}")
                     )
             elif isinstance(document, iriReference):
                 add_citation(SubmissionCitation(url=document.root))

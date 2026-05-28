@@ -129,7 +129,7 @@ class SubmissionVariant(BaseModel):
             hgvs=self.hgvs,
             referenceCopyNumber=self.reference_copy_number,
             variantType=self.variant_type,
-            alternateDesignations=self.alternate_designations
+            alternateDesignations=self.alternate_designations,
         )
 
 

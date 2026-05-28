@@ -107,15 +107,11 @@ def _merge_submission_container(
         :raise exceptions.IOException: If the submissions have incompatible types
         :return: Merged submission
         """
-        clinvar_accession = (
-            base_submission.clinvar_accession or patch_submission.clinvar_accession
-        )
+        clinvar_accession = base_submission.clinvar_accession or patch_submission.clinvar_accession
 
         submission_field_map = {
             models.SubmissionClinvarSubmission: "clinical_significance",
-            models.SubmissionClinicalImpactSubmission: (
-                "clinical_impact_classification"
-            ),
+            models.SubmissionClinicalImpactSubmission: ("clinical_impact_classification"),
             models.SubmissionOncogenicitySubmission: ("oncogenicity_classification"),
         }
 
@@ -135,9 +131,7 @@ def _merge_submission_container(
                     }
                 )
 
-        raise exceptions.IOException(
-            "Cannot merge submissions of different or unsupported types"
-        )
+        raise exceptions.IOException("Cannot merge submissions of different or unsupported types")
 
     def merge_submission_list(
         base_submissions: list[ClinvarSubmissionT] | None,
@@ -155,20 +149,20 @@ def _merge_submission_container(
             if submission.local_key is not None
         }
         return [
-            merge_submission(
-                submission,
-                patch_by_local_key[submission.local_key],
+            (
+                merge_submission(
+                    submission,
+                    patch_by_local_key[submission.local_key],
+                )
+                if submission.local_key in patch_by_local_key
+                else submission
             )
-            if submission.local_key in patch_by_local_key
-            else submission
             for submission in base_submissions or []
         ]
 
-    clinvar_submissions: list[models.SubmissionClinvarSubmission] = (
-        merge_submission_list(
-            base.clinvar_submission,
-            patch.clinvar_submission,
-        )
+    clinvar_submissions: list[models.SubmissionClinvarSubmission] = merge_submission_list(
+        base.clinvar_submission,
+        patch.clinvar_submission,
     )
 
     clinical_impact_submissions: list[models.SubmissionClinicalImpactSubmission] = (
@@ -252,9 +246,7 @@ def _load_latest_payload(profile: str, name: str):
     submission_path = get_share_dir() / profile / name
     payload_paths = list(sorted(submission_path.glob("payload.*.json")))
     if not payload_paths:  # pragma: no cover
-        raise exceptions.ClinvarThisException(
-            f"Found no payload JSON file at {submission_path}"
-        )
+        raise exceptions.ClinvarThisException(f"Found no payload JSON file at {submission_path}")
 
     payload_path = submission_path / payload_paths[-1]
     with payload_path.open("rt") as inputf:
