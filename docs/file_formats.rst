@@ -133,6 +133,141 @@ The following shows an example:
 
 Note that you cannot submission TSV imports with batches that contain removals already.
 
+--------
+GKS JSON
+--------
+
+GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) <https://www.ga4gh.org/>`_ `Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact submissions.
+
+This section describes how supported VA-Spec statement fields are mapped into ClinVar submission fields. For additional details on the statement model and terminology, see the `VA-Spec GitHub repository <https://github.com/ga4gh/va-spec/tree/1.1.0-snapshot.2026-02.1>`_.
+
+The currently supported VA-Spec version is `1.1.0-snapshot.2026-02.1 <https://github.com/ga4gh/va-spec/releases/tag/1.1.0-snapshot.2026-02.1>`_.
+
+Input files must be JSON objects containing a top-level ``gks_records`` key. The value of ``gks_records`` must be a list of GKS statements. For example:
+
+.. code-block::
+
+  {
+    "gks_records": [
+      <GKS Statement>,
+      <GKS Statement>
+    ]
+  }
+
+Supported Statement Types
+=========================
+
+- `VariantClinicalSignificanceStatement <https://w3id.org/ga4gh/schema/va-spec/1.1.0-snapshot.2026-02.1/aac-2017/json/VariantClinicalSignificanceStatement>`_: Used to represent AMP/ASCO/CAP 2017 therapeutic, diagnostic, and prognostic assertions for ClinVar clinical impact submissions.
+
+  - The ``assertion_criteria`` will be hard-coded to the `AMP/ASCO/CAP PubMed ID <https://pubmed.ncbi.nlm.nih.gov/27993330/>`_.
+
+
+Statement Field Mappings
+========================
+
+Currently, only single-member variant, gene, and condition sets are supported.
+
+Fields marked with ``*`` are required by ClinVar This for ClinVar submission generation.
+
+.. list-table::
+   :header-rows: 1
+
+   * - ClinVar Field
+     - VA-Spec Statement Field
+
+   * - \* Local key
+     - ``id``
+
+   * - \* Variant description
+     - ``proposition.subjectVariant``
+
+   * - \* Local ID
+     - ``proposition.subjectVariant.id`` or
+       ``proposition.subjectVariant.name``
+
+   * - Alternate designations
+     - ``proposition.subjectVariant.aliases``
+
+   * - \* Gene symbol
+     - ``proposition.geneContextQualifier.name``
+
+   * - \* Allele origin
+     - ``proposition.alleleOriginQualifier.name``
+
+   * - Collection method
+     - ``specifiedBy.methodType``
+
+   * - \* Condition
+     - ``proposition.conditionQualifier`` or
+       ``proposition.objectCondition``
+
+   * - Drug
+     - ``hasEvidenceLines[0].targetProposition.objectTherapeutic``
+
+   * - \* Classification
+     - ``classification.primaryCoding.code``
+
+   * - Assertion Type
+     - ``hasEvidenceLines[0].targetProposition.predicate``
+
+   * - Citation
+     - ``hasEvidenceLines``
+
+   * - Comment
+     - ``description``
+
+   * - Date last evaluated
+     - ``contributions``
+
+Variant Details
+---------------
+
+``proposition.subjectVariant`` must contain a GA4GH Cat-VRS Categorical Variant.
+
+HGVS expressions are extracted from the first supported ``DefiningAlleleConstraint`` in ``proposition.subjectVariant.constraints``.
+
+If no supported constraint is present, HGVS expressions may be provided using an ``expressions`` extension on ``proposition.subjectVariant``.
+
+HGVS selection priority:
+
+#. RefSeq transcript HGVS
+#. RefSeq genomic HGVS
+
+The selected HGVS expression is used for the ClinVar variant description.
+
+Allele Origin Details
+---------------------
+
+If no allele origin name is provided, the statement is skipped
+
+Collection Method Details
+-------------------------
+
+``specifiedBy.methodType`` falls back to the batch-wide ``collection_method`` metadata value when not present
+
+Condition Details
+-----------------
+
+Therapeutic assertions use ``proposition.conditionQualifier``.
+
+Diagnostic and prognostic assertions use ``proposition.objectCondition``.
+
+Supported condition identifiers from concept codings are mapped to ClinVar condition database identifiers when available. Otherwise, the condition ``name`` is submitted.
+
+Citation Details
+----------------
+
+Supported citation sources include:
+
+- ``citations`` extensions attached to evidence lines
+- PubMed IDs (``pmid``) on reported documents
+- IRI reference URLs attached to reported documents
+
+Comment Details
+---------------
+
+If the therapeutic assertion uses a substitute therapy group, the ClinVar comment is updated to note that the therapies are in substitution
+
 ------------
 Phenopackets
 ------------
