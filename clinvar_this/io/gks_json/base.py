@@ -512,10 +512,9 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             )
             clinvar_accession = None
 
-        if clinvar_accession is None:
-            record_status = RecordStatus.NOVEL
-        else:
-            record_status = RecordStatus.UPDATE
+        record_status = (
+            RecordStatus.NOVEL if clinvar_accession is None else RecordStatus.UPDATE
+        )
 
         return {
             "clinvar_accession": clinvar_accession,
@@ -625,7 +624,6 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
         If `clinvar_accession` extension exists in `statement`, then this variant will
         have record status as `update` rather than `novel`.
-
 
         :param statement: GKS statement instance to transform
         :param observed_in: List of distinct ClinVar somatic observations associated
