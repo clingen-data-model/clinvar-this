@@ -6,6 +6,9 @@
 
 # ClinVar This!
 
+> [!NOTE]
+> This is a fork of https://github.com/varfish-org/clinvar-this. We do intend to contribute back to the source soon.
+
 ClinVar Submission via API Made Easy
 
 - Free software: MIT license
