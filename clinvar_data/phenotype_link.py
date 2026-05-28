@@ -21,9 +21,9 @@ def clean_omim(terms: typing.Set[str]) -> typing.Set[str]:
     return {term.split(".")[0] for term in terms}
 
 
-def run_report(
+def run_report(  # noqa: C901
     path_input: str, path_output: str, needs_hpo_terms: bool = True
-):  # noqa: C901
+):
     """Read in file at path_input and generate link records to path_output."""
 
     if path_input.endswith(".gz"):
