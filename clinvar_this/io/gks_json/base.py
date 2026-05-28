@@ -133,7 +133,7 @@ def batch_metadata_from_mapping(
 
 
 class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
-    """Class for transforming GKS JSON input data from various formats into submission format"""
+    """Abstract base class for transforming GKS JSON input data from various formats into submission format"""
 
     submission_container_attribute: SubmissionContainerAttribute
     assertion_criteria: SubmissionAssertionCriteria
@@ -146,9 +146,9 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
     ) -> list[GksStatementT]:
         """Read GKS statements from a JSON file object.
 
-        Expects the JSON file to contain a ``gks_records`` key with a
-        list of GKS statement records compatible with the transformer's
-        configured ``gks_statement_cls``.
+        Expects the JSON file to contain a ``gks_records`` key with a list of GKS
+        statement records compatible with the transformer's configured
+        ``gks_statement_cls``.
 
         :param inputf: Text file object containing GKS JSON data
         :raise exceptions.InvalidFormat: If the input is not valid JSON or does not
@@ -189,6 +189,8 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         variant: MolecularVariation | CategoricalVariant | iriReference,
     ) -> str | None:
         """Retrieve a HGVS expression for a variant
+
+        At the moment, will only retrieve HGVS from Categorical Variants.
 
         Checks the first constraint for an expression. Only support
         DefiningAlleleConstraints at the moment.
@@ -234,10 +236,10 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         expressions = None
         if getattr(variant, "constraints", None) and variant.constraints:
             constraint = variant.constraints[0]
-            if isinstance(constraint.root, DefiningAlleleConstraint):
-                _allele = constraint.root.allele
-                if isinstance(_allele, Allele):
-                    expressions = _allele.expressions
+            if isinstance(constraint.root, DefiningAlleleConstraint) and isinstance(
+                constraint.root.allele, Allele
+            ):
+                expressions = constraint.root.allele.expressions
         else:
             # Case where a VRS Allele is unable to be represented, can store
             # expressions as an extension named 'expressions'
@@ -307,6 +309,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             VariantTherapeuticResponseProposition
             | VariantDiagnosticProposition
             | VariantPrognosticProposition
+            | VariantOncogenicityProposition
         ),
     ) -> SubmissionConditionSetSomatic:
         """Build a somatic condition set from a proposition.
@@ -638,7 +641,6 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         submissions = []
 
         for statement in statements:
-
             variant_hgvs = self._get_variant_hgvs(statement.proposition.subjectVariant)
 
             if not variant_hgvs:

@@ -182,7 +182,6 @@ class ClinicalImpactTransformer(
             Significance statement
         """
         evidence_lines = self._get_evidence_lines(statement.hasEvidenceLines)
-
         drug_context = self._get_drug_context_from_evidence_lines(evidence_lines)
 
         return SubmissionClinicalImpactSubmission(

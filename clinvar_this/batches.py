@@ -111,39 +111,29 @@ def _merge_submission_container(
             base_submission.clinvar_accession or patch_submission.clinvar_accession
         )
 
-        if isinstance(
-            base_submission,
-            models.SubmissionClinvarSubmission,
-        ) and isinstance(
-            patch_submission,
-            models.SubmissionClinvarSubmission,
-        ):
-            return base_submission.model_copy(
-                update={
-                    "clinvar_accession": clinvar_accession,
-                    "condition_set": patch_submission.condition_set,
-                    "clinical_significance": (patch_submission.clinical_significance),
-                    "observed_in": patch_submission.observed_in,
-                }
-            )
+        submission_field_map = {
+            models.SubmissionClinvarSubmission: "clinical_significance",
+            models.SubmissionClinicalImpactSubmission: (
+                "clinical_impact_classification"
+            ),
+            models.SubmissionOncogenicitySubmission: ("oncogenicity_classification"),
+        }
 
-        if isinstance(
-            base_submission,
-            models.SubmissionClinicalImpactSubmission,
-        ) and isinstance(
-            patch_submission,
-            models.SubmissionClinicalImpactSubmission,
-        ):
-            return base_submission.model_copy(
-                update={
-                    "clinvar_accession": clinvar_accession,
-                    "clinical_impact_classification": (
-                        patch_submission.clinical_impact_classification
-                    ),
-                    "condition_set": patch_submission.condition_set,
-                    "observed_in": patch_submission.observed_in,
-                }
-            )
+        for submission_type, classification_field_name in submission_field_map.items():
+            if isinstance(base_submission, submission_type) and isinstance(
+                patch_submission,
+                submission_type,
+            ):
+                return base_submission.model_copy(
+                    update={
+                        "clinvar_accession": clinvar_accession,
+                        "condition_set": patch_submission.condition_set,
+                        "observed_in": patch_submission.observed_in,
+                        classification_field_name: getattr(
+                            patch_submission, classification_field_name
+                        ),
+                    }
+                )
 
         raise exceptions.IOException(
             "Cannot merge submissions of different or unsupported types"
