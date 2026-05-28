@@ -3,10 +3,10 @@
 import json
 import re
 
-import pytest
 from conftest import DATA_DIR
 from deepdiff import DeepDiff
 from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
+import pytest
 
 from clinvar_api.models import (
     AffectedStatus,

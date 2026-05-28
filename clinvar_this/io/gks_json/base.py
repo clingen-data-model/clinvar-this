@@ -9,8 +9,8 @@ Example usage:
 $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
 """
 
-import json
 from abc import ABC, abstractmethod
+import json
 from typing import Any, Generic, Iterable, Literal, TextIO, TypeVar, get_type_hints
 
 from ga4gh.cat_vrs.models import CategoricalVariant, DefiningAlleleConstraint

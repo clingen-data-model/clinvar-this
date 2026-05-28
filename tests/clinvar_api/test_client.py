@@ -1,5 +1,5 @@
-import pytest
 from pydantic import SecretStr
+import pytest
 
 from clinvar_api import client, exceptions, models
 

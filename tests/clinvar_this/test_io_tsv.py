@@ -1,5 +1,5 @@
-import pathlib
 from io import StringIO
+import pathlib
 
 import pytest
 

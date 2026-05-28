@@ -2,8 +2,8 @@
 
 import json
 
-import pytest
 from google.protobuf.json_format import MessageToDict
+import pytest
 
 from clinvar_data.conversion.dict_to_pb import ConvertClassifiedRecord
 

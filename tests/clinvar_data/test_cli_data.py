@@ -3,8 +3,8 @@
 import gzip
 import os.path
 
-import pytest
 from click.testing import CliRunner
+import pytest
 
 from clinvar_this import cli
 

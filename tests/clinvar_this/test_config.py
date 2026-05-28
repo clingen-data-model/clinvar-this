@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
-import pytest
 from pydantic import SecretStr
 from pyfakefs.fake_pathlib import FakePathlibModule  # type: ignore
+import pytest
 
 from clinvar_this import config, exceptions
 

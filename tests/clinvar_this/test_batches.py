@@ -3,8 +3,8 @@ import os
 import pathlib
 from unittest.mock import MagicMock
 
-import pytest
 from freezegun import freeze_time
+import pytest
 
 import clinvar_api
 from clinvar_api import models

@@ -2,10 +2,10 @@
 
 import json
 
-import pytest
 from conftest import DATA_DIR
 from deepdiff import DeepDiff
 from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
+import pytest
 
 from clinvar_api.models import (
     AffectedStatus,

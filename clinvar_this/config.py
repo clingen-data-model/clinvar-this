@@ -4,9 +4,9 @@ import datetime
 import pathlib
 import sys
 
-import toml
 from pydantic import BaseModel, SecretStr
 from pydantic.config import ConfigDict
+import toml
 
 from clinvar_this import exceptions
 

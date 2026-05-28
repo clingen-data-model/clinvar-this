@@ -1,8 +1,8 @@
 from unittest.mock import MagicMock, patch
 
-import pytest
 from click.testing import CliRunner
 from pydantic import SecretStr
+import pytest
 
 from clinvar_this import batches, cli, config, exceptions
 
