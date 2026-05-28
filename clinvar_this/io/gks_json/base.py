@@ -170,26 +170,31 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         return statements
 
     @staticmethod
-    def _get_local_id(variant: CategoricalVariant):
+    def _get_local_id(variant: CategoricalVariant | Allele) -> str | None:
+        """Get local ID
+
+        :param variant: Variant associated to statement
+        :return: Variant ID or name, if exists
+        """
         return variant.id or variant.name
 
     @staticmethod
     def _get_variant_hgvs(
-        variant: MolecularVariation | CategoricalVariant | iriReference,
+        variant: Allele | CategoricalVariant,
     ) -> str | None:
         """Retrieve a HGVS expression for a variant
 
-        At the moment, will only retrieve HGVS from Categorical Variants.
+        For Categorical Variants, checks the first constraint for an expression. Only
+        support extracting from DefiningAlleleConstraints at the moment.
+        If no constraints found, then checks the expressions extension. These are cases
+        where an HGVS expression is unable to be representing using VRS.
 
-        Checks the first constraint for an expression. Only support
-        DefiningAlleleConstraints at the moment.
-
-        If no constraints found, then checks the expressions extension.
+        For VRS Alleles, checks the `expressions` field.
 
         Order matters: the first matching expression is returned. cDNA RefSeq HGVS
         expressions are prioritized over genomic RefSeq HGVS expressions.
 
-        :param variant: Variant in a given statement
+        :param variant: Variant associated to statement
         :return: cDNA RefSeq HGVS expression or genomic RefSeq HGVS expression for a
             variant, if provided.
         """
@@ -219,27 +224,30 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
             return None
 
-        if not isinstance(variant, CategoricalVariant):
-            return None
-
         expressions = None
-        if getattr(variant, "constraints", None) and variant.constraints:
-            constraint = variant.constraints[0]
-            if isinstance(constraint.root, DefiningAlleleConstraint) and isinstance(
-                constraint.root.allele, Allele
-            ):
-                expressions = constraint.root.allele.expressions
+
+        if isinstance(variant, CategoricalVariant):
+            if getattr(variant, "constraints", None) and variant.constraints:
+                constraint = variant.constraints[0]
+                if isinstance(constraint.root, DefiningAlleleConstraint) and isinstance(
+                    constraint.root.allele, Allele
+                ):
+                    expressions = constraint.root.allele.expressions
+            else:
+                # Case where a VRS Allele is unable to be represented, can store
+                # expressions as an extension named 'expressions'
+                try:
+                    expressions_ext = next(
+                        ext
+                        for ext in variant.extensions or []
+                        if ext.name == "expressions"
+                    ).value
+                    if isinstance(expressions_ext, list):
+                        expressions = [Expression(**ext) for ext in expressions_ext]
+                except (StopIteration, TypeError):
+                    return None
         else:
-            # Case where a VRS Allele is unable to be represented, can store
-            # expressions as an extension named 'expressions'
-            try:
-                expressions_ext = next(
-                    ext for ext in variant.extensions or [] if ext.name == "expressions"
-                ).value
-                if isinstance(expressions_ext, list):
-                    expressions = [Expression(**ext) for ext in expressions_ext]
-            except (StopIteration, TypeError):
-                return None
+            expressions = variant.expressions
 
         return get_hgvs(expressions, Syntax.HGVS_C) or get_hgvs(
             expressions, Syntax.HGVS_G
@@ -478,6 +486,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         self,
         statement: GksStatementT,
         observed_in: list[SubmissionObservedInSomatic],
+        variant: CategoricalVariant | Allele,
         variant_hgvs: str | None = None,
         submitted_assembly: Assembly | None = None,
     ) -> dict[str, Any]:
@@ -486,6 +495,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
         :param statement: GKS statement
         :param observed_in: List of distinct observations
+        :param variant: Variant associated to statement
         :param variant_hgvs: The HGVS expression for a variant, if found
         :param submitted_assembly: The genome assembly used to call the variant.
             Required if `variant_hgvs` is non-null
@@ -493,7 +503,6 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             Submission container
         """
         proposition = statement.proposition
-        variant = proposition.subjectVariant
 
         clinvar_accession = next(
             (
@@ -557,7 +566,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
     def _get_variant_set(
         self,
         gene_context: MappableConcept,
-        variant: CategoricalVariant,
+        variant: CategoricalVariant | Allele,
         variant_hgvs: str | None = None,
     ) -> SubmissionVariantSet:
         """Get variant set
@@ -655,12 +664,35 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         submissions = []
 
         for statement in statements:
-            variant_hgvs = self._get_variant_hgvs(statement.proposition.subjectVariant)
+            statement_id = statement.id
+
+            variant: Allele | CategoricalVariant
+            prop_variant = statement.proposition.subjectVariant
+
+            if isinstance(prop_variant, MolecularVariation):
+                if not isinstance(prop_variant.root, Allele):
+                    logger.warning(
+                        "Skipping statement. Molecular Variation is not an Allele for statement ID: %s",
+                        statement_id,
+                    )
+                    continue
+
+                variant = prop_variant.root
+            elif isinstance(prop_variant, CategoricalVariant):
+                variant = prop_variant
+            else:
+                logger.warning(
+                    "Skipping statement. Variant is not a Categorical Variant or Allele for statement ID: %s",
+                    statement_id,
+                )
+                continue
+
+            variant_hgvs = self._get_variant_hgvs(variant)
 
             if not variant_hgvs:
                 logger.warning(
                     "Skipping statement. No HGVS found for statement ID: %s",
-                    statement.id,
+                    statement_id,
                 )
                 continue
 
@@ -675,7 +707,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             if not observed_in:
                 logger.warning(
                     "Skipping statement. No observed_in found for statement ID: %s",
-                    statement.id,
+                    statement_id,
                 )
                 continue
 
@@ -683,11 +715,11 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                 self._get_submission(
                     statement,
                     observed_in,
+                    variant,
                     variant_hgvs=variant_hgvs,
                     submitted_assembly=batch_metadata.submitted_assembly,
                 )
             )
-
         return SubmissionContainer(
             assertion_criteria=self.assertion_criteria,
             **{self.submission_container_attribute: submissions},

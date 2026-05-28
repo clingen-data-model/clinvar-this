@@ -239,11 +239,17 @@ When the extension is absent or invalid, the generated record status is ``novel`
 Variant Details
 ---------------
 
-``proposition.subjectVariant`` must contain a GA4GH Cat-VRS Categorical Variant.
+``proposition.subjectVariant`` must contain a GA4GH Cat-VRS Categorical Variant or VRS Allele.
 
-HGVS expressions are extracted from the first supported ``DefiningAlleleConstraint`` in ``proposition.subjectVariant.constraints``.
+For Categorical Variants:
 
-If no supported constraint is present, HGVS expressions may be provided using an ``expressions`` extension on ``proposition.subjectVariant``.
+  - HGVS expressions are extracted from the first supported ``DefiningAlleleConstraint`` in ``proposition.subjectVariant.constraints``.
+
+  - If no supported constraint is present, HGVS expressions may be provided using an ``expressions`` extension on ``proposition.subjectVariant``.
+
+For Alleles:
+
+  - HGVS expressions are extracted from ``proposition.subjectVariant.expressions``.
 
 HGVS selection priority:
 
