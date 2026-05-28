@@ -52,7 +52,8 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
         :return: The oncogenicity submission corresponding to a GKS Oncogenicity
             statement
         """
-        
+        evidence_lines = self._get_evidence_lines(statement.hasEvidenceLines)
+
         return SubmissionOncogenicitySubmission(
             **self._build_shared_submission_kwargs(
                 statement=statement,
@@ -64,8 +65,8 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
                 **self._build_shared_classification_kwargs(
                     statement.description,
                     None,
-                    statement.hasEvidenceLines,
-                    statement.contributions
+                    evidence_lines,
+                    statement.contributions,
                 ),
                 oncogenicity_classification_description=statement.classification.primaryCoding.code.root.capitalize(),
             ),

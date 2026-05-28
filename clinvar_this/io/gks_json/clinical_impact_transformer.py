@@ -20,7 +20,7 @@ from ga4gh.va_spec.base import (
     TherapyGroup,
     VariantPrognosticProposition,
     VariantDiagnosticProposition,
-    VariantTherapeuticResponseProposition
+    VariantTherapeuticResponseProposition,
 )
 
 from clinvar_api.models import (
@@ -37,7 +37,7 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
-
+from pydantic.dataclasses import dataclass
 from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 logfile("aac_2017.log")
@@ -52,6 +52,15 @@ _IMPACT_CLASS_MAPPING = MappingProxyType(
         AmpAscoCapClassificationCode.TIER_4: SomaticClinicalImpactClassificationDescription.BENIGN_LIKELY_BENIGN,
     }
 )
+
+
+@dataclass(slots=True)
+class DrugContext:
+    """Container for drug context information"""
+
+    assertion_type: SomaticClinicalImpactAssertionType | None = None
+    therapeutic: TherapyGroup | MappableConcept | None = None
+    drug: str | None = None
 
 
 class ClinicalImpactTransformer(
@@ -86,19 +95,65 @@ class ClinicalImpactTransformer(
         PrognosticPredicate.WORSE_OUTCOME: SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
     }
 
-    @staticmethod
-    def _get_therapeutic(target_proposition):
-        if not hasattr(target_proposition, "objectTherapeutic"):
-            return None
+    def _get_drug_for_therapeutic_assertion(
+        self, therapeutic: MappableConcept | TherapyGroup
+    ) -> str | None:
+        """Get the name for drug(s)
 
-        return target_proposition.objectTherapeutic.root
+        :param therapeutic: Therapeutic record. Assumes ``name`` is provided in
+            ``MappableConcept`` objects.
+        :return: The formatted name for a therapeutic record. Multiple therapies for
+            combination and substitution will be separated by semicolons.
+        """
+        if isinstance(therapeutic, MappableConcept):
+            return therapeutic.name
 
-    def _get_drug_for_therapeutic_assertion(self, statement):
-        therapeutic = self._get_therapeutic(statement)
-        if not therapeutic:
-            return None
+        return ";".join(sorted([t.name for t in therapeutic.therapies if t.name]))
 
-        return self._get_drugs(therapeutic)
+    def _get_drug_context_from_evidence_lines(
+        self, evidence_lines: list[EvidenceLine]
+    ) -> DrugContext:
+        """Retrieve drug context information found in evidence lines
+
+        :param evidence_lines: Evidence lines containing potential drug context
+            information
+        :return: Drug context information, if found in evidence lines
+        """
+        for el in evidence_lines:
+            if isinstance(el, iriReference):
+                continue
+
+            target_proposition = el.targetProposition
+
+            if not isinstance(
+                target_proposition,
+                (
+                    VariantDiagnosticProposition,
+                    VariantPrognosticProposition,
+                    VariantTherapeuticResponseProposition,
+                ),
+            ):
+                continue
+
+            assertion_type = self.gks_predicate_to_assertion[
+                target_proposition.predicate
+            ]
+
+            therapeutic = None
+            drug = None
+
+            if isinstance(target_proposition, VariantTherapeuticResponseProposition):
+                therapeutic_root = target_proposition.objectTherapeutic.root
+
+                if isinstance(therapeutic_root, (TherapyGroup, MappableConcept)):
+                    therapeutic = therapeutic_root
+                    drug = self._get_drug_for_therapeutic_assertion(therapeutic)
+
+            return DrugContext(
+                assertion_type=assertion_type, therapeutic=therapeutic, drug=drug
+            )
+
+        return DrugContext()
 
     def _get_submission(
         self,
@@ -126,39 +181,9 @@ class ClinicalImpactTransformer(
         :return: The clinical impact submission corresponding to a GKS Clinical
             Significance statement
         """
-        target_proposition = None
-        therapeutic: TherapyGroup | MappableConcept | None = None
-        drug_for_therapeutic_assertion = None
-        assertion_type_for_clinical_impact = None
+        evidence_lines = self._get_evidence_lines(statement.hasEvidenceLines)
 
-        _evidence_lines = statement.hasEvidenceLines or []
-        evidence_lines = [el for el in _evidence_lines if isinstance(el, EvidenceLine)]
-
-        for el in evidence_lines:
-            if isinstance(el, iriReference):
-                continue
-
-            target_proposition = el.targetProposition
-
-            if not isinstance(
-                target_proposition,
-                VariantDiagnosticProposition
-                | VariantPrognosticProposition
-                | VariantTherapeuticResponseProposition,
-            ):
-                continue
-
-            assertion_type_for_clinical_impact = self.gks_predicate_to_assertion[
-                target_proposition.predicate
-            ]
-
-            if isinstance(target_proposition, VariantTherapeuticResponseProposition):
-                _therapeutic = target_proposition.objectTherapeutic.root
-                if isinstance(_therapeutic, TherapyGroup | MappableConcept):
-                    therapeutic = _therapeutic
-                    drug_for_therapeutic_assertion = self._get_drugs(therapeutic)
-
-            break
+        drug_context = self._get_drug_context_from_evidence_lines(evidence_lines)
 
         return SubmissionClinicalImpactSubmission(
             **self._build_shared_submission_kwargs(
@@ -170,14 +195,14 @@ class ClinicalImpactTransformer(
             clinical_impact_classification=SomaticClinicalImpactClassification(
                 **self._build_shared_classification_kwargs(
                     statement.description,
-                    therapeutic,
+                    drug_context.therapeutic,
                     evidence_lines,
-                    statement.contributions
+                    statement.contributions,
                 ),
                 clinical_impact_classification_description=_IMPACT_CLASS_MAPPING[
                     statement.classification.primaryCoding.code.root
                 ],
-                assertion_type_for_clinical_impact=assertion_type_for_clinical_impact,
-                drug_for_therapeutic_assertion=drug_for_therapeutic_assertion,
+                assertion_type_for_clinical_impact=drug_context.assertion_type,
+                drug_for_therapeutic_assertion=drug_context.drug,
             ),
         )

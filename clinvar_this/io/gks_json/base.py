@@ -11,12 +11,14 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 
 from abc import ABC, abstractmethod
 import json
-import typing
+from typing import Any, Generic, Iterable, TextIO, TypeVar, Literal, get_type_hints
 
 from ga4gh.cat_vrs.models import CategoricalVariant, DefiningAlleleConstraint
 from ga4gh.core.models import MappableConcept
 from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
 from ga4gh.va_spec.base import (
+    Statement,
+    StudyResult,
     VariantDiagnosticProposition,
     VariantPrognosticProposition,
     MembershipOperator,
@@ -25,7 +27,7 @@ from ga4gh.va_spec.base import (
     VariantOncogenicityProposition,
 )
 from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
-from ga4gh.vrs.models import Expression, Syntax
+from ga4gh.vrs.models import Allele, Expression, MolecularVariation, Syntax
 from pydantic import BaseModel, ConfigDict
 
 
@@ -73,20 +75,20 @@ from clinvar_api.models import (
 logfile("gks_json.log")
 
 # Supported GKS Statement types for ClinVar Submission
-GksStatementT = typing.TypeVar(
+GksStatementT = TypeVar(
     "GksStatementT",
     VariantClinicalSignificanceStatement,
     VariantOncogenicityStatement,
 )
 
 # Name of ClinVar Submission Container attribute
-SubmissionContainerAttribute = typing.Literal[
+SubmissionContainerAttribute = Literal[
     "clinical_impact_submission",
     "oncogenicity_submission",
 ]
 
 # Supported ClinVar Submission types
-SubmissionT = typing.TypeVar(
+SubmissionT = TypeVar(
     "SubmissionT",
     SubmissionClinicalImpactSubmission,
     SubmissionOncogenicitySubmission,
@@ -107,14 +109,14 @@ class BatchMetadata(BaseModel):
 
 
 def batch_metadata_from_mapping(
-    keys_values: typing.Iterable[str],
+    keys_values: Iterable[str],
 ) -> BatchMetadata:
     """Convert configuration from ``KEY=VALUE`` strings to ``BatchMetadata``
 
     If values are not provided, then will use defaults
     """
     field_types = {
-        name: value for (name, value) in typing.get_type_hints(BatchMetadata).items()
+        name: value for (name, value) in get_type_hints(BatchMetadata).items()
     }
     kwargs = {}
     for key_value in keys_values:
@@ -130,7 +132,7 @@ def batch_metadata_from_mapping(
     return BatchMetadata(**kwargs)
 
 
-class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
+class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
     """Class for transforming GKS JSON input data from various formats into submission format"""
 
     submission_container_attribute: SubmissionContainerAttribute
@@ -140,7 +142,7 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
     @classmethod
     def _read_file(
         cls,
-        inputf: typing.TextIO,
+        inputf: TextIO,
     ) -> list[GksStatementT]:
         """Read GKS statements from a JSON file object.
 
@@ -184,7 +186,7 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
 
     @staticmethod
     def _get_variant_hgvs(
-        variant: CategoricalVariant,
+        variant: MolecularVariation | CategoricalVariant | iriReference,
     ) -> str | None:
         """Retrieve a HGVS expression for a variant
 
@@ -196,14 +198,14 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
         Order matters: the first matching expression is returned. cDNA RefSeq HGVS
         expressions are prioritized over genomic RefSeq HGVS expressions.
 
-        :param variant: Categorical Variant
+        :param variant: Variant in a given statement
         :return: cDNA RefSeq HGVS expression or genomic RefSeq HGVS expression for a
             variant, if provided.
         """
 
         def get_hgvs(
-            expressions: typing.List[Expression],
-            syntax: typing.Union[Syntax.HGVS_C, Syntax.HGVS_G],
+            expressions: list[Expression] | None,
+            syntax: Literal[Syntax.HGVS_C, Syntax.HGVS_G],
         ) -> str | None:
             """Get a HGVS expression from a list of expressions for a given syntax
 
@@ -212,6 +214,9 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
             :param syntax: The syntax to find an expression for
             :return: HGVS expression for a given syntax, if found
             """
+            if not expressions:
+                return None
+
             expr_prefix = "NM" if syntax == Syntax.HGVS_C else "NC"
             hgvs = [
                 expr.value
@@ -223,19 +228,25 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
 
             return None
 
+        if not isinstance(variant, CategoricalVariant):
+            return None
+
         expressions = None
         if getattr(variant, "constraints", None) and variant.constraints:
             constraint = variant.constraints[0]
             if isinstance(constraint.root, DefiningAlleleConstraint):
-                expressions = constraint.root.allele.expressions
+                _allele = constraint.root.allele
+                if isinstance(_allele, Allele):
+                    expressions = _allele.expressions
         else:
             # Case where a VRS Allele is unable to be represented, can store
             # expressions as an extension named 'expressions'
             try:
                 expressions_ext = next(
-                    ext for ext in variant.extensions if ext.name == "expressions"
+                    ext for ext in variant.extensions or [] if ext.name == "expressions"
                 ).value
-                expressions = [Expression(**ext) for ext in expressions_ext]
+                if isinstance(expressions_ext, list):
+                    expressions = [Expression(**ext) for ext in expressions_ext]
             except (StopIteration, TypeError):
                 return None
 
@@ -268,20 +279,6 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
                 affected_status=affected_status,
             )
         ]
-
-    @staticmethod
-    def _get_drugs(therapeutic: TherapyGroup | MappableConcept) -> str:
-        """Get the name for drug(s)
-
-        :param therapeutic: Therapeutic record. Assumes ``name`` is provided in
-            ``MappableConcept`` objects.
-        :return: The formatted name for a therapeutic record. Multiple therapies for
-            combination and substitution will be separated by semicolons.
-        """
-        if isinstance(therapeutic, MappableConcept):
-            return therapeutic.name
-
-        return ";".join(sorted([t.name for t in therapeutic.therapies]))
 
     @staticmethod
     def _get_comment(
@@ -429,7 +426,13 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
             reported_in_documents.extend(evidence_line.reportedIn or [])
 
             for evidence_item in evidence_line.hasEvidenceItems or []:
-                reported_in_documents.extend(evidence_item.reportedIn or [])
+                reported_in = None
+                if isinstance(evidence_item, Statement | EvidenceLine):
+                    reported_in = evidence_item.reportedIn
+                elif isinstance(evidence_item, StudyResult):
+                    reported_in = evidence_item.root.reportedIn
+
+                reported_in_documents.extend(reported_in or [])
 
         documents_have_all_pmids = all(
             isinstance(document, Document) and document.pmid
@@ -476,7 +479,8 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
         except IndexError:
             return None
 
-        return contribution.date.strftime("%Y-%m-%d")
+        if contribution.date:
+            return contribution.date.strftime("%Y-%m-%d")
 
     def _build_shared_submission_kwargs(
         self,
@@ -484,7 +488,7 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
         observed_in: list[SubmissionObservedInSomatic],
         variant_hgvs: str | None = None,
         submitted_assembly: Assembly | None = None,
-    ):
+    ) -> dict[str, Any]:
         """Build submission kwargs that are used in both clinical impact and
         oncogenicity submissions
 
@@ -493,7 +497,8 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
         :param variant_hgvs: The HGVS expression for a variant, if found
         :param submitted_assembly: The genome assembly used to call the variant.
             Required if `variant_hgvs` is non-null
-        :return: _description_
+        :return: Dictionary containing shared submission kwargs to be passed to the
+            Submission container
         """
         proposition = statement.proposition
         variant = proposition.subjectVariant
@@ -512,13 +517,27 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
             ),
         }
 
-    def _build_shared_classification_kwargs(self, description: str | None, therapeutic: TherapyGroup | MappableConcept | None, evidence_lines: list[EvidenceLine] | None, contributions: list[Contribution] | None):
+    def _build_shared_classification_kwargs(
+        self,
+        description: str | None,
+        therapeutic: TherapyGroup | MappableConcept | None,
+        evidence_lines: list[EvidenceLine] | None,
+        contributions: list[Contribution] | None,
+    ):
+        """Build classification kwargs that are used in both clinical impact and
+        oncogenicity classifications
+
+        :param description: Description for GKS statement
+        :param therapeutic: Therapeutic for GKS statement
+        :param evidence_lines: Evidence lines associated to GKS statement
+        :param contributions: Contributions for GKS statement
+        :return: Dictionary containing shared classification kwargs to be passed to the
+            classification container
+        """
         return {
             "comment": self._get_comment(description, therapeutic),
             "citation": self._get_citations(evidence_lines or []),
-            "date_last_evaluated": self._get_date_last_evaluated(
-                contributions or []
-            ),
+            "date_last_evaluated": self._get_date_last_evaluated(contributions or []),
         }
 
     def _get_variant_set(
@@ -570,6 +589,11 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
 
         return batch_metadata.collection_method
 
+    @staticmethod
+    def _get_evidence_lines(els: list[EvidenceLine | iriReference] | None):
+        els = els or []
+        return [el for el in els if isinstance(el, EvidenceLine)]
+
     @abstractmethod
     def _get_submission(
         self,
@@ -595,7 +619,7 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
 
     def records_to_submission_container(
         self,
-        statements: typing.List[GksStatementT],
+        statements: list[GksStatementT],
         batch_metadata: BatchMetadata,
     ) -> SubmissionContainer:
         """Transform GKS statements into a ClinVar submission container.
@@ -614,12 +638,8 @@ class GksJsonTransformer(TransformIO, ABC, typing.Generic[GksStatementT]):
         submissions = []
 
         for statement in statements:
-            variant = statement.proposition.subjectVariant
 
-            if not isinstance(variant, CategoricalVariant):
-                continue
-
-            variant_hgvs = self._get_variant_hgvs(variant)
+            variant_hgvs = self._get_variant_hgvs(statement.proposition.subjectVariant)
 
             if not variant_hgvs:
                 logger.warning(
