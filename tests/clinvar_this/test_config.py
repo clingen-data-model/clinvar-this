@@ -1,8 +1,8 @@
 from unittest.mock import patch
 
+import pytest
 from pydantic import SecretStr
 from pyfakefs.fake_pathlib import FakePathlibModule  # type: ignore
-import pytest
 
 from clinvar_this import config, exceptions
 
@@ -32,7 +32,9 @@ def test_load_config_success(fs):
         base_path = config.pathlib.Path.home() / ".config" / "clinvar-this"
         base_path.mkdir(parents=True)
         fs.create_file(
-            (base_path / "config.toml"), contents=CONFIG_CONTENT, create_missing_dirs=True
+            (base_path / "config.toml"),
+            contents=CONFIG_CONTENT,
+            create_missing_dirs=True,
         )
         config_obj = config.load_config(profile="default")
 
@@ -67,7 +69,9 @@ def test_save_config_fresh(fs):
 
     with patch("clinvar_this.config.pathlib", fake_pathlib):
         base_path = config.pathlib.Path.home() / ".config" / "clinvar-this"
-        config.save_config(config=config.Config(profile="default", auth_token=SecretStr("xxx")))
+        config.save_config(
+            config=config.Config(profile="default", auth_token=SecretStr("xxx"))
+        )
 
         with (base_path / "config.toml").open("rt") as inputf:
             config_str = inputf.read()
@@ -82,9 +86,13 @@ def test_save_config_overwrite(fs):
         base_path = config.pathlib.Path.home() / ".config" / "clinvar-this"
         base_path.mkdir(parents=True)
         fs.create_file(
-            (base_path / "config.toml"), contents=CONFIG_CONTENT, create_missing_dirs=True
+            (base_path / "config.toml"),
+            contents=CONFIG_CONTENT,
+            create_missing_dirs=True,
         )
-        config.save_config(config=config.Config(profile="default", auth_token=SecretStr("xxx")))
+        config.save_config(
+            config=config.Config(profile="default", auth_token=SecretStr("xxx"))
+        )
 
         with (base_path / "config.toml").open("rt") as inputf:
             config_str = inputf.read()

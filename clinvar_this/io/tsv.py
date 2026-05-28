@@ -440,9 +440,15 @@ def _map_seq_var_header(
     Map to ``None`` for extra data columns.  Raises if a required column is missing.
     """
     seen_required = {
-        column.canonical_name: False for column in SEQ_VAR_HEADER_COLUMNS if column.required
+        column.canonical_name: False
+        for column in SEQ_VAR_HEADER_COLUMNS
+        if column.required
     }
-    by_name = {name: column for column in SEQ_VAR_HEADER_COLUMNS for name in column.header_names}
+    by_name = {
+        name: column
+        for column in SEQ_VAR_HEADER_COLUMNS
+        for name in column.header_names
+    }
     result = []
     for entry in header:
         column = by_name.get(entry)
@@ -452,7 +458,9 @@ def _map_seq_var_header(
 
     missing_columns = [name for name, seen in seen_required.items() if not seen]
     if missing_columns:
-        raise exceptions.InvalidFormat(f"Missing columns in TSV file: {missing_columns}")
+        raise exceptions.InvalidFormat(
+            f"Missing columns in TSV file: {missing_columns}"
+        )
 
     return result
 
@@ -465,9 +473,15 @@ def _map_struc_var_header(
     Map to ``None`` for extra data columns.  Raises if a required column is missing.
     """
     seen_required = {
-        column.canonical_name: False for column in STRUC_VAR_HEADER_COLUMNS if column.required
+        column.canonical_name: False
+        for column in STRUC_VAR_HEADER_COLUMNS
+        if column.required
     }
-    by_name = {name: column for column in STRUC_VAR_HEADER_COLUMNS for name in column.header_names}
+    by_name = {
+        name: column
+        for column in STRUC_VAR_HEADER_COLUMNS
+        for name in column.header_names
+    }
     result = []
     for entry in header:
         column = by_name.get(entry)
@@ -477,7 +491,9 @@ def _map_struc_var_header(
 
     missing_columns = [name for name, seen in seen_required.items() if not seen]
     if missing_columns:
-        raise exceptions.InvalidFormat(f"Missing columns in TSV file: {missing_columns}")
+        raise exceptions.InvalidFormat(
+            f"Missing columns in TSV file: {missing_columns}"
+        )
 
     return result
 
@@ -501,7 +517,9 @@ def _read_seq_var_tsv_file(inputf: typing.TextIO) -> typing.List[SeqVarTsvRecord
             extra_data = {}
             assert headers is not None
             if len(row) != len(header_row):
-                raise exceptions.InvalidFormat(f"Wrong number of rows in line {lineno+1}")
+                raise exceptions.InvalidFormat(
+                    f"Wrong number of rows in line {lineno+1}"
+                )
             for value, header, header_name in zip(row, headers, header_row):
                 if header:
                     raw_record[header.key] = header.converter(value)
@@ -534,7 +552,9 @@ def _read_struc_var_tsv_file(inputf: typing.TextIO) -> typing.List[StrucVarTsvRe
             extra_data = {}
             assert headers is not None
             if len(row) != len(header_row):
-                raise exceptions.InvalidFormat(f"Wrong number of rows in line {lineno+1}")
+                raise exceptions.InvalidFormat(
+                    f"Wrong number of rows in line {lineno+1}"
+                )
             for value, header, header_name in zip(row, headers, header_row):
                 if header:
                     raw_record[header.key] = header.converter(value)
@@ -578,7 +598,9 @@ def read_struc_var_tsv(
         raise TypeError("You have to provide either file or path")
 
 
-def _write_seq_var_tsv_file(tsv_records: typing.Iterable[SeqVarTsvRecord], outputf: typing.TextIO):
+def _write_seq_var_tsv_file(
+    tsv_records: typing.Iterable[SeqVarTsvRecord], outputf: typing.TextIO
+):
     """Write sequence variant records as TSV to the given file."""
     extra_keys = []
     for record in tsv_records:
@@ -677,7 +699,9 @@ def batch_metadata_from_mapping(
 
     Default values can be used (should be on import but not on update).
     """
-    field_types = {name: value for (name, value) in typing.get_type_hints(BatchMetadata).items()}
+    field_types = {
+        name: value for (name, value) in typing.get_type_hints(BatchMetadata).items()
+    }
     kwargs = {}
     for key_value in keys_values:
         if "=" not in key_value:
@@ -689,7 +713,9 @@ def batch_metadata_from_mapping(
                 # found "type[any] | None".
                 kwargs[key] = field_types[key].model_validate(value)  # type: ignore
             except ValueError:
-                raise exceptions.ArgumentsError(f"Failed to parse {value} as for key {key}")
+                raise exceptions.ArgumentsError(
+                    f"Failed to parse {value} as for key {key}"
+                )
     if use_defaults:
         for key, value in BATCH_METADATA_DEFAULTS.items():
             kwargs.setdefault(key, value)
@@ -755,7 +781,8 @@ def record_conditions(
         explanation_values = [c.value for c in MultipleConditionExplanation]
         return [
             SubmissionCondition(
-                db=select_condition_db(condition_id), id=get_condition_id_fmt(condition_id)
+                db=select_condition_db(condition_id),
+                id=get_condition_id_fmt(condition_id),
             )
             for condition_id in record.condition
             if condition_id not in explanation_values
@@ -778,7 +805,8 @@ def record_condition_set(
     conditions = record_conditions(record)
     multiple_condition_explanation = record_condition_explanation(record)
     return SubmissionConditionSetGermline(
-        condition=conditions, multiple_condition_explanation=multiple_condition_explanation
+        condition=conditions,
+        multiple_condition_explanation=multiple_condition_explanation,
     )
 
 
@@ -818,11 +846,15 @@ def seq_var_tsv_records_to_submission_container(
         else:
             return None
 
-    allele_origin = batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
+    allele_origin = (
+        batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
+    )
     collection_method = (
         batch_metadata.collection_method or BATCH_METADATA_DEFAULTS["collection_method"]
     )
-    release_status = batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
+    release_status = (
+        batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
+    )
 
     return SubmissionContainer(
         assertion_criteria=SubmissionAssertionCriteria(
@@ -910,11 +942,15 @@ def struc_var_tsv_records_to_submission_container(
         else:
             return None
 
-    allele_origin = batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
+    allele_origin = (
+        batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
+    )
     collection_method = (
         batch_metadata.collection_method or BATCH_METADATA_DEFAULTS["collection_method"]
     )
-    release_status = batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
+    release_status = (
+        batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
+    )
 
     return SubmissionContainer(
         assertion_criteria=SubmissionAssertionCriteria(
@@ -965,7 +1001,9 @@ def struc_var_tsv_records_to_submission_container(
     )
 
 
-def format_conditions(condition_set: SubmissionConditionSetGermline) -> typing.List[str]:
+def format_conditions(
+    condition_set: SubmissionConditionSetGermline,
+) -> typing.List[str]:
     conditions = condition_set.condition
     fmt_conditions = []
     if conditions:
@@ -977,7 +1015,9 @@ def format_conditions(condition_set: SubmissionConditionSetGermline) -> typing.L
     return fmt_conditions
 
 
-def format_hpo_terms(submission: SubmissionClinvarSubmission) -> typing.Optional[typing.List[str]]:
+def format_hpo_terms(
+    submission: SubmissionClinvarSubmission,
+) -> typing.Optional[typing.List[str]]:
     clinical_features = submission.observed_in[0].clinical_features
     result = None
     if clinical_features:
@@ -988,13 +1028,17 @@ def format_hpo_terms(submission: SubmissionClinvarSubmission) -> typing.Optional
 def submission_container_to_seq_var_tsv_records(  # noqa: C901
     submission_container: SubmissionContainer,
 ) -> typing.List[SeqVarTsvRecord]:
-    def _inheritance(submission: SubmissionClinvarSubmission) -> typing.Optional[ModeOfInheritance]:
+    def _inheritance(
+        submission: SubmissionClinvarSubmission,
+    ) -> typing.Optional[ModeOfInheritance]:
         if submission.clinical_significance.mode_of_inheritance:
             return submission.clinical_significance.mode_of_inheritance
         else:
             return None
 
-    def _pmids(submission: SubmissionClinvarSubmission) -> typing.Optional[typing.List[str]]:
+    def _pmids(
+        submission: SubmissionClinvarSubmission,
+    ) -> typing.Optional[typing.List[str]]:
         if citations := submission.clinical_significance.citation:
             return [c.id for c in citations if c.db == CitationDb.PUBMED and c.id]
         else:
@@ -1058,7 +1102,8 @@ def submission_container_to_seq_var_tsv_records(  # noqa: C901
             extra_data=extra_data,
             clinical_significance_date_last_evaluated=submission.clinical_significance.date_last_evaluated
             or "",
-            clinical_significance_comment=submission.clinical_significance.comment or "",
+            clinical_significance_comment=submission.clinical_significance.comment
+            or "",
             hpo_terms=format_hpo_terms(submission),
         )
 
@@ -1075,13 +1120,17 @@ def submission_container_to_seq_var_tsv_records(  # noqa: C901
 def submission_container_to_struc_var_tsv_records(  # noqa: C901
     submission_container: SubmissionContainer,
 ) -> typing.List[StrucVarTsvRecord]:
-    def _inheritance(submission: SubmissionClinvarSubmission) -> typing.Optional[ModeOfInheritance]:
+    def _inheritance(
+        submission: SubmissionClinvarSubmission,
+    ) -> typing.Optional[ModeOfInheritance]:
         if submission.clinical_significance.mode_of_inheritance:
             return submission.clinical_significance.mode_of_inheritance
         else:
             return None
 
-    def _pmids(submission: SubmissionClinvarSubmission) -> typing.Optional[typing.List[str]]:
+    def _pmids(
+        submission: SubmissionClinvarSubmission,
+    ) -> typing.Optional[typing.List[str]]:
         if citations := submission.clinical_significance.citation:
             return [c.id for c in citations if c.db == CitationDb.PUBMED and c.id]
         else:
@@ -1148,7 +1197,8 @@ def submission_container_to_struc_var_tsv_records(  # noqa: C901
             extra_data=extra_data,
             clinical_significance_date_last_evaluated=submission.clinical_significance.date_last_evaluated
             or "",
-            clinical_significance_comment=submission.clinical_significance.comment or "",
+            clinical_significance_comment=submission.clinical_significance.comment
+            or "",
             hpo_terms=format_hpo_terms(submission),
         )
 

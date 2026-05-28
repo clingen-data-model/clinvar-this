@@ -28,13 +28,9 @@ from clinvar_api.models.sub_payload import (
     SubmissionObservedInSomatic,
     SubmissionVariantGene,
 )
-from clinvar_api.msg.sub_payload import (
-    Assembly,
-)
+from clinvar_api.msg.sub_payload import Assembly
 from clinvar_this.io.gks_json.base import BatchMetadata
-from clinvar_this.io.gks_json.oncogenicity_transformer import (
-    OncogenicityTransformer,
-)
+from clinvar_this.io.gks_json.oncogenicity_transformer import OncogenicityTransformer
 
 
 @pytest.fixture(scope="module")
@@ -124,7 +120,9 @@ def civic_aid202_submission():
 
 
 @pytest.fixture(scope="module")
-def civic_oncogenicity_submissions(civic_aid202_submission, oncogenicity_assertion_criteria):
+def civic_oncogenicity_submissions(
+    civic_aid202_submission, oncogenicity_assertion_criteria
+):
     """Create test fixture for CIViC oncogenicity submissions"""
     return SubmissionContainer(
         assertion_criteria=oncogenicity_assertion_criteria,

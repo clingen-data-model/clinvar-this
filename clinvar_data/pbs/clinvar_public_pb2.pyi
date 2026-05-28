@@ -25,33 +25,47 @@ class _GeneVariantRelationship:
     V: typing_extensions.TypeAlias = ValueType
 
 class _GeneVariantRelationshipEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_GeneVariantRelationship.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _GeneVariantRelationship.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     GENE_VARIANT_RELATIONSHIP_UNSPECIFIED: _GeneVariantRelationship.ValueType  # 0
     """unspecified gene variant"""
-    GENE_VARIANT_RELATIONSHIP_VARIANT_WITHIN_GENE: _GeneVariantRelationship.ValueType  # 1
+    GENE_VARIANT_RELATIONSHIP_VARIANT_WITHIN_GENE: (
+        _GeneVariantRelationship.ValueType
+    )  # 1
     """corresponds to "variant within gene" """
-    GENE_VARIANT_RELATIONSHIP_GENE_OVERLAPPED_BY_VARIANT: _GeneVariantRelationship.ValueType  # 2
+    GENE_VARIANT_RELATIONSHIP_GENE_OVERLAPPED_BY_VARIANT: (
+        _GeneVariantRelationship.ValueType
+    )  # 2
     """corresponds to "gene overlapped by variant" and
     (legacy:) "genes overlapped by variant"
     """
-    GENE_VARIANT_RELATIONSHIP_NEAR_GENE_UPSTREAM: _GeneVariantRelationship.ValueType  # 3
+    GENE_VARIANT_RELATIONSHIP_NEAR_GENE_UPSTREAM: (
+        _GeneVariantRelationship.ValueType
+    )  # 3
     """corresponds to "variant near gene, upstream" and
     (legacy:) "near gene, upstream"
     """
-    GENE_VARIANT_RELATIONSHIP_NEAR_GENE_DOWNSTREAM: _GeneVariantRelationship.ValueType  # 4
+    GENE_VARIANT_RELATIONSHIP_NEAR_GENE_DOWNSTREAM: (
+        _GeneVariantRelationship.ValueType
+    )  # 4
     """corresponds to "variant near gene, downstream" and
     (legacy:) "near gene, downstream"
     """
-    GENE_VARIANT_RELATIONSHIP_ASSERTED_BUT_NOT_COMPUTED: _GeneVariantRelationship.ValueType  # 5
+    GENE_VARIANT_RELATIONSHIP_ASSERTED_BUT_NOT_COMPUTED: (
+        _GeneVariantRelationship.ValueType
+    )  # 5
     """corresponds to "asserted, but not computed" """
     GENE_VARIANT_RELATIONSHIP_WITHIN_MULTIPLE_GENES_BY_OVERLAP: (
         _GeneVariantRelationship.ValueType
     )  # 6
     """corresponds to "within multiple genes by overlap" """
-    GENE_VARIANT_RELATIONSHIP_WITHIN_SINGLE_GENE: _GeneVariantRelationship.ValueType  # 7
+    GENE_VARIANT_RELATIONSHIP_WITHIN_SINGLE_GENE: (
+        _GeneVariantRelationship.ValueType
+    )  # 7
     """corresponds to "within single gene" """
 
 class GeneVariantRelationship(
@@ -66,7 +80,9 @@ GENE_VARIANT_RELATIONSHIP_UNSPECIFIED: GeneVariantRelationship.ValueType  # 0
 """unspecified gene variant"""
 GENE_VARIANT_RELATIONSHIP_VARIANT_WITHIN_GENE: GeneVariantRelationship.ValueType  # 1
 """corresponds to "variant within gene" """
-GENE_VARIANT_RELATIONSHIP_GENE_OVERLAPPED_BY_VARIANT: GeneVariantRelationship.ValueType  # 2
+GENE_VARIANT_RELATIONSHIP_GENE_OVERLAPPED_BY_VARIANT: (
+    GeneVariantRelationship.ValueType
+)  # 2
 """corresponds to "gene overlapped by variant" and
 (legacy:) "genes overlapped by variant"
 """
@@ -78,9 +94,13 @@ GENE_VARIANT_RELATIONSHIP_NEAR_GENE_DOWNSTREAM: GeneVariantRelationship.ValueTyp
 """corresponds to "variant near gene, downstream" and
 (legacy:) "near gene, downstream"
 """
-GENE_VARIANT_RELATIONSHIP_ASSERTED_BUT_NOT_COMPUTED: GeneVariantRelationship.ValueType  # 5
+GENE_VARIANT_RELATIONSHIP_ASSERTED_BUT_NOT_COMPUTED: (
+    GeneVariantRelationship.ValueType
+)  # 5
 """corresponds to "asserted, but not computed" """
-GENE_VARIANT_RELATIONSHIP_WITHIN_MULTIPLE_GENES_BY_OVERLAP: GeneVariantRelationship.ValueType  # 6
+GENE_VARIANT_RELATIONSHIP_WITHIN_MULTIPLE_GENES_BY_OVERLAP: (
+    GeneVariantRelationship.ValueType
+)  # 6
 """corresponds to "within multiple genes by overlap" """
 GENE_VARIANT_RELATIONSHIP_WITHIN_SINGLE_GENE: GeneVariantRelationship.ValueType  # 7
 """corresponds to "within single gene" """
@@ -91,7 +111,8 @@ class _Severity:
     V: typing_extensions.TypeAlias = ValueType
 
 class _SeverityEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Severity.ValueType], builtins.type
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Severity.ValueType],
+    builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     SEVERITY_UNSPECIFIED: _Severity.ValueType  # 0
@@ -124,7 +145,8 @@ class _Status:
     V: typing_extensions.TypeAlias = ValueType
 
 class _StatusEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Status.ValueType], builtins.type
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Status.ValueType],
+    builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     STATUS_UNSPECIFIED: _Status.ValueType  # 0
@@ -181,21 +203,29 @@ class _SubmitterReviewStatus:
     V: typing_extensions.TypeAlias = ValueType
 
 class _SubmitterReviewStatusEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_SubmitterReviewStatus.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _SubmitterReviewStatus.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     SUBMITTER_REVIEW_STATUS_UNSPECIFIED: _SubmitterReviewStatus.ValueType  # 0
     """unspecified status"""
-    SUBMITTER_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED: _SubmitterReviewStatus.ValueType  # 1
+    SUBMITTER_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED: (
+        _SubmitterReviewStatus.ValueType
+    )  # 1
     """corresponds to "no classification provided" """
-    SUBMITTER_REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED: _SubmitterReviewStatus.ValueType  # 2
+    SUBMITTER_REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED: (
+        _SubmitterReviewStatus.ValueType
+    )  # 2
     """corresponds to "no assertion criteria provided" """
     SUBMITTER_REVIEW_STATUS_CRITERIA_PROVIDED_SINGLE_SUBMITTER: (
         _SubmitterReviewStatus.ValueType
     )  # 3
     """corresponds to "criteria provided, single submitter" """
-    SUBMITTER_REVIEW_STATUS_REVIEWED_BY_EXPERT_PANEL: _SubmitterReviewStatus.ValueType  # 4
+    SUBMITTER_REVIEW_STATUS_REVIEWED_BY_EXPERT_PANEL: (
+        _SubmitterReviewStatus.ValueType
+    )  # 4
     """corresponds to "reviewed by expert panel" """
     SUBMITTER_REVIEW_STATUS_PRACTICE_GUIDELINE: _SubmitterReviewStatus.ValueType  # 5
     """corresponds to "practice guideline" """
@@ -209,11 +239,17 @@ class _SubmitterReviewStatusEnumTypeWrapper(
         _SubmitterReviewStatus.ValueType
     )  # 8
     """corresponds to "criteria provided, conflicting classifications" """
-    SUBMITTER_REVIEW_STATUS_CLASSIFIED_BY_SINGLE_SUBMITTER: _SubmitterReviewStatus.ValueType  # 9
+    SUBMITTER_REVIEW_STATUS_CLASSIFIED_BY_SINGLE_SUBMITTER: (
+        _SubmitterReviewStatus.ValueType
+    )  # 9
     """corresponds to "classified by single submitter" """
-    SUBMITTER_REVIEW_STATUS_REVIEWED_BY_PROFESSIONAL_SOCIETY: _SubmitterReviewStatus.ValueType  # 10
+    SUBMITTER_REVIEW_STATUS_REVIEWED_BY_PROFESSIONAL_SOCIETY: (
+        _SubmitterReviewStatus.ValueType
+    )  # 10
     """corresponds to "reviewed by professional society" """
-    SUBMITTER_REVIEW_STATUS_NOT_CLASSIFIED_BY_SUBMITTER: _SubmitterReviewStatus.ValueType  # 11
+    SUBMITTER_REVIEW_STATUS_NOT_CLASSIFIED_BY_SUBMITTER: (
+        _SubmitterReviewStatus.ValueType
+    )  # 11
     """corresponds to "not classified by submitter" """
     SUBMITTER_REVIEW_STATUS_CLASSIFIED_BY_MULTIPLE_SUBMITTERS: (
         _SubmitterReviewStatus.ValueType
@@ -232,9 +268,13 @@ SUBMITTER_REVIEW_STATUS_UNSPECIFIED: SubmitterReviewStatus.ValueType  # 0
 """unspecified status"""
 SUBMITTER_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED: SubmitterReviewStatus.ValueType  # 1
 """corresponds to "no classification provided" """
-SUBMITTER_REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED: SubmitterReviewStatus.ValueType  # 2
+SUBMITTER_REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED: (
+    SubmitterReviewStatus.ValueType
+)  # 2
 """corresponds to "no assertion criteria provided" """
-SUBMITTER_REVIEW_STATUS_CRITERIA_PROVIDED_SINGLE_SUBMITTER: SubmitterReviewStatus.ValueType  # 3
+SUBMITTER_REVIEW_STATUS_CRITERIA_PROVIDED_SINGLE_SUBMITTER: (
+    SubmitterReviewStatus.ValueType
+)  # 3
 """corresponds to "criteria provided, single submitter" """
 SUBMITTER_REVIEW_STATUS_REVIEWED_BY_EXPERT_PANEL: SubmitterReviewStatus.ValueType  # 4
 """corresponds to "reviewed by expert panel" """
@@ -250,13 +290,21 @@ SUBMITTER_REVIEW_STATUS_CRITERIA_PROVIDED_CONFLICTING_CLASSIFICATIONS: (
     SubmitterReviewStatus.ValueType
 )  # 8
 """corresponds to "criteria provided, conflicting classifications" """
-SUBMITTER_REVIEW_STATUS_CLASSIFIED_BY_SINGLE_SUBMITTER: SubmitterReviewStatus.ValueType  # 9
+SUBMITTER_REVIEW_STATUS_CLASSIFIED_BY_SINGLE_SUBMITTER: (
+    SubmitterReviewStatus.ValueType
+)  # 9
 """corresponds to "classified by single submitter" """
-SUBMITTER_REVIEW_STATUS_REVIEWED_BY_PROFESSIONAL_SOCIETY: SubmitterReviewStatus.ValueType  # 10
+SUBMITTER_REVIEW_STATUS_REVIEWED_BY_PROFESSIONAL_SOCIETY: (
+    SubmitterReviewStatus.ValueType
+)  # 10
 """corresponds to "reviewed by professional society" """
-SUBMITTER_REVIEW_STATUS_NOT_CLASSIFIED_BY_SUBMITTER: SubmitterReviewStatus.ValueType  # 11
+SUBMITTER_REVIEW_STATUS_NOT_CLASSIFIED_BY_SUBMITTER: (
+    SubmitterReviewStatus.ValueType
+)  # 11
 """corresponds to "not classified by submitter" """
-SUBMITTER_REVIEW_STATUS_CLASSIFIED_BY_MULTIPLE_SUBMITTERS: SubmitterReviewStatus.ValueType  # 12
+SUBMITTER_REVIEW_STATUS_CLASSIFIED_BY_MULTIPLE_SUBMITTERS: (
+    SubmitterReviewStatus.ValueType
+)  # 12
 """corresponds to "classified by multiple submitters" """
 global___SubmitterReviewStatus = SubmitterReviewStatus
 
@@ -265,7 +313,8 @@ class _Zygosity:
     V: typing_extensions.TypeAlias = ValueType
 
 class _ZygosityEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Zygosity.ValueType], builtins.type
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Zygosity.ValueType],
+    builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     ZYGOSITY_UNSPECIFIED: _Zygosity.ValueType  # 0
@@ -303,7 +352,8 @@ class _Assertion:
     V: typing_extensions.TypeAlias = ValueType
 
 class _AssertionEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Assertion.ValueType], builtins.type
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Assertion.ValueType],
+    builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     ASSERTION_UNSPECIFIED: _Assertion.ValueType  # 0
@@ -351,7 +401,9 @@ class _AggregateGermlineReviewStatusEnumTypeWrapper(
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-    AGGREGATE_GERMLINE_REVIEW_STATUS_UNSPECIFIED: _AggregateGermlineReviewStatus.ValueType  # 0
+    AGGREGATE_GERMLINE_REVIEW_STATUS_UNSPECIFIED: (
+        _AggregateGermlineReviewStatus.ValueType
+    )  # 0
     """unspecified aggregate germline review status value"""
     AGGREGATE_GERMLINE_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED: (
         _AggregateGermlineReviewStatus.ValueType
@@ -391,11 +443,14 @@ class _AggregateGermlineReviewStatusEnumTypeWrapper(
     """corresponds to "no classification for the single variant" """
 
 class AggregateGermlineReviewStatus(
-    _AggregateGermlineReviewStatus, metaclass=_AggregateGermlineReviewStatusEnumTypeWrapper
+    _AggregateGermlineReviewStatus,
+    metaclass=_AggregateGermlineReviewStatusEnumTypeWrapper,
 ):
     """Enumeration describing aggregate germline review status value."""
 
-AGGREGATE_GERMLINE_REVIEW_STATUS_UNSPECIFIED: AggregateGermlineReviewStatus.ValueType  # 0
+AGGREGATE_GERMLINE_REVIEW_STATUS_UNSPECIFIED: (
+    AggregateGermlineReviewStatus.ValueType
+)  # 0
 """unspecified aggregate germline review status value"""
 AGGREGATE_GERMLINE_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED: (
     AggregateGermlineReviewStatus.ValueType
@@ -421,7 +476,9 @@ AGGREGATE_GERMLINE_REVIEW_STATUS_REVIEWED_BY_EXPERT_PANEL: (
     AggregateGermlineReviewStatus.ValueType
 )  # 6
 """corresponds to "reviewed by expert panel" """
-AGGREGATE_GERMLINE_REVIEW_STATUS_PRACTICE_GUIDELINE: AggregateGermlineReviewStatus.ValueType  # 7
+AGGREGATE_GERMLINE_REVIEW_STATUS_PRACTICE_GUIDELINE: (
+    AggregateGermlineReviewStatus.ValueType
+)  # 7
 """corresponds to "practice guideline" """
 AGGREGATE_GERMLINE_REVIEW_STATUS_NO_CLASSIFICATIONS_FROM_UNFLAGGED_RECORDS: (
     AggregateGermlineReviewStatus.ValueType
@@ -523,7 +580,9 @@ AGGREGATE_SOMATIC_CLINICAL_IMPACT_REVIEW_STATUS_NO_CLASSIFICATION_FOR_THE_SINGLE
     AggregateSomaticClinicalImpactReviewStatus.ValueType
 )  # 8
 """corresponds to "no classification for the single variant" """
-global___AggregateSomaticClinicalImpactReviewStatus = AggregateSomaticClinicalImpactReviewStatus
+global___AggregateSomaticClinicalImpactReviewStatus = (
+    AggregateSomaticClinicalImpactReviewStatus
+)
 
 class _AggregateOncogenicityReviewStatus:
     ValueType = typing.NewType("ValueType", builtins.int)
@@ -578,11 +637,14 @@ class _AggregateOncogenicityReviewStatusEnumTypeWrapper(
     """corresponds to "no classification for the single variant" """
 
 class AggregateOncogenicityReviewStatus(
-    _AggregateOncogenicityReviewStatus, metaclass=_AggregateOncogenicityReviewStatusEnumTypeWrapper
+    _AggregateOncogenicityReviewStatus,
+    metaclass=_AggregateOncogenicityReviewStatusEnumTypeWrapper,
 ):
     """Enumeration describing aggregate oncogenicity review status value."""
 
-AGGREGATE_ONCOGENICITY_REVIEW_STATUS_UNSPECIFIED: AggregateOncogenicityReviewStatus.ValueType  # 0
+AGGREGATE_ONCOGENICITY_REVIEW_STATUS_UNSPECIFIED: (
+    AggregateOncogenicityReviewStatus.ValueType
+)  # 0
 """unspecified aggregate oncogenicity review status value"""
 AGGREGATE_ONCOGENICITY_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED: (
     AggregateOncogenicityReviewStatus.ValueType
@@ -627,7 +689,8 @@ class _Origin:
     V: typing_extensions.TypeAlias = ValueType
 
 class _OriginEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Origin.ValueType], builtins.type
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Origin.ValueType],
+    builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     ORIGIN_UNSPECIFIED: _Origin.ValueType  # 0
@@ -891,7 +954,9 @@ class _NucleotideSequence:
     V: typing_extensions.TypeAlias = ValueType
 
 class _NucleotideSequenceEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_NucleotideSequence.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _NucleotideSequence.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -910,7 +975,9 @@ class _NucleotideSequenceEnumTypeWrapper(
     NUCLEOTIDE_SEQUENCE_PROTEIN: _NucleotideSequence.ValueType  # 6
     """corresponds to "protein" """
 
-class NucleotideSequence(_NucleotideSequence, metaclass=_NucleotideSequenceEnumTypeWrapper):
+class NucleotideSequence(
+    _NucleotideSequence, metaclass=_NucleotideSequenceEnumTypeWrapper
+):
     """Enumeration describing nucleotide sequence."""
 
 NUCLEOTIDE_SEQUENCE_UNSPECIFIED: NucleotideSequence.ValueType  # 0
@@ -934,7 +1001,9 @@ class _ProteinSequence:
     V: typing_extensions.TypeAlias = ValueType
 
 class _ProteinSequenceEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_ProteinSequence.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _ProteinSequence.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -957,7 +1026,9 @@ class _PhenotypeSetType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _PhenotypeSetTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_PhenotypeSetType.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _PhenotypeSetType.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -996,7 +1067,9 @@ class _VariationType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _VariationTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_VariationType.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _VariationType.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -1027,7 +1100,9 @@ class _EvidenceType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _EvidenceTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_EvidenceType.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _EvidenceType.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -1065,7 +1140,9 @@ class _MethodListType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _MethodListTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_MethodListType.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _MethodListType.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -1131,7 +1208,8 @@ class _HgvsType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _HgvsTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_HgvsType.ValueType], builtins.type
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_HgvsType.ValueType],
+    builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     HGVS_TYPE_UNSPECIFIED: _HgvsType.ValueType  # 0
@@ -1202,11 +1280,17 @@ CLINICAL_FEATURES_AFFECTED_STATUS_TYPE_UNSPECIFIED: (
     ClinicalFeaturesAffectedStatusType.ValueType
 )  # 0
 """unspecified status"""
-CLINICAL_FEATURES_AFFECTED_STATUS_TYPE_PRESENT: ClinicalFeaturesAffectedStatusType.ValueType  # 1
+CLINICAL_FEATURES_AFFECTED_STATUS_TYPE_PRESENT: (
+    ClinicalFeaturesAffectedStatusType.ValueType
+)  # 1
 """corresponds to "present" """
-CLINICAL_FEATURES_AFFECTED_STATUS_TYPE_ABSENT: ClinicalFeaturesAffectedStatusType.ValueType  # 2
+CLINICAL_FEATURES_AFFECTED_STATUS_TYPE_ABSENT: (
+    ClinicalFeaturesAffectedStatusType.ValueType
+)  # 2
 """corresponds to "absent" """
-CLINICAL_FEATURES_AFFECTED_STATUS_TYPE_NOT_TESTED: ClinicalFeaturesAffectedStatusType.ValueType  # 3
+CLINICAL_FEATURES_AFFECTED_STATUS_TYPE_NOT_TESTED: (
+    ClinicalFeaturesAffectedStatusType.ValueType
+)  # 3
 """corresponds to "not tested" """
 global___ClinicalFeaturesAffectedStatusType = ClinicalFeaturesAffectedStatusType
 
@@ -1215,7 +1299,9 @@ class _HaploVariationType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _HaploVariationTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_HaploVariationType.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _HaploVariationType.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -1229,10 +1315,14 @@ class _HaploVariationTypeEnumTypeWrapper(
     """corresponds to "Variation" """
     HAPLO_VARIATION_TYPE_PHASE_UNKNOWN: _HaploVariationType.ValueType  # 4
     """corresponds to "Phase unknown" """
-    HAPLO_VARIATION_TYPE_HAPLOTYPE_DEFINED_BY_SINGLE_VARIANT: _HaploVariationType.ValueType  # 5
+    HAPLO_VARIATION_TYPE_HAPLOTYPE_DEFINED_BY_SINGLE_VARIANT: (
+        _HaploVariationType.ValueType
+    )  # 5
     """corresponds to "Haplotype defined by a single variant" """
 
-class HaploVariationType(_HaploVariationType, metaclass=_HaploVariationTypeEnumTypeWrapper):
+class HaploVariationType(
+    _HaploVariationType, metaclass=_HaploVariationTypeEnumTypeWrapper
+):
     """Enumeration describing haplotype variation types."""
 
 HAPLO_VARIATION_TYPE_UNSPECIFIED: HaploVariationType.ValueType  # 0
@@ -1245,7 +1335,9 @@ HAPLO_VARIATION_TYPE_VARIATION: HaploVariationType.ValueType  # 3
 """corresponds to "Variation" """
 HAPLO_VARIATION_TYPE_PHASE_UNKNOWN: HaploVariationType.ValueType  # 4
 """corresponds to "Phase unknown" """
-HAPLO_VARIATION_TYPE_HAPLOTYPE_DEFINED_BY_SINGLE_VARIANT: HaploVariationType.ValueType  # 5
+HAPLO_VARIATION_TYPE_HAPLOTYPE_DEFINED_BY_SINGLE_VARIANT: (
+    HaploVariationType.ValueType
+)  # 5
 """corresponds to "Haplotype defined by a single variant" """
 global___HaploVariationType = HaploVariationType
 
@@ -1773,7 +1865,9 @@ class HgvsNucleotideExpression(google.protobuf.message.Message):
     @typing.overload
     def WhichOneof(
         self,
-        oneof_group: typing.Literal["_sequence_accession_version", b"_sequence_accession_version"],
+        oneof_group: typing.Literal[
+            "_sequence_accession_version", b"_sequence_accession_version"
+        ],
     ) -> typing.Literal["sequence_accession_version"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -1878,7 +1972,9 @@ class HgvsProteinExpression(google.protobuf.message.Message):
     @typing.overload
     def WhichOneof(
         self,
-        oneof_group: typing.Literal["_sequence_accession_version", b"_sequence_accession_version"],
+        oneof_group: typing.Literal[
+            "_sequence_accession_version", b"_sequence_accession_version"
+        ],
     ) -> typing.Literal["sequence_accession_version"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -1923,7 +2019,9 @@ class HgvsExpression(google.protobuf.message.Message):
     @property
     def molecular_consequences(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of molecular consequences."""
 
     def __init__(
@@ -1979,7 +2077,10 @@ class HgvsExpression(google.protobuf.message.Message):
     ) -> typing.Literal["assembly"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_nucleotide_expression", b"_nucleotide_expression"]
+        self,
+        oneof_group: typing.Literal[
+            "_nucleotide_expression", b"_nucleotide_expression"
+        ],
     ) -> typing.Literal["nucleotide_expression"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -2113,19 +2214,25 @@ class GenericSetElement(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -2184,7 +2291,9 @@ class AttributeSetElement(google.protobuf.message.Message):
             base: global___BaseAttribute | None = ...,
             type: builtins.str = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing.Literal["base", b"base"]) -> builtins.bool: ...
+        def HasField(
+            self, field_name: typing.Literal["base", b"base"]
+        ) -> builtins.bool: ...
         def ClearField(
             self, field_name: typing.Literal["base", b"base", "type", b"type"]
         ) -> None: ...
@@ -2200,19 +2309,25 @@ class AttributeSetElement(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -2223,7 +2338,9 @@ class AttributeSetElement(google.protobuf.message.Message):
         citations: collections.abc.Iterable[global___Citation] | None = ...,
         comments: collections.abc.Iterable[global___Comment] | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing.Literal["attribute", b"attribute"]) -> builtins.bool: ...
+    def HasField(
+        self, field_name: typing.Literal["attribute", b"attribute"]
+    ) -> builtins.bool: ...
     def ClearField(
         self,
         field_name: typing.Literal[
@@ -2320,25 +2437,33 @@ class Trait(google.protobuf.message.Message):
         @property
         def citations(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Citation
+        ]:
             """Citation list."""
 
         @property
         def xrefs(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Xref
+        ]:
             """Xref list."""
 
         @property
         def comments(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Comment
+        ]:
             """Comment list."""
 
         @property
         def sources(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
+            builtins.str
+        ]:
             """Sources"""
 
         def __init__(
@@ -2412,19 +2537,25 @@ class Trait(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """Citation list."""
 
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """Xref list."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """Comment list."""
 
     @property
@@ -2485,7 +2616,9 @@ class Indication(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _TypeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Indication._Type.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Indication._Type.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -2517,7 +2650,9 @@ class Indication(google.protobuf.message.Message):
     @property
     def traits(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Trait]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Trait
+    ]:
         """nested elements
 
         Represents the value for the test indication as a name of a trait.
@@ -2542,19 +2677,25 @@ class Indication(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -2604,7 +2745,9 @@ class TraitSet(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _TypeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[TraitSet._Type.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            TraitSet._Type.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -2666,7 +2809,9 @@ class TraitSet(google.protobuf.message.Message):
     @property
     def traits(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Trait]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Trait
+    ]:
         """nested elements
 
         The traits.
@@ -2699,19 +2844,25 @@ class TraitSet(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -2805,12 +2956,14 @@ class TraitSet(google.protobuf.message.Message):
     def WhichOneof(
         self,
         oneof_group: typing.Literal[
-            "_contributes_to_aggregate_classification", b"_contributes_to_aggregate_classification"
+            "_contributes_to_aggregate_classification",
+            b"_contributes_to_aggregate_classification",
         ],
     ) -> typing.Literal["contributes_to_aggregate_classification"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+        self,
+        oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"],
     ) -> typing.Literal["date_last_evaluated"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -2818,7 +2971,10 @@ class TraitSet(google.protobuf.message.Message):
     ) -> typing.Literal["id"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_lower_level_of_evidence", b"_lower_level_of_evidence"]
+        self,
+        oneof_group: typing.Literal[
+            "_lower_level_of_evidence", b"_lower_level_of_evidence"
+        ],
     ) -> typing.Literal["lower_level_of_evidence"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -2875,19 +3031,25 @@ class AggregatedGermlineClassification(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -2901,7 +3063,9 @@ class AggregatedGermlineClassification(google.protobuf.message.Message):
     @property
     def conditions(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___TraitSet]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___TraitSet
+    ]:
         """List of conditions."""
 
     @property
@@ -2928,7 +3092,9 @@ class AggregatedGermlineClassification(google.protobuf.message.Message):
         xrefs: collections.abc.Iterable[global___Xref] | None = ...,
         citations: collections.abc.Iterable[global___Citation] | None = ...,
         comments: collections.abc.Iterable[global___Comment] | None = ...,
-        history_records: collections.abc.Iterable[global___DescriptionHistory] | None = ...,
+        history_records: (
+            collections.abc.Iterable[global___DescriptionHistory] | None
+        ) = ...,
         conditions: collections.abc.Iterable[global___TraitSet] | None = ...,
         date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = ...,
@@ -3008,7 +3174,8 @@ class AggregatedGermlineClassification(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+        self,
+        oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"],
     ) -> typing.Literal["date_last_evaluated"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -3020,11 +3187,15 @@ class AggregatedGermlineClassification(google.protobuf.message.Message):
     ) -> typing.Literal["explanation"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_submissions", b"_number_of_submissions"]
+        self,
+        oneof_group: typing.Literal[
+            "_number_of_submissions", b"_number_of_submissions"
+        ],
     ) -> typing.Literal["number_of_submissions"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_submitters", b"_number_of_submitters"]
+        self,
+        oneof_group: typing.Literal["_number_of_submitters", b"_number_of_submitters"],
     ) -> typing.Literal["number_of_submitters"] | None: ...
 
 global___AggregatedGermlineClassification = AggregatedGermlineClassification
@@ -3065,19 +3236,25 @@ class AggregatedSomaticClinicalImpact(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -3091,7 +3268,9 @@ class AggregatedSomaticClinicalImpact(google.protobuf.message.Message):
     @property
     def conditions(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___TraitSet]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___TraitSet
+    ]:
         """List of conditions."""
 
     @property
@@ -3117,7 +3296,9 @@ class AggregatedSomaticClinicalImpact(google.protobuf.message.Message):
         xrefs: collections.abc.Iterable[global___Xref] | None = ...,
         citations: collections.abc.Iterable[global___Citation] | None = ...,
         comments: collections.abc.Iterable[global___Comment] | None = ...,
-        history_records: collections.abc.Iterable[global___DescriptionHistory] | None = ...,
+        history_records: (
+            collections.abc.Iterable[global___DescriptionHistory] | None
+        ) = ...,
         conditions: collections.abc.Iterable[global___TraitSet] | None = ...,
         date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = ...,
@@ -3189,7 +3370,8 @@ class AggregatedSomaticClinicalImpact(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+        self,
+        oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"],
     ) -> typing.Literal["date_last_evaluated"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -3197,11 +3379,15 @@ class AggregatedSomaticClinicalImpact(google.protobuf.message.Message):
     ) -> typing.Literal["description"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_submissions", b"_number_of_submissions"]
+        self,
+        oneof_group: typing.Literal[
+            "_number_of_submissions", b"_number_of_submissions"
+        ],
     ) -> typing.Literal["number_of_submissions"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_submitters", b"_number_of_submitters"]
+        self,
+        oneof_group: typing.Literal["_number_of_submitters", b"_number_of_submitters"],
     ) -> typing.Literal["number_of_submitters"] | None: ...
 
 global___AggregatedSomaticClinicalImpact = AggregatedSomaticClinicalImpact
@@ -3242,19 +3428,25 @@ class AggregatedOncogenicityClassification(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -3268,7 +3460,9 @@ class AggregatedOncogenicityClassification(google.protobuf.message.Message):
     @property
     def conditions(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___TraitSet]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___TraitSet
+    ]:
         """List of conditions."""
 
     @property
@@ -3294,7 +3488,9 @@ class AggregatedOncogenicityClassification(google.protobuf.message.Message):
         xrefs: collections.abc.Iterable[global___Xref] | None = ...,
         citations: collections.abc.Iterable[global___Citation] | None = ...,
         comments: collections.abc.Iterable[global___Comment] | None = ...,
-        history_records: collections.abc.Iterable[global___DescriptionHistory] | None = ...,
+        history_records: (
+            collections.abc.Iterable[global___DescriptionHistory] | None
+        ) = ...,
         conditions: collections.abc.Iterable[global___TraitSet] | None = ...,
         date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = ...,
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = ...,
@@ -3366,7 +3562,8 @@ class AggregatedOncogenicityClassification(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+        self,
+        oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"],
     ) -> typing.Literal["date_last_evaluated"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -3374,11 +3571,15 @@ class AggregatedOncogenicityClassification(google.protobuf.message.Message):
     ) -> typing.Literal["description"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_submissions", b"_number_of_submissions"]
+        self,
+        oneof_group: typing.Literal[
+            "_number_of_submissions", b"_number_of_submissions"
+        ],
     ) -> typing.Literal["number_of_submissions"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_submitters", b"_number_of_submitters"]
+        self,
+        oneof_group: typing.Literal["_number_of_submitters", b"_number_of_submitters"],
     ) -> typing.Literal["number_of_submitters"] | None: ...
 
 global___AggregatedOncogenicityClassification = AggregatedOncogenicityClassification
@@ -3406,7 +3607,9 @@ class AggregateClassificationSet(google.protobuf.message.Message):
         """The aggregate somatic clinical impact."""
 
     @property
-    def oncogenicity_classification(self) -> global___AggregatedOncogenicityClassification:
+    def oncogenicity_classification(
+        self,
+    ) -> global___AggregatedOncogenicityClassification:
         """The aggregate oncogenicity classification."""
 
     def __init__(
@@ -3414,7 +3617,9 @@ class AggregateClassificationSet(google.protobuf.message.Message):
         *,
         germline_classification: global___AggregatedGermlineClassification | None = ...,
         somatic_clinical_impact: global___AggregatedSomaticClinicalImpact | None = ...,
-        oncogenicity_classification: global___AggregatedOncogenicityClassification | None = ...,
+        oncogenicity_classification: (
+            global___AggregatedOncogenicityClassification | None
+        ) = ...,
     ) -> None: ...
     def HasField(
         self,
@@ -3452,7 +3657,10 @@ class AggregateClassificationSet(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_germline_classification", b"_germline_classification"]
+        self,
+        oneof_group: typing.Literal[
+            "_germline_classification", b"_germline_classification"
+        ],
     ) -> typing.Literal["germline_classification"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -3463,7 +3671,10 @@ class AggregateClassificationSet(google.protobuf.message.Message):
     ) -> typing.Literal["oncogenicity_classification"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_somatic_clinical_impact", b"_somatic_clinical_impact"]
+        self,
+        oneof_group: typing.Literal[
+            "_somatic_clinical_impact", b"_somatic_clinical_impact"
+        ],
     ) -> typing.Literal["somatic_clinical_impact"] | None: ...
 
 global___AggregateClassificationSet = AggregateClassificationSet
@@ -3506,19 +3717,25 @@ class ClinicalSignificance(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """Optional list of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """Optional list of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """Optional list of comments."""
 
     @property
@@ -3591,7 +3808,8 @@ class ClinicalSignificance(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+        self,
+        oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"],
     ) -> typing.Literal["date_last_evaluated"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -3628,22 +3846,32 @@ class AlleleDescription(google.protobuf.message.Message):
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-        RELATIVE_ORIENTATION_UNSPECIFIED: AlleleDescription._RelativeOrientation.ValueType  # 0
+        RELATIVE_ORIENTATION_UNSPECIFIED: (
+            AlleleDescription._RelativeOrientation.ValueType
+        )  # 0
         """unspecified relative orientation"""
         RELATIVE_ORIENTATION_CIS: AlleleDescription._RelativeOrientation.ValueType  # 1
         """corresponds to "cis" """
-        RELATIVE_ORIENTATION_TRANS: AlleleDescription._RelativeOrientation.ValueType  # 2
+        RELATIVE_ORIENTATION_TRANS: (
+            AlleleDescription._RelativeOrientation.ValueType
+        )  # 2
         """corresponds to "trans" """
-        RELATIVE_ORIENTATION_UNKNOWN: AlleleDescription._RelativeOrientation.ValueType  # 3
+        RELATIVE_ORIENTATION_UNKNOWN: (
+            AlleleDescription._RelativeOrientation.ValueType
+        )  # 3
         """corresponds to "unknown" """
 
-    class RelativeOrientation(_RelativeOrientation, metaclass=_RelativeOrientationEnumTypeWrapper):
+    class RelativeOrientation(
+        _RelativeOrientation, metaclass=_RelativeOrientationEnumTypeWrapper
+    ):
         """Enumeration for relative orientation.
 
         NB: unused in XML
         """
 
-    RELATIVE_ORIENTATION_UNSPECIFIED: AlleleDescription.RelativeOrientation.ValueType  # 0
+    RELATIVE_ORIENTATION_UNSPECIFIED: (
+        AlleleDescription.RelativeOrientation.ValueType
+    )  # 0
     """unspecified relative orientation"""
     RELATIVE_ORIENTATION_CIS: AlleleDescription.RelativeOrientation.ValueType  # 1
     """corresponds to "cis" """
@@ -3676,7 +3904,9 @@ class AlleleDescription(google.protobuf.message.Message):
         self,
         *,
         name: builtins.str = ...,
-        relative_orientation: global___AlleleDescription.RelativeOrientation.ValueType | None = ...,
+        relative_orientation: (
+            global___AlleleDescription.RelativeOrientation.ValueType | None
+        ) = ...,
         zygosity: global___Zygosity.ValueType | None = ...,
         clinical_significance: global___ClinicalSignificance | None = ...,
     ) -> None: ...
@@ -3718,11 +3948,15 @@ class AlleleDescription(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_clinical_significance", b"_clinical_significance"]
+        self,
+        oneof_group: typing.Literal[
+            "_clinical_significance", b"_clinical_significance"
+        ],
     ) -> typing.Literal["clinical_significance"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_relative_orientation", b"_relative_orientation"]
+        self,
+        oneof_group: typing.Literal["_relative_orientation", b"_relative_orientation"],
     ) -> typing.Literal["relative_orientation"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -3905,7 +4139,8 @@ class ClassificationScv(google.protobuf.message.Message):
         def WhichOneof(
             self,
             oneof_group: typing.Literal[
-                "_clinical_impact_clinical_significance", b"_clinical_impact_clinical_significance"
+                "_clinical_impact_clinical_significance",
+                b"_clinical_impact_clinical_significance",
             ],
         ) -> typing.Literal["clinical_impact_clinical_significance"] | None: ...
         @typing.overload
@@ -3938,7 +4173,10 @@ class ClassificationScv(google.protobuf.message.Message):
             self, field_name: typing.Literal["_type", b"_type", "type", b"type"]
         ) -> builtins.bool: ...
         def ClearField(
-            self, field_name: typing.Literal["_type", b"_type", "type", b"type", "value", b"value"]
+            self,
+            field_name: typing.Literal[
+                "_type", b"_type", "type", b"type", "value", b"value"
+            ],
         ) -> None: ...
         def WhichOneof(
             self, oneof_group: typing.Literal["_type", b"_type"]
@@ -3970,7 +4208,9 @@ class ClassificationScv(google.protobuf.message.Message):
     explanation_of_classification: builtins.str
     """Optional explanation of classification."""
     @property
-    def somatic_clinical_impact(self) -> global___ClassificationScv.SomaticClinicalImpact:
+    def somatic_clinical_impact(
+        self,
+    ) -> global___ClassificationScv.SomaticClinicalImpact:
         """Information on the clinical impact; mutually exlusive with `germline_classification`
         and `oncogenicity_classification`.
         """
@@ -3986,19 +4226,25 @@ class ClassificationScv(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -4013,11 +4259,14 @@ class ClassificationScv(google.protobuf.message.Message):
         *,
         review_status: global___SubmitterReviewStatus.ValueType = ...,
         germline_classification: builtins.str | None = ...,
-        somatic_clinical_impact: global___ClassificationScv.SomaticClinicalImpact | None = ...,
+        somatic_clinical_impact: (
+            global___ClassificationScv.SomaticClinicalImpact | None
+        ) = ...,
         oncogenicity_classification: builtins.str | None = ...,
         explanation_of_classification: builtins.str | None = ...,
         classification_scores: (
-            collections.abc.Iterable[global___ClassificationScv.ClassificationScore] | None
+            collections.abc.Iterable[global___ClassificationScv.ClassificationScore]
+            | None
         ) = ...,
         xrefs: collections.abc.Iterable[global___Xref] | None = ...,
         citations: collections.abc.Iterable[global___Citation] | None = ...,
@@ -4086,7 +4335,8 @@ class ClassificationScv(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+        self,
+        oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"],
     ) -> typing.Literal["date_last_evaluated"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -4097,7 +4347,10 @@ class ClassificationScv(google.protobuf.message.Message):
     ) -> typing.Literal["explanation_of_classification"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_germline_classification", b"_germline_classification"]
+        self,
+        oneof_group: typing.Literal[
+            "_germline_classification", b"_germline_classification"
+        ],
     ) -> typing.Literal["germline_classification"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -4108,7 +4361,10 @@ class ClassificationScv(google.protobuf.message.Message):
     ) -> typing.Literal["oncogenicity_classification"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_somatic_clinical_impact", b"_somatic_clinical_impact"]
+        self,
+        oneof_group: typing.Literal[
+            "_somatic_clinical_impact", b"_somatic_clinical_impact"
+        ],
     ) -> typing.Literal["somatic_clinical_impact"] | None: ...
 
 global___ClassificationScv = ClassificationScv
@@ -4144,7 +4400,10 @@ class SubmitterIdentifiers(google.protobuf.message.Message):
     def HasField(
         self,
         field_name: typing.Literal[
-            "_org_abbreviation", b"_org_abbreviation", "org_abbreviation", b"org_abbreviation"
+            "_org_abbreviation",
+            b"_org_abbreviation",
+            "org_abbreviation",
+            b"org_abbreviation",
         ],
     ) -> builtins.bool: ...
     def ClearField(
@@ -4188,12 +4447,19 @@ class Species(google.protobuf.message.Message):
     ) -> None: ...
     def HasField(
         self,
-        field_name: typing.Literal["_taxonomy_id", b"_taxonomy_id", "taxonomy_id", b"taxonomy_id"],
+        field_name: typing.Literal[
+            "_taxonomy_id", b"_taxonomy_id", "taxonomy_id", b"taxonomy_id"
+        ],
     ) -> builtins.bool: ...
     def ClearField(
         self,
         field_name: typing.Literal[
-            "_taxonomy_id", b"_taxonomy_id", "name", b"name", "taxonomy_id", b"taxonomy_id"
+            "_taxonomy_id",
+            b"_taxonomy_id",
+            "name",
+            b"name",
+            "taxonomy_id",
+            b"taxonomy_id",
         ],
     ) -> None: ...
     def WhichOneof(
@@ -4228,7 +4494,10 @@ class ClassifiedCondition(google.protobuf.message.Message):
         id: builtins.str | None = ...,
     ) -> None: ...
     def HasField(
-        self, field_name: typing.Literal["_db", b"_db", "_id", b"_id", "db", b"db", "id", b"id"]
+        self,
+        field_name: typing.Literal[
+            "_db", b"_db", "_id", b"_id", "db", b"db", "id", b"id"
+        ],
     ) -> builtins.bool: ...
     def ClearField(
         self,
@@ -4347,19 +4616,25 @@ class FunctionalConsequence(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -4373,7 +4648,14 @@ class FunctionalConsequence(google.protobuf.message.Message):
     def ClearField(
         self,
         field_name: typing.Literal[
-            "citations", b"citations", "comments", b"comments", "value", b"value", "xrefs", b"xrefs"
+            "citations",
+            b"citations",
+            "comments",
+            b"comments",
+            "value",
+            b"value",
+            "xrefs",
+            b"xrefs",
         ],
     ) -> None: ...
 
@@ -4390,13 +4672,17 @@ class GeneralCitations(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     def __init__(
@@ -4436,7 +4722,9 @@ class Cooccurrence(google.protobuf.message.Message):
         self,
         *,
         zygosity: global___Zygosity.ValueType | None = ...,
-        allele_descriptions: collections.abc.Iterable[global___AlleleDescription] | None = ...,
+        allele_descriptions: (
+            collections.abc.Iterable[global___AlleleDescription] | None
+        ) = ...,
         count: builtins.int | None = ...,
     ) -> None: ...
     def HasField(
@@ -4491,7 +4779,9 @@ class Submitter(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _TypeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Submitter._Type.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Submitter._Type.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -4531,7 +4821,8 @@ class Submitter(google.protobuf.message.Message):
         type: global___Submitter.Type.ValueType = ...,
     ) -> None: ...
     def HasField(
-        self, field_name: typing.Literal["submitter_identifiers", b"submitter_identifiers"]
+        self,
+        field_name: typing.Literal["submitter_identifiers", b"submitter_identifiers"],
     ) -> builtins.bool: ...
     def ClearField(
         self,
@@ -4635,7 +4926,10 @@ class OtherName(google.protobuf.message.Message):
         self, field_name: typing.Literal["_type", b"_type", "type", b"type"]
     ) -> builtins.bool: ...
     def ClearField(
-        self, field_name: typing.Literal["_type", b"_type", "type", b"type", "value", b"value"]
+        self,
+        field_name: typing.Literal[
+            "_type", b"_type", "type", b"type", "value", b"value"
+        ],
     ) -> None: ...
     def WhichOneof(
         self, oneof_group: typing.Literal["_type", b"_type"]
@@ -4677,7 +4971,12 @@ class DeletedScv(google.protobuf.message.Message):
     def ClearField(
         self,
         field_name: typing.Literal[
-            "accession", b"accession", "date_deleted", b"date_deleted", "version", b"version"
+            "accession",
+            b"accession",
+            "date_deleted",
+            b"date_deleted",
+            "version",
+            b"version",
         ],
     ) -> None: ...
 
@@ -4710,21 +5009,31 @@ class Location(google.protobuf.message.Message):
             builtins.type,
         ):
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-            ASSEMBLY_STATUS_UNSPECIFIED: Location.SequenceLocation._AssemblyStatus.ValueType  # 0
+            ASSEMBLY_STATUS_UNSPECIFIED: (
+                Location.SequenceLocation._AssemblyStatus.ValueType
+            )  # 0
             """unspecified assembly status"""
-            ASSEMBLY_STATUS_CURRENT: Location.SequenceLocation._AssemblyStatus.ValueType  # 1
+            ASSEMBLY_STATUS_CURRENT: (
+                Location.SequenceLocation._AssemblyStatus.ValueType
+            )  # 1
             """corresponds to "current" """
-            ASSEMBLY_STATUS_PREVIOUS: Location.SequenceLocation._AssemblyStatus.ValueType  # 2
+            ASSEMBLY_STATUS_PREVIOUS: (
+                Location.SequenceLocation._AssemblyStatus.ValueType
+            )  # 2
             """corresponds to "previous" """
 
         class AssemblyStatus(_AssemblyStatus, metaclass=_AssemblyStatusEnumTypeWrapper):
             """Local enum for the assembly status."""
 
-        ASSEMBLY_STATUS_UNSPECIFIED: Location.SequenceLocation.AssemblyStatus.ValueType  # 0
+        ASSEMBLY_STATUS_UNSPECIFIED: (
+            Location.SequenceLocation.AssemblyStatus.ValueType
+        )  # 0
         """unspecified assembly status"""
         ASSEMBLY_STATUS_CURRENT: Location.SequenceLocation.AssemblyStatus.ValueType  # 1
         """corresponds to "current" """
-        ASSEMBLY_STATUS_PREVIOUS: Location.SequenceLocation.AssemblyStatus.ValueType  # 2
+        ASSEMBLY_STATUS_PREVIOUS: (
+            Location.SequenceLocation.AssemblyStatus.ValueType
+        )  # 2
         """corresponds to "previous" """
 
         FOR_DISPLAY_FIELD_NUMBER: builtins.int
@@ -5005,7 +5314,10 @@ class Location(google.protobuf.message.Message):
         ) -> typing.Literal["alternate_allele"] | None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_alternate_allele_vcf", b"_alternate_allele_vcf"]
+            self,
+            oneof_group: typing.Literal[
+                "_alternate_allele_vcf", b"_alternate_allele_vcf"
+            ],
         ) -> typing.Literal["alternate_allele_vcf"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -5032,7 +5344,8 @@ class Location(google.protobuf.message.Message):
         ) -> typing.Literal["for_display"] | None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_for_display_length", b"_for_display_length"]
+            self,
+            oneof_group: typing.Literal["_for_display_length", b"_for_display_length"],
         ) -> typing.Literal["for_display_length"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -5060,7 +5373,10 @@ class Location(google.protobuf.message.Message):
         ) -> typing.Literal["reference_allele"] | None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_reference_allele_vcf", b"_reference_allele_vcf"]
+            self,
+            oneof_group: typing.Literal[
+                "_reference_allele_vcf", b"_reference_allele_vcf"
+            ],
         ) -> typing.Literal["reference_allele_vcf"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -5114,7 +5430,9 @@ class Location(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     def __init__(
@@ -5174,7 +5492,14 @@ class Scv(google.protobuf.message.Message):
     def ClearField(
         self,
         field_name: typing.Literal[
-            "_title", b"_title", "accession", b"accession", "title", b"title", "version", b"version"
+            "_title",
+            b"_title",
+            "accession",
+            b"accession",
+            "title",
+            b"title",
+            "version",
+            b"version",
         ],
     ) -> None: ...
     def WhichOneof(
@@ -5307,13 +5632,16 @@ class FamilyData(google.protobuf.message.Message):
     def WhichOneof(
         self,
         oneof_group: typing.Literal[
-            "_num_families_with_segregation_observed", b"_num_families_with_segregation_observed"
+            "_num_families_with_segregation_observed",
+            b"_num_families_with_segregation_observed",
         ],
     ) -> typing.Literal["num_families_with_segregation_observed"] | None: ...
     @typing.overload
     def WhichOneof(
         self,
-        oneof_group: typing.Literal["_num_families_with_variant", b"_num_families_with_variant"],
+        oneof_group: typing.Literal[
+            "_num_families_with_variant", b"_num_families_with_variant"
+        ],
     ) -> typing.Literal["num_families_with_variant"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -5321,7 +5649,8 @@ class FamilyData(google.protobuf.message.Message):
     ) -> typing.Literal["pedigree_id"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_segregation_observed", b"_segregation_observed"]
+        self,
+        oneof_group: typing.Literal["_segregation_observed", b"_segregation_observed"],
     ) -> typing.Literal["segregation_observed"] | None: ...
 
 global___FamilyData = FamilyData
@@ -5354,7 +5683,9 @@ class Sample(google.protobuf.message.Message):
             Sample._SomaticVariantInNormalTissue.ValueType
         )  # 1
         """corresponds to "present" """
-        SOMATIC_VARIANT_IN_NORMAL_TISSUE_ABSENT: Sample._SomaticVariantInNormalTissue.ValueType  # 2
+        SOMATIC_VARIANT_IN_NORMAL_TISSUE_ABSENT: (
+            Sample._SomaticVariantInNormalTissue.ValueType
+        )  # 2
         """corresponds to "absent" """
         SOMATIC_VARIANT_IN_NORMAL_TISSUE_NOT_TESTED: (
             Sample._SomaticVariantInNormalTissue.ValueType
@@ -5362,17 +5693,26 @@ class Sample(google.protobuf.message.Message):
         """corresponds to "not tested" """
 
     class SomaticVariantInNormalTissue(
-        _SomaticVariantInNormalTissue, metaclass=_SomaticVariantInNormalTissueEnumTypeWrapper
+        _SomaticVariantInNormalTissue,
+        metaclass=_SomaticVariantInNormalTissueEnumTypeWrapper,
     ):
         """Local enumeration for presence in normal tissue."""
 
-    SOMATIC_VARIANT_IN_NORMAL_TISSUE_UNSPECIFIED: Sample.SomaticVariantInNormalTissue.ValueType  # 0
+    SOMATIC_VARIANT_IN_NORMAL_TISSUE_UNSPECIFIED: (
+        Sample.SomaticVariantInNormalTissue.ValueType
+    )  # 0
     """unspecified presence"""
-    SOMATIC_VARIANT_IN_NORMAL_TISSUE_PRESENT: Sample.SomaticVariantInNormalTissue.ValueType  # 1
+    SOMATIC_VARIANT_IN_NORMAL_TISSUE_PRESENT: (
+        Sample.SomaticVariantInNormalTissue.ValueType
+    )  # 1
     """corresponds to "present" """
-    SOMATIC_VARIANT_IN_NORMAL_TISSUE_ABSENT: Sample.SomaticVariantInNormalTissue.ValueType  # 2
+    SOMATIC_VARIANT_IN_NORMAL_TISSUE_ABSENT: (
+        Sample.SomaticVariantInNormalTissue.ValueType
+    )  # 2
     """corresponds to "absent" """
-    SOMATIC_VARIANT_IN_NORMAL_TISSUE_NOT_TESTED: Sample.SomaticVariantInNormalTissue.ValueType  # 3
+    SOMATIC_VARIANT_IN_NORMAL_TISSUE_NOT_TESTED: (
+        Sample.SomaticVariantInNormalTissue.ValueType
+    )  # 3
     """corresponds to "not tested" """
 
     class _AgeUnit:
@@ -5380,7 +5720,9 @@ class Sample(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _AgeUnitEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Sample._AgeUnit.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Sample._AgeUnit.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -5422,7 +5764,9 @@ class Sample(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _AgeTypeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Sample._AgeType.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Sample._AgeType.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -5492,7 +5836,9 @@ class Sample(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _GenderEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Sample._Gender.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Sample._Gender.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -5522,7 +5868,9 @@ class Sample(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _SourceTypeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Sample._SourceType.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Sample._SourceType.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -5623,7 +5971,10 @@ class Sample(google.protobuf.message.Message):
             type: global___Sample.AgeType.ValueType = ...,
         ) -> None: ...
         def ClearField(
-            self, field_name: typing.Literal["type", b"type", "unit", b"unit", "value", b"value"]
+            self,
+            field_name: typing.Literal[
+                "type", b"type", "unit", b"unit", "value", b"value"
+            ],
         ) -> None: ...
 
     SAMPLE_DESCRIPTION_FIELD_NUMBER: builtins.int
@@ -5658,7 +6009,9 @@ class Sample(google.protobuf.message.Message):
     """Sample geographic origin."""
     tissue: builtins.str
     """Sample tissue."""
-    somatic_variant_in_normal_tissue: global___Sample.SomaticVariantInNormalTissue.ValueType
+    somatic_variant_in_normal_tissue: (
+        global___Sample.SomaticVariantInNormalTissue.ValueType
+    )
     """Presence of variant in normal tissue."""
     somatic_variant_allele_fraction: builtins.str
     """Somatic variant allele fraction."""
@@ -5698,7 +6051,9 @@ class Sample(google.protobuf.message.Message):
     @property
     def ages(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Sample.Age]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Sample.Age
+    ]:
         """Age (range), max. size of 2."""
 
     @property
@@ -5712,19 +6067,25 @@ class Sample(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -6041,7 +6402,9 @@ class Method(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _ResultTypeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Method._ResultType.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Method._ResultType.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -6075,7 +6438,9 @@ class Method(google.protobuf.message.Message):
         V: typing_extensions.TypeAlias = ValueType
 
     class _SourceTypeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Method._SourceType.ValueType],
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+            Method._SourceType.ValueType
+        ],
         builtins.type,
     ):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -6117,23 +6482,33 @@ class Method(google.protobuf.message.Message):
             builtins.type,
         ):
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-            ATTRIBUTE_TYPE_UNSPECIFIED: Method.MethodAttribute._AttributeType.ValueType  # 0
+            ATTRIBUTE_TYPE_UNSPECIFIED: (
+                Method.MethodAttribute._AttributeType.ValueType
+            )  # 0
             """unspecified attribute type"""
-            ATTRIBUTE_TYPE_LOCATION: Method.MethodAttribute._AttributeType.ValueType  # 1
+            ATTRIBUTE_TYPE_LOCATION: (
+                Method.MethodAttribute._AttributeType.ValueType
+            )  # 1
             """corresponds to "Location" """
             ATTRIBUTE_TYPE_CONTROLS_APPROPRIATE: (
                 Method.MethodAttribute._AttributeType.ValueType
             )  # 2
             """corresponds to "ControlsAppropriate" """
-            ATTRIBUTE_TYPE_METHOD_APPROPRIATE: Method.MethodAttribute._AttributeType.ValueType  # 3
+            ATTRIBUTE_TYPE_METHOD_APPROPRIATE: (
+                Method.MethodAttribute._AttributeType.ValueType
+            )  # 3
             """corresponds to "MethodAppropriate" """
-            ATTRIBUTE_TYPE_TEST_NAME: Method.MethodAttribute._AttributeType.ValueType  # 4
+            ATTRIBUTE_TYPE_TEST_NAME: (
+                Method.MethodAttribute._AttributeType.ValueType
+            )  # 4
             """corresponds to "TestName" """
             ATTRIBUTE_TYPE_STRUCT_VAR_METHOD_TYPE: (
                 Method.MethodAttribute._AttributeType.ValueType
             )  # 5
             """corresponds to "StructVarMethod" """
-            ATTRIBUTE_TYPE_PROBE_ACCESSION: Method.MethodAttribute._AttributeType.ValueType  # 6
+            ATTRIBUTE_TYPE_PROBE_ACCESSION: (
+                Method.MethodAttribute._AttributeType.ValueType
+            )  # 6
             """corresponds to "ProbeAccession" """
 
         class AttributeType(_AttributeType, metaclass=_AttributeTypeEnumTypeWrapper):
@@ -6143,15 +6518,23 @@ class Method(google.protobuf.message.Message):
         """unspecified attribute type"""
         ATTRIBUTE_TYPE_LOCATION: Method.MethodAttribute.AttributeType.ValueType  # 1
         """corresponds to "Location" """
-        ATTRIBUTE_TYPE_CONTROLS_APPROPRIATE: Method.MethodAttribute.AttributeType.ValueType  # 2
+        ATTRIBUTE_TYPE_CONTROLS_APPROPRIATE: (
+            Method.MethodAttribute.AttributeType.ValueType
+        )  # 2
         """corresponds to "ControlsAppropriate" """
-        ATTRIBUTE_TYPE_METHOD_APPROPRIATE: Method.MethodAttribute.AttributeType.ValueType  # 3
+        ATTRIBUTE_TYPE_METHOD_APPROPRIATE: (
+            Method.MethodAttribute.AttributeType.ValueType
+        )  # 3
         """corresponds to "MethodAppropriate" """
         ATTRIBUTE_TYPE_TEST_NAME: Method.MethodAttribute.AttributeType.ValueType  # 4
         """corresponds to "TestName" """
-        ATTRIBUTE_TYPE_STRUCT_VAR_METHOD_TYPE: Method.MethodAttribute.AttributeType.ValueType  # 5
+        ATTRIBUTE_TYPE_STRUCT_VAR_METHOD_TYPE: (
+            Method.MethodAttribute.AttributeType.ValueType
+        )  # 5
         """corresponds to "StructVarMethod" """
-        ATTRIBUTE_TYPE_PROBE_ACCESSION: Method.MethodAttribute.AttributeType.ValueType  # 6
+        ATTRIBUTE_TYPE_PROBE_ACCESSION: (
+            Method.MethodAttribute.AttributeType.ValueType
+        )  # 6
         """corresponds to "ProbeAccession" """
 
         BASE_FIELD_NUMBER: builtins.int
@@ -6168,7 +6551,9 @@ class Method(google.protobuf.message.Message):
             base: global___BaseAttribute | None = ...,
             type: global___Method.MethodAttribute.AttributeType.ValueType = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing.Literal["base", b"base"]) -> builtins.bool: ...
+        def HasField(
+            self, field_name: typing.Literal["base", b"base"]
+        ) -> builtins.bool: ...
         def ClearField(
             self, field_name: typing.Literal["base", b"base", "type", b"type"]
         ) -> None: ...
@@ -6190,9 +6575,13 @@ class Method(google.protobuf.message.Message):
             builtins.type,
         ):
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
-            ATTRIBUTE_TYPE_UNSPECIFIED: Method.ObsMethodAttribute._AttributeType.ValueType  # 0
+            ATTRIBUTE_TYPE_UNSPECIFIED: (
+                Method.ObsMethodAttribute._AttributeType.ValueType
+            )  # 0
             """unspecified attribute type"""
-            ATTRIBUTE_TYPE_METHOD_RESULT: Method.ObsMethodAttribute._AttributeType.ValueType  # 1
+            ATTRIBUTE_TYPE_METHOD_RESULT: (
+                Method.ObsMethodAttribute._AttributeType.ValueType
+            )  # 1
             """corresponds to "MethodResult" """
             ATTRIBUTE_TYPE_TESTING_LABORATORY: (
                 Method.ObsMethodAttribute._AttributeType.ValueType
@@ -6202,11 +6591,17 @@ class Method(google.protobuf.message.Message):
         class AttributeType(_AttributeType, metaclass=_AttributeTypeEnumTypeWrapper):
             """Local enumeration for attribute type."""
 
-        ATTRIBUTE_TYPE_UNSPECIFIED: Method.ObsMethodAttribute.AttributeType.ValueType  # 0
+        ATTRIBUTE_TYPE_UNSPECIFIED: (
+            Method.ObsMethodAttribute.AttributeType.ValueType
+        )  # 0
         """unspecified attribute type"""
-        ATTRIBUTE_TYPE_METHOD_RESULT: Method.ObsMethodAttribute.AttributeType.ValueType  # 1
+        ATTRIBUTE_TYPE_METHOD_RESULT: (
+            Method.ObsMethodAttribute.AttributeType.ValueType
+        )  # 1
         """corresponds to "MethodResult" """
-        ATTRIBUTE_TYPE_TESTING_LABORATORY: Method.ObsMethodAttribute.AttributeType.ValueType  # 2
+        ATTRIBUTE_TYPE_TESTING_LABORATORY: (
+            Method.ObsMethodAttribute.AttributeType.ValueType
+        )  # 2
         """corresponds to "TestingLaboratory" """
 
         BASE_FIELD_NUMBER: builtins.int
@@ -6221,7 +6616,9 @@ class Method(google.protobuf.message.Message):
         @property
         def comments(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Comment
+        ]:
             """Optional comments."""
 
         def __init__(
@@ -6231,10 +6628,14 @@ class Method(google.protobuf.message.Message):
             type: global___Method.ObsMethodAttribute.AttributeType.ValueType = ...,
             comments: collections.abc.Iterable[global___Comment] | None = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing.Literal["base", b"base"]) -> builtins.bool: ...
+        def HasField(
+            self, field_name: typing.Literal["base", b"base"]
+        ) -> builtins.bool: ...
         def ClearField(
             self,
-            field_name: typing.Literal["base", b"base", "comments", b"comments", "type", b"type"],
+            field_name: typing.Literal[
+                "base", b"base", "comments", b"comments", "type", b"type"
+            ],
         ) -> None: ...
 
     NAME_PLATFORM_FIELD_NUMBER: builtins.int
@@ -6277,19 +6678,25 @@ class Method(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def software(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Software]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Software
+    ]:
         """List of softwares used."""
 
     @property
@@ -6326,7 +6733,9 @@ class Method(google.protobuf.message.Message):
         software: collections.abc.Iterable[global___Software] | None = ...,
         source_type: global___Method.SourceType.ValueType | None = ...,
         method_type: global___MethodListType.ValueType = ...,
-        method_attributes: collections.abc.Iterable[global___Method.MethodAttribute] | None = ...,
+        method_attributes: (
+            collections.abc.Iterable[global___Method.MethodAttribute] | None
+        ) = ...,
         obs_method_attributes: (
             collections.abc.Iterable[global___Method.ObsMethodAttribute] | None
         ) = ...,
@@ -6499,7 +6908,9 @@ class AlleleScv(google.protobuf.message.Message):
         @property
         def properties(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
+            builtins.str
+        ]:
             """Used to set key words for retrieval or
             display about a gene, such as genes listed by the
             ACMG guidelines.
@@ -6508,7 +6919,9 @@ class AlleleScv(google.protobuf.message.Message):
         @property
         def xrefs(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Xref
+        ]:
             """Used for gene specific identifiers
             such as MIM number, Gene ID, HGNC ID, etc.
             """
@@ -6566,7 +6979,8 @@ class AlleleScv(google.protobuf.message.Message):
         ) -> typing.Literal["name"] | None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_relationship_type", b"_relationship_type"]
+            self,
+            oneof_group: typing.Literal["_relationship_type", b"_relationship_type"],
         ) -> typing.Literal["relationship_type"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -6602,19 +7016,25 @@ class AlleleScv(google.protobuf.message.Message):
         @property
         def xrefs(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Xref
+        ]:
             """Xref list."""
 
         @property
         def citations(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Citation
+        ]:
             """Citation list."""
 
         @property
         def comments(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Comment
+        ]:
             """Comment list."""
 
         def __init__(
@@ -6726,7 +7146,9 @@ class AlleleScv(google.protobuf.message.Message):
     @property
     def other_names(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___OtherName]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___OtherName
+    ]:
         """List of other names."""
 
     @property
@@ -6740,19 +7162,25 @@ class AlleleScv(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -6905,13 +7333,17 @@ class HaplotypeScv(google.protobuf.message.Message):
     @property
     def simple_alleles(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___AlleleScv]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___AlleleScv
+    ]:
         """The list of alleles in the haplotype."""
 
     @property
     def other_names(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___OtherName]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___OtherName
+    ]:
         """Names other than 'preferred' used for the haplotype."""
 
     @property
@@ -6937,19 +7369,25 @@ class HaplotypeScv(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of cross-references."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -7044,7 +7482,10 @@ class HaplotypeScv(google.protobuf.message.Message):
     ) -> typing.Literal["name"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_chromosomes", b"_number_of_chromosomes"]
+        self,
+        oneof_group: typing.Literal[
+            "_number_of_chromosomes", b"_number_of_chromosomes"
+        ],
     ) -> typing.Literal["number_of_chromosomes"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -7090,13 +7531,17 @@ class GenotypeScv(google.protobuf.message.Message):
     @property
     def simple_alleles(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___AlleleScv]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___AlleleScv
+    ]:
         """Simple alleles; mutually exclusive with `haplotypes`."""
 
     @property
     def haplotypes(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___HaplotypeScv]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___HaplotypeScv
+    ]:
         """Haplotype; mutually exclusive with `simple_alleles`.
 
         Allows more than 2 haplotypes per genotype to support
@@ -7106,7 +7551,9 @@ class GenotypeScv(google.protobuf.message.Message):
     @property
     def other_names(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___OtherName]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___OtherName
+    ]:
         """Other names used for the genotype."""
 
     @property
@@ -7128,19 +7575,25 @@ class GenotypeScv(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -7341,19 +7794,29 @@ class ObservedIn(google.protobuf.message.Message):
             """corresponds to "Description" """
             TYPE_VARIANT_ALLELES: ObservedIn.ObservedDataAttribute._Type.ValueType  # 2
             """corresponds to "VariantAlleles" """
-            TYPE_SUBJECTS_WITH_VARIANT: ObservedIn.ObservedDataAttribute._Type.ValueType  # 3
+            TYPE_SUBJECTS_WITH_VARIANT: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 3
             """corresponds to "SubjectsWithVariant" """
             TYPE_SUBJECTS_WITH_DIFFERENT_CAUSATIVE_VARIANT: (
                 ObservedIn.ObservedDataAttribute._Type.ValueType
             )  # 4
             """corresponds to "SubjectsWithDifferentCausativeVariant" """
-            TYPE_VARIANT_CHROMOSOMES: ObservedIn.ObservedDataAttribute._Type.ValueType  # 5
+            TYPE_VARIANT_CHROMOSOMES: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 5
             """corresponds to "VariantChromosomes" """
-            TYPE_INDEPENDENT_OBSERVATIONS: ObservedIn.ObservedDataAttribute._Type.ValueType  # 6
+            TYPE_INDEPENDENT_OBSERVATIONS: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 6
             """corresponds to "IndependentObservations" """
-            TYPE_SINGLE_HETEROZYGOUS: ObservedIn.ObservedDataAttribute._Type.ValueType  # 7
+            TYPE_SINGLE_HETEROZYGOUS: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 7
             """corresponds to "SingleHeterozygote" """
-            TYPE_COMPOUND_HETEROZYGOUS: ObservedIn.ObservedDataAttribute._Type.ValueType  # 8
+            TYPE_COMPOUND_HETEROZYGOUS: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 8
             """corresponds to "CompoundHeterozygote" """
             TYPE_HOMOZYGOUS: ObservedIn.ObservedDataAttribute._Type.ValueType  # 9
             """corresponds to "Homozygote" """
@@ -7361,13 +7824,21 @@ class ObservedIn(google.protobuf.message.Message):
             """corresponds to "Hemizygote" """
             TYPE_NUMBER_MOSAIC: ObservedIn.ObservedDataAttribute._Type.ValueType  # 11
             """corresponds to "NumberMosaic" """
-            TYPE_OBSERVED_UNSPECIFIED: ObservedIn.ObservedDataAttribute._Type.ValueType  # 12
+            TYPE_OBSERVED_UNSPECIFIED: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 12
             """corresponds to "ObservedUnspecified" """
-            TYPE_ALLELE_FREQUENCY: ObservedIn.ObservedDataAttribute._Type.ValueType  # 13
+            TYPE_ALLELE_FREQUENCY: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 13
             """corresponds to "AlleleFrequency" """
-            TYPE_SECONDARY_FINDING: ObservedIn.ObservedDataAttribute._Type.ValueType  # 14
+            TYPE_SECONDARY_FINDING: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 14
             """corresponds to "SecondaryFinding" """
-            TYPE_GENOTYPE_AND_MOI_CONSISTENT: ObservedIn.ObservedDataAttribute._Type.ValueType  # 15
+            TYPE_GENOTYPE_AND_MOI_CONSISTENT: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 15
             """corresponds to "GenotypeAndMOIConsistent" """
             TYPE_UNAFFECTED_FAMILY_MEMBER_WITH_CAUSATIVE_VARIANT: (
                 ObservedIn.ObservedDataAttribute._Type.ValueType
@@ -7377,23 +7848,33 @@ class ObservedIn(google.protobuf.message.Message):
                 ObservedIn.ObservedDataAttribute._Type.ValueType
             )  # 17
             """corresponds to "HetParentTransmitNormalAllele" """
-            TYPE_COSEGREGATING_FAMILIES: ObservedIn.ObservedDataAttribute._Type.ValueType  # 18
+            TYPE_COSEGREGATING_FAMILIES: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 18
             """corresponds to "CosegregatingFamilies" """
-            TYPE_INFORMATIVE_MEIOSES: ObservedIn.ObservedDataAttribute._Type.ValueType  # 19
+            TYPE_INFORMATIVE_MEIOSES: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 19
             """corresponds to "InformativeMeioses" """
             TYPE_SAMPLE_LOCAL_ID: ObservedIn.ObservedDataAttribute._Type.ValueType  # 20
             """corresponds to "SampleLocalID" """
-            TYPE_SAMPLE_VARIANT_ID: ObservedIn.ObservedDataAttribute._Type.ValueType  # 21
+            TYPE_SAMPLE_VARIANT_ID: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 21
             """corresponds to "SampleVariantID" """
             TYPE_FAMILY_HISTORY: ObservedIn.ObservedDataAttribute._Type.ValueType  # 22
             """corresponds to "FamilyHistory" """
-            TYPE_NUM_FAMILIES_WITH_VARIANT: ObservedIn.ObservedDataAttribute._Type.ValueType  # 23
+            TYPE_NUM_FAMILIES_WITH_VARIANT: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 23
             """corresponds to "NumFamiliesWithVariant" """
             TYPE_NUM_FAMILIES_WITH_SEGREGATION_OBSERVED: (
                 ObservedIn.ObservedDataAttribute._Type.ValueType
             )  # 24
             """corresponds to "NumFamiliesWithSegregationObserved" """
-            TYPE_SEGREGATION_OBSERVED: ObservedIn.ObservedDataAttribute._Type.ValueType  # 25
+            TYPE_SEGREGATION_OBSERVED: (
+                ObservedIn.ObservedDataAttribute._Type.ValueType
+            )  # 25
             """corresponds to "SegregationObserved" """
 
         class Type(_Type, metaclass=_TypeEnumTypeWrapper):
@@ -7413,7 +7894,9 @@ class ObservedIn(google.protobuf.message.Message):
         """corresponds to "SubjectsWithDifferentCausativeVariant" """
         TYPE_VARIANT_CHROMOSOMES: ObservedIn.ObservedDataAttribute.Type.ValueType  # 5
         """corresponds to "VariantChromosomes" """
-        TYPE_INDEPENDENT_OBSERVATIONS: ObservedIn.ObservedDataAttribute.Type.ValueType  # 6
+        TYPE_INDEPENDENT_OBSERVATIONS: (
+            ObservedIn.ObservedDataAttribute.Type.ValueType
+        )  # 6
         """corresponds to "IndependentObservations" """
         TYPE_SINGLE_HETEROZYGOUS: ObservedIn.ObservedDataAttribute.Type.ValueType  # 7
         """corresponds to "SingleHeterozygote" """
@@ -7431,7 +7914,9 @@ class ObservedIn(google.protobuf.message.Message):
         """corresponds to "AlleleFrequency" """
         TYPE_SECONDARY_FINDING: ObservedIn.ObservedDataAttribute.Type.ValueType  # 14
         """corresponds to "SecondaryFinding" """
-        TYPE_GENOTYPE_AND_MOI_CONSISTENT: ObservedIn.ObservedDataAttribute.Type.ValueType  # 15
+        TYPE_GENOTYPE_AND_MOI_CONSISTENT: (
+            ObservedIn.ObservedDataAttribute.Type.ValueType
+        )  # 15
         """corresponds to "GenotypeAndMOIConsistent" """
         TYPE_UNAFFECTED_FAMILY_MEMBER_WITH_CAUSATIVE_VARIANT: (
             ObservedIn.ObservedDataAttribute.Type.ValueType
@@ -7441,7 +7926,9 @@ class ObservedIn(google.protobuf.message.Message):
             ObservedIn.ObservedDataAttribute.Type.ValueType
         )  # 17
         """corresponds to "HetParentTransmitNormalAllele" """
-        TYPE_COSEGREGATING_FAMILIES: ObservedIn.ObservedDataAttribute.Type.ValueType  # 18
+        TYPE_COSEGREGATING_FAMILIES: (
+            ObservedIn.ObservedDataAttribute.Type.ValueType
+        )  # 18
         """corresponds to "CosegregatingFamilies" """
         TYPE_INFORMATIVE_MEIOSES: ObservedIn.ObservedDataAttribute.Type.ValueType  # 19
         """corresponds to "InformativeMeioses" """
@@ -7451,7 +7938,9 @@ class ObservedIn(google.protobuf.message.Message):
         """corresponds to "SampleVariantID" """
         TYPE_FAMILY_HISTORY: ObservedIn.ObservedDataAttribute.Type.ValueType  # 22
         """corresponds to "FamilyHistory" """
-        TYPE_NUM_FAMILIES_WITH_VARIANT: ObservedIn.ObservedDataAttribute.Type.ValueType  # 23
+        TYPE_NUM_FAMILIES_WITH_VARIANT: (
+            ObservedIn.ObservedDataAttribute.Type.ValueType
+        )  # 23
         """corresponds to "NumFamiliesWithVariant" """
         TYPE_NUM_FAMILIES_WITH_SEGREGATION_OBSERVED: (
             ObservedIn.ObservedDataAttribute.Type.ValueType
@@ -7474,7 +7963,9 @@ class ObservedIn(google.protobuf.message.Message):
             base: global___BaseAttribute | None = ...,
             type: global___ObservedIn.ObservedDataAttribute.Type.ValueType = ...,
         ) -> None: ...
-        def HasField(self, field_name: typing.Literal["base", b"base"]) -> builtins.bool: ...
+        def HasField(
+            self, field_name: typing.Literal["base", b"base"]
+        ) -> builtins.bool: ...
         def ClearField(
             self, field_name: typing.Literal["base", b"base", "type", b"type"]
         ) -> None: ...
@@ -7508,26 +7999,33 @@ class ObservedIn(google.protobuf.message.Message):
         @property
         def citations(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Citation
+        ]:
             """Citation list."""
 
         @property
         def xrefs(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Xref
+        ]:
             """Xref list."""
 
         @property
         def comments(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Comment
+        ]:
             """Comment list."""
 
         def __init__(
             self,
             *,
             attributes: (
-                collections.abc.Iterable[global___ObservedIn.ObservedDataAttribute] | None
+                collections.abc.Iterable[global___ObservedIn.ObservedDataAttribute]
+                | None
             ) = ...,
             severity: global___Severity.ValueType | None = ...,
             citations: collections.abc.Iterable[global___Citation] | None = ...,
@@ -7535,7 +8033,10 @@ class ObservedIn(google.protobuf.message.Message):
             comments: collections.abc.Iterable[global___Comment] | None = ...,
         ) -> None: ...
         def HasField(
-            self, field_name: typing.Literal["_severity", b"_severity", "severity", b"severity"]
+            self,
+            field_name: typing.Literal[
+                "_severity", b"_severity", "severity", b"severity"
+            ],
         ) -> builtins.bool: ...
         def ClearField(
             self,
@@ -7580,7 +8081,9 @@ class ObservedIn(google.protobuf.message.Message):
     @property
     def cooccurrence_sets(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Cooccurrence]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Cooccurrence
+    ]:
         """Co-occurence set."""
 
     @property
@@ -7590,26 +8093,34 @@ class ObservedIn(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """Citation list."""
 
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """Xref list."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """Comment list."""
 
     def __init__(
         self,
         *,
         sample: global___Sample | None = ...,
-        observed_data: collections.abc.Iterable[global___ObservedIn.ObservedData] | None = ...,
+        observed_data: (
+            collections.abc.Iterable[global___ObservedIn.ObservedData] | None
+        ) = ...,
         cooccurrence_sets: collections.abc.Iterable[global___Cooccurrence] | None = ...,
         trait_set: global___TraitSet | None = ...,
         citations: collections.abc.Iterable[global___Citation] | None = ...,
@@ -7758,11 +8269,15 @@ class ClinicalAssertion(google.protobuf.message.Message):
         ) -> None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_local_key_is_submitted", b"_local_key_is_submitted"]
+            self,
+            oneof_group: typing.Literal[
+                "_local_key_is_submitted", b"_local_key_is_submitted"
+            ],
         ) -> typing.Literal["local_key_is_submitted"] | None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_submitted_assembly", b"_submitted_assembly"]
+            self,
+            oneof_group: typing.Literal["_submitted_assembly", b"_submitted_assembly"],
         ) -> typing.Literal["submitted_assembly"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -7788,19 +8303,29 @@ class ClinicalAssertion(google.protobuf.message.Message):
             DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
             TYPE_UNSPECIFIED: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 0
             """unspecified type"""
-            TYPE_MODE_OF_INHERITANCE: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 1
+            TYPE_MODE_OF_INHERITANCE: (
+                ClinicalAssertion.AttributeSetElement._Type.ValueType
+            )  # 1
             """Corresponds to "ModeOfInheritance" """
             TYPE_PENETRANCE: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 2
             """Corresponds to "Penetrance" """
-            TYPE_AGE_OF_ONSET: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 3
+            TYPE_AGE_OF_ONSET: (
+                ClinicalAssertion.AttributeSetElement._Type.ValueType
+            )  # 3
             """Corresponds to "AgeOfOnset" """
             TYPE_SEVERITY: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 4
             """Corresponds to "Severity" """
-            TYPE_CLASSIFICATION_HISTORY: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 5
+            TYPE_CLASSIFICATION_HISTORY: (
+                ClinicalAssertion.AttributeSetElement._Type.ValueType
+            )  # 5
             """Corresponds to "ClassificationHistory" """
-            TYPE_SEVERITY_DESCRIPTION: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 6
+            TYPE_SEVERITY_DESCRIPTION: (
+                ClinicalAssertion.AttributeSetElement._Type.ValueType
+            )  # 6
             """Corresponds to "SeverityDescription" """
-            TYPE_ASSERTION_METHOD: ClinicalAssertion.AttributeSetElement._Type.ValueType  # 7
+            TYPE_ASSERTION_METHOD: (
+                ClinicalAssertion.AttributeSetElement._Type.ValueType
+            )  # 7
             """Corresponds to "AssertionMethod" """
 
         class Type(_Type, metaclass=_TypeEnumTypeWrapper):
@@ -7808,7 +8333,9 @@ class ClinicalAssertion(google.protobuf.message.Message):
 
         TYPE_UNSPECIFIED: ClinicalAssertion.AttributeSetElement.Type.ValueType  # 0
         """unspecified type"""
-        TYPE_MODE_OF_INHERITANCE: ClinicalAssertion.AttributeSetElement.Type.ValueType  # 1
+        TYPE_MODE_OF_INHERITANCE: (
+            ClinicalAssertion.AttributeSetElement.Type.ValueType
+        )  # 1
         """Corresponds to "ModeOfInheritance" """
         TYPE_PENETRANCE: ClinicalAssertion.AttributeSetElement.Type.ValueType  # 2
         """Corresponds to "Penetrance" """
@@ -7816,9 +8343,13 @@ class ClinicalAssertion(google.protobuf.message.Message):
         """Corresponds to "AgeOfOnset" """
         TYPE_SEVERITY: ClinicalAssertion.AttributeSetElement.Type.ValueType  # 4
         """Corresponds to "Severity" """
-        TYPE_CLASSIFICATION_HISTORY: ClinicalAssertion.AttributeSetElement.Type.ValueType  # 5
+        TYPE_CLASSIFICATION_HISTORY: (
+            ClinicalAssertion.AttributeSetElement.Type.ValueType
+        )  # 5
         """Corresponds to "ClassificationHistory" """
-        TYPE_SEVERITY_DESCRIPTION: ClinicalAssertion.AttributeSetElement.Type.ValueType  # 6
+        TYPE_SEVERITY_DESCRIPTION: (
+            ClinicalAssertion.AttributeSetElement.Type.ValueType
+        )  # 6
         """Corresponds to "SeverityDescription" """
         TYPE_ASSERTION_METHOD: ClinicalAssertion.AttributeSetElement.Type.ValueType  # 7
         """Corresponds to "AssertionMethod" """
@@ -7837,19 +8368,25 @@ class ClinicalAssertion(google.protobuf.message.Message):
         @property
         def xrefs(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Xref
+        ]:
             """List of xrefs."""
 
         @property
         def citations(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Citation
+        ]:
             """List of citations."""
 
         @property
         def comments(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Comment
+        ]:
             """List of comments."""
 
         def __init__(
@@ -8013,7 +8550,9 @@ class ClinicalAssertion(google.protobuf.message.Message):
     @property
     def additional_submitters(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Submitter]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Submitter
+    ]:
         """Optional list of additional submitters."""
 
     @property
@@ -8045,7 +8584,9 @@ class ClinicalAssertion(google.protobuf.message.Message):
     @property
     def observed_ins(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___ObservedIn]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___ObservedIn
+    ]:
         """Observed in."""
 
     @property
@@ -8067,13 +8608,17 @@ class ClinicalAssertion(google.protobuf.message.Message):
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -8100,16 +8645,23 @@ class ClinicalAssertion(google.protobuf.message.Message):
     def __init__(
         self,
         *,
-        clinvar_submission_id: global___ClinicalAssertion.ClinvarSubmissionId | None = ...,
+        clinvar_submission_id: (
+            global___ClinicalAssertion.ClinvarSubmissionId | None
+        ) = ...,
         clinvar_accession: global___ClinicalAssertion.ClinvarAccession | None = ...,
-        additional_submitters: collections.abc.Iterable[global___Submitter] | None = ...,
+        additional_submitters: (
+            collections.abc.Iterable[global___Submitter] | None
+        ) = ...,
         record_status: global___ClinicalAssertion.RecordStatus.ValueType = ...,
         replaces: collections.abc.Iterable[builtins.str] | None = ...,
-        replaceds: collections.abc.Iterable[global___ClinicalAssertionRecordHistory] | None = ...,
+        replaceds: (
+            collections.abc.Iterable[global___ClinicalAssertionRecordHistory] | None
+        ) = ...,
         classifications: global___ClassificationScv | None = ...,
         assertion: global___Assertion.ValueType = ...,
         attributes: (
-            collections.abc.Iterable[global___ClinicalAssertion.AttributeSetElement] | None
+            collections.abc.Iterable[global___ClinicalAssertion.AttributeSetElement]
+            | None
         ) = ...,
         observed_ins: collections.abc.Iterable[global___ObservedIn] | None = ...,
         simple_allele: global___AlleleScv | None = ...,
@@ -8243,7 +8795,10 @@ class ClinicalAssertion(google.protobuf.message.Message):
     ) -> None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_fda_recognized_database", b"_fda_recognized_database"]
+        self,
+        oneof_group: typing.Literal[
+            "_fda_recognized_database", b"_fda_recognized_database"
+        ],
     ) -> typing.Literal["fda_recognized_database"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -8318,13 +8873,17 @@ class Allele(google.protobuf.message.Message):
         @property
         def locations(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Location]:
+        ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Location
+        ]:
             """Gene's locations."""
 
         @property
         def omims(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.int]:
+        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
+            builtins.int
+        ]:
             """OMIM ID."""
 
         @property
@@ -8338,7 +8897,9 @@ class Allele(google.protobuf.message.Message):
         @property
         def properties(
             self,
-        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+        ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
+            builtins.str
+        ]:
             """Used to set key words for retrieval or
             display about a gene, such as genes listed by the
             ACMG guidelines.
@@ -8423,7 +8984,8 @@ class Allele(google.protobuf.message.Message):
         ) -> None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_haploinsufficiency", b"_haploinsufficiency"]
+            self,
+            oneof_group: typing.Literal["_haploinsufficiency", b"_haploinsufficiency"],
         ) -> typing.Literal["haploinsufficiency"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -8431,7 +8993,8 @@ class Allele(google.protobuf.message.Message):
         ) -> typing.Literal["hgnc_id"] | None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_relationship_type", b"_relationship_type"]
+            self,
+            oneof_group: typing.Literal["_relationship_type", b"_relationship_type"],
         ) -> typing.Literal["relationship_type"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -8439,7 +9002,8 @@ class Allele(google.protobuf.message.Message):
         ) -> typing.Literal["symbol"] | None: ...
         @typing.overload
         def WhichOneof(
-            self, oneof_group: typing.Literal["_triplosensitivity", b"_triplosensitivity"]
+            self,
+            oneof_group: typing.Literal["_triplosensitivity", b"_triplosensitivity"],
         ) -> typing.Literal["triplosensitivity"] | None: ...
 
     @typing.final
@@ -8564,7 +9128,10 @@ class Allele(google.protobuf.message.Message):
             self, field_name: typing.Literal["_type", b"_type", "type", b"type"]
         ) -> builtins.bool: ...
         def ClearField(
-            self, field_name: typing.Literal["_type", b"_type", "type", b"type", "value", b"value"]
+            self,
+            field_name: typing.Literal[
+                "_type", b"_type", "type", b"type", "value", b"value"
+            ],
         ) -> None: ...
         def WhichOneof(
             self, oneof_group: typing.Literal["_type", b"_type"]
@@ -8600,7 +9167,9 @@ class Allele(google.protobuf.message.Message):
     @property
     def genes(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Allele.Gene]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Allele.Gene
+    ]:
         """nested elements
 
         Gene list.
@@ -8615,13 +9184,17 @@ class Allele(google.protobuf.message.Message):
     @property
     def locations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Location]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Location
+    ]:
         """Location."""
 
     @property
     def other_names(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___OtherName]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___OtherName
+    ]:
         """List of other names."""
 
     @property
@@ -8645,13 +9218,17 @@ class Allele(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -8671,7 +9248,9 @@ class Allele(google.protobuf.message.Message):
         """Allele frequencies."""
 
     @property
-    def global_minor_allele_frequency(self) -> global___Allele.GlobalMinorAlleleFrequency:
+    def global_minor_allele_frequency(
+        self,
+    ) -> global___Allele.GlobalMinorAlleleFrequency:
         """Global minor allele frequencies."""
 
     def __init__(
@@ -8684,15 +9263,21 @@ class Allele(google.protobuf.message.Message):
         locations: collections.abc.Iterable[global___Location] | None = ...,
         other_names: collections.abc.Iterable[global___OtherName] | None = ...,
         protein_changes: collections.abc.Iterable[builtins.str] | None = ...,
-        hgvs_expressions: collections.abc.Iterable[global___HgvsExpression] | None = ...,
+        hgvs_expressions: (
+            collections.abc.Iterable[global___HgvsExpression] | None
+        ) = ...,
         classifications: global___AggregateClassificationSet | None = ...,
         xrefs: collections.abc.Iterable[global___Xref] | None = ...,
         comments: collections.abc.Iterable[global___Comment] | None = ...,
         functional_consequences: (
             collections.abc.Iterable[global___FunctionalConsequence] | None
         ) = ...,
-        allele_frequencies: collections.abc.Iterable[global___Allele.AlleleFrequency] | None = ...,
-        global_minor_allele_frequency: global___Allele.GlobalMinorAlleleFrequency | None = ...,
+        allele_frequencies: (
+            collections.abc.Iterable[global___Allele.AlleleFrequency] | None
+        ) = ...,
+        global_minor_allele_frequency: (
+            global___Allele.GlobalMinorAlleleFrequency | None
+        ) = ...,
         allele_id: builtins.int = ...,
         variation_id: builtins.int = ...,
     ) -> None: ...
@@ -8809,13 +9394,17 @@ class Haplotype(google.protobuf.message.Message):
     @property
     def simple_alleles(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Allele]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Allele
+    ]:
         """The list of alleles in the haplotype."""
 
     @property
     def other_names(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___OtherName]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___OtherName
+    ]:
         """Names other than 'preferred' used for the haplotype."""
 
     @property
@@ -8843,13 +9432,17 @@ class Haplotype(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of cross-references."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     def __init__(
@@ -8859,7 +9452,9 @@ class Haplotype(google.protobuf.message.Message):
         name: builtins.str = ...,
         variation_type: global___HaploVariationType.ValueType = ...,
         other_names: collections.abc.Iterable[global___OtherName] | None = ...,
-        hgvs_expressions: collections.abc.Iterable[global___HgvsExpression] | None = ...,
+        hgvs_expressions: (
+            collections.abc.Iterable[global___HgvsExpression] | None
+        ) = ...,
         classifications: global___AggregateClassificationSet | None = ...,
         functional_consequences: (
             collections.abc.Iterable[global___FunctionalConsequence] | None
@@ -8928,7 +9523,10 @@ class Haplotype(google.protobuf.message.Message):
     ) -> typing.Literal["classifications"] | None: ...
     @typing.overload
     def WhichOneof(
-        self, oneof_group: typing.Literal["_number_of_chromosomes", b"_number_of_chromosomes"]
+        self,
+        oneof_group: typing.Literal[
+            "_number_of_chromosomes", b"_number_of_chromosomes"
+        ],
     ) -> typing.Literal["number_of_chromosomes"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -8970,7 +9568,10 @@ class IncludedRecord(google.protobuf.message.Message):
             version: builtins.int = ...,
         ) -> None: ...
         def HasField(
-            self, field_name: typing.Literal["_accession", b"_accession", "accession", b"accession"]
+            self,
+            field_name: typing.Literal[
+                "_accession", b"_accession", "accession", b"accession"
+            ],
         ) -> builtins.bool: ...
         def ClearField(
             self,
@@ -9010,7 +9611,9 @@ class IncludedRecord(google.protobuf.message.Message):
     @property
     def submitted_classifications(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Scv]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Scv
+    ]:
         """List of submitted records."""
 
     @property
@@ -9042,7 +9645,9 @@ class IncludedRecord(google.protobuf.message.Message):
         classified_variations: (
             collections.abc.Iterable[global___IncludedRecord.ClassifiedVariation] | None
         ) = ...,
-        general_citations: collections.abc.Iterable[global___GeneralCitations] | None = ...,
+        general_citations: (
+            collections.abc.Iterable[global___GeneralCitations] | None
+        ) = ...,
     ) -> None: ...
     def HasField(
         self,
@@ -9134,13 +9739,17 @@ class Genotype(google.protobuf.message.Message):
     @property
     def simple_alleles(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Allele]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Allele
+    ]:
         """Simple allele; mutually exclusive with `haplotype`."""
 
     @property
     def haplotypes(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Haplotype]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Haplotype
+    ]:
         """Haplotype; mutually exclusive with `simple_allele`.
 
         Allows more than 2 haplotypes per genotype to support
@@ -9150,7 +9759,9 @@ class Genotype(google.protobuf.message.Message):
     @property
     def other_names(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___OtherName]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___OtherName
+    ]:
         """Names other than 'preferred' used for the Genotype."""
 
     @property
@@ -9176,19 +9787,25 @@ class Genotype(google.protobuf.message.Message):
     @property
     def xrefs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Xref]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Xref
+    ]:
         """List of xrefs."""
 
     @property
     def citations(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Citation]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Citation
+    ]:
         """List of citations."""
 
     @property
     def comments(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Comment]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___Comment
+    ]:
         """List of comments."""
 
     @property
@@ -9207,7 +9824,9 @@ class Genotype(google.protobuf.message.Message):
         name: builtins.str = ...,
         variation_type: global___VariationType.ValueType = ...,
         other_names: collections.abc.Iterable[global___OtherName] | None = ...,
-        hgvs_expressions: collections.abc.Iterable[global___HgvsExpression] | None = ...,
+        hgvs_expressions: (
+            collections.abc.Iterable[global___HgvsExpression] | None
+        ) = ...,
         functional_consequences: (
             collections.abc.Iterable[global___FunctionalConsequence] | None
         ) = ...,
@@ -9369,7 +9988,9 @@ class RcvAccession(google.protobuf.message.Message):
                 self,
                 *,
                 value: builtins.str = ...,
-                date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+                date_last_evaluated: (
+                    google.protobuf.timestamp_pb2.Timestamp | None
+                ) = ...,
                 submission_count: builtins.int | None = ...,
             ) -> None: ...
             def HasField(
@@ -9402,11 +10023,15 @@ class RcvAccession(google.protobuf.message.Message):
             ) -> None: ...
             @typing.overload
             def WhichOneof(
-                self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+                self,
+                oneof_group: typing.Literal[
+                    "_date_last_evaluated", b"_date_last_evaluated"
+                ],
             ) -> typing.Literal["date_last_evaluated"] | None: ...
             @typing.overload
             def WhichOneof(
-                self, oneof_group: typing.Literal["_submission_count", b"_submission_count"]
+                self,
+                oneof_group: typing.Literal["_submission_count", b"_submission_count"],
             ) -> typing.Literal["submission_count"] | None: ...
 
         REVIEW_STATUS_FIELD_NUMBER: builtins.int
@@ -9417,14 +10042,18 @@ class RcvAccession(google.protobuf.message.Message):
         record.
         """
         @property
-        def description(self) -> global___RcvAccession.GermlineClassification.Description:
+        def description(
+            self,
+        ) -> global___RcvAccession.GermlineClassification.Description:
             """The oncogenicity description."""
 
         def __init__(
             self,
             *,
             review_status: global___AggregateGermlineReviewStatus.ValueType = ...,
-            description: global___RcvAccession.GermlineClassification.Description | None = ...,
+            description: (
+                global___RcvAccession.GermlineClassification.Description | None
+            ) = ...,
         ) -> None: ...
         def HasField(
             self, field_name: typing.Literal["description", b"description"]
@@ -9479,7 +10108,9 @@ class RcvAccession(google.protobuf.message.Message):
                 value: builtins.str = ...,
                 clinical_impact_assertion_type: builtins.str | None = ...,
                 clinical_impact_clinical_significance: builtins.str | None = ...,
-                date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+                date_last_evaluated: (
+                    google.protobuf.timestamp_pb2.Timestamp | None
+                ) = ...,
                 submission_count: builtins.int | None = ...,
             ) -> None: ...
             def HasField(
@@ -9530,7 +10161,8 @@ class RcvAccession(google.protobuf.message.Message):
             def WhichOneof(
                 self,
                 oneof_group: typing.Literal[
-                    "_clinical_impact_assertion_type", b"_clinical_impact_assertion_type"
+                    "_clinical_impact_assertion_type",
+                    b"_clinical_impact_assertion_type",
                 ],
             ) -> typing.Literal["clinical_impact_assertion_type"] | None: ...
             @typing.overload
@@ -9543,11 +10175,15 @@ class RcvAccession(google.protobuf.message.Message):
             ) -> typing.Literal["clinical_impact_clinical_significance"] | None: ...
             @typing.overload
             def WhichOneof(
-                self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+                self,
+                oneof_group: typing.Literal[
+                    "_date_last_evaluated", b"_date_last_evaluated"
+                ],
             ) -> typing.Literal["date_last_evaluated"] | None: ...
             @typing.overload
             def WhichOneof(
-                self, oneof_group: typing.Literal["_submission_count", b"_submission_count"]
+                self,
+                oneof_group: typing.Literal["_submission_count", b"_submission_count"],
             ) -> typing.Literal["submission_count"] | None: ...
 
         REVIEW_STATUS_FIELD_NUMBER: builtins.int
@@ -9570,7 +10206,9 @@ class RcvAccession(google.protobuf.message.Message):
             *,
             review_status: global___AggregateSomaticClinicalImpactReviewStatus.ValueType = ...,
             descriptions: (
-                collections.abc.Iterable[global___RcvAccession.SomaticClinicalImpact.Description]
+                collections.abc.Iterable[
+                    global___RcvAccession.SomaticClinicalImpact.Description
+                ]
                 | None
             ) = ...,
         ) -> None: ...
@@ -9611,7 +10249,9 @@ class RcvAccession(google.protobuf.message.Message):
                 self,
                 *,
                 value: builtins.str = ...,
-                date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+                date_last_evaluated: (
+                    google.protobuf.timestamp_pb2.Timestamp | None
+                ) = ...,
                 submission_count: builtins.int | None = ...,
             ) -> None: ...
             def HasField(
@@ -9644,11 +10284,15 @@ class RcvAccession(google.protobuf.message.Message):
             ) -> None: ...
             @typing.overload
             def WhichOneof(
-                self, oneof_group: typing.Literal["_date_last_evaluated", b"_date_last_evaluated"]
+                self,
+                oneof_group: typing.Literal[
+                    "_date_last_evaluated", b"_date_last_evaluated"
+                ],
             ) -> typing.Literal["date_last_evaluated"] | None: ...
             @typing.overload
             def WhichOneof(
-                self, oneof_group: typing.Literal["_submission_count", b"_submission_count"]
+                self,
+                oneof_group: typing.Literal["_submission_count", b"_submission_count"],
             ) -> typing.Literal["submission_count"] | None: ...
 
         REVIEW_STATUS_FIELD_NUMBER: builtins.int
@@ -9658,14 +10302,18 @@ class RcvAccession(google.protobuf.message.Message):
         all oncogenic submissions for this record.
         """
         @property
-        def description(self) -> global___RcvAccession.OncogenicityClassification.Description:
+        def description(
+            self,
+        ) -> global___RcvAccession.OncogenicityClassification.Description:
             """The oncogenicity description."""
 
         def __init__(
             self,
             *,
             review_status: global___AggregateOncogenicityReviewStatus.ValueType = ...,
-            description: global___RcvAccession.OncogenicityClassification.Description | None = ...,
+            description: (
+                global___RcvAccession.OncogenicityClassification.Description | None
+            ) = ...,
         ) -> None: ...
         def HasField(
             self, field_name: typing.Literal["description", b"description"]
@@ -9687,22 +10335,32 @@ class RcvAccession(google.protobuf.message.Message):
         SOMATIC_CLINICAL_IMPACT_FIELD_NUMBER: builtins.int
         ONCOGENICITY_CLASSIFICATION_FIELD_NUMBER: builtins.int
         @property
-        def germline_classification(self) -> global___RcvAccession.GermlineClassification:
+        def germline_classification(
+            self,
+        ) -> global___RcvAccession.GermlineClassification:
             """Germline classification."""
 
         @property
-        def somatic_clinical_impact(self) -> global___RcvAccession.SomaticClinicalImpact:
+        def somatic_clinical_impact(
+            self,
+        ) -> global___RcvAccession.SomaticClinicalImpact:
             """Somatic clinical impact."""
 
         @property
-        def oncogenicity_classification(self) -> global___RcvAccession.OncogenicityClassification:
+        def oncogenicity_classification(
+            self,
+        ) -> global___RcvAccession.OncogenicityClassification:
             """Oncogenicity classification."""
 
         def __init__(
             self,
             *,
-            germline_classification: global___RcvAccession.GermlineClassification | None = ...,
-            somatic_clinical_impact: global___RcvAccession.SomaticClinicalImpact | None = ...,
+            germline_classification: (
+                global___RcvAccession.GermlineClassification | None
+            ) = ...,
+            somatic_clinical_impact: (
+                global___RcvAccession.SomaticClinicalImpact | None
+            ) = ...,
             oncogenicity_classification: (
                 global___RcvAccession.OncogenicityClassification | None
             ) = ...,
@@ -9744,7 +10402,9 @@ class RcvAccession(google.protobuf.message.Message):
         @typing.overload
         def WhichOneof(
             self,
-            oneof_group: typing.Literal["_germline_classification", b"_germline_classification"],
+            oneof_group: typing.Literal[
+                "_germline_classification", b"_germline_classification"
+            ],
         ) -> typing.Literal["germline_classification"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -9756,7 +10416,9 @@ class RcvAccession(google.protobuf.message.Message):
         @typing.overload
         def WhichOneof(
             self,
-            oneof_group: typing.Literal["_somatic_clinical_impact", b"_somatic_clinical_impact"],
+            oneof_group: typing.Literal[
+                "_somatic_clinical_impact", b"_somatic_clinical_impact"
+            ],
         ) -> typing.Literal["somatic_clinical_impact"] | None: ...
 
     CLASSIFIED_CONDITION_LIST_FIELD_NUMBER: builtins.int
@@ -9775,7 +10437,9 @@ class RcvAccession(google.protobuf.message.Message):
     version: builtins.int
     """Version."""
     @property
-    def classified_condition_list(self) -> global___RcvAccession.ClassifiedConditionList:
+    def classified_condition_list(
+        self,
+    ) -> global___RcvAccession.ClassifiedConditionList:
         """nested elements
 
         The list of classified conditions.
@@ -9796,7 +10460,9 @@ class RcvAccession(google.protobuf.message.Message):
     def __init__(
         self,
         *,
-        classified_condition_list: global___RcvAccession.ClassifiedConditionList | None = ...,
+        classified_condition_list: (
+            global___RcvAccession.ClassifiedConditionList | None
+        ) = ...,
         rcv_classifications: global___RcvAccession.RcvClassifications | None = ...,
         replaceds: collections.abc.Iterable[global___RecordHistory] | None = ...,
         title: builtins.str | None = ...,
@@ -9842,7 +10508,9 @@ class RcvAccession(google.protobuf.message.Message):
     @typing.overload
     def WhichOneof(
         self,
-        oneof_group: typing.Literal["_classified_condition_list", b"_classified_condition_list"],
+        oneof_group: typing.Literal[
+            "_classified_condition_list", b"_classified_condition_list"
+        ],
     ) -> typing.Literal["classified_condition_list"] | None: ...
     @typing.overload
     def WhichOneof(
@@ -9913,7 +10581,9 @@ class ClassifiedRecord(google.protobuf.message.Message):
         def __init__(
             self,
             *,
-            rcv_accessions: collections.abc.Iterable[global___RcvAccession] | None = ...,
+            rcv_accessions: (
+                collections.abc.Iterable[global___RcvAccession] | None
+            ) = ...,
             submission_count: builtins.int | None = ...,
             independent_observations: builtins.int | None = ...,
         ) -> None: ...
@@ -9948,7 +10618,9 @@ class ClassifiedRecord(google.protobuf.message.Message):
         @typing.overload
         def WhichOneof(
             self,
-            oneof_group: typing.Literal["_independent_observations", b"_independent_observations"],
+            oneof_group: typing.Literal[
+                "_independent_observations", b"_independent_observations"
+            ],
         ) -> typing.Literal["independent_observations"] | None: ...
         @typing.overload
         def WhichOneof(
@@ -10014,7 +10686,8 @@ class ClassifiedRecord(google.protobuf.message.Message):
             self,
             *,
             medgens: (
-                collections.abc.Iterable[global___ClassifiedRecord.TraitMapping.Medgen] | None
+                collections.abc.Iterable[global___ClassifiedRecord.TraitMapping.Medgen]
+                | None
             ) = ...,
             clinical_assertion_id: builtins.int = ...,
             trait_type: builtins.str = ...,
@@ -10110,7 +10783,9 @@ class ClassifiedRecord(google.protobuf.message.Message):
     @property
     def deleted_scvs(
         self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___DeletedScv]:
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+        global___DeletedScv
+    ]:
         """List of deleted SCVs."""
 
     @property
@@ -10129,12 +10804,16 @@ class ClassifiedRecord(google.protobuf.message.Message):
         genotype: global___Genotype | None = ...,
         rcv_list: global___ClassifiedRecord.RcvList | None = ...,
         classifications: global___AggregateClassificationSet | None = ...,
-        clinical_assertions: collections.abc.Iterable[global___ClinicalAssertion] | None = ...,
+        clinical_assertions: (
+            collections.abc.Iterable[global___ClinicalAssertion] | None
+        ) = ...,
         trait_mappings: (
             collections.abc.Iterable[global___ClassifiedRecord.TraitMapping] | None
         ) = ...,
         deleted_scvs: collections.abc.Iterable[global___DeletedScv] | None = ...,
-        general_citations: collections.abc.Iterable[global___GeneralCitations] | None = ...,
+        general_citations: (
+            collections.abc.Iterable[global___GeneralCitations] | None
+        ) = ...,
     ) -> None: ...
     def HasField(
         self,
@@ -10521,7 +11200,9 @@ class ClinvarVariationRelease(google.protobuf.message.Message):
         self,
         *,
         release_date: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        variation_archives: collections.abc.Iterable[global___VariationArchive] | None = ...,
+        variation_archives: (
+            collections.abc.Iterable[global___VariationArchive] | None
+        ) = ...,
     ) -> None: ...
     def HasField(
         self, field_name: typing.Literal["release_date", b"release_date"]

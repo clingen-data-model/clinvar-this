@@ -64,7 +64,9 @@ class ConvertClinicalSignificance:
     @classmethod
     def from_str(cls, string_value: str) -> ClinicalSignificance.ValueType:
         """Convert string to protobuf enum value."""
-        return cls.CONVERT.get(string_value, ClinicalSignificance.CLINICAL_SIGNIFICANCE_OTHER)
+        return cls.CONVERT.get(
+            string_value, ClinicalSignificance.CLINICAL_SIGNIFICANCE_OTHER
+        )
 
 
 #: Canonical ACMG clinical significance values.
@@ -112,10 +114,16 @@ def write_report(
                         GeneImpactCounts.ImpactCounts(
                             gene_impact=v.number,
                             count_benign=counts[
-                                (v.number, ClinicalSignificance.CLINICAL_SIGNIFICANCE_BENIGN)
+                                (
+                                    v.number,
+                                    ClinicalSignificance.CLINICAL_SIGNIFICANCE_BENIGN,
+                                )
                             ],
                             count_likely_benign=counts[
-                                (v.number, ClinicalSignificance.CLINICAL_SIGNIFICANCE_LIKELY_BENIGN)
+                                (
+                                    v.number,
+                                    ClinicalSignificance.CLINICAL_SIGNIFICANCE_LIKELY_BENIGN,
+                                )
                             ],
                             count_uncertain_significance=counts[
                                 (
@@ -130,7 +138,10 @@ def write_report(
                                 )
                             ],
                             count_pathogenic=counts[
-                                (v.number, ClinicalSignificance.CLINICAL_SIGNIFICANCE_PATHOGENIC)
+                                (
+                                    v.number,
+                                    ClinicalSignificance.CLINICAL_SIGNIFICANCE_PATHOGENIC,
+                                )
                             ],
                         )
                     )
@@ -161,7 +172,9 @@ def generate_counts(path_input: str) -> dict:  # noqa: C901
             # Obtain germline classification description or skip record if has none.
             if not va.classified_record.HasField("classifications"):
                 continue
-            elif not va.classified_record.classifications.HasField("germline_classification"):
+            elif not va.classified_record.classifications.HasField(
+                "germline_classification"
+            ):
                 continue
             elif not va.classified_record.classifications.germline_classification.HasField(
                 "description"
@@ -183,13 +196,20 @@ def generate_counts(path_input: str) -> dict:  # noqa: C901
                 for expression in va.classified_record.simple_allele.hgvs_expressions:
                     if expression.HasField(
                         "nucleotide_expression"
-                    ) and expression.nucleotide_expression.HasField("sequence_accession"):
+                    ) and expression.nucleotide_expression.HasField(
+                        "sequence_accession"
+                    ):
                         sequence_accession: str = (
                             expression.nucleotide_expression.sequence_accession
                         )
                         if variant_name.startswith(sequence_accession):
-                            for molecular_consequences in expression.molecular_consequences:
-                                if molecular_consequences.type in ConvertGeneImpact.CONVERT:
+                            for (
+                                molecular_consequences
+                            ) in expression.molecular_consequences:
+                                if (
+                                    molecular_consequences.type
+                                    in ConvertGeneImpact.CONVERT
+                                ):
                                     csq = molecular_consequences.type
                 if not csq:
                     print(

@@ -22,7 +22,9 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "clinvar_data.pbs.phenotype_link_pb2", _globals)
+_builder.BuildTopDescriptorsAndMessages(
+    DESCRIPTOR, "clinvar_data.pbs.phenotype_link_pb2", _globals
+)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
     _globals["_GENEPHENOTYPERECORD"]._serialized_start = 114

@@ -107,7 +107,9 @@ class _ClinicalSignificance:
     V: typing_extensions.TypeAlias = ValueType
 
 class _ClinicalSignificanceEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_ClinicalSignificance.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _ClinicalSignificance.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -128,7 +130,9 @@ class _ClinicalSignificanceEnumTypeWrapper(
     CLINICAL_SIGNIFICANCE_OTHER: _ClinicalSignificance.ValueType  # 7
     """Corresponds to "other" """
 
-class ClinicalSignificance(_ClinicalSignificance, metaclass=_ClinicalSignificanceEnumTypeWrapper):
+class ClinicalSignificance(
+    _ClinicalSignificance, metaclass=_ClinicalSignificanceEnumTypeWrapper
+):
     """Enumeration for ACMG clinical significance."""
 
 CLINICAL_SIGNIFICANCE_UNSPECIFIED: ClinicalSignificance.ValueType  # 0
@@ -228,7 +232,10 @@ class GeneImpactCounts(google.protobuf.message.Message):
         ) = ...,
     ) -> None: ...
     def ClearField(
-        self, field_name: typing.Literal["hgnc_id", b"hgnc_id", "impact_counts", b"impact_counts"]
+        self,
+        field_name: typing.Literal[
+            "hgnc_id", b"hgnc_id", "impact_counts", b"impact_counts"
+        ],
     ) -> None: ...
 
 global___GeneImpactCounts = GeneImpactCounts

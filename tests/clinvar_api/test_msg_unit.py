@@ -45,9 +45,13 @@ def test_submission_status_object_construction():
 
 def test_submission_status_response_message_construction():
     msg.SubmissionStatusResponseMessage(
-        errorCode=msg.ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+        errorCode=msg.ErrorCode.PARTIAL_SUCCESS,
+        severity="fake-severity",
+        text="fake text",
     )
-    msg.SubmissionStatusResponseMessage(errorCode=None, severity="fake-severity", text="fake text")
+    msg.SubmissionStatusResponseMessage(
+        errorCode=None, severity="fake-severity", text="fake text"
+    )
 
 
 def test_submission_status_response_construction():
@@ -55,7 +59,9 @@ def test_submission_status_response_construction():
         status="processing",
         files=[msg.SubmissionStatusFile(url="http://example.com")],
         message=msg.SubmissionStatusResponseMessage(
-            errorCode=msg.ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+            errorCode=msg.ErrorCode.PARTIAL_SUCCESS,
+            severity="fake-severity",
+            text="fake text",
         ),
         objects=[
             msg.SubmissionStatusObject(
@@ -72,7 +78,9 @@ def test_submission_status_response_construction():
         status="fake-status",
         files=[msg.SubmissionStatusFile(url="http://example.com")],
         message=msg.SubmissionStatusResponseMessage(
-            errorCode=msg.ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+            errorCode=msg.ErrorCode.PARTIAL_SUCCESS,
+            severity="fake-severity",
+            text="fake text",
         ),
         objects=[
             msg.SubmissionStatusObject(
@@ -183,7 +191,9 @@ def test_summary_response_deletion_construction():
         deleteDate="2022-01-01",
         deleteStatus="delete-status",
         errors=[
-            msg.SummaryResponseError(input=[], output=msg.SummaryResponseErrorOutput(errors=[]))
+            msg.SummaryResponseError(
+                input=[], output=msg.SummaryResponseErrorOutput(errors=[])
+            )
         ],
     )
     msg.SummaryResponseDeletion(
@@ -214,16 +224,22 @@ def test_summary_response_submission_identifier_construction():
 
 def test_summary_response_submission_construction():
     msg.SummaryResponseSubmission(
-        identifiers=msg.SummaryResponseSubmissionIdentifiers(clinvarLocalKey="local-key"),
+        identifiers=msg.SummaryResponseSubmissionIdentifiers(
+            clinvarLocalKey="local-key"
+        ),
         processingStatus="processing-status",
         clinvarAccessionVersion="accession-version",
         errors=[
-            msg.SummaryResponseError(input=[], output=msg.SummaryResponseErrorOutput(errors=[]))
+            msg.SummaryResponseError(
+                input=[], output=msg.SummaryResponseErrorOutput(errors=[])
+            )
         ],
         releaseDate="2022-01-01",
     )
     msg.SummaryResponseSubmission(
-        identifiers=msg.SummaryResponseSubmissionIdentifiers(clinvarLocalKey="local-key"),
+        identifiers=msg.SummaryResponseSubmissionIdentifiers(
+            clinvarLocalKey="local-key"
+        ),
         processingStatus="processing-status",
         clinvarAccessionVersion=None,
         errors=None,
@@ -251,7 +267,9 @@ def test_summary_response_construction():
         ],
         submissions=[
             msg.SummaryResponseSubmission(
-                identifiers=msg.SummaryResponseSubmissionIdentifiers(clinvarLocalKey="local-key"),
+                identifiers=msg.SummaryResponseSubmissionIdentifiers(
+                    clinvarLocalKey="local-key"
+                ),
                 processingStatus="processing-status",
             )
         ],

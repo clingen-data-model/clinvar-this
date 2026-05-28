@@ -116,7 +116,10 @@ class SubmissionStatusActions(BaseModel):
     def from_msg(cls, other: msg.SubmissionStatusActions):
         return SubmissionStatusActions(
             id=other.id,
-            responses=[SubmissionStatusResponse.from_msg(response) for response in other.responses],
+            responses=[
+                SubmissionStatusResponse.from_msg(response)
+                for response in other.responses
+            ],
             status=other.status,
             target_db=other.targetDb,
             updated=other.updated,
@@ -134,5 +137,7 @@ class SubmissionStatus(BaseModel):
     @classmethod
     def from_msg(cls, other: msg.SubmissionStatus):
         return SubmissionStatus(
-            actions=[SubmissionStatusActions.from_msg(action) for action in other.actions]
+            actions=[
+                SubmissionStatusActions.from_msg(action) for action in other.actions
+            ]
         )

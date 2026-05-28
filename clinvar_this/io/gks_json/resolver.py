@@ -13,9 +13,7 @@ from clinvar_this import exceptions
 from clinvar_this.io.gks_json.clinical_impact_transformer import (
     ClinicalImpactTransformer,
 )
-from clinvar_this.io.gks_json.oncogenicity_transformer import (
-    OncogenicityTransformer,
-)
+from clinvar_this.io.gks_json.oncogenicity_transformer import OncogenicityTransformer
 
 GksTransformer = ClinicalImpactTransformer | OncogenicityTransformer
 

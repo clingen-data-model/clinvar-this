@@ -1,5 +1,5 @@
-from io import StringIO
 import pathlib
+from io import StringIO
 
 import pytest
 
@@ -277,7 +277,9 @@ class TestConditionDefinition:
 
     def test_seq_vars_read(self):
         for condition in self.condition_strings:
-            result = read_seq_var_tsv(file=_create_seq_tsv_fake({"CONDITION": condition["raw"]}))
+            result = read_seq_var_tsv(
+                file=_create_seq_tsv_fake({"CONDITION": condition["raw"]})
+            )
             assert len(result) == 1
             assert result[0].condition == condition["expected"]
 
@@ -301,7 +303,9 @@ class TestConditionDefinition:
         metadata = BatchMetadata()
         for condition in self.condition_strings:
             record = self._create_struc_record(condition=condition["expected"])
-            container = struc_var_tsv_records_to_submission_container([record], metadata)
+            container = struc_var_tsv_records_to_submission_container(
+                [record], metadata
+            )
             assert container.clinvar_submission is not None
             assert container.clinvar_submission[0].condition_set == condition["parsed"]
 
@@ -318,7 +322,9 @@ class TestConditionDefinition:
         metadata = BatchMetadata()
         for condition in self.condition_strings:
             record = self._create_struc_record(condition=condition["expected"])
-            container = struc_var_tsv_records_to_submission_container([record], metadata)
+            container = struc_var_tsv_records_to_submission_container(
+                [record], metadata
+            )
             reconverted = submission_container_to_struc_var_tsv_records(container)
             assert len(reconverted) == 1
             assert record.condition == reconverted[0].condition

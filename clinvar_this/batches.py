@@ -11,11 +11,13 @@ from clinvar_api import client, models
 from clinvar_this import config, exceptions
 from clinvar_this.io import tsv
 from clinvar_this.io.gks_json import (
-    batch_metadata_from_mapping as gks_batch_metadata_from_mapping,
     AmbiguousGksStatementType,
     UnsupportedGksStatementType,
-    read_gks_json_file,
 )
+from clinvar_this.io.gks_json import (
+    batch_metadata_from_mapping as gks_batch_metadata_from_mapping,
+)
+from clinvar_this.io.gks_json import read_gks_json_file
 
 
 def get_share_dir():
@@ -59,7 +61,9 @@ def gen_name(config: config.Config) -> str:
         raise exceptions.IOException("Could not generate batch name")
 
 
-def _write_payload(submission_container: models.SubmissionContainer, profile: str, name: str):
+def _write_payload(
+    submission_container: models.SubmissionContainer, profile: str, name: str
+):
     """Write out payload to a new JSON file."""
     # Create directory for batch.
     batch_dir = get_share_dir() / profile / name
@@ -107,11 +111,15 @@ def _merge_submission_container(
         :raise exceptions.IOException: If the submissions have incompatible types
         :return: Merged submission
         """
-        clinvar_accession = base_submission.clinvar_accession or patch_submission.clinvar_accession
+        clinvar_accession = (
+            base_submission.clinvar_accession or patch_submission.clinvar_accession
+        )
 
         submission_field_map = {
             models.SubmissionClinvarSubmission: "clinical_significance",
-            models.SubmissionClinicalImpactSubmission: ("clinical_impact_classification"),
+            models.SubmissionClinicalImpactSubmission: (
+                "clinical_impact_classification"
+            ),
             models.SubmissionOncogenicitySubmission: ("oncogenicity_classification"),
         }
 
@@ -131,7 +139,9 @@ def _merge_submission_container(
                     }
                 )
 
-        raise exceptions.IOException("Cannot merge submissions of different or unsupported types")
+        raise exceptions.IOException(
+            "Cannot merge submissions of different or unsupported types"
+        )
 
     def merge_submission_list(
         base_submissions: list[ClinvarSubmissionT] | None,
@@ -160,9 +170,11 @@ def _merge_submission_container(
             for submission in base_submissions or []
         ]
 
-    clinvar_submissions: list[models.SubmissionClinvarSubmission] = merge_submission_list(
-        base.clinvar_submission,
-        patch.clinvar_submission,
+    clinvar_submissions: list[models.SubmissionClinvarSubmission] = (
+        merge_submission_list(
+            base.clinvar_submission,
+            patch.clinvar_submission,
+        )
     )
 
     clinical_impact_submissions: list[models.SubmissionClinicalImpactSubmission] = (
@@ -183,9 +195,13 @@ def _merge_submission_container(
     return result
 
 
-def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[str, ...]):
+def import_(
+    config: config.Config, name: str, path: str, metadata: typing.Tuple[str, ...]
+):
     """Import the data file at ``path`` into the batch of name ``name``."""
-    existing_payloads = list((get_share_dir() / config.profile / name).glob("payload.*.json"))
+    existing_payloads = list(
+        (get_share_dir() / config.profile / name).glob("payload.*.json")
+    )
     if existing_payloads:
         logger.info("Loading existing payload for later merging with new one")
         previous_submission_container = _load_latest_payload(config.profile, name)
@@ -195,14 +211,20 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
     if path.endswith(".tsv") or path.endswith(".txt"):
         tsv_type = tsv.guess_tsv_type(path)
         if tsv_type in (tsv.TsvType.SEQ_VAR, tsv.TsvType.STRUC_VAR):
-            batch_metadata = tsv.batch_metadata_from_mapping(metadata, use_defaults=True)
+            batch_metadata = tsv.batch_metadata_from_mapping(
+                metadata, use_defaults=True
+            )
             if tsv_type == tsv.TsvType.SEQ_VAR:
-                new_submission_container = tsv.seq_var_tsv_records_to_submission_container(
-                    tsv.read_seq_var_tsv(path=path), batch_metadata
+                new_submission_container = (
+                    tsv.seq_var_tsv_records_to_submission_container(
+                        tsv.read_seq_var_tsv(path=path), batch_metadata
+                    )
                 )
             else:  # tsv_type == tsv.TsvType.STRUC_VAR
-                new_submission_container = tsv.struc_var_tsv_records_to_submission_container(
-                    tsv.read_struc_var_tsv(path=path), batch_metadata
+                new_submission_container = (
+                    tsv.struc_var_tsv_records_to_submission_container(
+                        tsv.read_struc_var_tsv(path=path), batch_metadata
+                    )
                 )
             if previous_submission_container:
                 submission_container = _merge_submission_container(
@@ -212,7 +234,9 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
             else:
                 submission_container = new_submission_container
         else:
-            raise exceptions.IOException(f"Could not guess TSV file type from header for {path}")
+            raise exceptions.IOException(
+                f"Could not guess TSV file type from header for {path}"
+            )
         _write_payload(submission_container, config.profile, name)
     elif path.endswith(".json"):
         try:
@@ -246,7 +270,9 @@ def _load_latest_payload(profile: str, name: str):
     submission_path = get_share_dir() / profile / name
     payload_paths = list(sorted(submission_path.glob("payload.*.json")))
     if not payload_paths:  # pragma: no cover
-        raise exceptions.ClinvarThisException(f"Found no payload JSON file at {submission_path}")
+        raise exceptions.ClinvarThisException(
+            f"Found no payload JSON file at {submission_path}"
+        )
 
     payload_path = submission_path / payload_paths[-1]
     with payload_path.open("rt") as inputf:
@@ -255,7 +281,11 @@ def _load_latest_payload(profile: str, name: str):
 
 
 def export(
-    config: config.Config, name: str, path: str, force: bool = False, struc_var: bool = False
+    config: config.Config,
+    name: str,
+    path: str,
+    force: bool = False,
+    struc_var: bool = False,
 ):
     """Export the batch with the given ``name`` to the file at ``path``."""
     if pathlib.Path(path).exists() and not force:
@@ -266,11 +296,13 @@ def export(
         payload = _load_latest_payload(config.profile, name)
         if struc_var:
             tsv.write_struc_var_tsv(
-                tsv_records=tsv.submission_container_to_struc_var_tsv_records(payload), path=path
+                tsv_records=tsv.submission_container_to_struc_var_tsv_records(payload),
+                path=path,
             )
         else:
             tsv.write_seq_var_tsv(
-                tsv_records=tsv.submission_container_to_seq_var_tsv_records(payload), path=path
+                tsv_records=tsv.submission_container_to_seq_var_tsv_records(payload),
+                path=path,
             )
     else:  # pragma: no cover
         raise exceptions.IOException(f"File extension of {path} cannot be handled.")
@@ -282,7 +314,13 @@ def update_metadata(config: config.Config, name: str, metadata: typing.Tuple[str
     _ = batch_metadata
 
 
-def submit(config: config.Config, name: str, *, use_testing: bool = False, dry_run: bool = False):
+def submit(
+    config: config.Config,
+    name: str,
+    *,
+    use_testing: bool = False,
+    dry_run: bool = False,
+):
     """Submit the batch to ClinVar."""
     if not config.auth_token:  # pragma: no cover
         raise exceptions.ConfigException("auth_token not configured")
@@ -308,7 +346,10 @@ def submit(config: config.Config, name: str, *, use_testing: bool = False, dry_r
 
     timestamp = datetime.datetime.now().strftime(FORMAT_STR)
     response_path = (
-        get_share_dir() / config.profile / name / f"submission-response.{timestamp}.json"
+        get_share_dir()
+        / config.profile
+        / name
+        / f"submission-response.{timestamp}.json"
     )
 
     logger.info("Writing out server response to %s", response_path)
@@ -342,7 +383,8 @@ def _retrieve_store_response(
         submissions = summary_response.submissions or []
         for submission in submissions:
             local_key_to_accession[
-                submission.identifiers.local_key or submission.identifiers.clinvar_local_key
+                submission.identifiers.local_key
+                or submission.identifiers.clinvar_local_key
             ] = submission.identifiers.clinvar_accession
             errors = [
                 error_inner.user_message
@@ -373,7 +415,9 @@ def _retrieve_store_response(
         )
         for submission in payload.clinvar_submission or []
     ]
-    updated_payload = payload.model_copy(update={"clinvar_submission": clinvar_submission})
+    updated_payload = payload.model_copy(
+        update={"clinvar_submission": clinvar_submission}
+    )
     logger.debug("Write out updated payload")
     _write_payload(updated_payload, config.profile, name)
     logger.debug("... done updating local payload from retrieve status response")
@@ -381,13 +425,19 @@ def _retrieve_store_response(
 
 def retrieve(config: config.Config, name: str, *, use_testing: bool = False):
     """Retrieve current processing status from ClinVar."""
-    client_obj = client.Client(client.Config(auth_token=config.auth_token, use_testing=use_testing))
+    client_obj = client.Client(
+        client.Config(auth_token=config.auth_token, use_testing=use_testing)
+    )
 
     submission_path = get_share_dir() / config.profile / name
-    submission_response_paths = list(sorted(submission_path.glob("submission-response.*.json")))
+    submission_response_paths = list(
+        sorted(submission_path.glob("submission-response.*.json"))
+    )
 
     if not submission_path.exists():  # pragma: no cover
-        raise exceptions.ClinvarThisException(f"Submission does not exist at {submission_path}")
+        raise exceptions.ClinvarThisException(
+            f"Submission does not exist at {submission_path}"
+        )
     elif not submission_response_paths:  # pragma: no cover
         raise exceptions.ClinvarThisException(
             f"Submission not submitted? No submission response at {submission_path}"
@@ -425,5 +475,7 @@ def retrieve(config: config.Config, name: str, *, use_testing: bool = False):
         _retrieve_store_response(config, name, status_result)
         logger.info("... done updating local information from response")
     else:  # pragma: no cover
-        logger.error("Status is %s and clinvar-this does not know how to handle this yet!")
+        logger.error(
+            "Status is %s and clinvar-this does not know how to handle this yet!"
+        )
         raise exceptions.ClinvarThisException(f"Unknown status {status_str}")

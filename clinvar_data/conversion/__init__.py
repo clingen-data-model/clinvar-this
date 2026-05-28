@@ -35,7 +35,9 @@ def convert(
 ) -> int:
     """Run conversion from ClinVar XML to JSONL"""
     if input_file.endswith((".gz", ".bgz")):
-        inputf: typing.Union[typing.BinaryIO, gzip.GzipFile] = gzip.open(input_file, "rb")
+        inputf: typing.Union[typing.BinaryIO, gzip.GzipFile] = gzip.open(
+            input_file, "rb"
+        )
     elif use_click:
         inputf = click.open_file(input_file, "rb")
     else:
@@ -51,7 +53,10 @@ def convert(
     pb: tqdm.tqdm | None = None
     if show_progress:
         pb = tqdm.tqdm(
-            desc="parsing", unit=" VariationArchive records", smoothing=1.0, total=TOTAL_RECORDS
+            desc="parsing",
+            unit=" VariationArchive records",
+            smoothing=1.0,
+            total=TOTAL_RECORDS,
         )
     records_written = 0
     errors = 0

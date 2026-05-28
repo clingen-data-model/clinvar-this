@@ -70,7 +70,8 @@ class SummaryResponseErrorOutput(BaseModel):
     def from_msg(cls, other: msg.SummaryResponseErrorOutput):
         return SummaryResponseErrorOutput(
             errors=[
-                SummaryResponseErrorOutputError.from_msg(msg_error) for msg_error in other.errors
+                SummaryResponseErrorOutputError.from_msg(msg_error)
+                for msg_error in other.errors
             ]
         )
 
@@ -84,7 +85,10 @@ class SummaryResponseError(BaseModel):
     @classmethod
     def from_msg(cls, other: msg.SummaryResponseError):
         return SummaryResponseError(
-            input=[SummaryResponseErrorInput.from_msg(msg_input) for msg_input in other.input],
+            input=[
+                SummaryResponseErrorInput.from_msg(msg_input)
+                for msg_input in other.input
+            ],
             output=SummaryResponseErrorOutput.from_msg(other.output),
         )
 
@@ -116,7 +120,9 @@ class SummaryResponseDeletion(BaseModel):
     def from_msg(cls, other: msg.SummaryResponseDeletion):
         errors = None
         if other.errors:
-            errors = [SummaryResponseError.from_msg(msg_error) for msg_error in other.errors]
+            errors = [
+                SummaryResponseError.from_msg(msg_error) for msg_error in other.errors
+            ]
         return SummaryResponseDeletion(
             identifiers=SummaryResponseDeletionIdentifier.from_msg(other.identifiers),
             processing_status=other.processingStatus,
@@ -158,7 +164,9 @@ class SummaryResponseSubmission(BaseModel):
     def from_msg(cls, other: msg.SummaryResponseSubmission):
         errors = None
         if other.errors:
-            errors = [SummaryResponseError.from_msg(msg_error) for msg_error in other.errors]
+            errors = [
+                SummaryResponseError.from_msg(msg_error) for msg_error in other.errors
+            ]
         return SummaryResponseSubmission(
             identifiers=SummaryResponseSubmissionIdentifiers.from_msg(
                 other.identifiers,
@@ -196,7 +204,8 @@ class SummaryResponse(BaseModel):
         deletions = None
         if other.deletions:
             deletions = [
-                SummaryResponseDeletion.from_msg(msg_deletion) for msg_deletion in other.deletions
+                SummaryResponseDeletion.from_msg(msg_deletion)
+                for msg_deletion in other.deletions
             ]
         submissions = None
         if other.submissions:

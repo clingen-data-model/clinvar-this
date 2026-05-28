@@ -1,8 +1,8 @@
 from unittest.mock import MagicMock, patch
 
+import pytest
 from click.testing import CliRunner
 from pydantic import SecretStr
-import pytest
 
 from clinvar_this import batches, cli, config, exceptions
 
@@ -28,7 +28,9 @@ def test_call_config():
 def test_call_config_get():
     with patch(
         "clinvar_this.cli.load_config",
-        MagicMock(return_value=config.Config(profile="default", auth_token=SecretStr("fake"))),
+        MagicMock(
+            return_value=config.Config(profile="default", auth_token=SecretStr("fake"))
+        ),
     ):
         runner = CliRunner()
         result = runner.invoke(cli.cli, ["config", "get", "auth_token"])
@@ -47,7 +49,9 @@ def test_call_config_set_success():
     mock_save_config = MagicMock()
     with patch(
         "clinvar_this.cli.load_config",
-        MagicMock(return_value=config.Config(profile="default", auth_token=SecretStr("fake"))),
+        MagicMock(
+            return_value=config.Config(profile="default", auth_token=SecretStr("fake"))
+        ),
     ), patch("clinvar_this.cli.save_config", mock_save_config):
         runner = CliRunner()
         result = runner.invoke(cli.cli, ["config", "set", "auth_token", "xxx"])
@@ -60,7 +64,8 @@ def test_call_config_set_success():
 def test_call_config_set_success_though_missing_config():
     mock_save_config = MagicMock()
     with patch(
-        "clinvar_this.cli.load_config", MagicMock(side_effect=exceptions.ConfigFileMissingException)
+        "clinvar_this.cli.load_config",
+        MagicMock(side_effect=exceptions.ConfigFileMissingException),
     ), patch("clinvar_this.cli.save_config", mock_save_config):
         runner = CliRunner()
         result = runner.invoke(cli.cli, ["config", "set", "auth_token", "xxx"])
@@ -222,7 +227,10 @@ def test_call_batch_submit(fs_config, monkeypatch, dry_run, use_testing):
         == "Config(profile='default', auth_token=SecretStr('**********'), verify_ssl=True)"
     )
     assert mock_submit.call_args.args[1] == "name"
-    assert mock_submit.call_args.kwargs == {"dry_run": dry_run, "use_testing": use_testing}
+    assert mock_submit.call_args.kwargs == {
+        "dry_run": dry_run,
+        "use_testing": use_testing,
+    }
     assert result.exit_code == 0
 
 

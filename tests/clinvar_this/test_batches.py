@@ -3,8 +3,8 @@ import os
 import pathlib
 from unittest.mock import MagicMock
 
-from freezegun import freeze_time
 import pytest
+from freezegun import freeze_time
 
 import clinvar_api
 from clinvar_api import models
@@ -13,15 +13,21 @@ from clinvar_this import batches, exceptions
 from clinvar_this.io import tsv as io_tsv
 
 # We must read this outside of the test as we use the fake file system.
-with (pathlib.Path(__file__).parent / "data/batches/seq_variant.tsv").open("rt") as inputf:
+with (pathlib.Path(__file__).parent / "data/batches/seq_variant.tsv").open(
+    "rt"
+) as inputf:
     #: Small variant TSV for testing batches module.  Likely pathogenic.
     SEQ_VARIANT_TSV = inputf.read()
 
-with (pathlib.Path(__file__).parent / "data/batches/struc_variant.tsv").open("rt") as inputf:
+with (pathlib.Path(__file__).parent / "data/batches/struc_variant.tsv").open(
+    "rt"
+) as inputf:
     #: Structural variant TSV for testing batches module.  Likely pathogenic.
     STRUC_VARIANT_TSV = inputf.read()
 
-with (pathlib.Path(__file__).parent / "data/batches/seq_variant.payload.json").open("rt") as inputf:
+with (pathlib.Path(__file__).parent / "data/batches/seq_variant.payload.json").open(
+    "rt"
+) as inputf:
     #: The ``SEQ_VARIANT_TSV`` after import for testing batches module.
     SEQ_VARIANT_PAYLOAD_JSON = inputf.read()
 
@@ -31,47 +37,55 @@ with (pathlib.Path(__file__).parent / "data/batches/struc_variant.payload.json")
     #: The ``STRUC_VARIANT_TSV`` after import for testing batches module.
     STRUC_VARIANT_PAYLOAD_JSON = inputf.read()
 
-with (pathlib.Path(__file__).parent / "data/batches/seq_variant-update.tsv").open("rt") as inputf:
+with (pathlib.Path(__file__).parent / "data/batches/seq_variant-update.tsv").open(
+    "rt"
+) as inputf:
     #: Sequence variant TSV for testing batches module.  Updated to Pathonenic.
     SEQ_VARIANT_UPDATE_TSV = inputf.read()
 
-with (pathlib.Path(__file__).parent / "data/batches/struc_variant-update.tsv").open("rt") as inputf:
+with (pathlib.Path(__file__).parent / "data/batches/struc_variant-update.tsv").open(
+    "rt"
+) as inputf:
     #: Structural variant TSV for testing batches module.  Updated to Pathonenic.
     STRUC_VARIANT_UPDATE_TSV = inputf.read()
 
-with (pathlib.Path(__file__).parent / "data/batches/seq_variant-update.payload.json").open(
-    "rt"
-) as inputf:
+with (
+    pathlib.Path(__file__).parent / "data/batches/seq_variant-update.payload.json"
+).open("rt") as inputf:
     #: The `SEQ_VARIANT_UPDATE_TSV` after import / merge.
     SEQ_VARIANT_UPDATE_PAYLOAD_JSON = inputf.read()
 
-with (pathlib.Path(__file__).parent / "data/batches/struc_variant-update.payload.json").open(
-    "rt"
-) as inputf:
+with (
+    pathlib.Path(__file__).parent / "data/batches/struc_variant-update.payload.json"
+).open("rt") as inputf:
     #: The `STRUC_VARIANT_UPDATE_TSV` after import / merge.
     STRUC_VARIANT_UPDATE_PAYLOAD_JSON = inputf.read()
 
 with (
-    pathlib.Path(__file__).parent / "data/batches/seq_variant.retrieve-response-processing.json"
+    pathlib.Path(__file__).parent
+    / "data/batches/seq_variant.retrieve-response-processing.json"
 ).open("rt") as inputf:
     #: A static response on retrieving with "processing" status.
     SEQ_VARIANT_RETRIEVE_RESPONSE_PROCESSING_JSON = inputf.read()
 
 with (
-    pathlib.Path(__file__).parent / "data/batches/seq_variant.retrieve-response-submitted.json"
+    pathlib.Path(__file__).parent
+    / "data/batches/seq_variant.retrieve-response-submitted.json"
 ).open("rt") as inputf:
     #: A static response on retrieving with "submitted" status.
     SEQ_VARIANT_RETRIEVE_RESPONSE_SUBMITTED_JSON = inputf.read()
 
 with (
-    pathlib.Path(__file__).parent / "data/batches/seq_variant.retrieve-response-success.json"
+    pathlib.Path(__file__).parent
+    / "data/batches/seq_variant.retrieve-response-success.json"
 ).open("rt") as inputf:
     #: A static response on retrieving with "success" status.
     SEQ_VARIANT_RETRIEVE_RESPONSE_SUCCESS_JSON = inputf.read()
 
-with (pathlib.Path(__file__).parent / "data/batches/seq_variant.retrieve-response-error.json").open(
-    "rt"
-) as inputf:
+with (
+    pathlib.Path(__file__).parent
+    / "data/batches/seq_variant.retrieve-response-error.json"
+).open("rt") as inputf:
     #: A static response on retrieving with "error" status.
     SEQ_VARIANT_RETRIEVE_RESPONSE_ERROR_JSON = inputf.read()
 
@@ -168,9 +182,13 @@ def test_import_seq_variant_tsv_update(fs, app_config):
     batch_name = "the-batch"
     batches.import_(config=app_config, name=batch_name, path=path_tsv, metadata=())
 
-    filename = os.listdir(os.path.expanduser("~/.local/share/clinvar-this/default/the-batch"))[-1]
+    filename = os.listdir(
+        os.path.expanduser("~/.local/share/clinvar-this/default/the-batch")
+    )[-1]
 
-    payload_path = os.path.expanduser(f"~/.local/share/clinvar-this/default/the-batch/{filename}")
+    payload_path = os.path.expanduser(
+        f"~/.local/share/clinvar-this/default/the-batch/{filename}"
+    )
     assert os.path.exists(payload_path)
     with open(payload_path, "rt") as inputf:
         payload_json = inputf.read()
@@ -225,9 +243,13 @@ def test_import_structural_variant_tsv_update(fs, app_config):
     batch_name = "the-batch"
     batches.import_(config=app_config, name=batch_name, path=path_tsv, metadata=())
 
-    fname = os.listdir(os.path.expanduser("~/.local/share/clinvar-this/default/the-batch"))[-1]
+    fname = os.listdir(
+        os.path.expanduser("~/.local/share/clinvar-this/default/the-batch")
+    )[-1]
 
-    payload_path = os.path.expanduser(f"~/.local/share/clinvar-this/default/the-batch/{fname}")
+    payload_path = os.path.expanduser(
+        f"~/.local/share/clinvar-this/default/the-batch/{fname}"
+    )
     assert os.path.exists(payload_path)
     with open(payload_path, "rt") as inputf:
         payload_json = inputf.read()
@@ -259,7 +281,9 @@ def test_export_seq_variant_tsv(fs, app_config, exists, force):
         with pytest.raises(exceptions.IOException):
             batches.export(config=app_config, name=batch_name, path="/tmp/output.tsv")
     else:
-        batches.export(config=app_config, name=batch_name, path="/tmp/output.tsv", force=force)
+        batches.export(
+            config=app_config, name=batch_name, path="/tmp/output.tsv", force=force
+        )
 
     with open("/tmp/output.tsv", "rt") as inputf:
         fcontents = inputf.read()
@@ -303,11 +327,18 @@ def test_export_structural_variant_tsv(fs, app_config, exists, force):
     if exists and not force:
         with pytest.raises(exceptions.IOException):
             batches.export(
-                config=app_config, name=batch_name, path="/tmp/output.tsv", struc_var=True
+                config=app_config,
+                name=batch_name,
+                path="/tmp/output.tsv",
+                struc_var=True,
             )
     else:
         batches.export(
-            config=app_config, name=batch_name, path="/tmp/output.tsv", force=force, struc_var=True
+            config=app_config,
+            name=batch_name,
+            path="/tmp/output.tsv",
+            force=force,
+            struc_var=True,
         )
 
     with open("/tmp/output.tsv", "rt") as inputf:
@@ -351,7 +382,9 @@ def test_submit(fs, app_config, use_testing, dry_run, monkeypatch):
 
     monkeypatch.setattr(batches.client.Client, "submit_data", mock_submit_data)
 
-    batches.submit(config=app_config, name="the-batch", use_testing=use_testing, dry_run=dry_run)
+    batches.submit(
+        config=app_config, name="the-batch", use_testing=use_testing, dry_run=dry_run
+    )
 
     response_path = os.path.expanduser(
         "~/.local/share/clinvar-this/default/the-batch/submission-response.20120114000000.json"

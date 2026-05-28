@@ -1,7 +1,7 @@
 import os
 
-from pydantic import SecretStr
 import pytest
+from pydantic import SecretStr
 
 from clinvar_this import config
 

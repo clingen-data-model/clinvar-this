@@ -25,7 +25,9 @@ class _VariationType:
     V: typing_extensions.TypeAlias = ValueType
 
 class _VariationTypeEnumTypeWrapper(
-    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_VariationType.ValueType],
+    google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
+        _VariationType.ValueType
+    ],
     builtins.type,
 ):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
@@ -110,7 +112,8 @@ class VersionedAccession(google.protobuf.message.Message):
         version: builtins.int = ...,
     ) -> None: ...
     def ClearField(
-        self, field_name: typing.Literal["accession", b"accession", "version", b"version"]
+        self,
+        field_name: typing.Literal["accession", b"accession", "version", b"version"],
     ) -> None: ...
 
 global___VersionedAccession = VersionedAccession
@@ -154,7 +157,12 @@ class ExtractedRcvRecord(google.protobuf.message.Message):
     def ClearField(
         self,
         field_name: typing.Literal[
-            "accession", b"accession", "classifications", b"classifications", "title", b"title"
+            "accession",
+            b"accession",
+            "classifications",
+            b"classifications",
+            "title",
+            b"title",
         ],
     ) -> None: ...
 
@@ -191,7 +199,9 @@ class ExtractedVcvRecord(google.protobuf.message.Message):
         """List of aggregated RCVs."""
 
     @property
-    def classifications(self) -> clinvar_data.pbs.clinvar_public_pb2.AggregateClassificationSet:
+    def classifications(
+        self,
+    ) -> clinvar_data.pbs.clinvar_public_pb2.AggregateClassificationSet:
         """Classifications (thinned out)."""
 
     @property
@@ -203,7 +213,9 @@ class ExtractedVcvRecord(google.protobuf.message.Message):
         """Clinical assertions (thinned out),"""
 
     @property
-    def sequence_location(self) -> clinvar_data.pbs.clinvar_public_pb2.Location.SequenceLocation:
+    def sequence_location(
+        self,
+    ) -> clinvar_data.pbs.clinvar_public_pb2.Location.SequenceLocation:
         """The sequence location on one reference."""
 
     @property
@@ -223,7 +235,10 @@ class ExtractedVcvRecord(google.protobuf.message.Message):
             clinvar_data.pbs.clinvar_public_pb2.AggregateClassificationSet | None
         ) = ...,
         clinical_assertions: (
-            collections.abc.Iterable[clinvar_data.pbs.clinvar_public_pb2.ClinicalAssertion] | None
+            collections.abc.Iterable[
+                clinvar_data.pbs.clinvar_public_pb2.ClinicalAssertion
+            ]
+            | None
         ) = ...,
         sequence_location: (
             clinvar_data.pbs.clinvar_public_pb2.Location.SequenceLocation | None

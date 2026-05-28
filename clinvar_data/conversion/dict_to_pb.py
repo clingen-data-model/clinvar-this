@@ -358,7 +358,9 @@ class ConvertAggregateSomaticClinicalImpactReviewStatus:
     }
 
     @classmethod
-    def xmldict_data_to_pb(cls, value: str) -> AggregateSomaticClinicalImpactReviewStatus.ValueType:
+    def xmldict_data_to_pb(
+        cls, value: str
+    ) -> AggregateSomaticClinicalImpactReviewStatus.ValueType:
         """Converts a dict from `xmltodict` to a `AggregateSomaticClinicalImpactReviewStatus.ValueType` protobuf.
 
         Args:
@@ -393,7 +395,9 @@ class ConvertAggregateOncogenicityReviewStatus:
     }
 
     @classmethod
-    def xmldict_data_to_pb(cls, value: str) -> AggregateOncogenicityReviewStatus.ValueType:
+    def xmldict_data_to_pb(
+        cls, value: str
+    ) -> AggregateOncogenicityReviewStatus.ValueType:
         """Converts a dict from ``xmltodict`` to a ``AggregateOncogenicityReviewStatus.ValueType`` protobuf.
 
         Args:
@@ -752,7 +756,9 @@ class ConvertClinicalFeaturesAffectedStatusType:
     }
 
     @classmethod
-    def xmldict_data_to_pb(cls, value: str) -> ClinicalFeaturesAffectedStatusType.ValueType:
+    def xmldict_data_to_pb(
+        cls, value: str
+    ) -> ClinicalFeaturesAffectedStatusType.ValueType:
         """Converts a dict from ``xmltodict`` to a ``ClinicalFeaturesAffectedStatusType.ValueType`` protobuf.
 
         Args:
@@ -836,7 +842,9 @@ class ConverterBase:
             return [value]
 
     @classmethod
-    def parse_citations_xrefs_comments(cls, value: dict[str, Any]) -> CitationsXrefsComments:
+    def parse_citations_xrefs_comments(
+        cls, value: dict[str, Any]
+    ) -> CitationsXrefsComments:
         """Parse out common Citation, XRef, Comment lists from tag."""
 
         # parse out citations
@@ -849,7 +857,9 @@ class ConverterBase:
                 for entry in value["Citation"]
             ]
         elif isinstance(value["Citation"], dict):
-            citations = [ConvertCitation.xmldict_data_to_pb({"Citation": value["Citation"]})]
+            citations = [
+                ConvertCitation.xmldict_data_to_pb({"Citation": value["Citation"]})
+            ]
         else:
             assert False, f"Invalid type for Citation {value['Citation']}"
         # parse out xrefs
@@ -857,7 +867,10 @@ class ConverterBase:
         if "XRef" not in value:
             pass
         elif isinstance(value["XRef"], list):
-            xrefs = [ConvertXref.xmldict_data_to_pb({"XRef": entry}) for entry in value["XRef"]]
+            xrefs = [
+                ConvertXref.xmldict_data_to_pb({"XRef": entry})
+                for entry in value["XRef"]
+            ]
         elif isinstance(value["XRef"], dict):
             xrefs = [ConvertXref.xmldict_data_to_pb({"XRef": value["XRef"]})]
         else:
@@ -868,14 +881,19 @@ class ConverterBase:
             pass
         elif isinstance(value["Comment"], list):
             comments = [
-                ConvertComment.xmldict_data_to_pb({"Comment": entry}) for entry in value["Comment"]
+                ConvertComment.xmldict_data_to_pb({"Comment": entry})
+                for entry in value["Comment"]
             ]
         elif isinstance(value["Comment"], (str, dict)):
-            comments = [ConvertComment.xmldict_data_to_pb({"Comment": value["Comment"]})]
+            comments = [
+                ConvertComment.xmldict_data_to_pb({"Comment": value["Comment"]})
+            ]
         else:
             assert False, f"Invalid type for comment {value['Comment']}"
 
-        return CitationsXrefsComments(citations=citations, xrefs=xrefs, comments=comments)
+        return CitationsXrefsComments(
+            citations=citations, xrefs=xrefs, comments=comments
+        )
 
     @classmethod
     def assert_keys(cls, value: dict[str, Any], keys: list[str]) -> None:
@@ -987,12 +1005,18 @@ class ConvertCitation(ConverterBase):
         elif isinstance(tag_citation["ID"], list):
             tags_id_type: list[dict[str, str]] = tag_citation["ID"]
             ids = [
-                Citation.IdType(value=tag_id_type["#text"], source=tag_id_type["@Source"])
+                Citation.IdType(
+                    value=tag_id_type["#text"], source=tag_id_type["@Source"]
+                )
                 for tag_id_type in tags_id_type
             ]
         elif isinstance(tag_citation["ID"], dict):
             tag_id_type: dict[str, str] = tag_citation["ID"]
-            ids = [Citation.IdType(value=tag_id_type["#text"], source=tag_id_type["@Source"])]
+            ids = [
+                Citation.IdType(
+                    value=tag_id_type["#text"], source=tag_id_type["@Source"]
+                )
+            ]
         # obtain URL
         if "URL" in tag_citation:
             assert isinstance(tag_citation["URL"], str)
@@ -1081,7 +1105,9 @@ class ConvertHgvsNucleotideExpression(ConverterBase):
             )
         sequence_accession_version: str | None = None
         if "@sequenceAccessionVersion" in tag_nucleotide_expression:
-            sequence_accession_version = tag_nucleotide_expression["@sequenceAccessionVersion"]
+            sequence_accession_version = tag_nucleotide_expression[
+                "@sequenceAccessionVersion"
+            ]
         sequence_accession: str | None = None
         if "@sequenceAccession" in tag_nucleotide_expression:
             sequence_accession = tag_nucleotide_expression["@sequenceAccession"]
@@ -1102,7 +1128,9 @@ class ConvertHgvsNucleotideExpression(ConverterBase):
             mane_select = tag_nucleotide_expression["@MANESelect"] == "true"
         mane_plus_clinical: bool | None = None
         if "@MANEPlusClinical" in tag_nucleotide_expression:
-            mane_plus_clinical = tag_nucleotide_expression["@MANEPlusClinical"] == "true"
+            mane_plus_clinical = (
+                tag_nucleotide_expression["@MANEPlusClinical"] == "true"
+            )
 
         return HgvsNucleotideExpression(
             expression=expression,
@@ -1193,7 +1221,9 @@ class ConvertHgvsExpression(ConverterBase):
                 ConvertXref.xmldict_data_to_pb({"XRef": entry})
                 for entry in cls.ensure_list(tag_hgvs["MolecularConsequence"])
             ]
-        type_: HgvsType.ValueType = ConvertHgvsType.xmldict_data_to_pb(tag_hgvs["@Type"])
+        type_: HgvsType.ValueType = ConvertHgvsType.xmldict_data_to_pb(
+            tag_hgvs["@Type"]
+        )
         assembly: str | None = tag_hgvs.get("@Assembly")
 
         return HgvsExpression(
@@ -1263,7 +1293,9 @@ class ConvertGenericSetElement(ConverterBase):
     """Static method helper for converting XML data to to ``GenericSetElement``."""
 
     @classmethod
-    def xmldict_data_to_pb(cls, value: dict[str, Any], tag_name: str) -> GenericSetElement:
+    def xmldict_data_to_pb(
+        cls, value: dict[str, Any], tag_name: str
+    ) -> GenericSetElement:
         """Converts a dict from ``xmltodict`` to a ``GenericElementSet`` protobuf.
 
         Args:
@@ -1323,7 +1355,10 @@ class ConvertAttributeSetElement(ConverterBase):
         cxcs = cls.parse_citations_xrefs_comments(tag_attribute_set_element)
 
         return AttributeSetElement(
-            attribute=attribute, citations=cxcs.citations, xrefs=cxcs.xrefs, comments=cxcs.comments
+            attribute=attribute,
+            citations=cxcs.citations,
+            xrefs=cxcs.xrefs,
+            comments=cxcs.comments,
         )
 
 
@@ -1340,7 +1375,9 @@ class ConvertTrait(ConverterBase):
     }
 
     @classmethod
-    def convert_trait_relationship_type(cls, value: str) -> Trait.TraitRelationship.Type.ValueType:
+    def convert_trait_relationship_type(
+        cls, value: str
+    ) -> Trait.TraitRelationship.Type.ValueType:
         """Converts a string to a ``TraitRelationship.Type``.
 
         Args:
@@ -1356,7 +1393,9 @@ class ConvertTrait(ConverterBase):
             return result
 
     @classmethod
-    def convert_trait_relationship(cls, value: dict[str, Any]) -> Trait.TraitRelationship:
+    def convert_trait_relationship(
+        cls, value: dict[str, Any]
+    ) -> Trait.TraitRelationship:
         """Converts a dict from ``xmltodict`` to a ``TraitRelationship`` protobuf.
 
         Args:
@@ -1382,7 +1421,11 @@ class ConvertTrait(ConverterBase):
             assert isinstance(
                 tag_trait_relationship["Name"], dict
             ), "never seen more than once in XML"
-            names = [ConvertGenericSetElement.xmldict_data_to_pb(tag_trait_relationship, "Name")]
+            names = [
+                ConvertGenericSetElement.xmldict_data_to_pb(
+                    tag_trait_relationship, "Name"
+                )
+            ]
         sources: list[str] = []
         if "Source" in tag_trait_relationship:
             sources = cls.ensure_list(tag_trait_relationship["Source"])
@@ -1422,7 +1465,9 @@ class ConvertTrait(ConverterBase):
         symbols: list[GenericSetElement] | None = None
         if "Symbol" in tag_trait:
             symbols = [
-                ConvertGenericSetElement.xmldict_data_to_pb({"Symbol": element}, "Symbol")
+                ConvertGenericSetElement.xmldict_data_to_pb(
+                    {"Symbol": element}, "Symbol"
+                )
                 for element in cls.ensure_list(tag_trait["Symbol"])
             ]
         # obtain attributes
@@ -1598,7 +1643,9 @@ class ConvertTraitSet(ConverterBase):
         symbols: list[GenericSetElement] | None = None
         if "Symbol" in tag_trait_set:
             symbols = [
-                ConvertGenericSetElement.xmldict_data_to_pb({"Symbol": element}, "Symbol")
+                ConvertGenericSetElement.xmldict_data_to_pb(
+                    {"Symbol": element}, "Symbol"
+                )
                 for element in cls.ensure_list(tag_trait_set["Symbol"])
             ]
         # obtain attributes
@@ -1619,7 +1666,9 @@ class ConvertTraitSet(ConverterBase):
         if "@DateLastEvaluated" in tag_trait_set:
             parsed = dateutil.parser.parse(tag_trait_set["@DateLastEvaluated"])
             seconds = int(time.mktime(parsed.timetuple()))
-            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
         # Obtain id
         id_: int | None = None
         if "@ID" in tag_trait_set:
@@ -1660,7 +1709,9 @@ class ConvertAggregatedGermlineClassification(ConverterBase):
     """Static method helper for converting XML data to to ``AggregatedGermlineClassification``."""
 
     @classmethod
-    def xmldict_data_to_pb(cls, value: dict[str, Any]) -> AggregatedGermlineClassification:
+    def xmldict_data_to_pb(
+        cls, value: dict[str, Any]
+    ) -> AggregatedGermlineClassification:
         """Converts a dict from ``xmltodict`` to a ``GermlineClassification`` protobuf.
 
         Args:
@@ -1692,7 +1743,9 @@ class ConvertAggregatedGermlineClassification(ConverterBase):
         history_records: list[DescriptionHistory] | None = None
         if "History" in tag_germline_classification:
             history_records = [
-                ConvertDescriptionHistory.xmldict_data_to_pb({"DescriptionHistory": element})
+                ConvertDescriptionHistory.xmldict_data_to_pb(
+                    {"DescriptionHistory": element}
+                )
                 for element in cls.ensure_list(tag_germline_classification["History"])
             ]
 
@@ -1711,9 +1764,13 @@ class ConvertAggregatedGermlineClassification(ConverterBase):
         # Obtain date_last_evaluated
         date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateLastEvaluated" in tag_germline_classification:
-            parsed = dateutil.parser.parse(tag_germline_classification["@DateLastEvaluated"])
+            parsed = dateutil.parser.parse(
+                tag_germline_classification["@DateLastEvaluated"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
-            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
         # Obtain date_created
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateCreated" in tag_germline_classification:
@@ -1723,18 +1780,26 @@ class ConvertAggregatedGermlineClassification(ConverterBase):
         # Obtain most_recent_submission
         most_recent_submission: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@MostRecentSubmission" in tag_germline_classification:
-            parsed = dateutil.parser.parse(tag_germline_classification["@MostRecentSubmission"])
+            parsed = dateutil.parser.parse(
+                tag_germline_classification["@MostRecentSubmission"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
-            most_recent_submission = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            most_recent_submission = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
 
         # Obtain number_of_submissions
         number_of_submissions: int | None = None
         if "@NumberOfSubmissions" in tag_germline_classification:
-            number_of_submissions = int(tag_germline_classification["@NumberOfSubmissions"])
+            number_of_submissions = int(
+                tag_germline_classification["@NumberOfSubmissions"]
+            )
         # Obtain number_of_submitters
         number_of_submitters: int | None = None
         if "@NumberOfSubmitters" in tag_germline_classification:
-            number_of_submitters = int(tag_germline_classification["@NumberOfSubmitters"])
+            number_of_submitters = int(
+                tag_germline_classification["@NumberOfSubmitters"]
+            )
 
         return AggregatedGermlineClassification(
             review_status=review_status,
@@ -1757,7 +1822,9 @@ class ConvertAggregatedSomaticClinicalImpact(ConverterBase):
     """Static method helper for converting XML data to to ``ConvertAggregatedSomaticClinicalImpact``."""
 
     @classmethod
-    def xmldict_data_to_pb(cls, value: dict[str, Any]) -> AggregatedSomaticClinicalImpact:
+    def xmldict_data_to_pb(
+        cls, value: dict[str, Any]
+    ) -> AggregatedSomaticClinicalImpact:
         """Converts a dict from ``xmltodict`` to a `AggregatedSomaticClinicalImpact`` protobuf.
 
         Args:
@@ -1784,7 +1851,9 @@ class ConvertAggregatedSomaticClinicalImpact(ConverterBase):
         history_records: list[DescriptionHistory] | None = None
         if "History" in tag_somatic_clinical_impact:
             history_records = [
-                ConvertDescriptionHistory.xmldict_data_to_pb({"DescriptionHistory": element})
+                ConvertDescriptionHistory.xmldict_data_to_pb(
+                    {"DescriptionHistory": element}
+                )
                 for element in cls.ensure_list(tag_somatic_clinical_impact["History"])
             ]
 
@@ -1798,9 +1867,13 @@ class ConvertAggregatedSomaticClinicalImpact(ConverterBase):
         # Obtain date_last_evaluated
         date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateLastEvaluated" in tag_somatic_clinical_impact:
-            parsed = dateutil.parser.parse(tag_somatic_clinical_impact["@DateLastEvaluated"])
+            parsed = dateutil.parser.parse(
+                tag_somatic_clinical_impact["@DateLastEvaluated"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
-            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
         # Obtain date_created
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateCreated" in tag_somatic_clinical_impact:
@@ -1810,18 +1883,26 @@ class ConvertAggregatedSomaticClinicalImpact(ConverterBase):
         # Obtain most_recent_submission
         most_recent_submission: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@MostRecentSubmission" in tag_somatic_clinical_impact:
-            parsed = dateutil.parser.parse(tag_somatic_clinical_impact["@MostRecentSubmission"])
+            parsed = dateutil.parser.parse(
+                tag_somatic_clinical_impact["@MostRecentSubmission"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
-            most_recent_submission = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            most_recent_submission = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
 
         # Obtain number_of_submissions
         number_of_submissions: int | None = None
         if "@NumberOfSubmissions" in tag_somatic_clinical_impact:
-            number_of_submissions = int(tag_somatic_clinical_impact["@NumberOfSubmissions"])
+            number_of_submissions = int(
+                tag_somatic_clinical_impact["@NumberOfSubmissions"]
+            )
         # Obtain number_of_submitters
         number_of_submitters: int | None = None
         if "@NumberOfSubmitters" in tag_somatic_clinical_impact:
-            number_of_submitters = int(tag_somatic_clinical_impact["@NumberOfSubmitters"])
+            number_of_submitters = int(
+                tag_somatic_clinical_impact["@NumberOfSubmitters"]
+            )
 
         return AggregatedSomaticClinicalImpact(
             review_status=review_status,
@@ -1843,7 +1924,9 @@ class ConvertAggregatedOncogenicityClassification(ConverterBase):
     """Static method helper for converting XML data to to ``AggregatedOncogenicityClassification``."""
 
     @classmethod
-    def xmldict_data_to_pb(cls, value: dict[str, Any]) -> AggregatedOncogenicityClassification:
+    def xmldict_data_to_pb(
+        cls, value: dict[str, Any]
+    ) -> AggregatedOncogenicityClassification:
         """Converts a dict from ``xmltodict`` to a `AggregatedOncogenicityClassification`` protobuf.
 
         Args:
@@ -1853,7 +1936,9 @@ class ConvertAggregatedOncogenicityClassification(ConverterBase):
             The ``OncogenicityClassification`` protobuf.
         """
         assert "OncogenicityClassification" in value
-        tag_oncogenicity_classification: dict[str, Any] = value["OncogenicityClassification"]
+        tag_oncogenicity_classification: dict[str, Any] = value[
+            "OncogenicityClassification"
+        ]
 
         review_status: AggregateOncogenicityReviewStatus.ValueType = (
             ConvertAggregateOncogenicityReviewStatus.xmldict_data_to_pb(
@@ -1870,44 +1955,64 @@ class ConvertAggregatedOncogenicityClassification(ConverterBase):
         history_records: list[DescriptionHistory] | None = None
         if "History" in tag_oncogenicity_classification:
             history_records = [
-                ConvertDescriptionHistory.xmldict_data_to_pb({"DescriptionHistory": element})
-                for element in cls.ensure_list(tag_oncogenicity_classification["History"])
+                ConvertDescriptionHistory.xmldict_data_to_pb(
+                    {"DescriptionHistory": element}
+                )
+                for element in cls.ensure_list(
+                    tag_oncogenicity_classification["History"]
+                )
             ]
 
         conditions: list[TraitSet] | None = None
         if "Condition" in tag_oncogenicity_classification:
             conditions = [
                 ConvertTraitSet.xmldict_data_to_pb({"TraitSet": element})
-                for element in cls.ensure_list(tag_oncogenicity_classification["Condition"])
+                for element in cls.ensure_list(
+                    tag_oncogenicity_classification["Condition"]
+                )
             ]
 
         # Obtain date_last_evaluated
         date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateLastEvaluated" in tag_oncogenicity_classification:
-            parsed = dateutil.parser.parse(tag_oncogenicity_classification["@DateLastEvaluated"])
+            parsed = dateutil.parser.parse(
+                tag_oncogenicity_classification["@DateLastEvaluated"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
-            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
         # Obtain date_created
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateCreated" in tag_oncogenicity_classification:
-            parsed = dateutil.parser.parse(tag_oncogenicity_classification["@DateCreated"])
+            parsed = dateutil.parser.parse(
+                tag_oncogenicity_classification["@DateCreated"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
             date_created = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
         # Obtain most_recent_submission
         most_recent_submission: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@MostRecentSubmission" in tag_oncogenicity_classification:
-            parsed = dateutil.parser.parse(tag_oncogenicity_classification["@MostRecentSubmission"])
+            parsed = dateutil.parser.parse(
+                tag_oncogenicity_classification["@MostRecentSubmission"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
-            most_recent_submission = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            most_recent_submission = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
 
         # Obtain number_of_submissions
         number_of_submissions: int | None = None
         if "@NumberOfSubmissions" in tag_oncogenicity_classification:
-            number_of_submissions = int(tag_oncogenicity_classification["@NumberOfSubmissions"])
+            number_of_submissions = int(
+                tag_oncogenicity_classification["@NumberOfSubmissions"]
+            )
         # Obtain number_of_submitters
         number_of_submitters: int | None = None
         if "@NumberOfSubmitters" in tag_oncogenicity_classification:
-            number_of_submitters = int(tag_oncogenicity_classification["@NumberOfSubmitters"])
+            number_of_submitters = int(
+                tag_oncogenicity_classification["@NumberOfSubmitters"]
+            )
 
         return AggregatedOncogenicityClassification(
             review_status=review_status,
@@ -1943,13 +2048,25 @@ class ConvertAggregateClassificationSet(ConverterBase):
 
         germline_classification: AggregatedGermlineClassification | None = None
         if "GermlineClassification" in tag_classifications:
-            germline_classification = ConvertAggregatedGermlineClassification.xmldict_data_to_pb(
-                {"GermlineClassification": tag_classifications["GermlineClassification"]}
+            germline_classification = (
+                ConvertAggregatedGermlineClassification.xmldict_data_to_pb(
+                    {
+                        "GermlineClassification": tag_classifications[
+                            "GermlineClassification"
+                        ]
+                    }
+                )
             )
         somatic_clinical_impact: AggregatedSomaticClinicalImpact | None = None
         if "SomaticClinicalImpact" in tag_classifications:
-            somatic_clinical_impact = ConvertAggregatedSomaticClinicalImpact.xmldict_data_to_pb(
-                {"SomaticClinicalImpact": tag_classifications["SomaticClinicalImpact"]}
+            somatic_clinical_impact = (
+                ConvertAggregatedSomaticClinicalImpact.xmldict_data_to_pb(
+                    {
+                        "SomaticClinicalImpact": tag_classifications[
+                            "SomaticClinicalImpact"
+                        ]
+                    }
+                )
             )
         oncogenicity_classification: AggregatedOncogenicityClassification | None = None
         if "OncogenicityClassification" in tag_classifications:
@@ -1991,18 +2108,26 @@ class ConvertClinicalSignificance(ConverterBase):
             review_status = ConvertSubmitterReviewStatus.xmldict_data_to_pb(
                 tag_clinical_significance["ReviewStatus"]
             )
-        description: str | None = ensure_str_optional(tag_clinical_significance.get("Description"))
+        description: str | None = ensure_str_optional(
+            tag_clinical_significance.get("Description")
+        )
         explanation: Comment | None = None
         if "Explanation" in tag_clinical_significance:
             explanation = ConvertComment.xmldict_data_to_pb(
                 {"Comment": tag_clinical_significance["Explanation"]}
             )
-        cxcs: CitationsXrefsComments = cls.parse_citations_xrefs_comments(tag_clinical_significance)
+        cxcs: CitationsXrefsComments = cls.parse_citations_xrefs_comments(
+            tag_clinical_significance
+        )
         date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateLastEvaluated" in tag_clinical_significance:
-            parsed = dateutil.parser.parse(tag_clinical_significance["@DateLastEvaluated"])
+            parsed = dateutil.parser.parse(
+                tag_clinical_significance["@DateLastEvaluated"]
+            )
             seconds = int(time.mktime(parsed.timetuple()))
-            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
 
         return ClinicalSignificance(
             review_status=review_status,
@@ -2019,7 +2144,9 @@ class ConvertAlleleDescription(ConverterBase):
     """Static method helper for converting XML data to to ``AlleleDescription``."""
 
     #: Map for converting from XML value to protobuf enum.
-    CONVERT_RELATIVE_ORIENTATION: Dict[str, AlleleDescription.RelativeOrientation.ValueType] = {
+    CONVERT_RELATIVE_ORIENTATION: Dict[
+        str, AlleleDescription.RelativeOrientation.ValueType
+    ] = {
         "cis": AlleleDescription.RelativeOrientation.RELATIVE_ORIENTATION_CIS,
         "trans": AlleleDescription.RelativeOrientation.RELATIVE_ORIENTATION_TRANS,
         "unknown": AlleleDescription.RelativeOrientation.RELATIVE_ORIENTATION_UNKNOWN,
@@ -2058,14 +2185,18 @@ class ConvertAlleleDescription(ConverterBase):
         cls.assert_keys(tag_allele_desc_set, ["Name"])
 
         name: str = tag_allele_desc_set["Name"]
-        relative_orientation: AlleleDescription.RelativeOrientation.ValueType | None = None
+        relative_orientation: AlleleDescription.RelativeOrientation.ValueType | None = (
+            None
+        )
         if "RelativeOrientation" in tag_allele_desc_set:
             relative_orientation = cls.convert_relative_orientation(
                 tag_allele_desc_set["RelativeOrientation"]
             )
         zygosity: Zygosity.ValueType | None = None
         if "Zygosity" in tag_allele_desc_set:
-            zygosity = ConvertZygosity.xmldict_data_to_pb(tag_allele_desc_set["Zygosity"])
+            zygosity = ConvertZygosity.xmldict_data_to_pb(
+                tag_allele_desc_set["Zygosity"]
+            )
         clinical_significance: ClinicalSignificance | None = None
         if "ClinicalSignificance" in tag_allele_desc_set:
             clinical_significance = ConvertClinicalSignificance.xmldict_data_to_pb(
@@ -2098,12 +2229,16 @@ class ConvertRecordHistory(ConverterBase):
 
         comment: Comment | None = None
         if "Comment" in tag_record_history:
-            comment = ConvertComment.xmldict_data_to_pb({"Comment": tag_record_history["Comment"]})
+            comment = ConvertComment.xmldict_data_to_pb(
+                {"Comment": tag_record_history["Comment"]}
+            )
         accession: str = tag_record_history["@Accession"]
         version: int = int(tag_record_history["@Version"])
         date_changed_parsed = dateutil.parser.parse(tag_record_history["@DateChanged"])
         date_changed_seconds = int(time.mktime(date_changed_parsed.timetuple()))
-        date_changed = google.protobuf.timestamp_pb2.Timestamp(seconds=date_changed_seconds)
+        date_changed = google.protobuf.timestamp_pb2.Timestamp(
+            seconds=date_changed_seconds
+        )
         variation_id: int | None = None
         if "@VariationID" in tag_record_history:
             variation_id = int(tag_record_history["@VariationID"])
@@ -2133,20 +2268,24 @@ class ConvertClassificationScv(ConverterBase):
             The ``SomaticClinicalImpact`` protobuf.
         """
         assert "SomaticClinicalImpact" in value
-        tag_somatic_clinical_impact: str | dict[str, Any] = value["SomaticClinicalImpact"]
+        tag_somatic_clinical_impact: str | dict[str, Any] = value[
+            "SomaticClinicalImpact"
+        ]
         if isinstance(tag_somatic_clinical_impact, str):
-            return ClassificationScv.SomaticClinicalImpact(value=tag_somatic_clinical_impact)
+            return ClassificationScv.SomaticClinicalImpact(
+                value=tag_somatic_clinical_impact
+            )
         else:
             cls.assert_keys(tag_somatic_clinical_impact, ["#text"])
 
-            clinical_impact_assertion_type: str | None = tag_somatic_clinical_impact.get(
-                "@ClinicalImpactAssertionType"
+            clinical_impact_assertion_type: str | None = (
+                tag_somatic_clinical_impact.get("@ClinicalImpactAssertionType")
             )
-            clinical_impact_clinical_significance: str | None = tag_somatic_clinical_impact.get(
-                "@ClinicalImpactClinicalSignificance"
+            clinical_impact_clinical_significance: str | None = (
+                tag_somatic_clinical_impact.get("@ClinicalImpactClinicalSignificance")
             )
-            drug_for_therapeutic_assertion: str | None = tag_somatic_clinical_impact.get(
-                "@DrugForTherapeuticAssertion"
+            drug_for_therapeutic_assertion: str | None = (
+                tag_somatic_clinical_impact.get("@DrugForTherapeuticAssertion")
             )
 
             return ClassificationScv.SomaticClinicalImpact(
@@ -2219,7 +2358,9 @@ class ConvertClassificationScv(ConverterBase):
         if "ClassificationScore" in tag_classification:
             classification_scores = [
                 cls.convert_classification_score({"ClassificationScore": element})
-                for element in cls.ensure_list(tag_classification["ClassificationScore"])
+                for element in cls.ensure_list(
+                    tag_classification["ClassificationScore"]
+                )
             ]
 
         # Parse out Citation, XRef, Comment tags.
@@ -2229,7 +2370,9 @@ class ConvertClassificationScv(ConverterBase):
         if "@DateLastEvaluated" in tag_classification:
             parsed = dateutil.parser.parse(tag_classification["@DateLastEvaluated"])
             seconds = int(time.mktime(parsed.timetuple()))
-            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+            date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds
+            )
 
         return ClassificationScv(
             review_status=review_status,
@@ -2249,7 +2392,9 @@ class ConvertSubmitterIdentifiers(ConverterBase):
     """Static method helper for converting XML data to to ``SubmitterIdentifiers``."""
 
     @classmethod
-    def xmldict_data_to_pb(cls, tag: dict[str, Any], tag_name: str) -> SubmitterIdentifiers:
+    def xmldict_data_to_pb(
+        cls, tag: dict[str, Any], tag_name: str
+    ) -> SubmitterIdentifiers:
         """Converts a dict from ``xmltodict`` to a `SubmitterIdentifiers`` protobuf.
 
         Args:
@@ -2350,12 +2495,16 @@ class ConvertClinicalAssertionRecordHistory(ConverterBase):
 
         comment: Comment | None = None
         if "Comment" in tag_record_history:
-            comment = ConvertComment.xmldict_data_to_pb({"Comment": tag_record_history["Comment"]})
+            comment = ConvertComment.xmldict_data_to_pb(
+                {"Comment": tag_record_history["Comment"]}
+            )
         accession: str = tag_record_history["@Accession"]
         version: int = int(tag_record_history["@Version"])
         date_changed_parsed = dateutil.parser.parse(tag_record_history["@DateChanged"])
         date_changed_seconds = int(time.mktime(date_changed_parsed.timetuple()))
-        date_changed = google.protobuf.timestamp_pb2.Timestamp(seconds=date_changed_seconds)
+        date_changed = google.protobuf.timestamp_pb2.Timestamp(
+            seconds=date_changed_seconds
+        )
 
         return ClinicalAssertionRecordHistory(
             comment=comment,
@@ -2386,7 +2535,10 @@ class ConvertFunctionalConsequence(ConverterBase):
         cxcs = cls.parse_citations_xrefs_comments(tag_function_consequence)
 
         return FunctionalConsequence(
-            xrefs=cxcs.xrefs, citations=cxcs.citations, comments=cxcs.comments, value=value
+            xrefs=cxcs.xrefs,
+            citations=cxcs.citations,
+            comments=cxcs.comments,
+            value=value,
         )
 
 
@@ -2513,7 +2665,9 @@ class ConvertDosageSensitivity(ConverterBase):
     """Static method helper for converting XML data to to ``DosageSensitivity``."""
 
     @classmethod
-    def xmldict_data_to_pb(cls, tag: dict[str, Any], tag_name: str) -> DosageSensitivity:
+    def xmldict_data_to_pb(
+        cls, tag: dict[str, Any], tag_name: str
+    ) -> DosageSensitivity:
         """Converts a dict from ``xmltodict`` to a `DosageSensitivity`` protobuf.
 
         Args:
@@ -2588,7 +2742,9 @@ class ConvertDeletedScv(ConverterBase):
         version: int = int(tag_scv["@Version"])
         date_deleted_parsed = dateutil.parser.parse(tag_scv["@DateDeleted"])
         date_deleted_seconds = int(time.mktime(date_deleted_parsed.timetuple()))
-        date_deleted = google.protobuf.timestamp_pb2.Timestamp(seconds=date_deleted_seconds)
+        date_deleted = google.protobuf.timestamp_pb2.Timestamp(
+            seconds=date_deleted_seconds
+        )
 
         return DeletedScv(
             accession=accession,
@@ -2601,7 +2757,9 @@ class ConvertLocation(ConverterBase):
     """Static method helper for converting XML data to to ``Location``."""
 
     #: Map for converting from XML value to protobuf enum.
-    CONVERT_ASSEMBLY_STATUS: Dict[str, Location.SequenceLocation.AssemblyStatus.ValueType] = {
+    CONVERT_ASSEMBLY_STATUS: Dict[
+        str, Location.SequenceLocation.AssemblyStatus.ValueType
+    ] = {
         "current": Location.SequenceLocation.AssemblyStatus.ASSEMBLY_STATUS_CURRENT,
         "previous": Location.SequenceLocation.AssemblyStatus.ASSEMBLY_STATUS_PREVIOUS,
     }
@@ -2625,7 +2783,9 @@ class ConvertLocation(ConverterBase):
             return result
 
     @classmethod
-    def convert_sequence_location(cls, tag: dict[str, Any]) -> Location.SequenceLocation:
+    def convert_sequence_location(
+        cls, tag: dict[str, Any]
+    ) -> Location.SequenceLocation:
         """Converts a dict from ``xmltodict`` to a ``Location.SequenceLocation`` protobuf.
 
         Args:
@@ -2641,7 +2801,9 @@ class ConvertLocation(ConverterBase):
         if "@forDisplay" in tag_sl:
             for_display = tag_sl["@forDisplay"] == "true"
         assembly: str = tag_sl["@Assembly"]
-        chr_: Chromosome.ValueType = ConvertChromosome.xmldict_data_to_pb(tag_sl["@Chr"])
+        chr_: Chromosome.ValueType = ConvertChromosome.xmldict_data_to_pb(
+            tag_sl["@Chr"]
+        )
         accession: str | None = tag_sl.get("@Accession")
         outer_start: int | None = None
         if "@outerStart" in tag_sl:
@@ -2676,7 +2838,9 @@ class ConvertLocation(ConverterBase):
         reference_allele: str | None = tag_sl.get("@referenceAllele")
         alternate_allele: str | None = tag_sl.get("@alternateAllele")
         assembly_accession_version: str | None = tag_sl.get("@assemblyAccessionVersion")
-        assembly_status: Location.SequenceLocation.AssemblyStatus.ValueType | None = None
+        assembly_status: Location.SequenceLocation.AssemblyStatus.ValueType | None = (
+            None
+        )
         if "@assemblyStatus" in tag_sl:
             assembly_status = cls.convert_assembly_status(tag_sl["@assemblyStatus"])
         position_vcf: int | None = None
@@ -2741,7 +2905,9 @@ class ConvertLocation(ConverterBase):
 
         gene_locations: list[str] | None = None
         if "GeneLocation" in tag_location:
-            gene_locations = [entry for entry in cls.ensure_list(tag_location["GeneLocation"])]
+            gene_locations = [
+                entry for entry in cls.ensure_list(tag_location["GeneLocation"])
+            ]
 
         xrefs: list[Xref] | None = None
         if "XRef" in tag_location:
@@ -2830,7 +2996,9 @@ class ConvertSample(ConverterBase):
     """Static method helper for converting XML data to to ``Sample``."""
 
     @classmethod
-    def convert_sample_description(cls, tag: dict[str, Any]) -> Sample.SampleDescription:
+    def convert_sample_description(
+        cls, tag: dict[str, Any]
+    ) -> Sample.SampleDescription:
         """Converts a dict from ``xmltodict`` to a ``Sample.SampleDescription`` protobuf.
 
         Args:
@@ -2844,10 +3012,14 @@ class ConvertSample(ConverterBase):
 
         description: Comment | None = None
         if "Description" in tag_sd:
-            description = ConvertComment.xmldict_data_to_pb({"Comment": tag_sd["Description"]})
+            description = ConvertComment.xmldict_data_to_pb(
+                {"Comment": tag_sd["Description"]}
+            )
         citation: Citation | None = None
         if "Citation" in tag_sd:
-            citation = ConvertCitation.xmldict_data_to_pb({"Citation": tag_sd["Citation"]})
+            citation = ConvertCitation.xmldict_data_to_pb(
+                {"Citation": tag_sd["Citation"]}
+            )
 
         return Sample.SampleDescription(
             description=description,
@@ -3033,18 +3205,22 @@ class ConvertSample(ConverterBase):
             origin = ConvertOrigin.xmldict_data_to_pb(ensure_str(tag_sample["Origin"]))
 
         ethnicity: str | None = ensure_str_optional(tag_sample.get("Ethnicity"))
-        geographic_origin: str | None = ensure_str_optional(tag_sample.get("GeographicOrigin"))
+        geographic_origin: str | None = ensure_str_optional(
+            tag_sample.get("GeographicOrigin")
+        )
         val_tissue: str | dict[str, str] | None = tag_sample.get("Tissue")
         if val_tissue:
             tissue = ensure_str(val_tissue)
         else:
             tissue = None
-        somatic_variant_in_normal_tissue: Sample.SomaticVariantInNormalTissue.ValueType | None = (
-            None
-        )
+        somatic_variant_in_normal_tissue: (
+            Sample.SomaticVariantInNormalTissue.ValueType | None
+        ) = None
         if "SomaticVariantInNormalTissue" in tag_sample:
-            somatic_variant_in_normal_tissue = cls.convert_somatic_variant_in_normal_tissue(
-                tag_sample["SomaticVariantInNormalTissue"]
+            somatic_variant_in_normal_tissue = (
+                cls.convert_somatic_variant_in_normal_tissue(
+                    tag_sample["SomaticVariantInNormalTissue"]
+                )
             )
         somatic_variant_allele_fraction: str | None = None
         if "SomaticVariantAlleleFraction" in tag_sample:
@@ -3055,11 +3231,16 @@ class ConvertSample(ConverterBase):
             species = ConvertSpecies.xmldict_data_to_pb(tag_sample)
         ages: list[Sample.Age] | None = None
         if "Age" in tag_sample:
-            ages = [cls.convert_age({"Age": entry}) for entry in cls.ensure_list(tag_sample["Age"])]
+            ages = [
+                cls.convert_age({"Age": entry})
+                for entry in cls.ensure_list(tag_sample["Age"])
+            ]
         strain: str | None = ensure_str_optional(tag_sample.get("Strain"))
         affected_status: Sample.AffectedStatus.ValueType | None = None
         if "AffectedStatus" in tag_sample:
-            affected_status = cls.convert_affected_status(ensure_str(tag_sample["AffectedStatus"]))
+            affected_status = cls.convert_affected_status(
+                ensure_str(tag_sample["AffectedStatus"])
+            )
         number_tested: int | None = None
         if "NumberTested" in tag_sample:
             number_tested = int(ensure_str(tag_sample["NumberTested"]))
@@ -3172,7 +3353,9 @@ class ConvertMethodType(ConverterBase):
             return result
 
     #: Map for converting from XML value to protobuf enum.
-    CONVERT_METHOD_ATTRIBUTE_TYPE: Dict[str, Method.MethodAttribute.AttributeType.ValueType] = {
+    CONVERT_METHOD_ATTRIBUTE_TYPE: Dict[
+        str, Method.MethodAttribute.AttributeType.ValueType
+    ] = {
         "Location": Method.MethodAttribute.AttributeType.ATTRIBUTE_TYPE_LOCATION,
         "ControlsAppropriate": Method.MethodAttribute.AttributeType.ATTRIBUTE_TYPE_CONTROLS_APPROPRIATE,
         "MethodAppropriate": Method.MethodAttribute.AttributeType.ATTRIBUTE_TYPE_METHOD_APPROPRIATE,
@@ -3214,8 +3397,8 @@ class ConvertMethodType(ConverterBase):
         tag_attribute: dict[str, Any] = tag_ma["Attribute"]
 
         base: BaseAttribute = ConvertBaseAttribute.xmldict_data_to_pb(tag_ma)
-        type_: Method.MethodAttribute.AttributeType.ValueType = cls.convert_method_attribute_type(
-            tag_attribute["@Type"]
+        type_: Method.MethodAttribute.AttributeType.ValueType = (
+            cls.convert_method_attribute_type(tag_attribute["@Type"])
         )
 
         return Method.MethodAttribute(
@@ -3250,7 +3433,9 @@ class ConvertMethodType(ConverterBase):
             return result
 
     @classmethod
-    def convert_obs_method_attribute(cls, tag: dict[str, Any]) -> Method.ObsMethodAttribute:
+    def convert_obs_method_attribute(
+        cls, tag: dict[str, Any]
+    ) -> Method.ObsMethodAttribute:
         """Converts a dict from ``xmltodict`` to a ``Method.ObsMethodAttribute`` protobuf.
 
         Args:
@@ -3338,8 +3523,8 @@ class ConvertMethodType(ConverterBase):
         source_type: Method.SourceType.ValueType | None = None
         if "SourceType" in tag_method:
             source_type = cls.convert_source_type(tag_method["SourceType"])
-        method_type: MethodListType.ValueType = ConvertMethodListType.xmldict_data_to_pb(
-            tag_method["MethodType"]
+        method_type: MethodListType.ValueType = (
+            ConvertMethodListType.xmldict_data_to_pb(tag_method["MethodType"])
         )
         method_attributes: list[Method.MethodAttribute] | None = None
         if "MethodAttribute" in tag_method:
@@ -3420,7 +3605,9 @@ class ConvertAlleleScv(ConverterBase):
         )
 
     @classmethod
-    def convert_molecular_consequence(cls, tag: dict[str, Any]) -> AlleleScv.MolecularConsequence:
+    def convert_molecular_consequence(
+        cls, tag: dict[str, Any]
+    ) -> AlleleScv.MolecularConsequence:
         """Converts a dict from ``xmltodict`` to a ``AlleleScv.MolecularConsequence`` protobuf.
 
         Args:
@@ -3481,7 +3668,9 @@ class ConvertAlleleScv(ConverterBase):
         variant_type: str | None = ensure_str_optional(tag_sa.get("VariantType"))
         location: Location | None = None
         if "Location" in tag_sa:
-            location = ConvertLocation.xmldict_data_to_pb({"Location": tag_sa["Location"]})
+            location = ConvertLocation.xmldict_data_to_pb(
+                {"Location": tag_sa["Location"]}
+            )
         other_names: list[OtherName] | None = None
         if "OtherNameList" in tag_sa and "Name" in tag_sa["OtherNameList"]:
             other_names = [
@@ -3490,7 +3679,9 @@ class ConvertAlleleScv(ConverterBase):
             ]
         protein_changes: list[str] | None = None
         if "ProteinChange" in tag_sa:
-            protein_changes = [entry for entry in cls.ensure_list(tag_sa["ProteinChange"])]
+            protein_changes = [
+                entry for entry in cls.ensure_list(tag_sa["ProteinChange"])
+            ]
 
         # parse out citations
         citations: list[Citation] | None = None
@@ -3503,7 +3694,9 @@ class ConvertAlleleScv(ConverterBase):
             ]
         elif isinstance(tag_sa["CitationList"]["Citation"], dict):
             citations = [
-                ConvertCitation.xmldict_data_to_pb({"Citation": tag_sa["CitationList"]["Citation"]})
+                ConvertCitation.xmldict_data_to_pb(
+                    {"Citation": tag_sa["CitationList"]["Citation"]}
+                )
             ]
         else:
             assert False, f"Invalid type for Citation {tag_sa['Citation']}"
@@ -3517,7 +3710,9 @@ class ConvertAlleleScv(ConverterBase):
                 for entry in tag_sa["XRefList"]["XRef"]
             ]
         elif isinstance(tag_sa["XRefList"]["XRef"], dict):
-            xrefs = [ConvertXref.xmldict_data_to_pb({"XRef": tag_sa["XRefList"]["XRef"]})]
+            xrefs = [
+                ConvertXref.xmldict_data_to_pb({"XRef": tag_sa["XRefList"]["XRef"]})
+            ]
         else:
             assert False, f"Invalid type for XRef {tag_sa['XRef']}"
         # parse out comments
@@ -3526,10 +3721,13 @@ class ConvertAlleleScv(ConverterBase):
             pass
         elif isinstance(tag_sa["Comment"], list):
             comments = [
-                ConvertComment.xmldict_data_to_pb({"Comment": entry}) for entry in tag_sa["Comment"]
+                ConvertComment.xmldict_data_to_pb({"Comment": entry})
+                for entry in tag_sa["Comment"]
             ]
         elif isinstance(tag_sa["Comment"], (str, dict)):
-            comments = [ConvertComment.xmldict_data_to_pb({"Comment": tag_sa["Comment"]})]
+            comments = [
+                ConvertComment.xmldict_data_to_pb({"Comment": tag_sa["Comment"]})
+            ]
         else:
             assert False, f"Invalid type for comment {tag_sa['Comment']}"
 
@@ -3545,7 +3743,9 @@ class ConvertAlleleScv(ConverterBase):
         functional_consequences: list[FunctionalConsequence] | None = None
         if "FunctionalConsequence" in tag_sa:
             functional_consequences = [
-                ConvertFunctionalConsequence.xmldict_data_to_pb({"FunctionalConsequence": entry})
+                ConvertFunctionalConsequence.xmldict_data_to_pb(
+                    {"FunctionalConsequence": entry}
+                )
                 for entry in cls.ensure_list(tag_sa["FunctionalConsequence"])
             ]
         attributes: list[AttributeSetElement] | None = None
@@ -3612,7 +3812,9 @@ class ConvertHaplotypeScv(ConverterBase):
         functional_consequences: list[FunctionalConsequence] | None = None
         if "FunctionalConsequence" in tag_genotype:
             functional_consequences = [
-                ConvertFunctionalConsequence.xmldict_data_to_pb({"FunctionalConsequence": entry})
+                ConvertFunctionalConsequence.xmldict_data_to_pb(
+                    {"FunctionalConsequence": entry}
+                )
                 for entry in cls.ensure_list(tag_genotype["FunctionalConsequence"])
             ]
         attributes: list[AttributeSetElement] | None = None
@@ -3622,7 +3824,10 @@ class ConvertHaplotypeScv(ConverterBase):
                 for entry in cls.ensure_list(tag_genotype["AttributeSet"])
             ]
         citations: list[Citation] | None = None
-        if "CitationList" in tag_genotype and "Citation" in tag_genotype["CitationList"]:
+        if (
+            "CitationList" in tag_genotype
+            and "Citation" in tag_genotype["CitationList"]
+        ):
             citations = [
                 ConvertCitation.xmldict_data_to_pb({"Citation": entry})
                 for entry in cls.ensure_list(tag_genotype["CitationList"]["Citation"])
@@ -3700,13 +3905,15 @@ class ConvertGenotypeScv(ConverterBase):
                 ConvertOtherName.xmldict_data_to_pb({"Name": entry})
                 for entry in cls.ensure_list(tag_genotype["OtherNameList"]["Name"])
             ]
-        variation_type: VariationType.ValueType = ConvertVariationType.xmldict_data_to_pb(
-            tag_genotype["VariationType"]
+        variation_type: VariationType.ValueType = (
+            ConvertVariationType.xmldict_data_to_pb(tag_genotype["VariationType"])
         )
         functional_consequences: list[FunctionalConsequence] | None = None
         if "FunctionalConsequence" in tag_genotype:
             functional_consequences = [
-                ConvertFunctionalConsequence.xmldict_data_to_pb({"FunctionalConsequence": entry})
+                ConvertFunctionalConsequence.xmldict_data_to_pb(
+                    {"FunctionalConsequence": entry}
+                )
                 for entry in cls.ensure_list(tag_genotype["FunctionalConsequence"])
             ]
         attributes: list[AttributeSetElement] | None = None
@@ -3716,7 +3923,10 @@ class ConvertGenotypeScv(ConverterBase):
                 for entry in cls.ensure_list(tag_genotype["AttributeSet"])
             ]
         citations: list[Citation] | None = None
-        if "CitationList" in tag_genotype and "Citation" in tag_genotype["CitationList"]:
+        if (
+            "CitationList" in tag_genotype
+            and "Citation" in tag_genotype["CitationList"]
+        ):
             citations = [
                 ConvertCitation.xmldict_data_to_pb({"Citation": entry})
                 for entry in cls.ensure_list(tag_genotype["CitationList"]["Citation"])
@@ -3900,7 +4110,9 @@ class ConvertObservedIn(ConverterBase):
         assert "ObservedIn" in tag
         tag_observed_in: dict[str, Any] = tag["ObservedIn"]
 
-        cxcs: CitationsXrefsComments = cls.parse_citations_xrefs_comments(tag_observed_in)
+        cxcs: CitationsXrefsComments = cls.parse_citations_xrefs_comments(
+            tag_observed_in
+        )
 
         sample: Sample = ConvertSample.xmldict_data_to_pb(tag_observed_in)
         observed_data: list[ObservedIn.ObservedData] | None = None
@@ -3949,7 +4161,9 @@ class ConvertClinicalAssertion(ConverterBase):
             local_key_is_submitted = (
                 tag["ClinVarSubmissionID"].get("@localKeyIsSubmitted") == "true"
             )
-        submitted_assembly: str | None = tag["ClinVarSubmissionID"].get("@submittedAssembly")
+        submitted_assembly: str | None = tag["ClinVarSubmissionID"].get(
+            "@submittedAssembly"
+        )
 
         return ClinicalAssertion.ClinvarSubmissionId(
             local_key=local_key,
@@ -3959,7 +4173,9 @@ class ConvertClinicalAssertion(ConverterBase):
         )
 
     #: Map for converting from XML value to protobuf enum.
-    CONVERT_ATTRIBUTE_SET_TYPE: Dict[str, ClinicalAssertion.AttributeSetElement.Type.ValueType] = {
+    CONVERT_ATTRIBUTE_SET_TYPE: Dict[
+        str, ClinicalAssertion.AttributeSetElement.Type.ValueType
+    ] = {
         "ModeOfInheritance": ClinicalAssertion.AttributeSetElement.Type.TYPE_MODE_OF_INHERITANCE,
         "Penetrance": ClinicalAssertion.AttributeSetElement.Type.TYPE_PENETRANCE,
         "AgeOfOnset": ClinicalAssertion.AttributeSetElement.Type.TYPE_AGE_OF_ONSET,
@@ -3988,7 +4204,9 @@ class ConvertClinicalAssertion(ConverterBase):
             return result
 
     @classmethod
-    def convert_attribute_set(cls, tag: dict[str, Any]) -> ClinicalAssertion.AttributeSetElement:
+    def convert_attribute_set(
+        cls, tag: dict[str, Any]
+    ) -> ClinicalAssertion.AttributeSetElement:
         """Converts a dict from ``xmltodict`` to a ``ClinicalAssertion.AttributeSetElement`` protobuf.
 
         Args:
@@ -4003,7 +4221,9 @@ class ConvertClinicalAssertion(ConverterBase):
 
         # Parse out the augmented BaseAttribute.
         cls.assert_keys(tag_attribute, ["@Type"])
-        attribute = ConvertBaseAttribute.xmldict_data_to_pb({"Attribute": tag_attribute})
+        attribute = ConvertBaseAttribute.xmldict_data_to_pb(
+            {"Attribute": tag_attribute}
+        )
         type_: ClinicalAssertion.AttributeSetElement.Type.ValueType = (
             cls.convert_attribute_set_type(tag_attribute["@Type"])
         )
@@ -4019,7 +4239,9 @@ class ConvertClinicalAssertion(ConverterBase):
         )
 
     @classmethod
-    def convert_clinvar_accession(cls, tag: dict[str, Any]) -> ClinicalAssertion.ClinvarAccession:
+    def convert_clinvar_accession(
+        cls, tag: dict[str, Any]
+    ) -> ClinicalAssertion.ClinvarAccession:
         """Converts a dict from ``xmltodict`` to a ``ClinicalAssertion.ClinvarAccession`` protobuf.
 
         Args:
@@ -4040,12 +4262,16 @@ class ConvertClinicalAssertion(ConverterBase):
         if "@DateUpdated" in tag_cva:
             dt_date_updated = dateutil.parser.parse(tag_cva["@DateUpdated"])
             seconds_date_updated = int(time.mktime(dt_date_updated.timetuple()))
-            date_updated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds_date_updated)
+            date_updated = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds_date_updated
+            )
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateCreated" in tag_cva:
             dt_date_created = dateutil.parser.parse(tag_cva["@DateCreated"])
             seconds_date_created = int(time.mktime(dt_date_created.timetuple()))
-            date_created = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds_date_created)
+            date_created = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds_date_created
+            )
 
         return ClinicalAssertion.ClinvarAccession(
             accession=accession,
@@ -4063,7 +4289,9 @@ class ConvertClinicalAssertion(ConverterBase):
     }
 
     @classmethod
-    def convert_record_status(cls, value: str) -> ClinicalAssertion.RecordStatus.ValueType:
+    def convert_record_status(
+        cls, value: str
+    ) -> ClinicalAssertion.RecordStatus.ValueType:
         """Converts a string to a ``ClinicalAssertion.RecordStatus.ValueType``.
 
         Args:
@@ -4094,8 +4322,8 @@ class ConvertClinicalAssertion(ConverterBase):
         clinvar_submission_id: ClinicalAssertion.ClinvarSubmissionId = (
             cls.convert_clinvar_submission_id(tag_ca)
         )
-        clinvar_accession: ClinicalAssertion.ClinvarAccession = cls.convert_clinvar_accession(
-            tag_ca
+        clinvar_accession: ClinicalAssertion.ClinvarAccession = (
+            cls.convert_clinvar_accession(tag_ca)
         )
         if "ClinVarAccession" in tag_ca:
             clinvar_accession = cls.convert_clinvar_accession(tag_ca)
@@ -4106,10 +4334,12 @@ class ConvertClinicalAssertion(ConverterBase):
         ):
             additional_submitters = [
                 ConvertSubmitter.xmldict_data_to_pb({"SubmitterDescription": entry})
-                for entry in cls.ensure_list(tag_ca["AdditionalSubmitters"]["SubmitterDescription"])
+                for entry in cls.ensure_list(
+                    tag_ca["AdditionalSubmitters"]["SubmitterDescription"]
+                )
             ]
-        record_status: ClinicalAssertion.RecordStatus.ValueType = cls.convert_record_status(
-            tag_ca["RecordStatus"]
+        record_status: ClinicalAssertion.RecordStatus.ValueType = (
+            cls.convert_record_status(tag_ca["RecordStatus"])
         )
         replaces: list[str] | None = None
         if "Replaces" in tag_ca:
@@ -4117,7 +4347,9 @@ class ConvertClinicalAssertion(ConverterBase):
         replaceds: list[ClinicalAssertionRecordHistory] | None = None
         if "ReplacedList" in tag_ca and "Replaced" in tag_ca["ReplacedList"]:
             replaceds = [
-                ConvertClinicalAssertionRecordHistory.xmldict_data_to_pb({"Replaced": entry})
+                ConvertClinicalAssertionRecordHistory.xmldict_data_to_pb(
+                    {"Replaced": entry}
+                )
                 for entry in cls.ensure_list(tag_ca["ReplacedList"]["Replaced"])
             ]
         classifications: ClassificationScv | None = None
@@ -4126,7 +4358,9 @@ class ConvertClinicalAssertion(ConverterBase):
             classifications = ConvertClassificationScv.xmldict_data_to_pb(
                 {"Classification": tag_ca["Classification"]}
             )
-        assertion: Assertion.ValueType = ConvertAssertion.xmldict_data_to_pb(tag_ca["Assertion"])
+        assertion: Assertion.ValueType = ConvertAssertion.xmldict_data_to_pb(
+            tag_ca["Assertion"]
+        )
         attributes: list[ClinicalAssertion.AttributeSetElement] | None = None
         if "AttributeSet" in tag_ca:
             attributes = [
@@ -4146,11 +4380,17 @@ class ConvertClinicalAssertion(ConverterBase):
             )
         haplotype: HaplotypeScv | None = None
         if "Haplotype" in tag_ca:
-            haplotype = ConvertHaplotypeScv.xmldict_data_to_pb({"Haplotype": tag_ca["Haplotype"]})
+            haplotype = ConvertHaplotypeScv.xmldict_data_to_pb(
+                {"Haplotype": tag_ca["Haplotype"]}
+            )
         genotype: GenotypeScv | None = None
         if "Genotype" in tag_ca:
-            genotype = ConvertGenotypeScv.xmldict_data_to_pb({"Genotype": tag_ca["Genotype"]})
-        trait_set: TraitSet = ConvertTraitSet.xmldict_data_to_pb({"TraitSet": tag_ca["TraitSet"]})
+            genotype = ConvertGenotypeScv.xmldict_data_to_pb(
+                {"Genotype": tag_ca["Genotype"]}
+            )
+        trait_set: TraitSet = ConvertTraitSet.xmldict_data_to_pb(
+            {"TraitSet": tag_ca["TraitSet"]}
+        )
         citations: list[Citation] | None = None
         if "CitationList" in tag_ca and "Citation" in tag_ca["CitationList"]:
             citations = [
@@ -4158,7 +4398,9 @@ class ConvertClinicalAssertion(ConverterBase):
                 for entry in cls.ensure_list(tag_ca["CitationList"]["Citation"])
             ]
         study_name: str | None = ensure_str_optional(tag_ca.get("StudyName"))
-        study_description: str | None = ensure_str_optional(tag_ca.get("StudyDescription"))
+        study_description: str | None = ensure_str_optional(
+            tag_ca.get("StudyDescription")
+        )
         comments: list[Comment] | None = None
         if "Comment" in tag_ca:
             comments = [
@@ -4166,19 +4408,29 @@ class ConvertClinicalAssertion(ConverterBase):
                 for entry in cls.ensure_list(tag_ca["Comment"])
             ]
         submission_names: list[str] | None = None
-        if "SubmissionNameList" in tag_ca and "SubmissionName" in tag_ca["SubmissionNameList"]:
+        if (
+            "SubmissionNameList" in tag_ca
+            and "SubmissionName" in tag_ca["SubmissionNameList"]
+        ):
             submission_names = [
-                entry for entry in cls.ensure_list(tag_ca["SubmissionNameList"]["SubmissionName"])
+                entry
+                for entry in cls.ensure_list(
+                    tag_ca["SubmissionNameList"]["SubmissionName"]
+                )
             ]
         date_created: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "DateCreated" in tag_ca:
             dt_date_created = dateutil.parser.parse(tag_ca["DateCreated"])
             seconds_date_created = int(time.mktime(dt_date_created.timetuple()))
-            date_created = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds_date_created)
+            date_created = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=seconds_date_created
+            )
         date_last_updated: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "DateLastUpdated" in tag_ca:
             dt_date_last_updated = dateutil.parser.parse(tag_ca["DateLastUpdated"])
-            seconds_date_last_updated = int(time.mktime(dt_date_last_updated.timetuple()))
+            seconds_date_last_updated = int(
+                time.mktime(dt_date_last_updated.timetuple())
+            )
             date_last_updated = google.protobuf.timestamp_pb2.Timestamp(
                 seconds=seconds_date_last_updated
             )
@@ -4249,16 +4501,20 @@ class ConvertAllele(ConverterBase):
             ]
         omims: list[int] | None = None
         if "OMIM" in tag_gene:
-            omims = [int(omim_value) for omim_value in cls.ensure_list(tag_gene["OMIM"])]
+            omims = [
+                int(omim_value) for omim_value in cls.ensure_list(tag_gene["OMIM"])
+            ]
         haploinsufficiency: DosageSensitivity | None = None
         if "Haploinsufficiency" in tag_gene:
             haploinsufficiency = ConvertDosageSensitivity.xmldict_data_to_pb(
-                {"Haploinsufficiency": tag_gene["Haploinsufficiency"]}, "Haploinsufficiency"
+                {"Haploinsufficiency": tag_gene["Haploinsufficiency"]},
+                "Haploinsufficiency",
             )
         triplosensitivity: DosageSensitivity | None = None
         if "Triplosensitivity" in tag_gene:
             triplosensitivity = ConvertDosageSensitivity.xmldict_data_to_pb(
-                {"Triplosensitivity": tag_gene["Triplosensitivity"]}, "Triplosensitivity"
+                {"Triplosensitivity": tag_gene["Triplosensitivity"]},
+                "Triplosensitivity",
             )
         properties: list[str] | None = None
         if "Property" in tag_gene:
@@ -4364,10 +4620,14 @@ class ConvertAllele(ConverterBase):
                 for entry in cls.ensure_list(tag_allele["GeneList"]["Gene"])
             ]
         name: str = tag_allele["Name"]
-        canonical_spdi: str | None = ensure_str_optional(tag_allele.get("CanonicalSPDI"))
+        canonical_spdi: str | None = ensure_str_optional(
+            tag_allele.get("CanonicalSPDI")
+        )
         variant_types: list[str] | None = None
         if "VariantType" in tag_allele:
-            variant_types = [entry for entry in cls.ensure_list(tag_allele["VariantType"])]
+            variant_types = [
+                entry for entry in cls.ensure_list(tag_allele["VariantType"])
+            ]
         locations: list[Location] | None = None
         if "Location" in tag_allele:
             locations = [
@@ -4382,7 +4642,9 @@ class ConvertAllele(ConverterBase):
             ]
         protein_changes: list[str] | None = None
         if "ProteinChange" in tag_allele:
-            protein_changes = [entry for entry in cls.ensure_list(tag_allele["ProteinChange"])]
+            protein_changes = [
+                entry for entry in cls.ensure_list(tag_allele["ProteinChange"])
+            ]
         hgvs_expressions: list[HgvsExpression] | None = None
         if "HGVSlist" in tag_allele and "HGVS" in tag_allele["HGVSlist"]:
             hgvs_expressions = [
@@ -4409,7 +4671,9 @@ class ConvertAllele(ConverterBase):
         functional_consequences: list[FunctionalConsequence] | None = None
         if "FunctionalConsequence" in tag_allele:
             functional_consequences = [
-                ConvertFunctionalConsequence.xmldict_data_to_pb({"FunctionalConsequence": entry})
+                ConvertFunctionalConsequence.xmldict_data_to_pb(
+                    {"FunctionalConsequence": entry}
+                )
                 for entry in cls.ensure_list(tag_allele["FunctionalConsequence"])
             ]
         allele_frequencies: list[Allele.AlleleFrequency] | None = None
@@ -4469,11 +4733,14 @@ class ConvertHaplotype(ConverterBase):
                 for entry in cls.ensure_list(tag_haplotype["SimpleAllele"])
             ]
         name: str = tag_haplotype["Name"]
-        variation_type: HaploVariationType.ValueType = ConvertHaploVariationType.xmldict_data_to_pb(
-            tag_haplotype["VariationType"]
+        variation_type: HaploVariationType.ValueType = (
+            ConvertHaploVariationType.xmldict_data_to_pb(tag_haplotype["VariationType"])
         )
         other_names: list[OtherName] | None = None
-        if "OtherNameList" in tag_haplotype and "Name" in tag_haplotype["OtherNameList"]:
+        if (
+            "OtherNameList" in tag_haplotype
+            and "Name" in tag_haplotype["OtherNameList"]
+        ):
             other_names = [
                 ConvertOtherName.xmldict_data_to_pb({"Name": entry})
                 for entry in cls.ensure_list(tag_haplotype["OtherNameList"]["Name"])
@@ -4492,7 +4759,9 @@ class ConvertHaplotype(ConverterBase):
         functional_consequences: list[FunctionalConsequence] | None = None
         if "FunctionalConsequence" in tag_haplotype:
             functional_consequences = [
-                ConvertFunctionalConsequence.xmldict_data_to_pb({"FunctionalConsequence": entry})
+                ConvertFunctionalConsequence.xmldict_data_to_pb(
+                    {"FunctionalConsequence": entry}
+                )
                 for entry in cls.ensure_list(tag_haplotype["FunctionalConsequence"])
             ]
         xrefs: list[Xref] | None = None
@@ -4579,7 +4848,9 @@ class ConvertIncludedRecord(ConverterBase):
             )
         haplotype: Haplotype | None = None
         if "Haplotype" in tag_record:
-            haplotype = ConvertHaplotype.xmldict_data_to_pb({"Haplotype": tag_record["Haplotype"]})
+            haplotype = ConvertHaplotype.xmldict_data_to_pb(
+                {"Haplotype": tag_record["Haplotype"]}
+            )
         classifications: AggregateClassificationSet | None = None
         if "Classifications" in tag_record:
             classifications = ConvertAggregateClassificationSet.xmldict_data_to_pb(
@@ -4592,7 +4863,9 @@ class ConvertIncludedRecord(ConverterBase):
         ):
             submitted_classifications = [
                 ConvertScv.xmldict_data_to_pb({"SCV": entry})
-                for entry in cls.ensure_list(tag_record["SubmittedClassifications"]["SCV"])
+                for entry in cls.ensure_list(
+                    tag_record["SubmittedClassifications"]["SCV"]
+                )
             ]
         classified_variations: list[IncludedRecord.ClassifiedVariation] | None = None
         if (
@@ -4641,8 +4914,8 @@ class ConvertGenotype(ConverterBase):
                 for entry in cls.ensure_list(tag_record["Haplotype"])
             ]
         name: str = tag_record["Name"]
-        variation_type: VariationType.ValueType = ConvertVariationType.xmldict_data_to_pb(
-            tag_record["VariationType"]
+        variation_type: VariationType.ValueType = (
+            ConvertVariationType.xmldict_data_to_pb(tag_record["VariationType"])
         )
         other_names: list[OtherName] | None = None
         if "OtherNameList" in tag_record and "Name" in tag_record["OtherNameList"]:
@@ -4659,7 +4932,9 @@ class ConvertGenotype(ConverterBase):
         functional_consequences: list[FunctionalConsequence] | None = None
         if "FunctionalConsequence" in tag_record:
             functional_consequences = [
-                ConvertFunctionalConsequence.xmldict_data_to_pb({"FunctionalConsequence": entry})
+                ConvertFunctionalConsequence.xmldict_data_to_pb(
+                    {"FunctionalConsequence": entry}
+                )
                 for entry in cls.ensure_list(tag_record["FunctionalConsequence"])
             ]
         classifications: AggregateClassificationSet | None = None
@@ -4731,7 +5006,9 @@ class ConvertRcvAccession(ConverterBase):
         classified_conditions: list[ClassifiedCondition] | None = None
         if "ClassifiedCondition" in tag_ccl:
             classified_conditions = [
-                ConvertClassifiedCondition.xmldict_data_to_pb({"ClassifiedCondition": entry})
+                ConvertClassifiedCondition.xmldict_data_to_pb(
+                    {"ClassifiedCondition": entry}
+                )
                 for entry in cls.ensure_list(tag_ccl["ClassifiedCondition"])
             ]
         trait_set_id: int = int(tag_ccl["@TraitSetID"])
@@ -4757,14 +5034,18 @@ class ConvertRcvAccession(ConverterBase):
         tag_description: str | dict[str, Any] = tag["Description"]
 
         if isinstance(tag_description, str):
-            return RcvAccession.GermlineClassification.Description(value=tag_description)
+            return RcvAccession.GermlineClassification.Description(
+                value=tag_description
+            )
         else:
             value: str = tag_description["#text"]
             date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = None
             if "@DateLastEvaluated" in tag_description:
                 dt = dateutil.parser.parse(tag_description["@DateLastEvaluated"])
                 seconds = int(time.mktime(dt.timetuple()))
-                date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+                date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                    seconds=seconds
+                )
             submission_count: int | None = None
             if "@SubmissionCount" in tag_description:
                 submission_count = int(tag_description["@SubmissionCount"])
@@ -4791,10 +5072,14 @@ class ConvertRcvAccession(ConverterBase):
         tag_gc: dict[str, Any] = tag["GermlineClassification"]
 
         review_status: AggregateGermlineReviewStatus.ValueType = (
-            ConvertAggregateGermlineReviewStatus.xmldict_data_to_pb(tag_gc["ReviewStatus"])
+            ConvertAggregateGermlineReviewStatus.xmldict_data_to_pb(
+                tag_gc["ReviewStatus"]
+            )
         )
         description: RcvAccession.GermlineClassification.Description = (
-            cls.convert_germline_classification_description({"Description": tag_gc["Description"]})
+            cls.convert_germline_classification_description(
+                {"Description": tag_gc["Description"]}
+            )
         )
 
         return RcvAccession.GermlineClassification(
@@ -4831,7 +5116,9 @@ class ConvertRcvAccession(ConverterBase):
             if "@DateLastEvaluated" in tag_description:
                 dt = dateutil.parser.parse(tag_description["@DateLastEvaluated"])
                 seconds = int(time.mktime(dt.timetuple()))
-                date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+                date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                    seconds=seconds
+                )
             submission_count: int | None = None
             if "@SubmissionCount" in tag_description:
                 submission_count = int(tag_description["@SubmissionCount"])
@@ -4865,7 +5152,9 @@ class ConvertRcvAccession(ConverterBase):
             )
         )
         descriptions: list[RcvAccession.SomaticClinicalImpact.Description] = [
-            cls.convert_somatic_clinical_impact_description({"Description": description})
+            cls.convert_somatic_clinical_impact_description(
+                {"Description": description}
+            )
             for description in cls.ensure_list(tag_sci["Description"])
         ]
 
@@ -4890,14 +5179,18 @@ class ConvertRcvAccession(ConverterBase):
         tag_description: str | dict[str, Any] = tag["Description"]
 
         if isinstance(tag_description, str):
-            return RcvAccession.OncogenicityClassification.Description(value=tag_description)
+            return RcvAccession.OncogenicityClassification.Description(
+                value=tag_description
+            )
         else:
             value: str = tag_description["#text"]
             date_last_evaluated: google.protobuf.timestamp_pb2.Timestamp | None = None
             if "@DateLastEvaluated" in tag_description:
                 dt = dateutil.parser.parse(tag_description["@DateLastEvaluated"])
                 seconds = int(time.mktime(dt.timetuple()))
-                date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(seconds=seconds)
+                date_last_evaluated = google.protobuf.timestamp_pb2.Timestamp(
+                    seconds=seconds
+                )
             submission_count: int | None = None
             if "@SubmissionCount" in tag_description:
                 submission_count = int(tag_description["@SubmissionCount"])
@@ -4924,7 +5217,9 @@ class ConvertRcvAccession(ConverterBase):
         tag_oc: dict[str, Any] = tag["OncogenicityClassification"]
 
         review_status: AggregateOncogenicityReviewStatus.ValueType = (
-            ConvertAggregateOncogenicityReviewStatus.xmldict_data_to_pb(tag_oc["ReviewStatus"])
+            ConvertAggregateOncogenicityReviewStatus.xmldict_data_to_pb(
+                tag_oc["ReviewStatus"]
+            )
         )
         description: RcvAccession.OncogenicityClassification.Description = (
             cls.convert_oncogenicity_classification_description(
@@ -4938,7 +5233,9 @@ class ConvertRcvAccession(ConverterBase):
         )
 
     @classmethod
-    def convert_rcv_classifications(cls, tag: dict[str, Any]) -> RcvAccession.RcvClassifications:
+    def convert_rcv_classifications(
+        cls, tag: dict[str, Any]
+    ) -> RcvAccession.RcvClassifications:
         """Converts a dict from ``xmltodict`` to a ``RcvAccession.RcvClassifications`` protobuf.
 
         Args:
@@ -4960,7 +5257,9 @@ class ConvertRcvAccession(ConverterBase):
             somatic_clinical_impact = cls.convert_somatic_clinical_impact(
                 {"SomaticClinicalImpact": tag_rc["SomaticClinicalImpact"]}
             )
-        oncogenicity_classification: RcvAccession.OncogenicityClassification | None = None
+        oncogenicity_classification: RcvAccession.OncogenicityClassification | None = (
+            None
+        )
         if "OncogenicityClassification" in tag_rc:
             oncogenicity_classification = cls.convert_oncogenicity_classification(
                 {"OncogenicityClassification": tag_rc["OncogenicityClassification"]}
@@ -5094,7 +5393,9 @@ class ConvertClassifiedRecord(ConverterBase):
         )
 
     @classmethod
-    def convert_trait_mapping(cls, value: dict[str, Any]) -> ClassifiedRecord.TraitMapping:
+    def convert_trait_mapping(
+        cls, value: dict[str, Any]
+    ) -> ClassifiedRecord.TraitMapping:
         """Converts a dict from ``xmltodict`` to a ``ClassifiedRecord.TraitMapping`` protobuf.
 
         Args:
@@ -5149,11 +5450,17 @@ class ConvertClassifiedRecord(ConverterBase):
             )
         haplotype: Haplotype | None = None
         if "Haplotype" in tag_cr:
-            haplotype = ConvertHaplotype.xmldict_data_to_pb({"Haplotype": tag_cr["Haplotype"]})
+            haplotype = ConvertHaplotype.xmldict_data_to_pb(
+                {"Haplotype": tag_cr["Haplotype"]}
+            )
         genotype: Genotype | None = None
         if "Genotype" in tag_cr:
-            genotype = ConvertGenotype.xmldict_data_to_pb({"Genotype": tag_cr["Genotype"]})
-        rcv_list: ClassifiedRecord.RcvList = cls.convert_rcv_list({"RCVList": tag_cr["RCVList"]})
+            genotype = ConvertGenotype.xmldict_data_to_pb(
+                {"Genotype": tag_cr["Genotype"]}
+            )
+        rcv_list: ClassifiedRecord.RcvList = cls.convert_rcv_list(
+            {"RCVList": tag_cr["RCVList"]}
+        )
         classifications: AggregateClassificationSet = (
             ConvertAggregateClassificationSet.xmldict_data_to_pb(
                 {"Classifications": tag_cr["Classifications"]}
@@ -5165,11 +5472,18 @@ class ConvertClassifiedRecord(ConverterBase):
             and "ClinicalAssertion" in tag_cr["ClinicalAssertionList"]
         ):
             clinical_assertions = [
-                ConvertClinicalAssertion.xmldict_data_to_pb({"ClinicalAssertion": entry})
-                for entry in cls.ensure_list(tag_cr["ClinicalAssertionList"]["ClinicalAssertion"])
+                ConvertClinicalAssertion.xmldict_data_to_pb(
+                    {"ClinicalAssertion": entry}
+                )
+                for entry in cls.ensure_list(
+                    tag_cr["ClinicalAssertionList"]["ClinicalAssertion"]
+                )
             ]
         trait_mappings: list[ClassifiedRecord.TraitMapping] | None = None
-        if "TraitMappingList" in tag_cr and "TraitMapping" in tag_cr["TraitMappingList"]:
+        if (
+            "TraitMappingList" in tag_cr
+            and "TraitMapping" in tag_cr["TraitMappingList"]
+        ):
             trait_mappings = [
                 cls.convert_trait_mapping({"TraitMapping": entry})
                 for entry in cls.ensure_list(tag_cr["TraitMappingList"]["TraitMapping"])
@@ -5234,7 +5548,9 @@ class ConvertVariationArchive(ConverterBase):
     }
 
     @classmethod
-    def convert_record_status(cls, value: str) -> VariationArchive.RecordStatus.ValueType:
+    def convert_record_status(
+        cls, value: str
+    ) -> VariationArchive.RecordStatus.ValueType:
         """Converts a string to a ``VariationArchive.RecordStatus``.
 
         Args:
@@ -5269,18 +5585,26 @@ class ConvertVariationArchive(ConverterBase):
         if "@DateCreated" in tag_va:
             date_created_dt = dateutil.parser.parse(tag_va["@DateCreated"])
             date_created_seconds = int(time.mktime(date_created_dt.timetuple()))
-            date_created = google.protobuf.timestamp_pb2.Timestamp(seconds=date_created_seconds)
+            date_created = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=date_created_seconds
+            )
         date_last_updated: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@DateLastUpdated" in tag_va:
             date_last_updated_dt = dateutil.parser.parse(tag_va["@DateLastUpdated"])
-            date_last_updated_seconds = int(time.mktime(date_last_updated_dt.timetuple()))
+            date_last_updated_seconds = int(
+                time.mktime(date_last_updated_dt.timetuple())
+            )
             date_last_updated = google.protobuf.timestamp_pb2.Timestamp(
                 seconds=date_last_updated_seconds
             )
         most_recent_submission: google.protobuf.timestamp_pb2.Timestamp | None = None
         if "@MostRecentSubmission" in tag_va:
-            most_recent_submission_dt = dateutil.parser.parse(tag_va["@MostRecentSubmission"])
-            most_recent_submission_seconds = int(time.mktime(most_recent_submission_dt.timetuple()))
+            most_recent_submission_dt = dateutil.parser.parse(
+                tag_va["@MostRecentSubmission"]
+            )
+            most_recent_submission_seconds = int(
+                time.mktime(most_recent_submission_dt.timetuple())
+            )
             most_recent_submission = google.protobuf.timestamp_pb2.Timestamp(
                 seconds=most_recent_submission_seconds
             )
@@ -5292,8 +5616,8 @@ class ConvertVariationArchive(ConverterBase):
             tag_va["@RecordType"]
         )
 
-        record_status: VariationArchive.RecordStatus.ValueType = cls.convert_record_status(
-            tag_va["RecordStatus"]
+        record_status: VariationArchive.RecordStatus.ValueType = (
+            cls.convert_record_status(tag_va["RecordStatus"])
         )
         replaced_by: RecordHistory | None = None
         if "ReplacedBy" in tag_va:
@@ -5365,7 +5689,9 @@ class ConvertClinvarVariationRelease(ConverterBase):
         if "@ReleaseDate" in tag_release:
             release_date_dt = dateutil.parser.parse(tag_release["@ReleaseDate"])
             release_date_seconds = int(time.mktime(release_date_dt.timetuple()))
-            release_date = google.protobuf.timestamp_pb2.Timestamp(seconds=release_date_seconds)
+            release_date = google.protobuf.timestamp_pb2.Timestamp(
+                seconds=release_date_seconds
+            )
         variation_archives: list[VariationArchive] | None = None
         if "VariationArchive" in tag_release:
             variation_archives = [

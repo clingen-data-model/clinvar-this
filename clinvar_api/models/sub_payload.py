@@ -54,7 +54,9 @@ class SubmissionClinvarDeletion(BaseModel):
 
     def to_msg(self) -> msg.SubmissionClinvarDeletion:
         return msg.SubmissionClinvarDeletion(
-            accessionSet=[msg_accession_set.to_msg() for msg_accession_set in self.accession_set],
+            accessionSet=[
+                msg_accession_set.to_msg() for msg_accession_set in self.accession_set
+            ],
         )
 
 
@@ -378,7 +380,9 @@ class SubmissionConditionSetGermline(BaseModel):
             condition = [msg_condition.to_msg() for msg_condition in self.condition]
         drug_response = None
         if self.drug_response:
-            drug_response = [msg_response.to_msg() for msg_response in self.drug_response]
+            drug_response = [
+                msg_response.to_msg() for msg_response in self.drug_response
+            ]
         return msg.SubmissionConditionSetGermline(
             condition=condition,
             drugResponse=drug_response,
@@ -397,7 +401,9 @@ class SubmissionConditionSetSomatic(BaseModel):
         condition = [msg_condition.to_msg() for msg_condition in self.condition]
         drug_response = None
         if self.drug_response:
-            drug_response = [msg_response.to_msg() for msg_response in self.drug_response]
+            drug_response = [
+                msg_response.to_msg() for msg_response in self.drug_response
+            ]
         return msg.SubmissionConditionSetSomatic(
             condition=condition,
             drugResponse=drug_response,
@@ -520,7 +526,9 @@ class SubmissionClinvarSubmission(_SubmissionClinvarSubmissionBase):
         return msg.SubmissionClinvarSubmission(
             clinicalSignificance=self.clinical_significance.to_msg(),
             conditionSet=self.condition_set.to_msg(),
-            observedIn=[msg_observed_in.to_msg() for msg_observed_in in self.observed_in],
+            observedIn=[
+                msg_observed_in.to_msg() for msg_observed_in in self.observed_in
+            ],
             recordStatus=self.record_status,
             clinvarAccession=self.clinvar_accession,
             compoundHeterozygoteSet=compound_heterozygote_set,
@@ -538,8 +546,12 @@ class SubmissionClinvarSubmission(_SubmissionClinvarSubmissionBase):
 class SomaticClinicalImpactClassification(_SubmissionClinicalSignificanceBase):
     """Details of somatic clinical impact classification."""
 
-    clinical_impact_classification_description: SomaticClinicalImpactClassificationDescription
-    assertion_type_for_clinical_impact: typing.Optional[SomaticClinicalImpactAssertionType] = None
+    clinical_impact_classification_description: (
+        SomaticClinicalImpactClassificationDescription
+    )
+    assertion_type_for_clinical_impact: typing.Optional[
+        SomaticClinicalImpactAssertionType
+    ] = None
     drug_for_therapeutic_assertion: typing.Optional[str] = None
 
     def to_msg(self) -> msg.SomaticClinicalImpactClassification:
@@ -591,7 +603,9 @@ class SubmissionClinicalImpactSubmission(_SubmissionClinvarSubmissionBase):
         return msg.SubmissionClinicalImpactSubmission(
             clinicalImpactClassification=self.clinical_impact_classification.to_msg(),
             conditionSet=self.condition_set.to_msg(),
-            observedIn=[msg_observed_in.to_msg() for msg_observed_in in self.observed_in],
+            observedIn=[
+                msg_observed_in.to_msg() for msg_observed_in in self.observed_in
+            ],
             recordStatus=self.record_status,
             clinvarAccession=self.clinvar_accession,
             compoundHeterozygoteSet=compound_heterozygote_set,
@@ -659,7 +673,9 @@ class SubmissionOncogenicitySubmission(_SubmissionClinvarSubmissionBase):
         return msg.SubmissionOncogenicitySubmission(
             oncogenicityClassification=self.oncogenicity_classification.to_msg(),
             conditionSet=self.condition_set.to_msg(),
-            observedIn=[msg_observed_in.to_msg() for msg_observed_in in self.observed_in],
+            observedIn=[
+                msg_observed_in.to_msg() for msg_observed_in in self.observed_in
+            ],
             recordStatus=self.record_status,
             clinvarAccession=self.clinvar_accession,
             compoundHeterozygoteSet=compound_heterozygote_set,
@@ -734,7 +750,9 @@ class SubmissionGermlineSubmission(_SubmissionClinvarSubmissionBase):
         return msg.SubmissionGermlineSubmission(
             germlineClassification=self.germline_classification.to_msg(),
             conditionSet=self.condition_set.to_msg(),
-            observedIn=[msg_observed_in.to_msg() for msg_observed_in in self.observed_in],
+            observedIn=[
+                msg_observed_in.to_msg() for msg_observed_in in self.observed_in
+            ],
             recordStatus=self.record_status,
             clinvarAccession=self.clinvar_accession,
             compoundHeterozygoteSet=compound_heterozygote_set,
@@ -756,11 +774,15 @@ class SubmissionContainer(BaseModel):
     behalf_org_id: typing.Optional[int] = None
     clinvar_deletion: typing.Optional[SubmissionClinvarDeletion] = None
     clinvar_submission: typing.Optional[typing.List[SubmissionClinvarSubmission]] = None
-    germline_submission: typing.Optional[typing.List[SubmissionGermlineSubmission]] = None
-    oncogenicity_submission: typing.Optional[typing.List[SubmissionOncogenicitySubmission]] = None
-    clinical_impact_submission: typing.Optional[typing.List[SubmissionClinicalImpactSubmission]] = (
+    germline_submission: typing.Optional[typing.List[SubmissionGermlineSubmission]] = (
         None
     )
+    oncogenicity_submission: typing.Optional[
+        typing.List[SubmissionOncogenicitySubmission]
+    ] = None
+    clinical_impact_submission: typing.Optional[
+        typing.List[SubmissionClinicalImpactSubmission]
+    ] = None
     clinvar_submission_release_status: typing.Optional[ReleaseStatus] = None
     submission_name: typing.Optional[str] = None
 
@@ -784,12 +806,14 @@ class SubmissionContainer(BaseModel):
         oncogenicity_submission = None
         if self.oncogenicity_submission:
             oncogenicity_submission = [
-                msg_submission.to_msg() for msg_submission in self.oncogenicity_submission
+                msg_submission.to_msg()
+                for msg_submission in self.oncogenicity_submission
             ]
         clinical_impact_submission = None
         if self.clinical_impact_submission:
             clinical_impact_submission = [
-                msg_submission.to_msg() for msg_submission in self.clinical_impact_submission
+                msg_submission.to_msg()
+                for msg_submission in self.clinical_impact_submission
             ]
         return msg.SubmissionContainer(
             assertionCriteria=assertion_criteria,

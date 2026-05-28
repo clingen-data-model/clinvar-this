@@ -29,7 +29,9 @@ def test_submission_status_file_construction():
 
 
 def test_submission_status_file_from_msg():
-    models.SubmissionStatusFile.from_msg(msg.SubmissionStatusFile(url="http://example.com"))
+    models.SubmissionStatusFile.from_msg(
+        msg.SubmissionStatusFile(url="http://example.com")
+    )
 
 
 def test_submission_status_object_content_construction():
@@ -92,7 +94,9 @@ def test_submission_status_response_message_construction():
 def test_submission_status_response_message_from_msg():
     models.SubmissionStatusResponseMessage.from_msg(
         msg.SubmissionStatusResponseMessage(
-            errorCode=ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+            errorCode=ErrorCode.PARTIAL_SUCCESS,
+            severity="fake-severity",
+            text="fake text",
         )
     )
 
@@ -102,7 +106,9 @@ def test_submission_status_response_construction():
         status="processing",
         files=[models.SubmissionStatusFile(url="http://example.com")],
         message=models.SubmissionStatusResponseMessage(
-            error_code=ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+            error_code=ErrorCode.PARTIAL_SUCCESS,
+            severity="fake-severity",
+            text="fake text",
         ),
         objects=[
             models.SubmissionStatusObject(
@@ -119,7 +125,9 @@ def test_submission_status_response_construction():
         status="fake-status",
         files=[models.SubmissionStatusFile(url="http://example.com")],
         message=models.SubmissionStatusResponseMessage(
-            error_code=ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+            error_code=ErrorCode.PARTIAL_SUCCESS,
+            severity="fake-severity",
+            text="fake text",
         ),
         objects=[
             models.SubmissionStatusObject(
@@ -140,7 +148,9 @@ def test_submission_status_response_from_msg():
             status="processing",
             files=[msg.SubmissionStatusFile(url="http://example.com")],
             message=msg.SubmissionStatusResponseMessage(
-                errorCode=ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+                errorCode=ErrorCode.PARTIAL_SUCCESS,
+                severity="fake-severity",
+                text="fake text",
             ),
             objects=[
                 msg.SubmissionStatusObject(
@@ -164,7 +174,9 @@ def test_submission_status_actions_construction():
                 status="processing",
                 files=[models.SubmissionStatusFile(url="http://example.com")],
                 message=models.SubmissionStatusResponseMessage(
-                    error_code=ErrorCode.PARTIAL_SUCCESS, severity="fake-severity", text="fake text"
+                    error_code=ErrorCode.PARTIAL_SUCCESS,
+                    severity="fake-severity",
+                    text="fake text",
                 ),
                 objects=[
                     models.SubmissionStatusObject(
@@ -295,7 +307,9 @@ def test_summary_response_error_construction():
         input=[models.SummaryResponseErrorInput(value="value", field="field")],
         output=models.SummaryResponseErrorOutput(errors=[]),
     )
-    models.SummaryResponseError(input=[], output=models.SummaryResponseErrorOutput(errors=[]))
+    models.SummaryResponseError(
+        input=[], output=models.SummaryResponseErrorOutput(errors=[])
+    )
 
 
 def test_summary_response_error_from_msg():
@@ -362,7 +376,9 @@ def test_summary_response_deletion_from_msg():
             deleteDate="2022-01-01",
             deleteStatus="delete-status",
             errors=[
-                msg.SummaryResponseError(input=[], output=msg.SummaryResponseErrorOutput(errors=[]))
+                msg.SummaryResponseError(
+                    input=[], output=msg.SummaryResponseErrorOutput(errors=[])
+                )
             ],
         )
     )
@@ -396,7 +412,9 @@ def test_summary_response_submission_identifier_from_msg():
 
 def test_summary_response_submission_construction():
     models.SummaryResponseSubmission(
-        identifiers=models.SummaryResponseSubmissionIdentifiers(clinvar_local_key="local-key"),
+        identifiers=models.SummaryResponseSubmissionIdentifiers(
+            clinvar_local_key="local-key"
+        ),
         processing_status="processing-status",
         clinvar_accession_version="accession-version",
         errors=[
@@ -408,7 +426,9 @@ def test_summary_response_submission_construction():
         release_status="released",
     )
     models.SummaryResponseSubmission(
-        identifiers=models.SummaryResponseSubmissionIdentifiers(clinvar_local_key="local-key"),
+        identifiers=models.SummaryResponseSubmissionIdentifiers(
+            clinvar_local_key="local-key"
+        ),
         processing_status="processing-status",
         clinvar_accession_version=None,
         errors=None,
@@ -420,11 +440,15 @@ def test_summary_response_submission_construction():
 def test_summary_response_submission_from_msg():
     models.SummaryResponseSubmission.from_msg(
         msg.SummaryResponseSubmission(
-            identifiers=msg.SummaryResponseSubmissionIdentifiers(clinvarLocalKey="local-key"),
+            identifiers=msg.SummaryResponseSubmissionIdentifiers(
+                clinvarLocalKey="local-key"
+            ),
             processingStatus="processing-status",
             clinvarAccessionVersion="accession-version",
             errors=[
-                msg.SummaryResponseError(input=[], output=msg.SummaryResponseErrorOutput(errors=[]))
+                msg.SummaryResponseError(
+                    input=[], output=msg.SummaryResponseErrorOutput(errors=[])
+                )
             ],
             releaseDate="2022-01-01",
             releaseStatus="released",

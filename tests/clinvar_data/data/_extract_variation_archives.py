@@ -182,7 +182,11 @@ def main() -> int:
         collected: dict[str, list[str]] = {target.name: [] for target in TARGETS}
         trailing: list[str] = ["</ClinVarVariationRelease>"]
         for lineno, line in tqdm.tqdm(
-            enumerate(inputf), unit="lines", unit_scale=True, unit_divisor=1000, total=NUM_LINES
+            enumerate(inputf),
+            unit="lines",
+            unit_scale=True,
+            unit_divisor=1000,
+            total=NUM_LINES,
         ):
             if lineno < 2:
                 leading.append(line.rstrip())
@@ -205,7 +209,9 @@ def main() -> int:
         with open(os.path.join(out_dir, f"{target.name}.xml"), "wt") as outputf:
             outputf.write("\n".join(leading + collected[target.name] + trailing) + "\n")
 
-    subprocess.run(["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml.gz"])
+    subprocess.run(
+        ["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml.gz"]
+    )
     for name in ["ex_kynu", "record_with_submitter", "records_with_hpo", "ten_records"]:
         subprocess.run(
             [
@@ -216,7 +222,9 @@ def main() -> int:
                 f"tests/clinvar_data/data/{name}.jsonl",
             ]
         )
-    subprocess.run(["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml"])
+    subprocess.run(
+        ["gzip", "--keep", "--force", "tests/clinvar_data/data/one_record.xml"]
+    )
 
     return 0
 

@@ -3,15 +3,18 @@
 import gzip
 import os.path
 
-from click.testing import CliRunner
 import pytest
+from click.testing import CliRunner
 
 from clinvar_this import cli
 
 
 @pytest.mark.parametrize(
     "fname_in,fname_out",
-    [("one_record.xml", "one_record.jsonl"), ("one_record.xml.gz", "one_record.jsonl.gz")],
+    [
+        ("one_record.xml", "one_record.jsonl"),
+        ("one_record.xml.gz", "one_record.jsonl.gz"),
+    ],
 )
 def test_cli_xml_to_json(fname_in, fname_out, tmp_path, snapshot):
     runner = CliRunner()

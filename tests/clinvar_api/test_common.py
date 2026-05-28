@@ -26,4 +26,6 @@ def test_clean_for_json_dict():
     assert common.clean_for_json({"key": "value"}) == {"key": "value"}
     assert common.clean_for_json({"key": "value", "none": None}) == {"key": "value"}
     assert common.clean_for_json([{"key": "value", "none": None}]) == [{"key": "value"}]
-    assert common.clean_for_json({"d": {"key": "value", "none": None}}) == {"d": {"key": "value"}}
+    assert common.clean_for_json({"d": {"key": "value", "none": None}}) == {
+        "d": {"key": "value"}
+    }

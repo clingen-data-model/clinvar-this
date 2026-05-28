@@ -3,7 +3,13 @@ import typing
 
 def clean_for_json(
     value: typing.Union[
-        bool, int, float, typing.List[typing.Any], None, typing.Dict[str, typing.Any], str
+        bool,
+        int,
+        float,
+        typing.List[typing.Any],
+        None,
+        typing.Dict[str, typing.Any],
+        str,
     ]
 ) -> typing.Union[
     bool, int, float, typing.List[typing.Any], None, typing.Dict[str, typing.Any], str

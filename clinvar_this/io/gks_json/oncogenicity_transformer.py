@@ -14,9 +14,7 @@ from clinvar_api.models import (
     SubmissionAssertionCriteria,
     SubmissionOncogenicitySubmission,
 )
-from clinvar_api.models.sub_payload import (
-    SubmissionObservedInSomatic,
-)
+from clinvar_api.models.sub_payload import SubmissionObservedInSomatic
 from clinvar_this.io.gks_json.base import GksJsonTransformer
 
 

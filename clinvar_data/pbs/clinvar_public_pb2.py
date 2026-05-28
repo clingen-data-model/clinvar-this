@@ -20,7 +20,9 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "clinvar_data.pbs.clinvar_public_pb2", _globals)
+_builder.BuildTopDescriptorsAndMessages(
+    DESCRIPTOR, "clinvar_data.pbs.clinvar_public_pb2", _globals
+)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
     _globals["_GENEVARIANTRELATIONSHIP"]._serialized_start = 36055
@@ -249,16 +251,24 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_RCVACCESSION_CLASSIFIEDCONDITIONLIST"]._serialized_end = 31459
     _globals["_RCVACCESSION_GERMLINECLASSIFICATION"]._serialized_start = 31462
     _globals["_RCVACCESSION_GERMLINECLASSIFICATION"]._serialized_end = 31845
-    _globals["_RCVACCESSION_GERMLINECLASSIFICATION_DESCRIPTION"]._serialized_start = 31679
+    _globals["_RCVACCESSION_GERMLINECLASSIFICATION_DESCRIPTION"]._serialized_start = (
+        31679
+    )
     _globals["_RCVACCESSION_GERMLINECLASSIFICATION_DESCRIPTION"]._serialized_end = 31845
     _globals["_RCVACCESSION_SOMATICCLINICALIMPACT"]._serialized_start = 31848
     _globals["_RCVACCESSION_SOMATICCLINICALIMPACT"]._serialized_end = 32417
-    _globals["_RCVACCESSION_SOMATICCLINICALIMPACT_DESCRIPTION"]._serialized_start = 32077
+    _globals["_RCVACCESSION_SOMATICCLINICALIMPACT_DESCRIPTION"]._serialized_start = (
+        32077
+    )
     _globals["_RCVACCESSION_SOMATICCLINICALIMPACT_DESCRIPTION"]._serialized_end = 32417
     _globals["_RCVACCESSION_ONCOGENICITYCLASSIFICATION"]._serialized_start = 32420
     _globals["_RCVACCESSION_ONCOGENICITYCLASSIFICATION"]._serialized_end = 32815
-    _globals["_RCVACCESSION_ONCOGENICITYCLASSIFICATION_DESCRIPTION"]._serialized_start = 31679
-    _globals["_RCVACCESSION_ONCOGENICITYCLASSIFICATION_DESCRIPTION"]._serialized_end = 31845
+    _globals[
+        "_RCVACCESSION_ONCOGENICITYCLASSIFICATION_DESCRIPTION"
+    ]._serialized_start = 31679
+    _globals["_RCVACCESSION_ONCOGENICITYCLASSIFICATION_DESCRIPTION"]._serialized_end = (
+        31845
+    )
     _globals["_RCVACCESSION_RCVCLASSIFICATIONS"]._serialized_start = 32818
     _globals["_RCVACCESSION_RCVCLASSIFICATIONS"]._serialized_end = 33257
     _globals["_CLASSIFIEDRECORD"]._serialized_start = 33300

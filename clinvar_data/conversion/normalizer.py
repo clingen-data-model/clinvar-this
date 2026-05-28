@@ -101,7 +101,9 @@ class DnaNormalizer:
                 )
             return VcfVariant(chrom=chrom, pos=pos, ref=ref, alt=alt)
         except (normalize.RefEqualsAltError, normalize.WrongRefError) as e:
-            logger.info("Skipping normalization because of error (will write out though): %s", e)
+            logger.info(
+                "Skipping normalization because of error (will write out though): %s", e
+            )
             return variant
 
 
@@ -142,7 +144,9 @@ def vcf_variant_from_variant_archive(
                 and sequence_location.HasField("reference_allele_vcf")
                 and sequence_location.HasField("alternate_allele_vcf")
             ):
-                chrom = clinvar_public.Chromosome.Name(sequence_location.chr)[len("CHROMOSOME_") :]
+                chrom = clinvar_public.Chromosome.Name(sequence_location.chr)[
+                    len("CHROMOSOME_") :
+                ]
                 if chrom in CHROMS_WITH_SEQ:
                     return VcfVariant(
                         chrom=f"chr{chrom}",
@@ -154,7 +158,9 @@ def vcf_variant_from_variant_archive(
 
 
 def write_vcf_variant_to_va(
-    va: VariationArchive, vcf_variant: VcfVariant, assembly: typing.Literal["GRCh37", "GRCh38"]
+    va: VariationArchive,
+    vcf_variant: VcfVariant,
+    assembly: typing.Literal["GRCh37", "GRCh38"],
 ):
     """Write VCF variant coordinates to a ``VariationArchive``."""
     if not va.HasField("classified_record"):
@@ -199,9 +205,13 @@ class VariationArchiveNormalizer:
         fasta_ref_hg38: typing.Optional[str] = None,
     ):
         #: Normalizer to use for GRCh37.
-        self.normalizer_hg19 = AmbiguousDnaNormalizer(fasta_ref_hg19) if fasta_ref_hg19 else None
+        self.normalizer_hg19 = (
+            AmbiguousDnaNormalizer(fasta_ref_hg19) if fasta_ref_hg19 else None
+        )
         #: Normalizer to use for GRCh38.
-        self.normalizer_hg38 = AmbiguousDnaNormalizer(fasta_ref_hg38) if fasta_ref_hg38 else None
+        self.normalizer_hg38 = (
+            AmbiguousDnaNormalizer(fasta_ref_hg38) if fasta_ref_hg38 else None
+        )
 
     def normalize(self, va: VariationArchive) -> typing.List[VariationArchive]:
         """Normalize the VCF variant in ``va``.
@@ -243,7 +253,8 @@ class VariationArchiveNormalizer:
             else:
                 matched_vcfs[vcf_variant.alt] = MatchedVcfVariants(hg38=vcf_variant)
         return [
-            self._create_copy_with_variant(va, matched_vcf) for matched_vcf in matched_vcfs.values()
+            self._create_copy_with_variant(va, matched_vcf)
+            for matched_vcf in matched_vcfs.values()
         ]
 
     def _create_copy_with_variant(

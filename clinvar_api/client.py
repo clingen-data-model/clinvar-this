@@ -47,7 +47,9 @@ class Config(BaseModel):
 class _SubmitData:
     """Helper class to reduce redundancy betwee sync/async `sumbit_data`."""
 
-    def __init__(self, submission_container: models.SubmissionContainer, config: Config):
+    def __init__(
+        self, submission_container: models.SubmissionContainer, config: Config
+    ):
         self.submission_container = submission_container
         self.config = config
 
@@ -55,7 +57,9 @@ class _SubmitData:
         self.headers: typing.Dict[str, str] = {}
         self.post_data: typing.Dict[str, typing.Any] = {}
 
-    def before_post(self) -> typing.Tuple[str, typing.Dict[str, str], typing.Dict[str, typing.Any]]:
+    def before_post(
+        self,
+    ) -> typing.Tuple[str, typing.Dict[str, str], typing.Dict[str, typing.Any]]:
         logger.info("Submitting with config %s", self.config)
 
         url_prefix = ENDPOINT_URL_TEST if self.config.use_testing else ENDPOINT_URL_PROD
@@ -69,7 +73,9 @@ class _SubmitData:
         payload = self.submission_container.to_msg().model_dump(mode="json")
         logger.debug("Payload data is %s", json.dumps(payload, indent=2))
         cleaned_payload = common.clean_for_json(payload)
-        logger.debug("Cleaned payload data is %s", json.dumps(cleaned_payload, indent=2))
+        logger.debug(
+            "Cleaned payload data is %s", json.dumps(cleaned_payload, indent=2)
+        )
         if self.config.presubmission_validation:
             logger.info("Validating payload...")
             schemas.validate_submission_payload(cleaned_payload)
@@ -79,7 +85,11 @@ class _SubmitData:
 
         post_data = {
             "actions": [
-                {"type": "AddData", "targetDb": "clinvar", "data": {"content": cleaned_payload}}
+                {
+                    "type": "AddData",
+                    "targetDb": "clinvar",
+                    "data": {"content": cleaned_payload},
+                }
             ]
         }
         logger.debug("Overall POST payload is %s", post_data)
@@ -89,7 +99,9 @@ class _SubmitData:
         if httpx.codes.is_success(response.status_code):
             logger.info("API returned OK - %s", response.status_code)
             if response.status_code == 204:  # no content, on dry-run
-                logger.info("Server returned '204: No Content', constructing fake created message.")
+                logger.info(
+                    "Server returned '204: No Content', constructing fake created message."
+                )
                 return models.Created(id="--NONE--dry-run-result--")
             else:
                 created_msg = msg.Created.model_validate_json(response.content)
@@ -100,12 +112,18 @@ class _SubmitData:
             error_obj = models.Error.from_msg(error_msg)
             logger.debug("Full server response is %s", response.json())
             if hasattr(error_obj, "errors"):
-                raise exceptions.SubmissionFailed(f"ClinVar submission failed: {error_obj.message}")
+                raise exceptions.SubmissionFailed(
+                    f"ClinVar submission failed: {error_obj.message}"
+                )
             else:
-                raise exceptions.SubmissionFailed(f"ClinVar submission failed: {error_obj.message}")
+                raise exceptions.SubmissionFailed(
+                    f"ClinVar submission failed: {error_obj.message}"
+                )
 
 
-def submit_data(submission_container: models.SubmissionContainer, config: Config) -> models.Created:
+def submit_data(
+    submission_container: models.SubmissionContainer, config: Config
+) -> models.Created:
     """Submit new data to ClinVar API (sync).
 
     :param submission_container: The submission data.
@@ -115,7 +133,9 @@ def submit_data(submission_container: models.SubmissionContainer, config: Config
     """
     helper = _SubmitData(submission_container, config)
     url, headers, post_data = helper.before_post()
-    response = httpx.post(url, headers=headers, json=post_data, verify=config.verify_ssl)
+    response = httpx.post(
+        url, headers=headers, json=post_data, verify=config.verify_ssl
+    )
     return helper.after_post(response)
 
 
@@ -219,7 +239,9 @@ class _RetrieveStatus:
         return more_urls, status_obj
 
     def after_get_more_urls(
-        self, status_obj: models.SubmissionStatus, more_results: typing.Dict[str, httpx.Response]
+        self,
+        status_obj: models.SubmissionStatus,
+        more_results: typing.Dict[str, httpx.Response],
     ) -> RetrieveStatusResult:
         summaries = {}
         for url, response in more_results.items():
@@ -283,7 +305,9 @@ async def async_retrieve_status(
                 )
                 tasks[url] = client.get(url)
 
-            more_results = dict(zip(tasks.keys(), await asyncio.gather(*tasks.values())))
+            more_results = dict(
+                zip(tasks.keys(), await asyncio.gather(*tasks.values()))
+            )
         return helper.after_get_more_urls(status_obj, more_results)
     else:
         return helper.after_first_get_failure(response)
