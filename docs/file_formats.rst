@@ -286,6 +286,7 @@ Supported citation sources include:
 
 - ``citations`` extensions attached to evidence lines
 - PubMed IDs (``pmid``) on reported documents
+- DOI IDs (``doi``) on reported documents
 - IRI reference URLs attached to reported documents
 
 Comment Details
