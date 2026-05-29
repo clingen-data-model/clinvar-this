@@ -7,6 +7,7 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 
 from types import MappingProxyType
 
+from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.core.models import MappableConcept, iriReference
 from ga4gh.va_spec.aac_2017 import (
     AmpAscoCapClassificationCode,
@@ -22,6 +23,7 @@ from ga4gh.va_spec.base import (
     VariantPrognosticProposition,
     VariantTherapeuticResponseProposition,
 )
+from ga4gh.vrs.models import Allele
 from logzero import logfile
 from pydantic.dataclasses import dataclass
 
@@ -160,6 +162,7 @@ class ClinicalImpactTransformer(
         self,
         statement: VariantClinicalSignificanceStatement,
         observed_in: list[SubmissionObservedInSomatic],
+        variant: CategoricalVariant | Allele,
         variant_hgvs: str | None = None,
         submitted_assembly: Assembly | None = None,
     ) -> SubmissionClinicalImpactSubmission:
@@ -179,6 +182,7 @@ class ClinicalImpactTransformer(
 
         :param statement: GKS statement (therapeutic, diagnostic, or prognostic) to transform
         :param observed_in: List of distinct observations
+        :param variant: Variant associated to statement
         :param variant_hgvs: The HGVS expression for a variant, if found
         :param submitted_assembly: The genome assembly used to call the variant.
             Required if `variant_hgvs` is non-null
@@ -193,6 +197,7 @@ class ClinicalImpactTransformer(
                 statement=statement,
                 submitted_assembly=submitted_assembly,
                 observed_in=observed_in,
+                variant=variant,
                 variant_hgvs=variant_hgvs,
             ),
             clinical_impact_classification=SomaticClinicalImpactClassification(
