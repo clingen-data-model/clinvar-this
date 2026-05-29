@@ -10,6 +10,7 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 """
 
 import json
+import re
 from abc import ABC, abstractmethod
 from typing import Any, Generic, Iterable, Literal, TextIO, TypeVar, get_type_hints
 
@@ -78,6 +79,9 @@ SubmissionT = TypeVar(
     SubmissionClinicalImpactSubmission,
     SubmissionOncogenicitySubmission,
 )
+
+
+CLINVAR_ACCESSION_RE = re.compile(r"^[A-Z]{3}\d{9}(\.\d+)?$")
 
 
 class BatchMetadata(BaseModel):
@@ -491,8 +495,30 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         proposition = statement.proposition
         variant = proposition.subjectVariant
 
+        clinvar_accession = next(
+            (
+                str(extension.value)
+                for extension in statement.extensions or []
+                if extension.name == "clinvar_accession"
+            ),
+            None,
+        )
+
+        if clinvar_accession and not CLINVAR_ACCESSION_RE.match(clinvar_accession):
+            logger.warning(
+                "Statement ID %s ClinVar accession %s does not match ClinVar regex",
+                statement.id,
+                clinvar_accession,
+            )
+            clinvar_accession = None
+
+        record_status = (
+            RecordStatus.NOVEL if clinvar_accession is None else RecordStatus.UPDATE
+        )
+
         return {
-            "record_status": RecordStatus.NOVEL,
+            "clinvar_accession": clinvar_accession,
+            "record_status": record_status,
             "local_id": self._get_local_id(variant),
             "submitted_assembly": submitted_assembly,
             "local_key": statement.id,
@@ -595,6 +621,9 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         Local ID will use the proposition's variant ID or name.
 
         Local Key will use the `record`'s ID.
+
+        If `clinvar_accession` extension exists in `statement`, then this variant will
+        have record status as `update` rather than `novel`.
 
         :param statement: GKS statement instance to transform
         :param observed_in: List of distinct ClinVar somatic observations associated
