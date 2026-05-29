@@ -525,6 +525,27 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             RecordStatus.NOVEL if clinvar_accession is None else RecordStatus.UPDATE
         )
 
+        clinvar_accession = next(
+            (
+                str(extension.value)
+                for extension in statement.extensions or []
+                if extension.name == "clinvar_accession"
+            ),
+            None,
+        )
+
+        if clinvar_accession and not CLINVAR_ACCESSION_RE.match(clinvar_accession):
+            logger.warning(
+                "Statement ID %s ClinVar accession %s does not match ClinVar regex",
+                statement.id,
+                clinvar_accession,
+            )
+            clinvar_accession = None
+
+        record_status = (
+            RecordStatus.NOVEL if clinvar_accession is None else RecordStatus.UPDATE
+        )
+
         return {
             "clinvar_accession": clinvar_accession,
             "record_status": record_status,
