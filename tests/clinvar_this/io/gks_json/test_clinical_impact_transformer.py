@@ -172,13 +172,13 @@ def civic_aid7_submission():
             comment="Combination treatment of BRAF inhibitor dabrafenib and MEK inhibitor trametinib is recommended for adjuvant treatment of stage III or recurrent melanoma with BRAF V600E mutation detected by the approved THxID kit, as well as first line treatment for metastatic melanoma. The treatments are FDA approved based on studies including the Phase III COMBI-V, COMBI-D and COMBI-AD Trials. Combination therapy is now recommended above BRAF inhibitor monotherapy. Cutaneous squamous-cell carcinoma and keratoacanthoma occur at lower rates with combination therapy than with BRAF inhibitor alone.",
             citation=[
                 SubmissionCitation(url="https://civicdb.org/links/evidence/3758"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25399551"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="25399551"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6178"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/28891408"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="28891408"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6940"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/23020132"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="23020132"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6938"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/25265492"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="25265492"),
             ],
             drug_for_therapeutic_assertion="Dabrafenib;Trametinib",
         ),
@@ -228,39 +228,27 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2997"
                         ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/23982599"
-                        ),
+                        SubmissionCitation(db=CitationDb.PUBMED, id="23982599"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2629"
                         ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/18408761"
-                        ),
+                        SubmissionCitation(db=CitationDb.PUBMED, id="18408761"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/982"
                         ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/24439929"
-                        ),
+                        SubmissionCitation(db=CitationDb.PUBMED, id="24439929"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/968"
                         ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/26515464"
-                        ),
+                        SubmissionCitation(db=CitationDb.PUBMED, id="26515464"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/883"
                         ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/22452895"
-                        ),
+                        SubmissionCitation(db=CitationDb.PUBMED, id="22452895"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/879"
                         ),
-                        SubmissionCitation(
-                            url="https://pubmed.ncbi.nlm.nih.gov/23816960"
-                        ),
+                        SubmissionCitation(db=CitationDb.PUBMED, id="23816960"),
                     ],
                     drug_for_therapeutic_assertion="Afatinib",
                 ),
@@ -308,9 +296,9 @@ def civic_aid9_submission():
             citation=[
                 # SubmissionCitation(url="https://identifiers.org/civic.mpid:1594"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/4846"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24705250"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="24705250"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24705254"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="24705254"),
             ],
         ),
     )
@@ -365,17 +353,17 @@ def civic_aid20_submission():
             citation=[
                 # SubmissionCitation(url="https://identifiers.org/civic.mpid:12"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7159"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24112392"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="24112392"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7158"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/21641636"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="21641636"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7157"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/21502544"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="21502544"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7156"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/20008640"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="20008640"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/103"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/24594804"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="24594804"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/1552"),
-                SubmissionCitation(url="https://pubmed.ncbi.nlm.nih.gov/27404270"),
+                SubmissionCitation(db=CitationDb.PUBMED, id="27404270"),
             ],
         ),
     )
@@ -522,7 +510,7 @@ def test_citations(
     for citation in civic_aid20_submission_cpy["clinical_impact_classification"][
         "citation"
     ]:
-        if citation["url"].startswith("https://civicdb.org"):
+        if (citation.get("url") or "").startswith("https://civicdb.org"):
             new_citations.append(citation)
     civic_aid20_submission_cpy["clinical_impact_classification"]["citation"] = (
         new_citations
