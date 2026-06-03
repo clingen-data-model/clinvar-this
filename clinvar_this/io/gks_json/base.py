@@ -397,31 +397,62 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         Citations may be sourced from:
         - `citations` extensions attached to evidence lines
         - PubMed IDs (`pmid`) on reported documents
+        - DOI IDs (`doi`) on reported documents
         - IRI reference URLs attached to reported documents
 
-        If all reported documents contain PMIDs, citations are submitted using
-        PubMed database identifiers. Otherwise, citations fall back to URL-based
-        references.
+        Each citation is submitted using the most specific reference available:
+        PMID, DOI, or URL.
 
         :param evidence_lines: Evidence lines that may contain supporting citation
             information.
         :return: A deduplicated list of submission citations.
         """
 
-        citations: list[SubmissionCitation] = []
-        reported_in_documents: list[Document | iriReference] = []
-
         def add_citation(citation: SubmissionCitation) -> None:
             """Append a citation if it has not already been added."""
             if citation not in citations:
                 citations.append(citation)
 
+        def add_reference(
+            reference: str | iriReference | Document | None,
+        ) -> None:
+            """Convert a reference into a SubmissionCitation."""
+            if reference is None:
+                return
+
+            if isinstance(reference, str):
+                add_citation(SubmissionCitation(url=reference))
+                return
+
+            if isinstance(reference, iriReference):
+                add_citation(SubmissionCitation(url=reference.root))
+                return
+
+            if isinstance(reference, Document):
+                if reference.pmid:
+                    add_citation(
+                        SubmissionCitation(
+                            db=CitationDb.PUBMED,
+                            id=reference.pmid,
+                        )
+                    )
+                elif reference.doi:
+                    add_citation(
+                        SubmissionCitation(
+                            db=CitationDb.DOI,
+                            id=reference.doi,
+                        )
+                    )
+
+        citations: list[SubmissionCitation] = []
+        reported_in_documents: list[Document | iriReference] = []
+
         for evidence_line in evidence_lines:
             # Temporary support for citations stored in extensions
             for ext in evidence_line.extensions or []:
                 if ext.name == "citations" and isinstance(ext.value, list):
-                    for citation_url in ext.value:
-                        add_citation(SubmissionCitation(url=citation_url))
+                    for citation in ext.value:
+                        add_reference(citation)
 
             reported_in_documents.extend(evidence_line.reportedIn or [])
 
@@ -434,32 +465,8 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
                 reported_in_documents.extend(reported_in or [])
 
-        documents_have_all_pmids = all(
-            isinstance(document, Document) and document.pmid
-            for document in reported_in_documents
-        )
-
-        if documents_have_all_pmids:
-            for document in reported_in_documents:
-                add_citation(
-                    SubmissionCitation(
-                        db=CitationDb.PUBMED,
-                        id=document.pmid,
-                    )
-                )
-
-            return citations
-
         for document in reported_in_documents:
-            if isinstance(document, Document):
-                if document.pmid:
-                    add_citation(
-                        SubmissionCitation(
-                            url=f"https://pubmed.ncbi.nlm.nih.gov/{document.pmid}"
-                        )
-                    )
-            elif isinstance(document, iriReference):
-                add_citation(SubmissionCitation(url=document.root))
+            add_reference(document)
 
         return citations
 
@@ -503,27 +510,6 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             Submission container
         """
         proposition = statement.proposition
-
-        clinvar_accession = next(
-            (
-                str(extension.value)
-                for extension in statement.extensions or []
-                if extension.name == "clinvar_accession"
-            ),
-            None,
-        )
-
-        if clinvar_accession and not CLINVAR_ACCESSION_RE.match(clinvar_accession):
-            logger.warning(
-                "Statement ID %s ClinVar accession %s does not match ClinVar regex",
-                statement.id,
-                clinvar_accession,
-            )
-            clinvar_accession = None
-
-        record_status = (
-            RecordStatus.NOVEL if clinvar_accession is None else RecordStatus.UPDATE
-        )
 
         clinvar_accession = next(
             (
