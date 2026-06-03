@@ -2,6 +2,7 @@
 
 import json
 import re
+from copy import deepcopy
 
 import pytest
 from conftest import DATA_DIR
@@ -73,6 +74,38 @@ def civic_aid6(clinical_impact_gks_json_data):
 def civic_aid7(clinical_impact_gks_json_data):
     """Create test fixture for CIViC AID7"""
     return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[1])
+
+
+@pytest.fixture(scope="module")
+def civic_aid7_allele(clinical_impact_gks_json_data):
+    """Create test fixture for CIViC AID7 where a VRS Allele is used instead"""
+    params = deepcopy(clinical_impact_gks_json_data[1])
+    subject_variant = {
+        "id": "ga4gh:VA.W6xsV-aFm9yT2Bic5cFAV2j0rll6KK5R",
+        "type": "Allele",
+        "name": "NM_004333.6:c.1799T>A",
+        "digest": "W6xsV-aFm9yT2Bic5cFAV2j0rll6KK5R",
+        "expressions": [{"syntax": "hgvs.c", "value": "NM_004333.6:c.1799T>A"}],
+        "location": {
+            "id": "ga4gh:SL.8HBKs9fzlT3tKWlM03REjkg_0Om6Y33U",
+            "type": "SequenceLocation",
+            "digest": "8HBKs9fzlT3tKWlM03REjkg_0Om6Y33U",
+            "sequenceReference": {
+                "type": "SequenceReference",
+                "refgetAccession": "SQ.aKMPEJgmlZXt_F6gRY5cUG3THH2n-GUa",
+                "moleculeType": "RNA",
+            },
+            "start": 2024,
+            "end": 2025,
+        },
+        "state": {"type": "LiteralSequenceExpression", "sequence": "A"},
+    }
+
+    for el in params["hasEvidenceLines"]:
+        el["targetProposition"]["subjectVariant"] = subject_variant
+
+    params["proposition"]["subjectVariant"] = subject_variant
+    return VariantClinicalSignificanceStatement(**params)
 
 
 @pytest.fixture(scope="module")
@@ -564,3 +597,15 @@ def test_no_evidence_lines(
         ignore_order=True,
     )
     assert diff == {}
+
+
+def test_vrs_allele(clinical_impact_transformer, civic_aid7_allele, civic_metadata):
+    """Test that VRS Alleles work correctly"""
+    actual = clinical_impact_transformer.records_to_submission_container(
+        [civic_aid7_allele], civic_metadata
+    )
+    assert len(actual.clinical_impact_submission) == 1
+    assert len(actual.clinical_impact_submission[0].variant_set.variant) == 1
+    assert actual.clinical_impact_submission[0].variant_set.variant[0].model_dump(
+        exclude_none=True
+    ) == {"hgvs": "NM_004333.6:c.1799T>A", "gene": [{"symbol": "BRAF"}]}

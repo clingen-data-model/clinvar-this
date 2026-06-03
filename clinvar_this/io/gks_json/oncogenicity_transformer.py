@@ -5,7 +5,9 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 
 """
 
+from ga4gh.cat_vrs.models import CategoricalVariant
 from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
+from ga4gh.vrs.models import Allele
 
 from clinvar_api.models import (
     Assembly,
@@ -34,6 +36,7 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
         self,
         statement: VariantOncogenicityStatement,
         observed_in: list[SubmissionObservedInSomatic],
+        variant: CategoricalVariant | Allele,
         variant_hgvs: str | None = None,
         submitted_assembly: Assembly | None = None,
     ) -> SubmissionOncogenicitySubmission:
@@ -50,6 +53,7 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
 
         :param statement: GKS statement (oncogenicity) to transform
         :param observed_in: List of distinct observations
+        :param variant: Variant associated to statement
         :param variant_hgvs: The HGVS expression for a variant, if found
         :param submitted_assembly: The genome assembly used to call the variant.
             Required if `variant_hgvs` is non-null
@@ -61,9 +65,10 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
         return SubmissionOncogenicitySubmission(
             **self._build_shared_submission_kwargs(
                 statement=statement,
-                submitted_assembly=submitted_assembly,
                 observed_in=observed_in,
+                variant=variant,
                 variant_hgvs=variant_hgvs,
+                submitted_assembly=submitted_assembly,
             ),
             oncogenicity_classification=SomaticOncogenicityClassification(
                 **self._build_shared_classification_kwargs(
