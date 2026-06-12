@@ -177,7 +177,7 @@ Fields marked with ``*`` are required by ClinVar This for ClinVar submission gen
    :header-rows: 1
 
    * - ClinVar Field
-     - VA-Spec Statement Field
+     - VA-Spec Statement Field(s)
 
    * - ClinVar accession
      - ``extensions``
@@ -219,7 +219,7 @@ Fields marked with ``*`` are required by ClinVar This for ClinVar submission gen
      - ``hasEvidenceLines[0].targetProposition.predicate``
 
    * - Citation
-     - ``hasEvidenceLines``
+     - ``reportedIn`` and ``hasEvidenceLines``
 
    * - Comment
      - ``description``
@@ -283,8 +283,7 @@ Citation Details
 ----------------
 
 Supported citation sources include:
-
-- ``citations`` extensions attached to evidence lines
+- Statement documents (``reported_in``)
 - PubMed IDs (``pmid``) on reported documents
 - DOI IDs (``doi``) on reported documents
 - IRI reference URLs attached to reported documents

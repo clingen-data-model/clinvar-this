@@ -171,6 +171,7 @@ def civic_aid7_submission():
             assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
             comment="Combination treatment of BRAF inhibitor dabrafenib and MEK inhibitor trametinib is recommended for adjuvant treatment of stage III or recurrent melanoma with BRAF V600E mutation detected by the approved THxID kit, as well as first line treatment for metastatic melanoma. The treatments are FDA approved based on studies including the Phase III COMBI-V, COMBI-D and COMBI-AD Trials. Combination therapy is now recommended above BRAF inhibitor monotherapy. Cutaneous squamous-cell carcinoma and keratoacanthoma occur at lower rates with combination therapy than with BRAF inhibitor alone.",
             citation=[
+                SubmissionCitation(url="https://civicdb.org/links/assertion/7"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/3758"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="25399551"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6178"),
@@ -225,6 +226,7 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
                     comment="L858R is among the most common sensitizing EGFR mutations in NSCLC, and is assessed via DNA mutational analysis, including Sanger sequencing and next generation sequencing methods. Tyrosine kinase inhibitor afatinib is FDA approved as a first line systemic therapy in NSCLC with sensitizing EGFR mutation (civic.EID:2997).",
                     citation=[
                         # SubmissionCitation(url="https://identifiers.org/civic.mpid:33"),
+                        SubmissionCitation(url="https://civicdb.org/links/assertion/6"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2997"
                         ),
@@ -295,6 +297,7 @@ def civic_aid9_submission():
             comment="ACVR1 G328V mutations occur within the kinase domain, leading to activation of downstream signaling. Exclusively seen in high-grade pediatric gliomas, supporting diagnosis of diffuse intrinsic pontine glioma.",
             citation=[
                 # SubmissionCitation(url="https://identifiers.org/civic.mpid:1594"),
+                SubmissionCitation(url="https://civicdb.org/links/assertion/9"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/4846"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24705250"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
@@ -352,6 +355,7 @@ def civic_aid20_submission():
             comment="BRAF V600E was associated with worse prognosis in Phase II and III colorectal cancer, with a stronger effect in MSI-Low or MSI-Stable tumors. In metastatic CRC, V600E was associated with worse prognosis, and meta-analysis showed BRAF mutation in CRC associated with multiple negative prognostic markers.",
             citation=[
                 # SubmissionCitation(url="https://identifiers.org/civic.mpid:12"),
+                SubmissionCitation(url="https://civicdb.org/links/assertion/20"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7159"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24112392"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7158"),
@@ -503,19 +507,8 @@ def test_citations(
     amp_asco_cap_assertion_criteria,
     civic_aid20_submission,
 ):
-    """Test that citations work correctly when evidence line does not have `hasEvidenceItems` and only has extension for citations"""
-    # only care about civic urls in this use case
+    """Test that citations work correctly when evidence line does not have `hasEvidenceItems` and only has statement.reportedIn for citations"""
     civic_aid20_submission_cpy = civic_aid20_submission.model_dump()
-    new_citations = []
-    for citation in civic_aid20_submission_cpy["clinical_impact_classification"][
-        "citation"
-    ]:
-        if (citation.get("url") or "").startswith("https://civicdb.org"):
-            new_citations.append(citation)
-    civic_aid20_submission_cpy["clinical_impact_classification"]["citation"] = (
-        new_citations
-    )
-
     expected = SubmissionContainer(
         assertion_criteria=amp_asco_cap_assertion_criteria,
         clinical_impact_submission=[civic_aid20_submission_cpy],
@@ -559,7 +552,7 @@ def test_no_evidence_lines(
 ):
     """Test that statement with no evidence lines works correctly
 
-    Do not expect any citation or assertion_type_for_clinical_impact
+    Do not expect assertion_type_for_clinical_impact
     """
     assertion_copy = civic_aid20.model_copy(deep=True)
     assertion_copy.hasEvidenceLines = None
@@ -569,7 +562,6 @@ def test_no_evidence_lines(
     )
 
     submission_copy = civic_aid20_submission.model_dump()
-    submission_copy["clinical_impact_classification"]["citation"] = []
     submission_copy["clinical_impact_classification"][
         "assertion_type_for_clinical_impact"
     ] = None

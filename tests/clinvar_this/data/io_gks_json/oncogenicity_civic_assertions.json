@@ -41,7 +41,14 @@
         }
       ],
       "reportedIn": [
-        "https://civicdb.org/links/assertion/202"
+        "https://civicdb.org/links/assertion/202",
+        "https://civicdb.org/links/evidence/74",
+        "https://civicdb.org/links/evidence/12800",
+        "https://civicdb.org/links/evidence/78",
+        "https://civicdb.org/links/evidence/12711",
+        "https://civicdb.org/links/evidence/12805",
+        "https://civicdb.org/links/evidence/11723",
+        "https://civicdb.org/links/evidence/12709"
       ],
       "proposition": {
         "type": "VariantOncogenicityProposition",
@@ -231,20 +238,6 @@
       "hasEvidenceLines": [
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/74",
-                "https://civicdb.org/links/evidence/12800",
-                "https://civicdb.org/links/evidence/78",
-                "https://civicdb.org/links/evidence/12711",
-                "https://civicdb.org/links/evidence/12805",
-                "https://civicdb.org/links/evidence/11723",
-                "https://civicdb.org/links/evidence/12709"
-              ]
-            }
-          ],
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
@@ -451,20 +444,6 @@
         },
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/74",
-                "https://civicdb.org/links/evidence/12800",
-                "https://civicdb.org/links/evidence/78",
-                "https://civicdb.org/links/evidence/12711",
-                "https://civicdb.org/links/evidence/12805",
-                "https://civicdb.org/links/evidence/11723",
-                "https://civicdb.org/links/evidence/12709"
-              ]
-            }
-          ],
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
@@ -671,20 +650,6 @@
         },
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/74",
-                "https://civicdb.org/links/evidence/12800",
-                "https://civicdb.org/links/evidence/78",
-                "https://civicdb.org/links/evidence/12711",
-                "https://civicdb.org/links/evidence/12805",
-                "https://civicdb.org/links/evidence/11723",
-                "https://civicdb.org/links/evidence/12709"
-              ]
-            }
-          ],
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
@@ -891,20 +856,6 @@
         },
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/74",
-                "https://civicdb.org/links/evidence/12800",
-                "https://civicdb.org/links/evidence/78",
-                "https://civicdb.org/links/evidence/12711",
-                "https://civicdb.org/links/evidence/12805",
-                "https://civicdb.org/links/evidence/11723",
-                "https://civicdb.org/links/evidence/12709"
-              ]
-            }
-          ],
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
@@ -1111,20 +1062,6 @@
         },
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/74",
-                "https://civicdb.org/links/evidence/12800",
-                "https://civicdb.org/links/evidence/78",
-                "https://civicdb.org/links/evidence/12711",
-                "https://civicdb.org/links/evidence/12805",
-                "https://civicdb.org/links/evidence/11723",
-                "https://civicdb.org/links/evidence/12709"
-              ]
-            }
-          ],
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",

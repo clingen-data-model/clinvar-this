@@ -72,6 +72,7 @@ class OncogenicityTransformer(GksJsonTransformer[VariantOncogenicityStatement]):
             ),
             oncogenicity_classification=SomaticOncogenicityClassification(
                 **self._build_shared_classification_kwargs(
+                    statement.reportedIn,
                     statement.description,
                     None,
                     evidence_lines,
