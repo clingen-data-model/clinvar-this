@@ -512,7 +512,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             (
                 str(extension.value)
                 for extension in statement.extensions or []
-                if extension.name == "clinvar_accession"
+                if extension.name == "clinvarAccession"
             ),
             None,
         )

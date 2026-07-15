@@ -230,7 +230,7 @@ Fields marked with ``*`` are required by ClinVar This for ClinVar submission gen
 ClinVar Accession Details
 -------------------------
 
-A ``clinvar_accession`` extension may be provided to identify an existing ClinVar record for update submission.
+A ``clinvarAccession`` extension may be provided to identify an existing ClinVar record for update submission.
 
 When the extension contains a valid ClinVar accession, the generated record status is ``update``.
 
