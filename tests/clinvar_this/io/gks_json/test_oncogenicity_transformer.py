@@ -193,7 +193,7 @@ def test_clinvar_accession_extension(
         update={
             "extensions": [
                 *(civic_aid202.extensions or []),
-                Extension(name="clinvar_accession", value=clinvar_accession),
+                Extension(name="clinvarAccession", value=clinvar_accession),
             ]
         },
     )
