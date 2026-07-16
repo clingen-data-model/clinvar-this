@@ -50,7 +50,7 @@ def civic_metadata():
     return BatchMetadata(
         affected_status=AffectedStatus.UNKNOWN,
         collection_method=CollectionMethod.CURATION,
-        submitted_assembly=Assembly.GRCH37,
+        submitted_assembly=Assembly.NOT_APPLICABLE,
     )
 
 
@@ -82,7 +82,7 @@ def civic_aid202_submission():
     return SubmissionOncogenicitySubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:113",
-        submitted_assembly=Assembly.GRCH37,
+        submitted_assembly=Assembly.NOT_APPLICABLE,
         local_key="civic.aid:202",
         observed_in=[
             SubmissionObservedInSomatic(
