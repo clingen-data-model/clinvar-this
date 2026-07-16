@@ -184,10 +184,9 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
     ) -> str | None:
         """Retrieve a HGVS expression for a variant
 
-        For Categorical Variants, checks the first constraint for an expression. Only
-        support extracting from DefiningAlleleConstraints at the moment.
-        If no constraints found, then checks the expressions extension. These are cases
-        where an HGVS expression is unable to be representing using VRS.
+        For Categorical Variants, checks the first constraint for expressions. Only
+        support extracting from DefiningAlleleConstraints at the moment. Then
+        checks members for expressions.
 
         For VRS Alleles, checks the `expressions` field.
 
@@ -200,7 +199,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         """
 
         def get_hgvs(
-            expressions: list[Expression] | None,
+            expressions: list[Expression],
             syntax: Literal[Syntax.HGVS_C, Syntax.HGVS_G],
         ) -> str | None:
             """Get a HGVS expression from a list of expressions for a given syntax
@@ -224,30 +223,21 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
             return None
 
-        expressions = None
+        expressions = []
 
         if isinstance(variant, CategoricalVariant):
-            if getattr(variant, "constraints", None) and variant.constraints:
-                constraint = variant.constraints[0]
+            if constraints := variant.constraints:
+                constraint = constraints[0]
                 if isinstance(constraint.root, DefiningAlleleConstraint) and isinstance(
                     constraint.root.allele, Allele
                 ):
-                    expressions = constraint.root.allele.expressions
-            else:
-                # Case where a VRS Allele is unable to be represented, can store
-                # expressions as an extension named 'expressions'
-                try:
-                    expressions_ext = next(
-                        ext
-                        for ext in variant.extensions or []
-                        if ext.name == "expressions"
-                    ).value
-                    if isinstance(expressions_ext, list):
-                        expressions = [Expression(**ext) for ext in expressions_ext]
-                except (StopIteration, TypeError):
-                    return None
+                    expressions = constraint.root.allele.expressions or []
+
+            if members := variant.members:
+                for member in members:
+                    expressions.extend(member.root.expressions or [])
         else:
-            expressions = variant.expressions
+            expressions = variant.expressions or []
 
         return get_hgvs(expressions, Syntax.HGVS_C) or get_hgvs(
             expressions, Syntax.HGVS_G
@@ -402,8 +392,8 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         - DOI IDs (`doi`) on reported documents
         - IRI reference URLs attached to reported documents
 
-        Each citation is submitted using the most specific reference available:
-        PMID, DOI, or URL.
+        NOTE: If documents are provided, then we will filter out URLs for
+        PubMed and DOI in favor of submitting DB identifiers.
 
         :param reported_in: Documents in which the statement is reported
         :param evidence_lines: Evidence lines that may contain supporting citation
@@ -439,13 +429,19 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                             id=reference.pmid,
                         )
                     )
-                elif reference.doi:
+
+                if reference.doi:
                     add_citation(
                         SubmissionCitation(
                             db=CitationDb.DOI,
                             id=reference.doi,
                         )
                     )
+
+                for url in reference.urls or []:
+                    # ignore duplicate pubmed and doi urls
+                    if "doi.org" not in url and "pubmed" not in url:
+                        add_reference(url)
 
         citations: list[SubmissionCitation] = []
         reported_in_documents: list[Document | iriReference] = reported_in or []
