@@ -422,19 +422,19 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                 return
 
             if isinstance(reference, Document):
-                if reference.pmid:
+                if pmid := reference.pmid:
                     add_citation(
                         SubmissionCitation(
                             db=CitationDb.PUBMED,
-                            id=reference.pmid,
+                            id=pmid,
                         )
                     )
 
-                if reference.doi:
+                if doi := reference.doi:
                     add_citation(
                         SubmissionCitation(
                             db=CitationDb.DOI,
-                            id=reference.doi,
+                            id=doi,
                         )
                     )
 
