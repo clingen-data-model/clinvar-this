@@ -390,12 +390,14 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
     @staticmethod
     def _get_citations(
+        reported_in: list[Document | iriReference] | None,
         evidence_lines: list[EvidenceLine],
     ) -> list[SubmissionCitation]:
-        """Extract unique citations from evidence lines and related evidence items.
+        """Extract unique citations from statement documents, evidence lines,
+        and related evidence items.
 
         Citations may be sourced from:
-        - `citations` extensions attached to evidence lines
+        - Statement documents (reported_in field)
         - PubMed IDs (`pmid`) on reported documents
         - DOI IDs (`doi`) on reported documents
         - IRI reference URLs attached to reported documents
@@ -403,6 +405,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         Each citation is submitted using the most specific reference available:
         PMID, DOI, or URL.
 
+        :param reported_in: Documents in which the statement is reported
         :param evidence_lines: Evidence lines that may contain supporting citation
             information.
         :return: A deduplicated list of submission citations.
@@ -445,15 +448,9 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                     )
 
         citations: list[SubmissionCitation] = []
-        reported_in_documents: list[Document | iriReference] = []
+        reported_in_documents: list[Document | iriReference] = reported_in or []
 
         for evidence_line in evidence_lines:
-            # Temporary support for citations stored in extensions
-            for ext in evidence_line.extensions or []:
-                if ext.name == "citations" and isinstance(ext.value, list):
-                    for citation in ext.value:
-                        add_reference(citation)
-
             reported_in_documents.extend(evidence_line.reportedIn or [])
 
             for evidence_item in evidence_line.hasEvidenceItems or []:
@@ -549,6 +546,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
     def _build_shared_classification_kwargs(
         self,
+        reported_in: list[Document | iriReference] | None,
         description: str | None,
         therapeutic: TherapyGroup | MappableConcept | None,
         evidence_lines: list[EvidenceLine] | None,
@@ -557,6 +555,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         """Build classification kwargs that are used in both clinical impact and
         oncogenicity classifications
 
+        :param reported_in: Documents in which the statement is reported
         :param description: Description for GKS statement
         :param therapeutic: Therapeutic for GKS statement
         :param evidence_lines: Evidence lines associated to GKS statement
@@ -566,7 +565,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         """
         return {
             "comment": self._get_comment(description, therapeutic),
-            "citation": self._get_citations(evidence_lines or []),
+            "citation": self._get_citations(reported_in, evidence_lines or []),
             "date_last_evaluated": self._get_date_last_evaluated(contributions or []),
         }
 

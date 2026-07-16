@@ -26,7 +26,13 @@
         }
       },
       "reportedIn": [
-        "https://civicdb.org/links/assertion/6"
+        "https://civicdb.org/links/assertion/6",
+        "https://civicdb.org/links/evidence/2997",
+        "https://civicdb.org/links/evidence/879",
+        "https://civicdb.org/links/evidence/982",
+        "https://civicdb.org/links/evidence/883",
+        "https://civicdb.org/links/evidence/968",
+        "https://civicdb.org/links/evidence/2629"
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
@@ -233,19 +239,6 @@
       "hasEvidenceLines": [
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/2997",
-                "https://civicdb.org/links/evidence/879",
-                "https://civicdb.org/links/evidence/982",
-                "https://civicdb.org/links/evidence/883",
-                "https://civicdb.org/links/evidence/968",
-                "https://civicdb.org/links/evidence/2629"
-              ]
-            }
-          ],
           "targetProposition": {
             "type": "VariantTherapeuticResponseProposition",
             "subjectVariant": {
@@ -2132,7 +2125,11 @@
         }
       },
       "reportedIn": [
-        "https://civicdb.org/links/assertion/7"
+        "https://civicdb.org/links/assertion/7",
+        "https://civicdb.org/links/evidence/6178",
+        "https://civicdb.org/links/evidence/6938",
+        "https://civicdb.org/links/evidence/3758",
+        "https://civicdb.org/links/evidence/6940"
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
@@ -2330,17 +2327,6 @@
       "hasEvidenceLines": [
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/6178",
-                "https://civicdb.org/links/evidence/6938",
-                "https://civicdb.org/links/evidence/3758",
-                "https://civicdb.org/links/evidence/6940"
-              ]
-            }
-          ],
           "targetProposition": {
             "type": "VariantTherapeuticResponseProposition",
             "subjectVariant": {
@@ -3852,7 +3838,13 @@
         }
       },
       "reportedIn": [
-        "https://civicdb.org/links/assertion/20"
+        "https://civicdb.org/links/assertion/20",
+        "https://civicdb.org/links/evidence/103",
+        "https://civicdb.org/links/evidence/7156",
+        "https://civicdb.org/links/evidence/7157",
+        "https://civicdb.org/links/evidence/7158",
+        "https://civicdb.org/links/evidence/7159",
+        "https://civicdb.org/links/evidence/1552"
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
@@ -4050,19 +4042,6 @@
       "hasEvidenceLines": [
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/103",
-                "https://civicdb.org/links/evidence/7156",
-                "https://civicdb.org/links/evidence/7157",
-                "https://civicdb.org/links/evidence/7158",
-                "https://civicdb.org/links/evidence/7159",
-                "https://civicdb.org/links/evidence/1552"
-              ]
-            }
-          ],
           "targetProposition": {
             "type": "VariantPrognosticProposition",
             "subjectVariant": {
@@ -5612,7 +5591,9 @@
         }
       },
       "reportedIn": [
-        "https://civicdb.org/links/assertion/9"
+        "https://civicdb.org/links/assertion/9",
+        "https://civicdb.org/links/evidence/4846",
+        "https://civicdb.org/links/evidence/6955"
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
@@ -5797,15 +5778,6 @@
       "hasEvidenceLines": [
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/4846",
-                "https://civicdb.org/links/evidence/6955"
-              ]
-            }
-          ],
           "targetProposition": {
             "type": "VariantDiagnosticProposition",
             "subjectVariant": {
@@ -6479,7 +6451,15 @@
         }
       ],
       "reportedIn": [
-        "https://civicdb.org/links/assertion/200"
+        "https://civicdb.org/links/assertion/200",
+        "https://civicdb.org/links/evidence/12157",
+        "https://civicdb.org/links/evidence/12598",
+        "https://civicdb.org/links/evidence/12708",
+        "https://civicdb.org/links/evidence/8851",
+        "https://civicdb.org/links/evidence/12056",
+        "https://civicdb.org/links/evidence/12711",
+        "https://civicdb.org/links/evidence/11867",
+        "https://civicdb.org/links/evidence/11876"
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
@@ -6670,21 +6650,6 @@
       "hasEvidenceLines": [
         {
           "type": "EvidenceLine",
-          "extensions": [
-            {
-              "name": "citations",
-              "value": [
-                "https://civicdb.org/links/evidence/12157",
-                "https://civicdb.org/links/evidence/12598",
-                "https://civicdb.org/links/evidence/12708",
-                "https://civicdb.org/links/evidence/8851",
-                "https://civicdb.org/links/evidence/12056",
-                "https://civicdb.org/links/evidence/12711",
-                "https://civicdb.org/links/evidence/11867",
-                "https://civicdb.org/links/evidence/11876"
-              ]
-            }
-          ],
           "targetProposition": {
             "type": "VariantTherapeuticResponseProposition",
             "subjectVariant": {

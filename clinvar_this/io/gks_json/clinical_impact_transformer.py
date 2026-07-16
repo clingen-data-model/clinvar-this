@@ -202,6 +202,7 @@ class ClinicalImpactTransformer(
             ),
             clinical_impact_classification=SomaticClinicalImpactClassification(
                 **self._build_shared_classification_kwargs(
+                    statement.reportedIn,
                     statement.description,
                     drug_context.therapeutic,
                     evidence_lines,
