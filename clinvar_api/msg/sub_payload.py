@@ -14,6 +14,7 @@ class Assembly(Enum):
     HG19 = "hg19"
     NCBI36 = "NCBI36"
     HG18 = "hg18"
+    NOT_APPLICABLE = "not applicable"
 
 
 class Chromosome(Enum):

@@ -13,6 +13,7 @@ import json
 import re
 from abc import ABC, abstractmethod
 from typing import Any, Generic, Iterable, Literal, TextIO, TypeVar, get_type_hints
+from typing_extensions import Self
 
 from ga4gh.cat_vrs.models import CategoricalVariant, DefiningAlleleConstraint
 from ga4gh.core.models import MappableConcept, iriReference
@@ -33,7 +34,7 @@ from ga4gh.va_spec.base import (
 from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
 from ga4gh.vrs.models import Allele, Expression, MolecularVariation, Syntax
 from logzero import logfile, logger
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator
 
 from clinvar_api.models import (
     AffectedStatus,
@@ -95,6 +96,27 @@ class BatchMetadata(BaseModel):
     affected_status: AffectedStatus = AffectedStatus.UNKNOWN
     collection_method: CollectionMethod = CollectionMethod.NOT_PROVIDED
     submitted_assembly: Assembly = Assembly.GRCH38
+
+    @model_validator(mode="after")
+    def validate_submitted_assembly(self) -> Self:
+        """Validate submitted assembly
+
+        not applicable should only be used for curation methods: curation,
+        literature only, and phenotyping only
+        """
+        allowed_collection_methods = [
+            CollectionMethod.CURATION.value,
+            CollectionMethod.LITERATURE_ONLY.value,
+            CollectionMethod.PHENOTYPING_ONLY.value,
+        ]
+        if (
+            self.submitted_assembly == Assembly.NOT_APPLICABLE
+            and self.collection_method.value not in allowed_collection_methods
+        ):
+            msg = f"`submittedAssembly` '{Assembly.NOT_APPLICABLE.value}' is only allowed with one of the following collection methods: {allowed_collection_methods}"
+            raise ValueError(msg)
+
+        return self
 
 
 def batch_metadata_from_mapping(

@@ -53,7 +53,7 @@ def civic_metadata():
     return BatchMetadata(
         affected_status=AffectedStatus.UNKNOWN,
         collection_method=CollectionMethod.CURATION,
-        submitted_assembly=Assembly.GRCH37,
+        submitted_assembly=Assembly.NOT_APPLICABLE,
     )
 
 
@@ -141,7 +141,7 @@ def civic_aid7_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:12",
-        submitted_assembly=Assembly.GRCH37,
+        submitted_assembly=Assembly.NOT_APPLICABLE,
         local_key="civic.aid:7",
         observed_in=[
             SubmissionObservedInSomatic(
@@ -202,7 +202,7 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
             SubmissionClinicalImpactSubmission(
                 record_status=RecordStatus.NOVEL,
                 local_id="civic.mpid:33",
-                submitted_assembly=Assembly.GRCH37,
+                submitted_assembly=Assembly.NOT_APPLICABLE,
                 local_key="civic.aid:6",
                 observed_in=[
                     SubmissionObservedInSomatic(
@@ -284,7 +284,7 @@ def civic_aid9_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:1594",
-        submitted_assembly=Assembly.GRCH37,
+        submitted_assembly=Assembly.NOT_APPLICABLE,
         local_key="civic.aid:9",
         observed_in=[
             SubmissionObservedInSomatic(
@@ -349,7 +349,7 @@ def civic_aid20_submission():
     return SubmissionClinicalImpactSubmission(
         record_status=RecordStatus.NOVEL,
         local_id="civic.mpid:12",
-        submitted_assembly=Assembly.GRCH37,
+        submitted_assembly=Assembly.NOT_APPLICABLE,
         local_key="civic.aid:20",
         observed_in=[
             SubmissionObservedInSomatic(
@@ -501,6 +501,22 @@ def test_records_to_submission_container(
         ignore_order=True,
     )
     assert diff == {}
+
+
+def test_batch_metadata_not_applicable():
+    """Test that not applicable submitted assembly raises error with invalid collection method"""
+
+    with pytest.raises(
+        ValueError,
+        match=re.escape(
+            "`submittedAssembly` 'not applicable' is only allowed with one of the following collection methods: ['curation', 'literature only', 'phenotyping only']"
+        ),
+    ):
+        BatchMetadata(
+            submitted_assembly=Assembly.NOT_APPLICABLE,
+            collection_method=CollectionMethod.CASE_CONTROL,
+            affected_status=AffectedStatus.UNKNOWN,
+        )
 
 
 def test_records_to_submission_container_diagnostic(
