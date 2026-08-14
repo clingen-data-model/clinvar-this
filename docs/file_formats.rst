@@ -243,9 +243,7 @@ Variant Details
 
 For Categorical Variants:
 
-  - HGVS expressions are extracted from the first supported ``DefiningAlleleConstraint`` in ``proposition.subjectVariant.constraints``.
-
-  - If no supported constraint is present, HGVS expressions may be provided using an ``expressions`` extension on ``proposition.subjectVariant``.
+  - HGVS expressions are extracted from the first supported ``DefiningAlleleConstraint`` in ``proposition.subjectVariant.constraints``, or ``proposition.subjectVariant.members``.
 
 For Alleles:
 
@@ -287,6 +285,9 @@ Supported citation sources include:
 - PubMed IDs (``pmid``) on reported documents
 - DOI IDs (``doi``) on reported documents
 - IRI reference URLs attached to reported documents
+
+If documents are provided, then PubMed and DOI urls will be filtered out in
+favor of submitting DB identifiers.
 
 Comment Details
 ---------------

@@ -174,12 +174,19 @@ def civic_aid7_submission():
                 SubmissionCitation(url="https://civicdb.org/links/assertion/7"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/3758"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="25399551"),
+                SubmissionCitation(url="https://civicdb.org/links/source/353"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6178"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="28891408"),
+                SubmissionCitation(url="https://civicdb.org/links/source/2475"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6940"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="23020132"),
+                SubmissionCitation(url="https://civicdb.org/links/source/103"),
+                SubmissionCitation(
+                    url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3549295"
+                ),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6938"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="25265492"),
+                SubmissionCitation(url="https://civicdb.org/links/source/2671"),
             ],
             drug_for_therapeutic_assertion="Dabrafenib;Trametinib",
         ),
@@ -225,32 +232,43 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
                     assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
                     comment="L858R is among the most common sensitizing EGFR mutations in NSCLC, and is assessed via DNA mutational analysis, including Sanger sequencing and next generation sequencing methods. Tyrosine kinase inhibitor afatinib is FDA approved as a first line systemic therapy in NSCLC with sensitizing EGFR mutation (civic.EID:2997).",
                     citation=[
-                        # SubmissionCitation(url="https://identifiers.org/civic.mpid:33"),
                         SubmissionCitation(url="https://civicdb.org/links/assertion/6"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2997"
                         ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="23982599"),
+                        SubmissionCitation(url="https://civicdb.org/links/source/1725"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/2629"
                         ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="18408761"),
+                        SubmissionCitation(url="https://civicdb.org/links/source/1525"),
+                        SubmissionCitation(
+                            url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2748240"
+                        ),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/982"
                         ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="24439929"),
+                        SubmissionCitation(url="https://civicdb.org/links/source/679"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/968"
                         ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="26515464"),
+                        SubmissionCitation(url="https://civicdb.org/links/source/669"),
+                        SubmissionCitation(
+                            url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4770737"
+                        ),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/883"
                         ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="22452895"),
+                        SubmissionCitation(url="https://civicdb.org/links/source/594"),
                         SubmissionCitation(
                             url="https://civicdb.org/links/evidence/879"
                         ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="23816960"),
+                        SubmissionCitation(url="https://civicdb.org/links/source/592"),
                     ],
                     drug_for_therapeutic_assertion="Afatinib",
                 ),
@@ -278,7 +296,7 @@ def civic_aid9_submission():
         condition_set=SubmissionConditionSetSomatic(
             condition=[
                 SubmissionCondition(
-                    name="Diffuse Midline Glioma, H3 K27M-mutant",
+                    name="Diffuse Midline Glioma, H3 K27-altered",
                 )
             ]
         ),
@@ -296,12 +314,19 @@ def civic_aid9_submission():
             assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.DIAGNOSTIC_SUPPORTS_DIAGNOSIS,
             comment="ACVR1 G328V mutations occur within the kinase domain, leading to activation of downstream signaling. Exclusively seen in high-grade pediatric gliomas, supporting diagnosis of diffuse intrinsic pontine glioma.",
             citation=[
-                # SubmissionCitation(url="https://identifiers.org/civic.mpid:1594"),
                 SubmissionCitation(url="https://civicdb.org/links/assertion/9"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/4846"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24705250"),
+                SubmissionCitation(url="https://civicdb.org/links/source/2149"),
+                SubmissionCitation(
+                    url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4282994"
+                ),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24705254"),
+                SubmissionCitation(url="https://civicdb.org/links/source/2680"),
+                SubmissionCitation(
+                    url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3997489"
+                ),
             ],
         ),
     )
@@ -354,20 +379,34 @@ def civic_aid20_submission():
             assertion_type_for_clinical_impact=SomaticClinicalImpactAssertionType.PROGNOSTIC_POOR_OUTCOME,
             comment="BRAF V600E was associated with worse prognosis in Phase II and III colorectal cancer, with a stronger effect in MSI-Low or MSI-Stable tumors. In metastatic CRC, V600E was associated with worse prognosis, and meta-analysis showed BRAF mutation in CRC associated with multiple negative prognostic markers.",
             citation=[
-                # SubmissionCitation(url="https://identifiers.org/civic.mpid:12"),
                 SubmissionCitation(url="https://civicdb.org/links/assertion/20"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7159"),
+                SubmissionCitation(url="https://civicdb.org/links/source/110"),
+                SubmissionCitation(
+                    url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3940924"
+                ),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24112392"),
+                SubmissionCitation(url="https://civicdb.org/links/source/2785"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7158"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="21641636"),
+                SubmissionCitation(url="https://civicdb.org/links/source/2784"),
+                SubmissionCitation(
+                    url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3159415"
+                ),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7157"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="21502544"),
+                SubmissionCitation(url="https://civicdb.org/links/source/1931"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/7156"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="20008640"),
+                SubmissionCitation(url="https://civicdb.org/links/source/2783"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/103"),
+                SubmissionCitation(
+                    url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3940924"
+                ),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24594804"),
                 SubmissionCitation(url="https://civicdb.org/links/evidence/1552"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="27404270"),
+                SubmissionCitation(url="https://civicdb.org/links/source/1027"),
             ],
         ),
     )
