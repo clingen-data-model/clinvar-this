@@ -439,9 +439,14 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                     )
 
                 for url in reference.urls or []:
-                    # ignore duplicate pubmed and doi urls
-                    if "doi.org" not in url and "pubmed" not in url:
-                        add_reference(url)
+                    # ignore duplicate doi and pubmed urls
+                    if "doi.org" in url and doi:
+                        continue
+
+                    if "pubmed" in url and pmid:
+                        continue
+
+                    add_reference(url)
 
         citations: list[SubmissionCitation] = []
         reported_in_documents: list[Document | iriReference] = reported_in or []
