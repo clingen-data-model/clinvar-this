@@ -440,10 +440,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
                 for url in reference.urls or []:
                     # ignore duplicate doi and pubmed urls
-                    if "doi.org" in url and doi:
-                        continue
-
-                    if "pubmed" in url and pmid:
+                    if ("doi.org" in url and doi) or ("pubmed" in url and pmid):
                         continue
 
                     add_reference(url)
