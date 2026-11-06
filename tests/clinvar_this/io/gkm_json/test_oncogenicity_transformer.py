@@ -1,4 +1,4 @@
-"""Module for testing GKS Oncogenicity Transformer"""
+"""Module for testing GKM Oncogenicity Transformer"""
 
 
 import pytest
@@ -31,9 +31,9 @@ from clinvar_api.models.sub_payload import (
 from clinvar_api.msg.sub_payload import (
     Assembly,
 )
-from clinvar_this.io.gks_json import read_gks_json_file
-from clinvar_this.io.gks_json.base import BatchMetadata
-from clinvar_this.io.gks_json.oncogenicity_transformer import (
+from clinvar_this.io.gkm_json import read_gkm_json_file
+from clinvar_this.io.gkm_json.base import BatchMetadata
+from clinvar_this.io.gkm_json.oncogenicity_transformer import (
     OncogenicityTransformer,
 )
 
@@ -55,20 +55,20 @@ def civic_metadata():
 
 
 @pytest.fixture
-def oncogenicity_gks_json_data(gks_input_format: str) -> list[dict]:
+def oncogenicity_gkm_json_data(gkm_input_format: str) -> list[dict]:
     """Load the same CIViC records through either public input path."""
     filename = "oncogenicity_civic_assertions.json"
-    directory = BUNDLE_DIR if gks_input_format == "bundle" else NATIVE_DIR
-    schema = str(BUNDLE_DIR / "bundle.schema.json") if gks_input_format == "bundle" else None
-    _, records = read_gks_json_file(str(directory / filename), schema_path=schema)
+    directory = BUNDLE_DIR if gkm_input_format == "bundle" else NATIVE_DIR
+    schema = str(BUNDLE_DIR / "bundle.schema.json") if gkm_input_format == "bundle" else None
+    _, records = read_gkm_json_file(str(directory / filename), schema_path=schema)
     return [record.model_dump(exclude_none=True, serialize_as_any=True) for record in records]
 
 
 
 @pytest.fixture
-def civic_aid202(oncogenicity_gks_json_data):
+def civic_aid202(oncogenicity_gkm_json_data):
     """Create test fixture for CIViC AID 202"""
-    return VariantOncogenicityStatement(**oncogenicity_gks_json_data[0])
+    return VariantOncogenicityStatement(**oncogenicity_gkm_json_data[0])
 
 
 @pytest.fixture
