@@ -253,7 +253,7 @@ class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
                 if isinstance(constraint.root, DefiningAlleleConstraint) and isinstance(
                     constraint.root.allele, Allele
                 ):
-                    expressions = constraint.root.allele.expressions or []
+                    expressions = list(constraint.root.allele.expressions or [])
 
             if members := variant.members:
                 for member in members:
@@ -477,7 +477,7 @@ class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
                     add_reference(url)
 
         citations: list[SubmissionCitation] = []
-        reported_in_documents: list[Document | iriReference] = reported_in or []
+        reported_in_documents: list[Document | iriReference] = list(reported_in or [])
 
         for evidence_line in evidence_lines:
             reported_in_documents.extend(evidence_line.reportedIn or [])
