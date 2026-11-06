@@ -1,11 +1,10 @@
 """Module for testing GKS Clinical Impact Transformer"""
 
-import json
 import re
 from copy import deepcopy
 
 import pytest
-from conftest import DATA_DIR
+from conftest import BUNDLE_DIR, NATIVE_DIR
 from deepdiff import DeepDiff
 from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
 
@@ -35,19 +34,20 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactClassificationDescription,
 )
 from clinvar_this import exceptions
+from clinvar_this.io.gks_json import read_gks_json_file
 from clinvar_this.io.gks_json.base import BatchMetadata
 from clinvar_this.io.gks_json.clinical_impact_transformer import (
     ClinicalImpactTransformer,
 )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def clinical_impact_transformer():
     """Create test fixture for ClinicalImpactTransformer"""
     return ClinicalImpactTransformer()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_metadata():
     """Create test fixture for CIViC metadata to use"""
     return BatchMetadata(
@@ -57,26 +57,30 @@ def civic_metadata():
     )
 
 
-@pytest.fixture(scope="module")
-def clinical_impact_gks_json_data():
-    """Create test fixture for AAC 2017 GKS JSON data"""
-    with (DATA_DIR / "clinical_impact_civic_assertions.json").open() as f:
-        return json.load(f)["gks_records"]
+@pytest.fixture
+def clinical_impact_gks_json_data(gks_input_format: str) -> list[dict]:
+    """Load the same CIViC records through either public input path."""
+    filename = "clinical_impact_civic_assertions.json"
+    directory = BUNDLE_DIR if gks_input_format == "bundle" else NATIVE_DIR
+    schema = str(BUNDLE_DIR / "bundle.schema.json") if gks_input_format == "bundle" else None
+    _, records = read_gks_json_file(str(directory / filename), schema_path=schema)
+    return [record.model_dump(exclude_none=True, serialize_as_any=True) for record in records]
 
 
-@pytest.fixture(scope="module")
+
+@pytest.fixture
 def civic_aid6(clinical_impact_gks_json_data):
     """Create test fixture for CIViC AID6"""
     return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[0])
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid7(clinical_impact_gks_json_data):
     """Create test fixture for CIViC AID7"""
     return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[1])
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid7_allele(clinical_impact_gks_json_data):
     """Create test fixture for CIViC AID7 where a VRS Allele is used instead"""
     params = deepcopy(clinical_impact_gks_json_data[1])
@@ -108,25 +112,25 @@ def civic_aid7_allele(clinical_impact_gks_json_data):
     return VariantClinicalSignificanceStatement(**params)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid20(clinical_impact_gks_json_data):
     """Create test fixture for CIViC AID20"""
     return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[2])
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid9(clinical_impact_gks_json_data):
     """Create test fixture for CIViC AID9"""
     return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[3])
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid200(clinical_impact_gks_json_data):
     """Create test fixture for CIViC AID200"""
     return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[4])
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def amp_asco_cap_assertion_criteria():
     """Create test fixture for AMP/ASCO/CAP 2017 assertion criteria"""
     return SubmissionAssertionCriteria(
@@ -135,7 +139,7 @@ def amp_asco_cap_assertion_criteria():
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid7_submission():
     """Create test fixture for CIViC AID7 submission"""
     return SubmissionClinicalImpactSubmission(
@@ -172,19 +176,15 @@ def civic_aid7_submission():
             comment="Combination treatment of BRAF inhibitor dabrafenib and MEK inhibitor trametinib is recommended for adjuvant treatment of stage III or recurrent melanoma with BRAF V600E mutation detected by the approved THxID kit, as well as first line treatment for metastatic melanoma. The treatments are FDA approved based on studies including the Phase III COMBI-V, COMBI-D and COMBI-AD Trials. Combination therapy is now recommended above BRAF inhibitor monotherapy. Cutaneous squamous-cell carcinoma and keratoacanthoma occur at lower rates with combination therapy than with BRAF inhibitor alone.",
             citation=[
                 SubmissionCitation(url="https://civicdb.org/links/assertion/7"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/3758"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="25399551"),
                 SubmissionCitation(url="https://civicdb.org/links/source/353"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/6178"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="28891408"),
                 SubmissionCitation(url="https://civicdb.org/links/source/2475"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/6940"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="23020132"),
                 SubmissionCitation(url="https://civicdb.org/links/source/103"),
                 SubmissionCitation(
                     url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3549295"
                 ),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/6938"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="25265492"),
                 SubmissionCitation(url="https://civicdb.org/links/source/2671"),
             ],
@@ -193,7 +193,7 @@ def civic_aid7_submission():
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria):
     """Create test fixture for CIViC AID6 and AID7 submissions"""
     return SubmissionContainer(
@@ -233,40 +233,22 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
                     comment="L858R is among the most common sensitizing EGFR mutations in NSCLC, and is assessed via DNA mutational analysis, including Sanger sequencing and next generation sequencing methods. Tyrosine kinase inhibitor afatinib is FDA approved as a first line systemic therapy in NSCLC with sensitizing EGFR mutation (civic.EID:2997).",
                     citation=[
                         SubmissionCitation(url="https://civicdb.org/links/assertion/6"),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/2997"
-                        ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="23982599"),
                         SubmissionCitation(url="https://civicdb.org/links/source/1725"),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/2629"
-                        ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="18408761"),
                         SubmissionCitation(url="https://civicdb.org/links/source/1525"),
                         SubmissionCitation(
                             url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2748240"
                         ),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/982"
-                        ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="24439929"),
                         SubmissionCitation(url="https://civicdb.org/links/source/679"),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/968"
-                        ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="26515464"),
                         SubmissionCitation(url="https://civicdb.org/links/source/669"),
                         SubmissionCitation(
                             url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4770737"
                         ),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/883"
-                        ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="22452895"),
                         SubmissionCitation(url="https://civicdb.org/links/source/594"),
-                        SubmissionCitation(
-                            url="https://civicdb.org/links/evidence/879"
-                        ),
                         SubmissionCitation(db=CitationDb.PUBMED, id="23816960"),
                         SubmissionCitation(url="https://civicdb.org/links/source/592"),
                     ],
@@ -278,7 +260,7 @@ def civic_tr_submissions(civic_aid7_submission, amp_asco_cap_assertion_criteria)
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid9_submission():
     """Create test fixture for CIViC AID9 submission"""
     return SubmissionClinicalImpactSubmission(
@@ -315,13 +297,11 @@ def civic_aid9_submission():
             comment="ACVR1 G328V mutations occur within the kinase domain, leading to activation of downstream signaling. Exclusively seen in high-grade pediatric gliomas, supporting diagnosis of diffuse intrinsic pontine glioma.",
             citation=[
                 SubmissionCitation(url="https://civicdb.org/links/assertion/9"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/4846"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24705250"),
                 SubmissionCitation(url="https://civicdb.org/links/source/2149"),
                 SubmissionCitation(
                     url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4282994"
                 ),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/6955"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24705254"),
                 SubmissionCitation(url="https://civicdb.org/links/source/2680"),
                 SubmissionCitation(
@@ -332,7 +312,7 @@ def civic_aid9_submission():
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_diagnostic_submissions(
     civic_aid9_submission, amp_asco_cap_assertion_criteria
 ):
@@ -343,7 +323,7 @@ def civic_diagnostic_submissions(
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid20_submission():
     """Create test fixture for CIViC AID20 submission"""
     return SubmissionClinicalImpactSubmission(
@@ -380,31 +360,25 @@ def civic_aid20_submission():
             comment="BRAF V600E was associated with worse prognosis in Phase II and III colorectal cancer, with a stronger effect in MSI-Low or MSI-Stable tumors. In metastatic CRC, V600E was associated with worse prognosis, and meta-analysis showed BRAF mutation in CRC associated with multiple negative prognostic markers.",
             citation=[
                 SubmissionCitation(url="https://civicdb.org/links/assertion/20"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/7159"),
                 SubmissionCitation(url="https://civicdb.org/links/source/110"),
                 SubmissionCitation(
                     url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3940924"
                 ),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24112392"),
                 SubmissionCitation(url="https://civicdb.org/links/source/2785"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/7158"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="21641636"),
                 SubmissionCitation(url="https://civicdb.org/links/source/2784"),
                 SubmissionCitation(
                     url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3159415"
                 ),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/7157"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="21502544"),
                 SubmissionCitation(url="https://civicdb.org/links/source/1931"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/7156"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="20008640"),
                 SubmissionCitation(url="https://civicdb.org/links/source/2783"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/103"),
                 SubmissionCitation(
                     url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3940924"
                 ),
                 SubmissionCitation(db=CitationDb.PUBMED, id="24594804"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/1552"),
                 SubmissionCitation(db=CitationDb.PUBMED, id="27404270"),
                 SubmissionCitation(url="https://civicdb.org/links/source/1027"),
             ],
@@ -412,7 +386,7 @@ def civic_aid20_submission():
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_prognostic_submissions(
     civic_aid20_submission, amp_asco_cap_assertion_criteria
 ):
@@ -432,7 +406,7 @@ def test_read_file(
     civic_aid200,
 ):
     """Ensure that read_file method works correctly"""
-    path = DATA_DIR / "clinical_impact_civic_assertions.json"
+    path = NATIVE_DIR / "clinical_impact_civic_assertions.json"
     expected_assertions = [
         civic_aid6,
         civic_aid7,
@@ -449,7 +423,7 @@ def test_read_file(
     assert actual == expected_assertions
 
     with pytest.raises(exceptions.InvalidFormat, match="Error decoding GKS JSON"):
-        clinical_impact_transformer.read_file(path=DATA_DIR / "invalid_json.json")
+        clinical_impact_transformer.read_file(path=NATIVE_DIR / "invalid_json.json")
 
     with pytest.raises(
         exceptions.InvalidFormat,
@@ -457,7 +431,7 @@ def test_read_file(
             "Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)"
         ),
     ):
-        clinical_impact_transformer.read_file(path=DATA_DIR / "no_gks_records.json")
+        clinical_impact_transformer.read_file(path=NATIVE_DIR / "no_gks_records.json")
 
 
 def test_records_to_submission_container(
@@ -480,14 +454,14 @@ def test_records_to_submission_container(
     assert diff == {}
 
     # Test TherapeuticSubstituteGroup
-    civic_aid7_cpy = civic_aid7.model_copy()
+    civic_aid7_cpy = civic_aid7.model_copy(deep=True)
     civic_aid7_cpy.hasEvidenceLines[
         0
     ].targetProposition.object.membershipOperator = "OR"
     actual = clinical_impact_transformer.records_to_submission_container(
         [civic_aid7_cpy], civic_metadata
     )
-    civic_tr_submissions_cpy = civic_tr_submissions.model_copy()
+    civic_tr_submissions_cpy = civic_tr_submissions.model_copy(deep=True)
     civic_tr_submissions_cpy.clinical_impact_submission.pop(0)
     civic_tr_submissions_cpy = civic_tr_submissions_cpy.model_dump(exclude_none=True)
     civic_tr_submissions_cpy["clinical_impact_submission"][0][
@@ -569,9 +543,13 @@ def test_citations(
         clinical_impact_submission=[civic_aid20_submission_cpy],
     )
 
-    # Ensure hasEvidenceItems is none
     civic_aid20_cpy = civic_aid20.model_copy(deep=True)
-    civic_aid20_cpy.hasEvidenceLines[0].hasEvidenceItems = None
+    # Exercise statement-level citations independently of evidence item traversal.
+    for line in civic_aid20_cpy.hasEvidenceLines:
+        civic_aid20_cpy.reportedIn.extend(line.reportedIn or [])
+        for item in line.hasEvidenceItems or []:
+            civic_aid20_cpy.reportedIn.extend(item.reportedIn or [])
+        line.hasEvidenceItems = None
     actual = clinical_impact_transformer.records_to_submission_container(
         [civic_aid20_cpy], civic_metadata
     )
@@ -617,6 +595,9 @@ def test_no_evidence_lines(
     )
 
     submission_copy = civic_aid20_submission.model_dump()
+    submission_copy["clinical_impact_classification"]["citation"] = [
+        {"url": "https://civicdb.org/links/assertion/20"}
+    ]
     submission_copy["clinical_impact_classification"][
         "assertion_type_for_clinical_impact"
     ] = None
