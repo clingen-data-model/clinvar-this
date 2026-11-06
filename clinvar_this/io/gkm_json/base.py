@@ -1,4 +1,4 @@
-"""Support for I/O of the GKS JSON format to define ClinVar submissions.
+"""Support for I/O of the GKM JSON format to define ClinVar submissions.
 
 Currently only supports:
 * Therapeutic, Diagnostic, and Prognostic Statements that follow
@@ -6,7 +6,7 @@ AMP/ASCO/CAP 2017 guidelines. These will map to `clinical_impact_submission`.
 * Oncogenic Statements that follow ClinGen/CGC/VICC 2022 guidelines. These will map to `oncogenicity_submission`.
 
 Example usage:
-$ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
+$ clinvar-this batch import path_to_gkm_json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
 """
 
 import json
@@ -58,11 +58,11 @@ from clinvar_api.models import (
 from clinvar_this import exceptions
 from clinvar_this.io.base import TransformIO
 
-logfile("gks_json.log")
+logfile("gkm_json.log")
 
-# Supported GKS Statement types for ClinVar Submission
-GksStatementT = TypeVar(
-    "GksStatementT",
+# Supported GKM Statement types for ClinVar Submission
+GkmStatementT = TypeVar(
+    "GkmStatementT",
     VariantClinicalSignificanceStatement,
     VariantOncogenicityStatement,
 )
@@ -85,7 +85,7 @@ CLINVAR_ACCESSION_RE = re.compile(r"^[A-Z]{3}\d{9}(\.\d+)?$")
 
 
 class BatchMetadata(BaseModel):
-    """Batch-wide settings for GKS JSON import.
+    """Batch-wide settings for GKM JSON import.
 
     The properties will be assigned to all variants/samples in the batch.
     """
@@ -142,50 +142,50 @@ def batch_metadata_from_mapping(
     return BatchMetadata(**kwargs)
 
 
-class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
-    """Abstract base class for transforming GKS JSON input data from various formats into submission format"""
+class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
+    """Abstract base class for transforming GKM JSON input data from various formats into submission format"""
 
     submission_container_attribute: SubmissionContainerAttribute
     assertion_criteria: SubmissionAssertionCriteria
-    gks_statement_cls: type[GksStatementT]
+    gkm_statement_cls: type[GkmStatementT]
 
     @classmethod
     def _read_file(
         cls,
         inputf: TextIO,
-    ) -> list[GksStatementT]:
-        """Read GKS statements from a JSON file object.
+    ) -> list[GkmStatementT]:
+        """Read GKM statements from a JSON file object.
 
-        Expects the JSON file to contain a ``gks_records`` key with a list of GKS
+        Expects the JSON file to contain a ``gkm_records`` key with a list of GKM
         statement records compatible with the transformer's configured
-        ``gks_statement_cls``.
+        ``gkm_statement_cls``.
 
-        :param inputf: Text file object containing GKS JSON data
+        :param inputf: Text file object containing GKM JSON data
         :raise exceptions.InvalidFormat: If the input is not valid JSON or does not
-            contain the required ``gks_records`` key
-        :raise ValueError: If one or more GKS records does not validate to the
-            configured GKS statement class
-        :return: Parsed list of GKS statements
+            contain the required ``gkm_records`` key
+        :raise ValueError: If one or more GKM records does not validate to the
+            configured GKM statement class
+        :return: Parsed list of GKM statements
         """
-        statements: list[GksStatementT] = []
+        statements: list[GkmStatementT] = []
 
         try:
             data = json.load(inputf)
         except json.JSONDecodeError as e:
-            err_msg = "Error decoding GKS JSON"
+            err_msg = "Error decoding GKM JSON"
             raise exceptions.InvalidFormat(err_msg) from e
 
-        if "gks_records" not in data:
-            msg = "Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)"
+        if "gkm_records" not in data:
+            msg = "Invalid GKM JSON: missing required key `gkm_records` (must be a list of statements)"
             raise exceptions.InvalidFormat(msg)
 
-        gks_records = data["gks_records"]
+        gkm_records = data["gkm_records"]
 
-        for i, gks_record in enumerate(gks_records):
+        for i, gkm_record in enumerate(gkm_records):
             try:
-                statements.append(cls.gks_statement_cls(**gks_record))
+                statements.append(cls.gkm_statement_cls(**gkm_record))
             except Exception as e:
-                msg = f"Failed to validate GKS statement at index {i} into {cls.gks_statement_cls.__name__}: statement.id={gks_record.get('id')}"
+                msg = f"Failed to validate GKM statement at index {i} into {cls.gkm_statement_cls.__name__}: statement.id={gkm_record.get('id')}"
                 raise ValueError(msg) from e
 
         return statements
@@ -297,8 +297,8 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
     ) -> str | None:
         """Get comment from a statement
 
-        :param description: Description for GKS statement
-        :param therapeutic: Therapeutic for GKS statement, if one exists
+        :param description: Description for GKM statement
+        :param therapeutic: Therapeutic for GKM statement, if one exists
         :return: Comment for a given statement.
             If the therapeutic is a substitute group, the original comment will be
             updated to make note that these are in substitution (deviating from ClinVar
@@ -505,7 +505,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
     def _build_shared_submission_kwargs(
         self,
-        statement: GksStatementT,
+        statement: GkmStatementT,
         observed_in: list[SubmissionObservedInSomatic],
         variant: CategoricalVariant | Allele,
         variant_hgvs: str | None = None,
@@ -514,7 +514,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         """Build submission kwargs that are used in both clinical impact and
         oncogenicity submissions
 
-        :param statement: GKS statement
+        :param statement: GKM statement
         :param observed_in: List of distinct observations
         :param variant: Variant associated to statement
         :param variant_hgvs: The HGVS expression for a variant, if found
@@ -573,10 +573,10 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         oncogenicity classifications
 
         :param reported_in: Documents in which the statement is reported
-        :param description: Description for GKS statement
-        :param therapeutic: Therapeutic for GKS statement
-        :param evidence_lines: Evidence lines associated to GKS statement
-        :param contributions: Contributions for GKS statement
+        :param description: Description for GKM statement
+        :param therapeutic: Therapeutic for GKM statement
+        :param evidence_lines: Evidence lines associated to GKM statement
+        :param contributions: Contributions for GKM statement
         :return: Dictionary containing shared classification kwargs to be passed to the
             classification container
         """
@@ -613,17 +613,17 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
     def _get_method_type(
         self,
-        statement: GksStatementT,
+        statement: GkmStatementT,
         batch_metadata: BatchMetadata,
     ) -> CollectionMethod:
-        """Get the collection method associated with a GKS statement.
+        """Get the collection method associated with a GKM statement.
 
         Attempts to derive the collection method from the statement's
         ``specifiedBy.methodType`` field. If the method type is missing or
         cannot be converted into a supported ``CollectionMethod``, the
         batch-level default collection method is used instead.
 
-        :param statement: GKS statement containing optional method type information
+        :param statement: GKM statement containing optional method type information
         :param batch_metadata: Batch-wide metadata containing fallback collection method settings
         :return: Collection method associated with the statement
         """
@@ -643,12 +643,12 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
     @abstractmethod
     def _get_submission(
         self,
-        statement: GksStatementT,
+        statement: GkmStatementT,
         observed_in: list[SubmissionObservedInSomatic],
         variant_hgvs: str | None = None,
         submitted_assembly: Assembly | None = None,
     ) -> SubmissionT:
-        """Transform a GKS statement into a ClinVar novel submission
+        """Transform a GKM statement into a ClinVar novel submission
 
         Local ID will use the proposition's variant ID or name.
 
@@ -657,7 +657,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
         If `clinvar_accession` extension exists in `statement`, then this variant will
         have record status as `update` rather than `novel`.
 
-        :param statement: GKS statement instance to transform
+        :param statement: GKM statement instance to transform
         :param observed_in: List of distinct ClinVar somatic observations associated
             with the statement
         :param variant_hgvs: The HGVS expression for a variant, if found
@@ -668,18 +668,18 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
     def records_to_submission_container(
         self,
-        statements: list[GksStatementT],
+        statements: list[GkmStatementT],
         batch_metadata: BatchMetadata,
     ) -> SubmissionContainer:
-        """Transform GKS statements into a ClinVar submission container.
+        """Transform GKM statements into a ClinVar submission container.
 
-        Converts all provided GKS statements into ClinVar submission models
+        Converts all provided GKM statements into ClinVar submission models
         and packages them into a ``SubmissionContainer``.
 
         Statements that cannot be transformed due to missing required data
         (for example HGVS or ``ObservedIn`` information) are skipped.
 
-        :param statements: List of parsed GKS statements to transform
+        :param statements: List of parsed GKM statements to transform
         :param batch_metadata: Batch-wide metadata applied to all generated submissions
         :return: ClinVar submission container containing transformed submissions
         """

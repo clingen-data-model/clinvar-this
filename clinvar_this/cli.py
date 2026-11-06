@@ -121,7 +121,7 @@ def batch_list(ctx: click.Context):
     help="Provide meta data settings as KEY=VALUE settings",
 )
 @click.option("--name", required=False, default=None, help="Name of the batch to create or add to")
-@click.option("--schema", "schema_path", type=click.Path(exists=True, dir_okay=False), help="Producer JSON schema required for GKS bundle import")
+@click.option("--schema", "schema_path", type=click.Path(exists=True, dir_okay=False), help="Producer JSON schema required for GKM bundle import")
 @click.pass_context
 def batch_import(
     ctx: click.Context,
@@ -134,7 +134,7 @@ def batch_import(
 
     :param ctx: Click context containing the selected profile.
     :param path: Input data file path.
-    :param schema_path: Producer JSON schema path for GKS bundle input.
+    :param schema_path: Producer JSON schema path for GKM bundle input.
     :param name: Batch name; generated when omitted.
     :param metadata: Batch metadata entries in KEY=VALUE form.
     :raises exceptions.IOException: If batch import rejects the input.

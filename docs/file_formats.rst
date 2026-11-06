@@ -134,23 +134,25 @@ The following shows an example:
 Note that you cannot submission TSV imports with batches that contain removals already.
 
 --------
-GKS native JSON
+GKM native JSON
 ---------------
 
-GKS native JSON import supports `Global Alliance for Genomics and Health (GA4GH) <https://www.ga4gh.org/>`_ `Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact and oncogenicity submissions.
+The Genomic Knowledge Model (GKM) defines shared models for genomic variation and related knowledge. It is part of the broader `GA4GH Genomic Knowledge Standards (GKS) Work Stream <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_.
+
+GKM native JSON import supports `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact and oncogenicity submissions.
 
 This section describes how supported VA-Spec statement fields are mapped into ClinVar submission fields. For additional details on the statement model and terminology, see the `VA-Spec GitHub repository <https://github.com/ga4gh/va-spec/tree/1.1.0-snapshot.2026-02.1>`_.
 
 The currently supported VA-Spec version is `1.1.0-snapshot.2026-02.1 <https://github.com/ga4gh/va-spec/releases/tag/1.1.0-snapshot.2026-02.1>`_.
 
-Input files must be JSON objects containing a top-level ``gks_records`` key. The value of ``gks_records`` must be a list of GKS statements. For example:
+Input files must be JSON objects containing a top-level ``gkm_records`` key. The value of ``gkm_records`` must be a list of GKM statements. For example:
 
 .. code-block::
 
   {
-    "gks_records": [
-      <GKS Statement>,
-      <GKS Statement>
+    "gkm_records": [
+      <GKM Statement>,
+      <GKM Statement>
     ]
   }
 
@@ -405,11 +407,11 @@ You currently cannot use ClinVar Excel to update batches (of course you can prov
 You will need to export to TSV and re-import from there.
 
 
-GKS bundles
+GKM bundles
 -----------
 
-GKS native JSON stores self-contained inline statements in a ``gks_records``
-list. GKS bundles package related objects together, storing shared representations
+GKM native JSON stores self-contained inline statements in a ``gkm_records``
+list. GKM bundles package related objects together, storing shared representations
 once and linking to them by reference. Bundle import requires a producer JSON
 schema and uses `ga4gh.gkm <https://pypi.org/project/ga4gh.gkm/>`_ to validate
 and expand references.

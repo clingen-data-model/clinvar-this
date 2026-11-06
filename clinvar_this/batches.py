@@ -10,11 +10,11 @@ from tabulate import tabulate
 from clinvar_api import client, models
 from clinvar_this import config, exceptions
 from clinvar_this.io import tsv
-from clinvar_this.io.gks_json import (
-    batch_metadata_from_mapping as gks_batch_metadata_from_mapping,
-    AmbiguousGksStatementType,
-    UnsupportedGksStatementType,
-    read_gks_json_file,
+from clinvar_this.io.gkm_json import (
+    batch_metadata_from_mapping as gkm_batch_metadata_from_mapping,
+    AmbiguousGkmStatementType,
+    UnsupportedGkmStatementType,
+    read_gkm_json_file,
 )
 
 
@@ -190,18 +190,18 @@ def _merge_submission_container(
 
 
 def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[str, ...], schema_path: str | None = None):
-    """Import a TSV, GKS native JSON, or GKS bundle file into a batch.
+    """Import a TSV, GKM native JSON, or GKM bundle file into a batch.
 
     :param config: Configuration identifying the submission profile.
     :param name: Batch to create or update.
     :param path: Input data file path.
     :param metadata: Batch metadata entries in KEY=VALUE form.
     :param schema_path: Producer JSON schema path for bundle input.
-    :raises exceptions.IOException: If the input format or GKS statement profile
+    :raises exceptions.IOException: If the input format or GKM statement profile
         is unsupported, or bundle validation fails.
     """
     if schema_path is not None and not path.endswith(".json"):
-        raise exceptions.IOException("--schema is only supported for GKS bundle JSON input")
+        raise exceptions.IOException("--schema is only supported for GKM bundle JSON input")
 
     existing_payloads = list((get_share_dir() / config.profile / name).glob("payload.*.json"))
     if existing_payloads:
@@ -234,18 +234,18 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
         _write_payload(submission_container, config.profile, name)
     elif path.endswith(".json"):
         try:
-            gks_transformer, statements = read_gks_json_file(path, schema_path=schema_path)
+            gkm_transformer, statements = read_gkm_json_file(path, schema_path=schema_path)
         except (
             exceptions.InvalidFormat,
-            UnsupportedGksStatementType,
-            AmbiguousGksStatementType,
+            UnsupportedGkmStatementType,
+            AmbiguousGkmStatementType,
         ) as e:
             raise exceptions.IOException(str(e)) from e
 
-        gks_batch_metadata = gks_batch_metadata_from_mapping(metadata)
-        new_submission_container = gks_transformer.records_to_submission_container(
+        gkm_batch_metadata = gkm_batch_metadata_from_mapping(metadata)
+        new_submission_container = gkm_transformer.records_to_submission_container(
             statements,
-            gks_batch_metadata,
+            gkm_batch_metadata,
         )
 
         if previous_submission_container:
