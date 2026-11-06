@@ -119,7 +119,7 @@
       ],
       "proposition": {
         "type": "VariantOncogenicityProposition",
-        "subjectVariant": {
+        "subject": {
           "id": "civic.mpid:113",
           "type": "CategoricalVariant",
           "name": "RET M918T",
@@ -426,7 +426,7 @@
           ]
         },
         "predicate": "isOncogenicFor",
-        "objectTumorType": {
+        "object": {
           "id": "civic.did:15",
           "conceptType": "Disease",
           "name": "Medullary Thyroid Carcinoma",
@@ -460,7 +460,7 @@
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
-            "methodType": "functional_domain_location",
+            "methodType": "functional_domain_assessment",
             "reportedIn": {
               "id": "pmid:35101336",
               "type": "Document",
@@ -494,7 +494,7 @@
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
-            "methodType": "functional_assay",
+            "methodType": "functional_data_assessment",
             "reportedIn": {
               "id": "pmid:35101336",
               "type": "Document",
@@ -528,7 +528,7 @@
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
-            "methodType": "population_frequency",
+            "methodType": "population_data_assessment",
             "reportedIn": {
               "id": "pmid:35101336",
               "type": "Document",
@@ -562,7 +562,7 @@
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
-            "methodType": "computational_prediction",
+            "methodType": "in_silico_impact_assessment",
             "reportedIn": {
               "id": "pmid:35101336",
               "type": "Document",
@@ -596,7 +596,7 @@
           "specifiedBy": {
             "type": "Method",
             "name": "ClinGen/CGC/VICC Guidelines for Oncogenicity, 2022",
-            "methodType": "somatic_hotspot_recurrence",
+            "methodType": "somatic_hotspot_assessment",
             "reportedIn": {
               "id": "pmid:35101336",
               "type": "Document",

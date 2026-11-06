@@ -104,7 +104,7 @@
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
-        "subjectVariant": {
+        "subject": {
           "id": "civic.mpid:33",
           "type": "CategoricalVariant",
           "name": "EGFR L858R",
@@ -429,7 +429,7 @@
           ]
         },
         "predicate": "hasClinicalSignificanceFor",
-        "objectCondition": {
+        "object": {
           "id": "civic.did:8",
           "conceptType": "Disease",
           "name": "Lung Non-small Cell Carcinoma",
@@ -463,7 +463,7 @@
           "type": "EvidenceLine",
           "targetProposition": {
             "type": "VariantTherapeuticResponseProposition",
-            "subjectVariant": {
+            "subject": {
               "id": "civic.mpid:33",
               "type": "CategoricalVariant",
               "name": "EGFR L858R",
@@ -788,7 +788,7 @@
               ]
             },
             "predicate": "predictsSensitivityTo",
-            "objectTherapeutic": {
+            "object": {
               "id": "civic.tid:146",
               "extensions": [
                 {
@@ -871,7 +871,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:33",
                   "type": "CategoricalVariant",
                   "name": "EGFR L858R",
@@ -1196,7 +1196,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:146",
                   "extensions": [
                     {
@@ -1297,7 +1297,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:33",
                   "type": "CategoricalVariant",
                   "name": "EGFR L858R",
@@ -1622,7 +1622,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:146",
                   "extensions": [
                     {
@@ -1723,7 +1723,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:33",
                   "type": "CategoricalVariant",
                   "name": "EGFR L858R",
@@ -2048,7 +2048,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:146",
                   "extensions": [
                     {
@@ -2149,7 +2149,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:33",
                   "type": "CategoricalVariant",
                   "name": "EGFR L858R",
@@ -2474,7 +2474,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:146",
                   "extensions": [
                     {
@@ -2576,7 +2576,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:33",
                   "type": "CategoricalVariant",
                   "name": "EGFR L858R",
@@ -2901,7 +2901,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:146",
                   "extensions": [
                     {
@@ -3003,7 +3003,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:33",
                   "type": "CategoricalVariant",
                   "name": "EGFR L858R",
@@ -3328,7 +3328,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:146",
                   "extensions": [
                     {
@@ -3478,7 +3478,7 @@
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
-        "subjectVariant": {
+        "subject": {
           "id": "civic.mpid:12",
           "type": "CategoricalVariant",
           "name": "BRAF V600E",
@@ -3802,7 +3802,7 @@
           ]
         },
         "predicate": "hasClinicalSignificanceFor",
-        "objectCondition": {
+        "object": {
           "id": "civic.did:7",
           "conceptType": "Disease",
           "name": "Melanoma",
@@ -3836,7 +3836,7 @@
           "type": "EvidenceLine",
           "targetProposition": {
             "type": "VariantTherapeuticResponseProposition",
-            "subjectVariant": {
+            "subject": {
               "id": "civic.mpid:12",
               "type": "CategoricalVariant",
               "name": "BRAF V600E",
@@ -4160,8 +4160,8 @@
               ]
             },
             "predicate": "predictsSensitivityTo",
-            "objectTherapeutic": {
-              "therapies": [
+            "object": {
+              "concepts": [
                 {
                   "id": "civic.tid:22",
                   "extensions": [
@@ -4286,7 +4286,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -4610,8 +4610,8 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
-                  "therapies": [
+                "object": {
+                  "concepts": [
                     {
                       "id": "civic.tid:22",
                       "extensions": [
@@ -4754,7 +4754,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -5078,8 +5078,8 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
-                  "therapies": [
+                "object": {
+                  "concepts": [
                     {
                       "id": "civic.tid:22",
                       "extensions": [
@@ -5222,7 +5222,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -5546,8 +5546,8 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
-                  "therapies": [
+                "object": {
+                  "concepts": [
                     {
                       "id": "civic.tid:22",
                       "extensions": [
@@ -5691,7 +5691,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -6015,8 +6015,8 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
-                  "therapies": [
+                "object": {
+                  "concepts": [
                     {
                       "id": "civic.tid:22",
                       "extensions": [
@@ -6233,7 +6233,7 @@
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
-        "subjectVariant": {
+        "subject": {
           "id": "civic.mpid:12",
           "type": "CategoricalVariant",
           "name": "BRAF V600E",
@@ -6557,7 +6557,7 @@
           ]
         },
         "predicate": "hasClinicalSignificanceFor",
-        "objectCondition": {
+        "object": {
           "id": "civic.did:11",
           "conceptType": "Disease",
           "name": "Colorectal Cancer",
@@ -6591,7 +6591,7 @@
           "type": "EvidenceLine",
           "targetProposition": {
             "type": "VariantPrognosticProposition",
-            "subjectVariant": {
+            "subject": {
               "id": "civic.mpid:12",
               "type": "CategoricalVariant",
               "name": "BRAF V600E",
@@ -6915,7 +6915,7 @@
               ]
             },
             "predicate": "associatedWithWorseOutcomeFor",
-            "objectCondition": {
+            "object": {
               "id": "civic.did:11",
               "conceptType": "Disease",
               "name": "Colorectal Cancer",
@@ -6973,7 +6973,7 @@
               ],
               "proposition": {
                 "type": "VariantPrognosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -7297,7 +7297,7 @@
                   ]
                 },
                 "predicate": "associatedWithWorseOutcomeFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:11",
                   "conceptType": "Disease",
                   "name": "Colorectal Cancer",
@@ -7372,7 +7372,7 @@
               ],
               "proposition": {
                 "type": "VariantPrognosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -7696,7 +7696,7 @@
                   ]
                 },
                 "predicate": "associatedWithWorseOutcomeFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:11",
                   "conceptType": "Disease",
                   "name": "Colorectal Cancer",
@@ -7771,7 +7771,7 @@
               ],
               "proposition": {
                 "type": "VariantPrognosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -8095,7 +8095,7 @@
                   ]
                 },
                 "predicate": "associatedWithWorseOutcomeFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:11",
                   "conceptType": "Disease",
                   "name": "Colorectal Cancer",
@@ -8171,7 +8171,7 @@
               ],
               "proposition": {
                 "type": "VariantPrognosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:395",
                   "type": "CategoricalVariant",
                   "name": "BRAF Mutation",
@@ -8299,7 +8299,7 @@
                   ]
                 },
                 "predicate": "associatedWithWorseOutcomeFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:11",
                   "conceptType": "Disease",
                   "name": "Colorectal Cancer",
@@ -8374,7 +8374,7 @@
               ],
               "proposition": {
                 "type": "VariantPrognosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:395",
                   "type": "CategoricalVariant",
                   "name": "BRAF Mutation",
@@ -8502,7 +8502,7 @@
                   ]
                 },
                 "predicate": "associatedWithWorseOutcomeFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:11",
                   "conceptType": "Disease",
                   "name": "Colorectal Cancer",
@@ -8577,7 +8577,7 @@
               ],
               "proposition": {
                 "type": "VariantPrognosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:12",
                   "type": "CategoricalVariant",
                   "name": "BRAF V600E",
@@ -8901,7 +8901,7 @@
                   ]
                 },
                 "predicate": "associatedWithWorseOutcomeFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:11",
                   "conceptType": "Disease",
                   "name": "Colorectal Cancer",
@@ -9002,7 +9002,7 @@
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
-        "subjectVariant": {
+        "subject": {
           "id": "civic.mpid:1594",
           "type": "CategoricalVariant",
           "name": "ACVR1 G328V",
@@ -9318,7 +9318,7 @@
           ]
         },
         "predicate": "hasClinicalSignificanceFor",
-        "objectCondition": {
+        "object": {
           "id": "civic.did:2950",
           "conceptType": "Disease",
           "name": "Diffuse Midline Glioma, H3 K27-altered",
@@ -9352,7 +9352,7 @@
           "type": "EvidenceLine",
           "targetProposition": {
             "type": "VariantDiagnosticProposition",
-            "subjectVariant": {
+            "subject": {
               "id": "civic.mpid:1594",
               "type": "CategoricalVariant",
               "name": "ACVR1 G328V",
@@ -9668,7 +9668,7 @@
               ]
             },
             "predicate": "isDiagnosticInclusionCriterionFor",
-            "objectCondition": {
+            "object": {
               "id": "civic.did:2950",
               "conceptType": "Disease",
               "name": "Diffuse Midline Glioma, H3 K27-altered",
@@ -9726,7 +9726,7 @@
               ],
               "proposition": {
                 "type": "VariantDiagnosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:1937",
                   "type": "CategoricalVariant",
                   "name": "ACVR1 Gain-of-Function",
@@ -9816,7 +9816,7 @@
                   ]
                 },
                 "predicate": "isDiagnosticInclusionCriterionFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:2950",
                   "conceptType": "Disease",
                   "name": "Diffuse Midline Glioma, H3 K27-altered",
@@ -9892,7 +9892,7 @@
               ],
               "proposition": {
                 "type": "VariantDiagnosticProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:1594",
                   "type": "CategoricalVariant",
                   "name": "ACVR1 G328V",
@@ -10208,7 +10208,7 @@
                   ]
                 },
                 "predicate": "isDiagnosticInclusionCriterionFor",
-                "objectCondition": {
+                "object": {
                   "id": "civic.did:2950",
                   "conceptType": "Disease",
                   "name": "Diffuse Midline Glioma, H3 K27-altered",
@@ -10381,7 +10381,7 @@
       ],
       "proposition": {
         "type": "VariantClinicalSignificanceProposition",
-        "subjectVariant": {
+        "subject": {
           "id": "civic.mpid:113",
           "type": "CategoricalVariant",
           "name": "RET M918T",
@@ -10688,7 +10688,7 @@
           ]
         },
         "predicate": "hasClinicalSignificanceFor",
-        "objectCondition": {
+        "object": {
           "id": "civic.did:15",
           "conceptType": "Disease",
           "name": "Medullary Thyroid Carcinoma",
@@ -10722,7 +10722,7 @@
           "type": "EvidenceLine",
           "targetProposition": {
             "type": "VariantTherapeuticResponseProposition",
-            "subjectVariant": {
+            "subject": {
               "id": "civic.mpid:113",
               "type": "CategoricalVariant",
               "name": "RET M918T",
@@ -11029,7 +11029,7 @@
               ]
             },
             "predicate": "predictsSensitivityTo",
-            "objectTherapeutic": {
+            "object": {
               "id": "civic.tid:601",
               "extensions": [
                 {
@@ -11118,7 +11118,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:1598",
                   "type": "CategoricalVariant",
                   "name": "RET Mutation",
@@ -11225,7 +11225,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:601",
                   "extensions": [
                     {
@@ -11332,7 +11332,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:113",
                   "type": "CategoricalVariant",
                   "name": "RET M918T",
@@ -11639,7 +11639,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:601",
                   "extensions": [
                     {
@@ -11746,7 +11746,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:1598",
                   "type": "CategoricalVariant",
                   "name": "RET Mutation",
@@ -11853,7 +11853,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:601",
                   "extensions": [
                     {
@@ -11960,7 +11960,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:113",
                   "type": "CategoricalVariant",
                   "name": "RET M918T",
@@ -12267,8 +12267,8 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
-                  "therapies": [
+                "object": {
+                  "concepts": [
                     {
                       "id": "civic.tid:2709",
                       "extensions": [
@@ -12408,7 +12408,7 @@
               ],
               "proposition": {
                 "type": "VariantTherapeuticResponseProposition",
-                "subjectVariant": {
+                "subject": {
                   "id": "civic.mpid:113",
                   "type": "CategoricalVariant",
                   "name": "RET M918T",
@@ -12715,7 +12715,7 @@
                   ]
                 },
                 "predicate": "predictsSensitivityTo",
-                "objectTherapeutic": {
+                "object": {
                   "id": "civic.tid:601",
                   "extensions": [
                     {

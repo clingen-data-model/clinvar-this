@@ -111,7 +111,7 @@ class ClinicalImpactTransformer(
         if isinstance(therapeutic, MappableConcept):
             return therapeutic.name
 
-        return ";".join(sorted([t.name for t in therapeutic.therapies if t.name]))
+        return ";".join(sorted([t.name for t in therapeutic.concepts if t.name]))
 
     def _get_drug_context_from_evidence_lines(
         self, evidence_lines: list[EvidenceLine]
@@ -146,10 +146,10 @@ class ClinicalImpactTransformer(
             drug = None
 
             if isinstance(target_proposition, VariantTherapeuticResponseProposition):
-                therapeutic_root = target_proposition.objectTherapeutic.root
+                therapeutic_object = target_proposition.object
 
-                if isinstance(therapeutic_root, (TherapyGroup, MappableConcept)):
-                    therapeutic = therapeutic_root
+                if isinstance(therapeutic_object, (TherapyGroup, MappableConcept)):
+                    therapeutic = therapeutic_object
                     drug = self._get_drug_for_therapeutic_assertion(therapeutic)
 
             return DrugContext(

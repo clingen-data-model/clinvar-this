@@ -12,17 +12,16 @@ $ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collecti
 import json
 import re
 from abc import ABC, abstractmethod
-from typing import Any, Generic, Iterable, Literal, TextIO, TypeVar, get_type_hints
-from typing_extensions import Self
+from collections.abc import Iterable
+from typing import Any, Generic, Literal, Self, TextIO, TypeVar, get_type_hints
 
 from ga4gh.cat_vrs.models import CategoricalVariant, DefiningAlleleConstraint
-from ga4gh.core.models import MappableConcept, iriReference
+from ga4gh.core.models import MappableConcept, MembershipOperator, iriReference
 from ga4gh.va_spec.aac_2017 import VariantClinicalSignificanceStatement
 from ga4gh.va_spec.base import (
     Contribution,
     Document,
     EvidenceLine,
-    MembershipOperator,
     Statement,
     StudyResult,
     TherapyGroup,
@@ -336,16 +335,14 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
 
         if isinstance(proposition, VariantTherapeuticResponseProposition):
             condition = proposition.conditionQualifier
-        elif isinstance(proposition, VariantOncogenicityProposition):
-            condition = proposition.objectTumorType
         else:
-            condition = proposition.objectCondition
+            condition = proposition.object
 
         condition_db: ConditionDb | None = None
         condition_id: str | None = None
         condition_name: str | None = None
 
-        if primary_coding := condition.root.primaryCoding:
+        if primary_coding := condition.primaryCoding:
             coding_id = primary_coding.id
             coding_code = primary_coding.code.root
 
@@ -388,7 +385,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
                 condition_name = primary_coding.name
 
         if not condition_db and not condition_id:
-            condition_name = condition.root.name
+            condition_name = condition.name
 
         return SubmissionConditionSetSomatic(
             condition=[
@@ -693,7 +690,7 @@ class GksJsonTransformer(TransformIO, ABC, Generic[GksStatementT]):
             statement_id = statement.id
 
             variant: Allele | CategoricalVariant
-            prop_variant = statement.proposition.subjectVariant
+            prop_variant = statement.proposition.subject
 
             if isinstance(prop_variant, MolecularVariation):
                 if not isinstance(prop_variant.root, Allele):
