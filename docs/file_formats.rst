@@ -134,10 +134,10 @@ The following shows an example:
 Note that you cannot submission TSV imports with batches that contain removals already.
 
 --------
-GKS JSON
---------
+GKS native JSON
+---------------
 
-GKS JSON import supports `Global Alliance for Genomics and Health (GA4GH) <https://www.ga4gh.org/>`_ `Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact and oncogenicity submissions.
+GKS native JSON import supports `Global Alliance for Genomics and Health (GA4GH) <https://www.ga4gh.org/>`_ `Genomic Knowledge Standards (GKS) <https://www.ga4gh.org/work_stream/genomic-knowledge-standards/>`_ `Variant Annotation Specification (VA-Spec) <https://www.ga4gh.org/product/variant-annotation/>`_-aligned statement profiles for somatic clinical impact and oncogenicity submissions.
 
 This section describes how supported VA-Spec statement fields are mapped into ClinVar submission fields. For additional details on the statement model and terminology, see the `VA-Spec GitHub repository <https://github.com/ga4gh/va-spec/tree/1.1.0-snapshot.2026-02.1>`_.
 
@@ -403,3 +403,28 @@ You have to use ``SubmissionTemplate.xlsx``. The following columns are interpret
 
 You currently cannot use ClinVar Excel to update batches (of course you can provide clinvar accessions to trigger ClinVar record updates).
 You will need to export to TSV and re-import from there.
+
+
+GKS bundles
+-----------
+
+GKS native JSON stores self-contained inline statements in a ``gks_records``
+list. GKS bundles package related objects together, storing shared representations
+once and linking to them by reference. Bundle import requires a producer JSON
+schema and uses `ga4gh.gkm <https://pypi.org/project/ga4gh.gkm/>`_ to validate
+and expand references.
+
+Import native JSON::
+
+    clinvar-this batch import records.json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
+
+Import a bundle::
+
+    clinvar-this batch import bundle.json --schema bundle.schema.json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
+
+The importer uses ``ga4gh.gkm`` and the producer schema to identify supported
+clinical impact and oncogenicity statements in every collection, regardless of
+its name. Generic evidence statements provide supporting content.
+The importer rejects mixed supported profiles and bundles without supported
+statements. Supply the schema path explicitly; the importer does not discover
+or download schemas.

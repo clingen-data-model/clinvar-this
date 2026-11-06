@@ -1,9 +1,8 @@
 """Module for testing GKS Oncogenicity Transformer"""
 
-import json
 
 import pytest
-from conftest import DATA_DIR
+from conftest import BUNDLE_DIR, NATIVE_DIR
 from deepdiff import DeepDiff
 from ga4gh.core.models import Extension
 from ga4gh.va_spec.ccv_2022 import VariantOncogenicityStatement
@@ -32,19 +31,20 @@ from clinvar_api.models.sub_payload import (
 from clinvar_api.msg.sub_payload import (
     Assembly,
 )
+from clinvar_this.io.gks_json import read_gks_json_file
 from clinvar_this.io.gks_json.base import BatchMetadata
 from clinvar_this.io.gks_json.oncogenicity_transformer import (
     OncogenicityTransformer,
 )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def oncogenicity_transformer():
     """Create test fixture for ClinicalImpactTransformer"""
     return OncogenicityTransformer()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_metadata():
     """Create test fixture for CIViC metadata to use"""
     return BatchMetadata(
@@ -54,20 +54,24 @@ def civic_metadata():
     )
 
 
-@pytest.fixture(scope="module")
-def oncogenicity_gks_json_data():
-    """Create test fixture for Oncogenicity GKS JSON data"""
-    with (DATA_DIR / "oncogenicity_civic_assertions.json").open() as f:
-        return json.load(f)["gks_records"]
+@pytest.fixture
+def oncogenicity_gks_json_data(gks_input_format: str) -> list[dict]:
+    """Load the same CIViC records through either public input path."""
+    filename = "oncogenicity_civic_assertions.json"
+    directory = BUNDLE_DIR if gks_input_format == "bundle" else NATIVE_DIR
+    schema = str(BUNDLE_DIR / "bundle.schema.json") if gks_input_format == "bundle" else None
+    _, records = read_gks_json_file(str(directory / filename), schema_path=schema)
+    return [record.model_dump(exclude_none=True, serialize_as_any=True) for record in records]
 
 
-@pytest.fixture(scope="module")
+
+@pytest.fixture
 def civic_aid202(oncogenicity_gks_json_data):
     """Create test fixture for CIViC AID 202"""
     return VariantOncogenicityStatement(**oncogenicity_gks_json_data[0])
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def oncogenicity_assertion_criteria():
     """Create test fixture for AMP/ASCO/CAP 2017 assertion criteria"""
     return SubmissionAssertionCriteria(
@@ -76,7 +80,7 @@ def oncogenicity_assertion_criteria():
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_aid202_submission():
     """Create test fixture for CIViC AID 202 submission"""
     return SubmissionOncogenicitySubmission(
@@ -110,38 +114,17 @@ def civic_aid202_submission():
         oncogenicity_classification=SomaticOncogenicityClassification(
             oncogenicity_classification_description=OncogenicityClassificationDescription.LIKELY_ONCOGENIC,
             comment="Published sequencing studies have shown that RET mutations are very common in medullary thryoid carcinoma (MTC) and M918T is the most common specific variant, especially in the MEN2B clinical subtype of familial disease (civic.EID:78) but also in sporadic cases(civic.EID:12800). M918T mutations may predict worse outcomes (civic.EID:74). Biochemical and functional characterization demonstrates that the M918T mutation leads to functional activation of RET relative to wild-type through multiple complementary mechanisms, including increased ATP affinity (>10-fold) and complex stability, reduced conformational rigidity, and the promotion of ligand-independent dimerization and autophosphorylation (civic.EID:12805). Exogenous expression has been shown to induce transformation of Ba/F3 cells (civic.EID:11723), and drive colony formation in NIH3T3 cells (civic.EID:12709, OS2). RET M918T occurs in the region of the tyrosine kinase domain which is associated with multiple endocrine neoplasia type 2 B (OM1). RET M918T is predicted to be deleterious (CHASMplus score 0.314 > VECS gene-specific cutoff of 0.22, OP1). Eleven instances of the variant occur in cancerhotspots.org (V2): 6 Thyroid, 4 Adrenal Gland, 1 Breast (OP3). The variant is absent in gnomAD database (v4.1.0, OP4). Together these criteria indicate that M918T is likely oncogenic, with a score of 9.",
+            # The supplied export has no publication records for this assertion.
+            # Handling its external hasEvidence links is tracked separately.
             citation=[
                 SubmissionCitation(url="https://civicdb.org/links/assertion/202"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/74"),
-                SubmissionCitation(db=CitationDb.PUBMED, id="18073307"),
-                SubmissionCitation(url="https://civicdb.org/links/source/44"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/12800"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/78"),
-                SubmissionCitation(db=CitationDb.PUBMED, id="9839497"),
-                SubmissionCitation(url="https://civicdb.org/links/source/92"),
-                SubmissionCitation(url="https://civicdb.org/links/source/5519"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/12711"),
-                SubmissionCitation(db=CitationDb.PUBMED, id="29515777"),
-                SubmissionCitation(url="https://civicdb.org/links/source/5458"),
-                SubmissionCitation(
-                    url="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5839408"
-                ),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/12805"),
-                SubmissionCitation(db=CitationDb.PUBMED, id="17108110"),
-                SubmissionCitation(url="https://civicdb.org/links/source/5519"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/11723"),
-                SubmissionCitation(db=CitationDb.PUBMED, id="32284345"),
-                SubmissionCitation(url="https://civicdb.org/links/source/4870"),
-                SubmissionCitation(url="https://civicdb.org/links/evidence/12709"),
-                SubmissionCitation(db=CitationDb.PUBMED, id="9191060"),
-                SubmissionCitation(url="https://civicdb.org/links/source/4953"),
             ],
             date_last_evaluated="2026-04-16",
         ),
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def civic_oncogenicity_submissions(
     civic_aid202_submission, oncogenicity_assertion_criteria
 ):
@@ -157,7 +140,7 @@ def test_read_file(
     civic_aid202,
 ):
     """Ensure that read_file method works correctly"""
-    path = DATA_DIR / "oncogenicity_civic_assertions.json"
+    path = NATIVE_DIR / "oncogenicity_civic_assertions.json"
     expected_assertions = [
         civic_aid202,
     ]
