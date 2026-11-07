@@ -21,7 +21,7 @@ def test_call_main_verbose():
 
 def test_call_config():
     runner = CliRunner()
-    result = runner.invoke(cli.cli, ["config"])
+    result = runner.invoke(cli.cli, ["config", "--help"])
     assert result.exit_code == 0
 
 
@@ -150,7 +150,7 @@ def test_call_batch_import(fs_config, monkeypatch, name, metadata):
 
     mock_import.assert_called_once()
     assert len(mock_import.call_args.args) == 4
-    assert len(mock_import.call_args.kwargs) == 0
+    assert mock_import.call_args.kwargs == {"schema_path": None}
     assert (
         repr(mock_import.call_args.args[0])
         == "Config(profile='default', auth_token=SecretStr('**********'), verify_ssl=True)"

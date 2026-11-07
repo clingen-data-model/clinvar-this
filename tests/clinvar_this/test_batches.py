@@ -168,7 +168,7 @@ def test_import_seq_variant_tsv_update(fs, app_config):
     batch_name = "the-batch"
     batches.import_(config=app_config, name=batch_name, path=path_tsv, metadata=())
 
-    filename = os.listdir(os.path.expanduser("~/.local/share/clinvar-this/default/the-batch"))[-1]
+    filename = sorted(os.listdir(os.path.expanduser("~/.local/share/clinvar-this/default/the-batch")))[-1]
 
     payload_path = os.path.expanduser(f"~/.local/share/clinvar-this/default/the-batch/{filename}")
     assert os.path.exists(payload_path)
@@ -225,7 +225,7 @@ def test_import_structural_variant_tsv_update(fs, app_config):
     batch_name = "the-batch"
     batches.import_(config=app_config, name=batch_name, path=path_tsv, metadata=())
 
-    fname = os.listdir(os.path.expanduser("~/.local/share/clinvar-this/default/the-batch"))[-1]
+    fname = sorted(os.listdir(os.path.expanduser("~/.local/share/clinvar-this/default/the-batch")))[-1]
 
     payload_path = os.path.expanduser(f"~/.local/share/clinvar-this/default/the-batch/{fname}")
     assert os.path.exists(payload_path)
@@ -270,7 +270,7 @@ def test_export_seq_variant_tsv(fs, app_config, exists, force):
                 "ASSEMBLY\tCHROM\tPOS\tREF\tALT\tCONDITION\tMOI\tCLIN_SIG\tCLIN_EVAL\tCLIN_COMMENT\tKEY\tHPO\tPMID\tACCESSION",
                 (
                     "GRCh37\t19\t48183936\tC\tCA\tOMIM:619325\tAutosomal dominant inheritance\t"
-                    "Likely pathogenic\t\t\t\tHP:0004322,HP:0001263\t\t\n"
+                    "Likely pathogenic\t\t\ttest-variant\tHP:0004322,HP:0001263\t\t\n"
                 ),
             ]
         )
@@ -322,7 +322,7 @@ def test_export_structural_variant_tsv(fs, app_config, exists, force):
                 ),
                 (
                     "GRCh38\t1\t844347\t4398122\tDeletion\t\tAutosomal dominant inheritance\t"
-                    "not provided\t\t\t\tHP:0001263\t\t\n"
+                    "not provided\t\t\ttest-variant\tHP:0001263\t\t\n"
                 ),
             ]
         )
