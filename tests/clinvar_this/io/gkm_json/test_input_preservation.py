@@ -28,9 +28,9 @@ def test_conversion_preserves_defining_allele_expressions() -> None:
     assert isinstance(constraint.allele, Allele)
     assert constraint.allele.expressions
 
-    # An embedded member ensures conversion extends a nonempty expression list.
+    # Keep a cDNA member so conversion extends the defining protein expressions.
     variant_data = variant.model_dump(mode="json")
-    variant_data["members"] = [constraint.allele.model_dump(mode="json")]
+    variant_data["members"] = [variant_data["members"][0]]
     statement.proposition.subject = CategoricalVariant.model_validate(variant_data)
     original = statement.model_dump(mode="json")
     metadata = BatchMetadata(collection_method=CollectionMethod.CURATION)
@@ -40,7 +40,10 @@ def test_conversion_preserves_defining_allele_expressions() -> None:
     second = transformer.records_to_submission_container([statement], metadata)
 
     assert first.oncogenicity_submission
-    assert first.oncogenicity_submission[0].variant_set.variant[0].hgvs
+    assert (
+        first.oncogenicity_submission[0].variant_set.variant[0].hgvs
+        == "NM_020975.4:c.2753T>C"
+    )
     assert second.model_dump() == first.model_dump()
     assert statement.model_dump(mode="json") == original
 
