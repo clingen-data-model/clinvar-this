@@ -215,12 +215,12 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
         if tsv_type in (tsv.TsvType.SEQ_VAR, tsv.TsvType.STRUC_VAR):
             batch_metadata = tsv.batch_metadata_from_mapping(metadata, use_defaults=True)
             if tsv_type == tsv.TsvType.SEQ_VAR:
-                new_submission_container = tsv.seq_var_tsv_records_to_submission_container(
-                    tsv.read_seq_var_tsv(path=path), batch_metadata
+                new_submission_container = tsv.SeqVarTsvTransformer().records_to_submission_container(
+                    tsv.SeqVarTsvTransformer().read_file(path=path), batch_metadata
                 )
             else:  # tsv_type == tsv.TsvType.STRUC_VAR
-                new_submission_container = tsv.struc_var_tsv_records_to_submission_container(
-                    tsv.read_struc_var_tsv(path=path), batch_metadata
+                new_submission_container = tsv.StrucVarTsvTransformer().records_to_submission_container(
+                    tsv.StrucVarTsvTransformer().read_file(path=path), batch_metadata
                 )
             if previous_submission_container:
                 submission_container = _merge_submission_container(
