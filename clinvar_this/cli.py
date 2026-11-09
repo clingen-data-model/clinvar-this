@@ -131,6 +131,7 @@ def batch_import(
     metadata: typing.Optional[typing.Tuple[str, ...]] = None,
 ):
     """Import data into a new or existing batch.
+    \f
 
     :param ctx: Click context containing the selected profile.
     :param path: Input data file path.
