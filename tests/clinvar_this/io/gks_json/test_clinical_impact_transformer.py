@@ -102,9 +102,9 @@ def civic_aid7_allele(clinical_impact_gks_json_data):
     }
 
     for el in params["hasEvidenceLines"]:
-        el["targetProposition"]["subjectVariant"] = subject_variant
+        el["targetProposition"]["subject"] = subject_variant
 
-    params["proposition"]["subjectVariant"] = subject_variant
+    params["proposition"]["subject"] = subject_variant
     return VariantClinicalSignificanceStatement(**params)
 
 
@@ -483,7 +483,7 @@ def test_records_to_submission_container(
     civic_aid7_cpy = civic_aid7.model_copy()
     civic_aid7_cpy.hasEvidenceLines[
         0
-    ].targetProposition.objectTherapeutic.root.membershipOperator = "OR"
+    ].targetProposition.object.membershipOperator = "OR"
     actual = clinical_impact_transformer.records_to_submission_container(
         [civic_aid7_cpy], civic_metadata
     )
