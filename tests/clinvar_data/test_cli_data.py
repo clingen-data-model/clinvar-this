@@ -33,11 +33,11 @@ def test_cli_xml_to_json_stdin_stdout(snapshot):
     with open(in_path, "rt") as inputf:
         stdin_txt = inputf.read()
 
-    runner = CliRunner(mix_stderr=False)
+    runner = CliRunner()
     result = runner.invoke(cli.cli, ["data", "xml-to-jsonl", "-", "-"], input=stdin_txt)
     assert result.exit_code == 0
 
-    snapshot.assert_match(result.output, "one_record.jsonl")
+    snapshot.assert_match(result.stdout, "one_record.jsonl")
 
 
 @pytest.mark.parametrize(

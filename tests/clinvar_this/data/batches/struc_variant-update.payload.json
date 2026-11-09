@@ -55,7 +55,7 @@
       "haplotype_set": null,
       "haplotype_single_variant_set": null,
       "local_id": "mock-uuid4",
-      "local_key": null,
+      "local_key": "test-variant",
       "phase_unknown_set": null,
       "variant_set": {
         "variant": [
@@ -83,10 +83,11 @@
           }
         ]
       },
-      "extra_data": null
+      "extra_data": null,
+      "submitted_assembly": null
     }
   ],
-  "clinical_impact_submission": null,
+  "clinical_impact_submission": [],
   "germline_submission": null,
   "oncogenicity_submission": null,
   "clinvar_submission_release_status": "public",

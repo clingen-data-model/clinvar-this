@@ -184,7 +184,12 @@ class _RetrieveStatus:
         return url, headers
 
     def after_first_get_failure(self, response: httpx.Response):
-        logger.info("API returned an error %s", response.status_code, response)
+        """Raise a query error for a failed status request.
+
+        :param response: Failed API response.
+        :raises exceptions.QueryFailed: Always, with the API error details.
+        """
+        logger.info("API returned an error %s: %s", response.status_code, response)
         response_json = response.json()
         raise exceptions.QueryFailed(f"ClinVar query failed: {response_json}")
 
