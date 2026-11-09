@@ -44,6 +44,7 @@ from clinvar_api.msg.sub_payload import (
     VariantType,
 )
 from clinvar_this import exceptions
+from clinvar_this.io.base import TransformIO
 
 
 class SeqVarTsvRecord(BaseModel):
@@ -482,100 +483,12 @@ def _map_struc_var_header(
     return result
 
 
-def _read_seq_var_tsv_file(inputf: typing.TextIO) -> typing.List[SeqVarTsvRecord]:
-    """Read sequence variant TSV from the given file."""
-
-    def row_empty(row: typing.List[str]) -> bool:
-        return not row or not [val.strip() for val in row if val.strip()]
-
-    reader = csv.reader(inputf, delimiter="\t")
-    header_row = None
-    headers = None
-
-    result: typing.List[SeqVarTsvRecord] = []
-    for lineno, row in enumerate(reader):
-        if row_empty(row):
-            continue  # skip empty lines
-        if header_row:
-            raw_record = {}
-            extra_data = {}
-            assert headers is not None
-            if len(row) != len(header_row):
-                raise exceptions.InvalidFormat(f"Wrong number of rows in line {lineno+1}")
-            for value, header, header_name in zip(row, headers, header_row):
-                if header:
-                    raw_record[header.key] = header.converter(value)
-                else:
-                    extra_data[header_name] = value
-            record = SeqVarTsvRecord.model_validate(raw_record)
-            result.append(record.model_copy(update={"extra_data": extra_data}))
-        else:
-            header_row = row
-            headers = _map_seq_var_header(row)
-    return result
 
 
-def _read_struc_var_tsv_file(inputf: typing.TextIO) -> typing.List[StrucVarTsvRecord]:
-    """Read structural variant TSV from the given file."""
-
-    def row_empty(row: typing.List[str]) -> bool:
-        return not row or not [val.strip() for val in row if val.strip()]
-
-    reader = csv.reader(inputf, delimiter="\t")
-    header_row = None
-    headers = None
-
-    result: typing.List[StrucVarTsvRecord] = []
-    for lineno, row in enumerate(reader):
-        if row_empty(row):
-            continue  # skip empty lines
-        if header_row:
-            raw_record = {}
-            extra_data = {}
-            assert headers is not None
-            if len(row) != len(header_row):
-                raise exceptions.InvalidFormat(f"Wrong number of rows in line {lineno+1}")
-            for value, header, header_name in zip(row, headers, header_row):
-                if header:
-                    raw_record[header.key] = header.converter(value)
-                else:
-                    extra_data[header_name] = value
-            record = StrucVarTsvRecord.model_validate(raw_record)
-            result.append(record.model_copy(update={"extra_data": extra_data}))
-        else:
-            header_row = row
-            headers = _map_struc_var_header(row)
-    return result
 
 
-def read_seq_var_tsv(
-    *,
-    file: typing.Optional[typing.TextIO] = None,
-    path: typing.Union[None, str, pathlib.Path] = None,
-) -> typing.List[SeqVarTsvRecord]:
-    """Read sequence variant TSV from either file or path"""
-    if file:
-        return _read_seq_var_tsv_file(file)
-    elif path:
-        with pathlib.Path(path).open("rt") as inputf:
-            return _read_seq_var_tsv_file(inputf)
-    else:
-        raise TypeError("You have to provide either file or path")
 
 
-def read_struc_var_tsv(
-    *,
-    file: typing.Optional[typing.TextIO] = None,
-    path: typing.Union[None, str, pathlib.Path] = None,
-) -> typing.List[StrucVarTsvRecord]:
-    """Read structural variant TSV from either file or path"""
-    if file:
-        return _read_struc_var_tsv_file(file)
-    elif path:
-        with pathlib.Path(path).open("rt") as inputf:
-            return _read_struc_var_tsv_file(inputf)
-    else:
-        raise TypeError("You have to provide either file or path")
 
 
 def _write_seq_var_tsv_file(tsv_records: typing.Iterable[SeqVarTsvRecord], outputf: typing.TextIO):
@@ -782,187 +695,8 @@ def record_condition_set(
     )
 
 
-def seq_var_tsv_records_to_submission_container(
-    tsv_records: typing.List[SeqVarTsvRecord],
-    batch_metadata: BatchMetadata,
-) -> SubmissionContainer:
-    """Convert seq. var. TSV records to submission container data structure."""
-
-    def record_pubmed_citations(
-        record: SeqVarTsvRecord,
-    ) -> typing.Optional[typing.List[SubmissionCitation]]:
-        if record.pmids:
-            return [
-                SubmissionCitation(
-                    db=CitationDb.PUBMED,
-                    id=pmid,
-                )
-                for pmid in record.pmids
-            ]
-        else:
-            return None
-
-    def record_clinical_features(
-        record: SeqVarTsvRecord,
-    ) -> typing.Optional[typing.List[SubmissionClinicalFeature]]:
-        """Construct ``typing.Optional[typing.List[SubmissionClinicalFeature]]`` from ``TsvRecord``."""
-        if record.hpo_terms:
-            return [
-                SubmissionClinicalFeature(
-                    clinical_features_affected_status=ClinicalFeaturesAffectedStatus.PRESENT,
-                    db=ClinicalFeaturesDb.HP,
-                    id=hpo_term,
-                )
-                for hpo_term in record.hpo_terms
-            ]
-        else:
-            return None
-
-    allele_origin = batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
-    collection_method = (
-        batch_metadata.collection_method or BATCH_METADATA_DEFAULTS["collection_method"]
-    )
-    release_status = batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
-
-    return SubmissionContainer(
-        assertion_criteria=SubmissionAssertionCriteria(
-            # The following should come from the profile, cf.
-            #
-            # https://github.com/bihealth/clinvar-this/issues/36
-            db=CitationDb.PUBMED,
-            id="25741868",
-        ),
-        clinvar_submission_release_status=release_status,
-        clinvar_submission=[
-            SubmissionClinvarSubmission(
-                clinvar_accession=record.accession,
-                local_id=str(_uuid4_if_falsy()),
-                local_key=record.local_key,
-                condition_set=record_condition_set(record),
-                observed_in=[
-                    SubmissionObservedInGermline(
-                        affected_status=AffectedStatus.YES,
-                        allele_origin=allele_origin,
-                        collection_method=collection_method,
-                        clinical_features=record_clinical_features(record),
-                    )
-                ],
-                clinical_significance=SubmissionClinicalSignificance(
-                    clinical_significance_description=record.clinical_significance_description,
-                    mode_of_inheritance=record.inheritance,
-                    citation=record_pubmed_citations(record),
-                ),
-                record_status=RecordStatus.NOVEL,
-                variant_set=SubmissionVariantSet(
-                    variant=[
-                        SubmissionVariant(
-                            chromosome_coordinates=SubmissionChromosomeCoordinates(
-                                assembly=record.assembly,
-                                chromosome=record.chromosome,
-                                start=record.pos,
-                                stop=record.pos + len(record.ref) - 1,
-                                reference_allele=record.ref,
-                                alternate_allele=record.alt,
-                            ),
-                        )
-                    ]
-                ),
-                extra_data=record.extra_data or None,  # prefer ``None`` over ``{}``
-            )
-            for record in tsv_records
-        ],
-    )
 
 
-def struc_var_tsv_records_to_submission_container(
-    tsv_records: typing.List[StrucVarTsvRecord],
-    batch_metadata: BatchMetadata,
-) -> SubmissionContainer:
-    """Convert struc. var. TSV records to submission container data structure."""
-
-    def record_pubmed_citations(
-        record: StrucVarTsvRecord,
-    ) -> typing.Optional[typing.List[SubmissionCitation]]:
-        if record.pmids:
-            return [
-                SubmissionCitation(
-                    db=CitationDb.PUBMED,
-                    id=pmid,
-                )
-                for pmid in record.pmids
-            ]
-        else:
-            return None
-
-    def record_clinical_features(
-        record: StrucVarTsvRecord,
-    ) -> typing.Optional[typing.List[SubmissionClinicalFeature]]:
-        """Construct ``typing.Optional[typing.List[SubmissionClinicalFeature]]`` from ``TsvRecord``."""
-        if record.hpo_terms:
-            return [
-                SubmissionClinicalFeature(
-                    clinical_features_affected_status=ClinicalFeaturesAffectedStatus.PRESENT,
-                    db=ClinicalFeaturesDb.HP,
-                    id=hpo_term,
-                )
-                for hpo_term in record.hpo_terms
-            ]
-        else:
-            return None
-
-    allele_origin = batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
-    collection_method = (
-        batch_metadata.collection_method or BATCH_METADATA_DEFAULTS["collection_method"]
-    )
-    release_status = batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
-
-    return SubmissionContainer(
-        assertion_criteria=SubmissionAssertionCriteria(
-            # The following should come from the profile, cf.
-            #
-            # https://github.com/bihealth/clinvar-this/issues/36
-            db=CitationDb.PUBMED,
-            id="25741868",
-        ),
-        clinvar_submission_release_status=release_status,
-        clinvar_submission=[
-            SubmissionClinvarSubmission(
-                clinvar_accession=record.accession,
-                local_id=str(_uuid4_if_falsy()),
-                local_key=record.local_key,
-                condition_set=record_condition_set(record),
-                observed_in=[
-                    SubmissionObservedInGermline(
-                        affected_status=AffectedStatus.YES,
-                        allele_origin=allele_origin,
-                        collection_method=collection_method,
-                        clinical_features=record_clinical_features(record),
-                    )
-                ],
-                clinical_significance=SubmissionClinicalSignificance(
-                    clinical_significance_description=record.clinical_significance_description,
-                    mode_of_inheritance=record.inheritance,
-                    citation=record_pubmed_citations(record),
-                ),
-                record_status=RecordStatus.NOVEL,
-                variant_set=SubmissionVariantSet(
-                    variant=[
-                        SubmissionVariant(
-                            chromosome_coordinates=SubmissionChromosomeCoordinates(
-                                assembly=record.assembly,
-                                chromosome=record.chromosome,
-                                start=record.start,
-                                stop=record.stop,
-                            ),
-                            variant_type=record.sv_type,
-                        )
-                    ]
-                ),
-                extra_data=record.extra_data or None,  # prefer ``None`` over ``{}``
-            )
-            for record in tsv_records
-        ],
-    )
 
 
 def format_conditions(condition_set: SubmissionConditionSetGermline) -> typing.List[str]:
@@ -1160,3 +894,260 @@ def submission_container_to_struc_var_tsv_records(  # noqa: C901
         if record:
             result.append(record)
     return result
+
+
+class SeqVarTsvTransformer(TransformIO):
+    """Read and transform seq var TSV records."""
+
+    @classmethod
+    def _read_file(cls, inputf: typing.TextIO) -> typing.List[SeqVarTsvRecord]:
+        """Read sequence variant TSV from the given file."""
+
+        def row_empty(row: typing.List[str]) -> bool:
+            return not row or not [val.strip() for val in row if val.strip()]
+
+        reader = csv.reader(inputf, delimiter="\t")
+        header_row = None
+        headers = None
+
+        result: typing.List[SeqVarTsvRecord] = []
+        for lineno, row in enumerate(reader):
+            if row_empty(row):
+                continue  # skip empty lines
+            if header_row:
+                raw_record = {}
+                extra_data = {}
+                assert headers is not None
+                if len(row) != len(header_row):
+                    raise exceptions.InvalidFormat(f"Wrong number of rows in line {lineno+1}")
+                for value, header, header_name in zip(row, headers, header_row):
+                    if header:
+                        raw_record[header.key] = header.converter(value)
+                    else:
+                        extra_data[header_name] = value
+                record = SeqVarTsvRecord.model_validate(raw_record)
+                result.append(record.model_copy(update={"extra_data": extra_data}))
+            else:
+                header_row = row
+                headers = _map_seq_var_header(row)
+        return result
+
+    def records_to_submission_container(
+        self,
+        tsv_records: typing.List[SeqVarTsvRecord],
+        batch_metadata: BatchMetadata,
+    ) -> SubmissionContainer:
+        """Convert seq. var. TSV records to submission container data structure."""
+
+        def record_pubmed_citations(
+            record: SeqVarTsvRecord,
+        ) -> typing.Optional[typing.List[SubmissionCitation]]:
+            if record.pmids:
+                return [
+                    SubmissionCitation(
+                        db=CitationDb.PUBMED,
+                        id=pmid,
+                    )
+                    for pmid in record.pmids
+                ]
+            else:
+                return None
+
+        def record_clinical_features(
+            record: SeqVarTsvRecord,
+        ) -> typing.Optional[typing.List[SubmissionClinicalFeature]]:
+            """Construct ``typing.Optional[typing.List[SubmissionClinicalFeature]]`` from ``TsvRecord``."""
+            if record.hpo_terms:
+                return [
+                    SubmissionClinicalFeature(
+                        clinical_features_affected_status=ClinicalFeaturesAffectedStatus.PRESENT,
+                        db=ClinicalFeaturesDb.HP,
+                        id=hpo_term,
+                    )
+                    for hpo_term in record.hpo_terms
+                ]
+            else:
+                return None
+
+        allele_origin = batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
+        collection_method = (
+            batch_metadata.collection_method or BATCH_METADATA_DEFAULTS["collection_method"]
+        )
+        release_status = batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
+
+        return SubmissionContainer(
+            assertion_criteria=SubmissionAssertionCriteria(
+                # The following should come from the profile, cf.
+                #
+                # https://github.com/bihealth/clinvar-this/issues/36
+                db=CitationDb.PUBMED,
+                id="25741868",
+            ),
+            clinvar_submission_release_status=release_status,
+            clinvar_submission=[
+                SubmissionClinvarSubmission(
+                    clinvar_accession=record.accession,
+                    local_id=str(_uuid4_if_falsy()),
+                    local_key=record.local_key,
+                    condition_set=record_condition_set(record),
+                    observed_in=[
+                        SubmissionObservedInGermline(
+                            affected_status=AffectedStatus.YES,
+                            allele_origin=allele_origin,
+                            collection_method=collection_method,
+                            clinical_features=record_clinical_features(record),
+                        )
+                    ],
+                    clinical_significance=SubmissionClinicalSignificance(
+                        clinical_significance_description=record.clinical_significance_description,
+                        mode_of_inheritance=record.inheritance,
+                        citation=record_pubmed_citations(record),
+                    ),
+                    record_status=RecordStatus.NOVEL,
+                    variant_set=SubmissionVariantSet(
+                        variant=[
+                            SubmissionVariant(
+                                chromosome_coordinates=SubmissionChromosomeCoordinates(
+                                    assembly=record.assembly,
+                                    chromosome=record.chromosome,
+                                    start=record.pos,
+                                    stop=record.pos + len(record.ref) - 1,
+                                    reference_allele=record.ref,
+                                    alternate_allele=record.alt,
+                                ),
+                            )
+                        ]
+                    ),
+                    extra_data=record.extra_data or None,  # prefer ``None`` over ``{}``
+                )
+                for record in tsv_records
+            ],
+        )
+
+
+class StrucVarTsvTransformer(TransformIO):
+    """Read and transform struc var TSV records."""
+
+    @classmethod
+    def _read_file(cls, inputf: typing.TextIO) -> typing.List[StrucVarTsvRecord]:
+        """Read structural variant TSV from the given file."""
+
+        def row_empty(row: typing.List[str]) -> bool:
+            return not row or not [val.strip() for val in row if val.strip()]
+
+        reader = csv.reader(inputf, delimiter="\t")
+        header_row = None
+        headers = None
+
+        result: typing.List[StrucVarTsvRecord] = []
+        for lineno, row in enumerate(reader):
+            if row_empty(row):
+                continue  # skip empty lines
+            if header_row:
+                raw_record = {}
+                extra_data = {}
+                assert headers is not None
+                if len(row) != len(header_row):
+                    raise exceptions.InvalidFormat(f"Wrong number of rows in line {lineno+1}")
+                for value, header, header_name in zip(row, headers, header_row):
+                    if header:
+                        raw_record[header.key] = header.converter(value)
+                    else:
+                        extra_data[header_name] = value
+                record = StrucVarTsvRecord.model_validate(raw_record)
+                result.append(record.model_copy(update={"extra_data": extra_data}))
+            else:
+                header_row = row
+                headers = _map_struc_var_header(row)
+        return result
+
+    def records_to_submission_container(
+        self,
+        tsv_records: typing.List[StrucVarTsvRecord],
+        batch_metadata: BatchMetadata,
+    ) -> SubmissionContainer:
+        """Convert struc. var. TSV records to submission container data structure."""
+
+        def record_pubmed_citations(
+            record: StrucVarTsvRecord,
+        ) -> typing.Optional[typing.List[SubmissionCitation]]:
+            if record.pmids:
+                return [
+                    SubmissionCitation(
+                        db=CitationDb.PUBMED,
+                        id=pmid,
+                    )
+                    for pmid in record.pmids
+                ]
+            else:
+                return None
+
+        def record_clinical_features(
+            record: StrucVarTsvRecord,
+        ) -> typing.Optional[typing.List[SubmissionClinicalFeature]]:
+            """Construct ``typing.Optional[typing.List[SubmissionClinicalFeature]]`` from ``TsvRecord``."""
+            if record.hpo_terms:
+                return [
+                    SubmissionClinicalFeature(
+                        clinical_features_affected_status=ClinicalFeaturesAffectedStatus.PRESENT,
+                        db=ClinicalFeaturesDb.HP,
+                        id=hpo_term,
+                    )
+                    for hpo_term in record.hpo_terms
+                ]
+            else:
+                return None
+
+        allele_origin = batch_metadata.allele_origin or BATCH_METADATA_DEFAULTS["allele_origin"]
+        collection_method = (
+            batch_metadata.collection_method or BATCH_METADATA_DEFAULTS["collection_method"]
+        )
+        release_status = batch_metadata.release_status or BATCH_METADATA_DEFAULTS["release_status"]
+
+        return SubmissionContainer(
+            assertion_criteria=SubmissionAssertionCriteria(
+                # The following should come from the profile, cf.
+                #
+                # https://github.com/bihealth/clinvar-this/issues/36
+                db=CitationDb.PUBMED,
+                id="25741868",
+            ),
+            clinvar_submission_release_status=release_status,
+            clinvar_submission=[
+                SubmissionClinvarSubmission(
+                    clinvar_accession=record.accession,
+                    local_id=str(_uuid4_if_falsy()),
+                    local_key=record.local_key,
+                    condition_set=record_condition_set(record),
+                    observed_in=[
+                        SubmissionObservedInGermline(
+                            affected_status=AffectedStatus.YES,
+                            allele_origin=allele_origin,
+                            collection_method=collection_method,
+                            clinical_features=record_clinical_features(record),
+                        )
+                    ],
+                    clinical_significance=SubmissionClinicalSignificance(
+                        clinical_significance_description=record.clinical_significance_description,
+                        mode_of_inheritance=record.inheritance,
+                        citation=record_pubmed_citations(record),
+                    ),
+                    record_status=RecordStatus.NOVEL,
+                    variant_set=SubmissionVariantSet(
+                        variant=[
+                            SubmissionVariant(
+                                chromosome_coordinates=SubmissionChromosomeCoordinates(
+                                    assembly=record.assembly,
+                                    chromosome=record.chromosome,
+                                    start=record.start,
+                                    stop=record.stop,
+                                ),
+                                variant_type=record.sv_type,
+                            )
+                        ]
+                    ),
+                    extra_data=record.extra_data or None,  # prefer ``None`` over ``{}``
+                )
+                for record in tsv_records
+            ],
+        )
