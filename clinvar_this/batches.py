@@ -189,8 +189,20 @@ def _merge_submission_container(
     return result
 
 
-def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[str, ...]):
-    """Import the data file at ``path`` into the batch of name ``name``."""
+def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[str, ...], schema_path: str | None = None):
+    """Import a TSV, GKS native JSON, or GKS bundle file into a batch.
+
+    :param config: Configuration identifying the submission profile.
+    :param name: Batch to create or update.
+    :param path: Input data file path.
+    :param metadata: Batch metadata entries in KEY=VALUE form.
+    :param schema_path: Producer JSON schema path for bundle input.
+    :raises exceptions.IOException: If the input format or GKS statement profile
+        is unsupported, or bundle validation fails.
+    """
+    if schema_path is not None and not path.endswith(".json"):
+        raise exceptions.IOException("--schema is only supported for GKS bundle JSON input")
+
     existing_payloads = list((get_share_dir() / config.profile / name).glob("payload.*.json"))
     if existing_payloads:
         logger.info("Loading existing payload for later merging with new one")
@@ -222,8 +234,9 @@ def import_(config: config.Config, name: str, path: str, metadata: typing.Tuple[
         _write_payload(submission_container, config.profile, name)
     elif path.endswith(".json"):
         try:
-            gks_transformer, statements = read_gks_json_file(path)
+            gks_transformer, statements = read_gks_json_file(path, schema_path=schema_path)
         except (
+            exceptions.InvalidFormat,
             UnsupportedGksStatementType,
             AmbiguousGksStatementType,
         ) as e:

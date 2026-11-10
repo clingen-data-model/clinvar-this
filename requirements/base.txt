@@ -11,3 +11,4 @@ tqdm >=4.0
 protobuf >=3.20.2, <6.0
 pysam
 ga4gh.va_spec~=0.5.0-a7
+ga4gh.gkm~=0.4.1

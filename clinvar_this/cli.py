@@ -121,14 +121,25 @@ def batch_list(ctx: click.Context):
     help="Provide meta data settings as KEY=VALUE settings",
 )
 @click.option("--name", required=False, default=None, help="Name of the batch to create or add to")
+@click.option("--schema", "schema_path", type=click.Path(exists=True, dir_okay=False), help="Producer JSON schema required for GKS bundle import")
 @click.pass_context
 def batch_import(
     ctx: click.Context,
     path: str,
+    schema_path: str | None = None,
     name: typing.Optional[str] = None,
     metadata: typing.Optional[typing.Tuple[str, ...]] = None,
 ):
-    """Import data for a new or existing batch"""
+    """Import data into a new or existing batch.
+    \f
+
+    :param ctx: Click context containing the selected profile.
+    :param path: Input data file path.
+    :param schema_path: Producer JSON schema path for GKS bundle input.
+    :param name: Batch name; generated when omitted.
+    :param metadata: Batch metadata entries in KEY=VALUE form.
+    :raises exceptions.IOException: If batch import rejects the input.
+    """
     config_obj = load_config(ctx.obj["profile"])
     if not name:
         name = batches.gen_name(config_obj)
@@ -137,7 +148,7 @@ def batch_import(
         metadata = ()
     print(f"metadata = {metadata}")
     config_obj = load_config(ctx.obj["profile"])
-    batches.import_(config_obj, name, path, metadata)
+    batches.import_(config_obj, name, path, metadata, schema_path=schema_path)
 
 
 @batch.command("export")
