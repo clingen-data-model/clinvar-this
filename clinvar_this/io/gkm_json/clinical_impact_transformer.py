@@ -1,7 +1,7 @@
-"""Support for I/O of the AMP/ASCO/CAP 2017 GKS formatted data to define Clinical Impact submissions.
+"""Support for I/O of the AMP/ASCO/CAP 2017 GKM formatted data to define Clinical Impact submissions.
 
 Example usage:
-$ clinvar-this batch import path_to_gks_json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
+$ clinvar-this batch import path_to_gkm_json -m affected_status=yes -m "collection_method=clinical testing" -m submitted_assembly=GRCh38
 
 """
 
@@ -41,12 +41,12 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactAssertionType,
     SomaticClinicalImpactClassificationDescription,
 )
-from clinvar_this.io.gks_json.base import GksJsonTransformer
+from clinvar_this.io.gkm_json.base import GkmJsonTransformer
 
 logfile("aac_2017.log")
 
 
-# Mapping from GKS classification code to ClinVar clinical impact classification
+# Mapping from GKM classification code to ClinVar clinical impact classification
 _IMPACT_CLASS_MAPPING = MappingProxyType(
     {
         AmpAscoCapClassificationCode.TIER_1: SomaticClinicalImpactClassificationDescription.STRONG,
@@ -67,18 +67,18 @@ class DrugContext:
 
 
 class ClinicalImpactTransformer(
-    GksJsonTransformer[VariantClinicalSignificanceStatement]
+    GkmJsonTransformer[VariantClinicalSignificanceStatement]
 ):
-    """Class for transforming AMP/ASCO/CAP 2017 GKS formatted data to define Clinical Impact submissions"""
+    """Class for transforming AMP/ASCO/CAP 2017 GKM formatted data to define Clinical Impact submissions"""
 
     submission_container_attribute = "clinical_impact_submission"
     assertion_criteria = SubmissionAssertionCriteria(
         db=CitationDb.PUBMED,
         id="27993330",  # AMP/ASCO/CAP Guidelines, 2017
     )
-    gks_statement_cls = VariantClinicalSignificanceStatement
+    gkm_statement_cls = VariantClinicalSignificanceStatement
 
-    # Mapping from GKS classification code to ClinVar clinical impact classification
+    # Mapping from GKM classification code to ClinVar clinical impact classification
     impact_class_mapping = MappingProxyType(
         {
             AmpAscoCapClassificationCode.TIER_1: SomaticClinicalImpactClassificationDescription.STRONG,
@@ -88,8 +88,8 @@ class ClinicalImpactTransformer(
         }
     )
 
-    # Mapping from GKS predicate type to ClinVar assertion type for clinical impact
-    gks_predicate_to_assertion = {
+    # Mapping from GKM predicate type to ClinVar assertion type for clinical impact
+    gkm_predicate_to_assertion = {
         TherapeuticResponsePredicate.RESISTANCE: SomaticClinicalImpactAssertionType.THERAPEUTIC_RESISTANCE,
         TherapeuticResponsePredicate.SENSITIVITY: SomaticClinicalImpactAssertionType.THERAPEUTIC_SENSITIVITY_RESPONSE,
         DiagnosticPredicate.EXCLUSIVE: SomaticClinicalImpactAssertionType.DIAGNOSTIC_EXCLUDES_DIAGNOSIS,
@@ -138,7 +138,7 @@ class ClinicalImpactTransformer(
             ):
                 continue
 
-            assertion_type = self.gks_predicate_to_assertion[
+            assertion_type = self.gkm_predicate_to_assertion[
                 target_proposition.predicate
             ]
 
@@ -166,7 +166,7 @@ class ClinicalImpactTransformer(
         variant_hgvs: str | None = None,
         submitted_assembly: Assembly | None = None,
     ) -> SubmissionClinicalImpactSubmission:
-        """Transform a GKS clinical significance statement into a ClinVar novel clinical impact submission.
+        """Transform a GKM clinical significance statement into a ClinVar novel clinical impact submission.
 
         These statements support AMP/ASCO/CAP therapeutic, diagnostic, and prognostic assertions.
 
@@ -180,13 +180,13 @@ class ClinicalImpactTransformer(
         If `clinvar_accession` extension exists in `statement`, then this variant will
         have record status as `update` rather than `novel`.
 
-        :param statement: GKS statement (therapeutic, diagnostic, or prognostic) to transform
+        :param statement: GKM statement (therapeutic, diagnostic, or prognostic) to transform
         :param observed_in: List of distinct observations
         :param variant: Variant associated to statement
         :param variant_hgvs: The HGVS expression for a variant, if found
         :param submitted_assembly: The genome assembly used to call the variant.
             Required if `variant_hgvs` is non-null
-        :return: The clinical impact submission corresponding to a GKS Clinical
+        :return: The clinical impact submission corresponding to a GKM Clinical
             Significance statement
         """
         evidence_lines = self._get_evidence_lines(statement.hasEvidenceLines)
