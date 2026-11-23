@@ -323,14 +323,18 @@ class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
         """Build a somatic condition set from a proposition.
 
         Database identifiers are preferred over condition names when supported
-        ontology mappings are available.
+        ontology mappings are available. Otherwise, use the condition name or
+        the primary coding's name.
 
         Assumes:
         - A single condition is associated with the proposition
-        - `MappableConcept.name` is populated when no supported mapping exists
+        - A condition or primary coding name is populated when no supported
+          mapping exists
 
         :param proposition: Proposition for a given statement
         :return: Condition set for the interpreted variant.
+        :raises exceptions.InvalidFormat: If the condition has neither a
+            supported identifier nor a usable name.
         """
 
         if isinstance(proposition, VariantTherapeuticResponseProposition):
@@ -343,7 +347,7 @@ class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
         condition_name: str | None = None
 
         if primary_coding := condition.primaryCoding:
-            coding_id = primary_coding.id
+            coding_id = primary_coding.id or ""
             coding_code = primary_coding.code.root
 
             # Mapping of supported condition database prefixes to:
@@ -385,7 +389,12 @@ class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
                 condition_name = primary_coding.name
 
         if not condition_db and not condition_id:
-            condition_name = condition.name
+            condition_name = condition.name or condition_name
+            if not condition_name:
+                raise exceptions.InvalidFormat(
+                    "GKM condition requires a supported identifier or a condition "
+                    "or primary coding name"
+                )
 
         return SubmissionConditionSetSomatic(
             condition=[
