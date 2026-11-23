@@ -1,4 +1,4 @@
-"""Module for testing GKS Clinical Impact Transformer"""
+"""Module for testing GKM Clinical Impact Transformer"""
 
 import re
 from copy import deepcopy
@@ -34,9 +34,9 @@ from clinvar_api.msg.sub_payload import (
     SomaticClinicalImpactClassificationDescription,
 )
 from clinvar_this import exceptions
-from clinvar_this.io.gks_json import read_gks_json_file
-from clinvar_this.io.gks_json.base import BatchMetadata
-from clinvar_this.io.gks_json.clinical_impact_transformer import (
+from clinvar_this.io.gkm_json import read_gkm_json_file
+from clinvar_this.io.gkm_json.base import BatchMetadata
+from clinvar_this.io.gkm_json.clinical_impact_transformer import (
     ClinicalImpactTransformer,
 )
 
@@ -58,32 +58,32 @@ def civic_metadata():
 
 
 @pytest.fixture
-def clinical_impact_gks_json_data(gks_input_format: str) -> list[dict]:
+def clinical_impact_gkm_json_data(gkm_input_format: str) -> list[dict]:
     """Load the same CIViC records through either public input path."""
     filename = "clinical_impact_civic_assertions.json"
-    directory = BUNDLE_DIR if gks_input_format == "bundle" else NATIVE_DIR
-    schema = str(BUNDLE_DIR / "bundle.schema.json") if gks_input_format == "bundle" else None
-    _, records = read_gks_json_file(str(directory / filename), schema_path=schema)
+    directory = BUNDLE_DIR if gkm_input_format == "bundle" else NATIVE_DIR
+    schema = str(BUNDLE_DIR / "bundle.schema.json") if gkm_input_format == "bundle" else None
+    _, records = read_gkm_json_file(str(directory / filename), schema_path=schema)
     return [record.model_dump(exclude_none=True, serialize_as_any=True) for record in records]
 
 
 
 @pytest.fixture
-def civic_aid6(clinical_impact_gks_json_data):
+def civic_aid6(clinical_impact_gkm_json_data):
     """Create test fixture for CIViC AID6"""
-    return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[0])
+    return VariantClinicalSignificanceStatement(**clinical_impact_gkm_json_data[0])
 
 
 @pytest.fixture
-def civic_aid7(clinical_impact_gks_json_data):
+def civic_aid7(clinical_impact_gkm_json_data):
     """Create test fixture for CIViC AID7"""
-    return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[1])
+    return VariantClinicalSignificanceStatement(**clinical_impact_gkm_json_data[1])
 
 
 @pytest.fixture
-def civic_aid7_allele(clinical_impact_gks_json_data):
+def civic_aid7_allele(clinical_impact_gkm_json_data):
     """Create test fixture for CIViC AID7 where a VRS Allele is used instead"""
-    params = deepcopy(clinical_impact_gks_json_data[1])
+    params = deepcopy(clinical_impact_gkm_json_data[1])
     subject_variant = {
         "id": "ga4gh:VA.W6xsV-aFm9yT2Bic5cFAV2j0rll6KK5R",
         "type": "Allele",
@@ -113,21 +113,21 @@ def civic_aid7_allele(clinical_impact_gks_json_data):
 
 
 @pytest.fixture
-def civic_aid20(clinical_impact_gks_json_data):
+def civic_aid20(clinical_impact_gkm_json_data):
     """Create test fixture for CIViC AID20"""
-    return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[2])
+    return VariantClinicalSignificanceStatement(**clinical_impact_gkm_json_data[2])
 
 
 @pytest.fixture
-def civic_aid9(clinical_impact_gks_json_data):
+def civic_aid9(clinical_impact_gkm_json_data):
     """Create test fixture for CIViC AID9"""
-    return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[3])
+    return VariantClinicalSignificanceStatement(**clinical_impact_gkm_json_data[3])
 
 
 @pytest.fixture
-def civic_aid200(clinical_impact_gks_json_data):
+def civic_aid200(clinical_impact_gkm_json_data):
     """Create test fixture for CIViC AID200"""
-    return VariantClinicalSignificanceStatement(**clinical_impact_gks_json_data[4])
+    return VariantClinicalSignificanceStatement(**clinical_impact_gkm_json_data[4])
 
 
 @pytest.fixture
@@ -422,16 +422,16 @@ def test_read_file(
     actual = clinical_impact_transformer.read_file(path=path)
     assert actual == expected_assertions
 
-    with pytest.raises(exceptions.InvalidFormat, match="Error decoding GKS JSON"):
+    with pytest.raises(exceptions.InvalidFormat, match="Error decoding GKM JSON"):
         clinical_impact_transformer.read_file(path=NATIVE_DIR / "invalid_json.json")
 
     with pytest.raises(
         exceptions.InvalidFormat,
         match=re.escape(
-            "Invalid GKS JSON: missing required key `gks_records` (must be a list of statements)"
+            "Invalid GKM JSON: missing required key `gkm_records` (must be a list of statements)"
         ),
     ):
-        clinical_impact_transformer.read_file(path=NATIVE_DIR / "no_gks_records.json")
+        clinical_impact_transformer.read_file(path=NATIVE_DIR / "no_gkm_records.json")
 
 
 def test_records_to_submission_container(

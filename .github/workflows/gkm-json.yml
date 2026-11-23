@@ -1,4 +1,4 @@
-name: GKS JSON tests
+name: GKM JSON tests
 
 on: [push, pull_request]
 
@@ -6,8 +6,8 @@ permissions:
   contents: read
 
 jobs:
-  gks-json-tests:
-    name: GKS JSON tests (Python ${{ matrix.python-version }})
+  gkm-json-tests:
+    name: GKM JSON tests (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,5 +23,5 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements/test.txt
 
-      - name: Run GKS JSON tests
-        run: python -m pytest tests/clinvar_this/io/gks_json --no-cov
+      - name: Run GKM JSON tests
+        run: python -m pytest tests/clinvar_this/io/gkm_json --no-cov

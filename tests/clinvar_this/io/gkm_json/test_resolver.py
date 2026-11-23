@@ -8,10 +8,10 @@ from conftest import BUNDLE_DIR, NATIVE_DIR
 
 from clinvar_api.models import AffectedStatus, CollectionMethod
 from clinvar_api.msg.sub_payload import Assembly
-from clinvar_this.io.gks_json import read_gks_json_file
-from clinvar_this.io.gks_json.base import BatchMetadata
+from clinvar_this.io.gkm_json import read_gkm_json_file
+from clinvar_this.io.gkm_json.base import BatchMetadata
 from clinvar_this import exceptions
-from clinvar_this.io.gks_json.resolver import UnsupportedGksStatementType
+from clinvar_this.io.gkm_json.resolver import UnsupportedGkmStatementType
 
 
 @pytest.mark.parametrize(
@@ -24,8 +24,8 @@ def test_native_bundle_equivalence(filename: str) -> None:
     bundle = BUNDLE_DIR / filename
     schema = BUNDLE_DIR / "bundle.schema.json"
 
-    native_transformer, native_records = read_gks_json_file(str(native))
-    bundle_transformer, bundle_records = read_gks_json_file(str(bundle), str(schema))
+    native_transformer, native_records = read_gkm_json_file(str(native))
+    bundle_transformer, bundle_records = read_gkm_json_file(str(bundle), str(schema))
 
     assert type(native_transformer) is type(bundle_transformer)
     assert native_records == bundle_records
@@ -68,8 +68,8 @@ def test_bundle_statement_collections_are_discovered(filename: str, tmp_path: Pa
     bundle_path.write_text(json.dumps(document))
     schema_path.write_text(json.dumps(schema))
 
-    _, actual = read_gks_json_file(str(bundle_path), str(schema_path))
-    _, expected = read_gks_json_file(str(NATIVE_DIR / filename))
+    _, actual = read_gkm_json_file(str(bundle_path), str(schema_path))
+    _, expected = read_gkm_json_file(str(NATIVE_DIR / filename))
 
     assert actual == expected
 
@@ -82,7 +82,7 @@ def test_bundle_without_supported_statements(tmp_path: Path) -> None:
     bundle_path.write_text(json.dumps(document))
 
     with pytest.raises(exceptions.InvalidFormat, match="nonempty"):
-        read_gks_json_file(str(bundle_path), str(BUNDLE_DIR / "bundle.schema.json"))
+        read_gkm_json_file(str(bundle_path), str(BUNDLE_DIR / "bundle.schema.json"))
 
 
 def test_bundle_with_mixed_supported_profiles(tmp_path: Path) -> None:
@@ -94,7 +94,7 @@ def test_bundle_with_mixed_supported_profiles(tmp_path: Path) -> None:
         ("clinical", "clinical_impact_civic_assertions.json"),
         ("oncogenic", "oncogenicity_civic_assertions.json"),
     ):
-        record = json.loads((NATIVE_DIR / filename).read_text())["gks_records"][0]
+        record = json.loads((NATIVE_DIR / filename).read_text())["gkm_records"][0]
         document[name] = {record["id"]: record}
     schema["properties"] = {name: record_schema for name in document}
     schema["required"] = list(document)
@@ -103,5 +103,5 @@ def test_bundle_with_mixed_supported_profiles(tmp_path: Path) -> None:
     bundle_path.write_text(json.dumps(document))
     schema_path.write_text(json.dumps(schema))
 
-    with pytest.raises(UnsupportedGksStatementType):
-        read_gks_json_file(str(bundle_path), str(schema_path))
+    with pytest.raises(UnsupportedGkmStatementType):
+        read_gkm_json_file(str(bundle_path), str(schema_path))
