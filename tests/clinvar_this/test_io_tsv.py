@@ -1,5 +1,5 @@
-from io import StringIO
 import pathlib
+from io import StringIO
 
 import pytest
 
@@ -17,13 +17,11 @@ from clinvar_this import exceptions
 from clinvar_this.io.tsv import (
     BatchMetadata,
     SeqVarTsvRecord,
+    SeqVarTsvTransformer,
     StrucVarTsvRecord,
+    StrucVarTsvTransformer,
     TsvType,
     guess_tsv_type,
-    read_seq_var_tsv,
-    read_struc_var_tsv,
-    seq_var_tsv_records_to_submission_container,
-    struc_var_tsv_records_to_submission_container,
     submission_container_to_seq_var_tsv_records,
     submission_container_to_struc_var_tsv_records,
 )
@@ -70,7 +68,7 @@ def _create_seq_tsv_fake(overrides: dict) -> StringIO:
 
 
 def test_read_seq_var_tsv_path():
-    actual = read_seq_var_tsv(path=DATA_DIR / "example.tsv")
+    actual = SeqVarTsvTransformer().read_file(path=DATA_DIR / "example.tsv")
     assert actual == [
         SeqVarTsvRecord(
             accession="SCV1",
@@ -89,7 +87,7 @@ def test_read_seq_var_tsv_path():
 
 
 def test_read_struc_var_tsv_path():
-    actual = read_struc_var_tsv(path=DATA_DIR / "example_sv.tsv")
+    actual = StrucVarTsvTransformer().read_file(path=DATA_DIR / "example_sv.tsv")
     assert actual == [
         StrucVarTsvRecord(
             accession="SCV1",
@@ -108,7 +106,7 @@ def test_read_struc_var_tsv_path():
 
 def test_read_seq_var_tsv_file():
     with (DATA_DIR / "example.tsv").open("rt") as inputf:
-        actual = read_seq_var_tsv(file=inputf)
+        actual = SeqVarTsvTransformer().read_file(file=inputf)
     assert actual == [
         SeqVarTsvRecord(
             accession="SCV1",
@@ -128,7 +126,7 @@ def test_read_seq_var_tsv_file():
 
 def test_read_seq_var_tsv_file_citation():
     with (DATA_DIR / "example_citation.tsv").open("rt") as inputf:
-        actual = read_seq_var_tsv(file=inputf)
+        actual = SeqVarTsvTransformer().read_file(file=inputf)
     assert actual == [
         SeqVarTsvRecord(
             assembly=Assembly.GRCH37,
@@ -148,7 +146,7 @@ def test_read_seq_var_tsv_file_citation():
 
 def test_read_struc_var_tsv_file():
     with (DATA_DIR / "example_sv.tsv").open("rt") as inputf:
-        actual = read_struc_var_tsv(file=inputf)
+        actual = StrucVarTsvTransformer().read_file(file=inputf)
     assert actual == [
         StrucVarTsvRecord(
             accession="SCV1",
@@ -277,13 +275,13 @@ class TestConditionDefinition:
 
     def test_seq_vars_read(self):
         for condition in self.condition_strings:
-            result = read_seq_var_tsv(file=_create_seq_tsv_fake({"CONDITION": condition["raw"]}))
+            result = SeqVarTsvTransformer().read_file(file=_create_seq_tsv_fake({"CONDITION": condition["raw"]}))
             assert len(result) == 1
             assert result[0].condition == condition["expected"]
 
     def test_struc_vars_read(self):
         for condition in self.condition_strings:
-            result = read_struc_var_tsv(
+            result = StrucVarTsvTransformer().read_file(
                 file=_create_struc_tsv_fake({"CONDITION": condition["raw"]})
             )
             assert len(result) == 1
@@ -293,7 +291,7 @@ class TestConditionDefinition:
         metadata = BatchMetadata()
         for condition in self.condition_strings:
             record = self._create_seq_record(condition=condition["expected"])
-            container = seq_var_tsv_records_to_submission_container([record], metadata)
+            container = SeqVarTsvTransformer().records_to_submission_container([record], metadata)
             assert container.clinvar_submission is not None
             assert container.clinvar_submission[0].condition_set == condition["parsed"]
 
@@ -301,7 +299,7 @@ class TestConditionDefinition:
         metadata = BatchMetadata()
         for condition in self.condition_strings:
             record = self._create_struc_record(condition=condition["expected"])
-            container = struc_var_tsv_records_to_submission_container([record], metadata)
+            container = StrucVarTsvTransformer().records_to_submission_container([record], metadata)
             assert container.clinvar_submission is not None
             assert container.clinvar_submission[0].condition_set == condition["parsed"]
 
@@ -309,7 +307,7 @@ class TestConditionDefinition:
         metadata = BatchMetadata()
         for condition in self.condition_strings:
             record = self._create_seq_record(condition=condition["expected"])
-            container = seq_var_tsv_records_to_submission_container([record], metadata)
+            container = SeqVarTsvTransformer().records_to_submission_container([record], metadata)
             reconverted = submission_container_to_seq_var_tsv_records(container)
             assert len(reconverted) == 1
             assert record.condition == reconverted[0].condition
@@ -318,7 +316,7 @@ class TestConditionDefinition:
         metadata = BatchMetadata()
         for condition in self.condition_strings:
             record = self._create_struc_record(condition=condition["expected"])
-            container = struc_var_tsv_records_to_submission_container([record], metadata)
+            container = StrucVarTsvTransformer().records_to_submission_container([record], metadata)
             reconverted = submission_container_to_struc_var_tsv_records(container)
             assert len(reconverted) == 1
             assert record.condition == reconverted[0].condition
@@ -326,22 +324,22 @@ class TestConditionDefinition:
 
 def test_read_seq_var_tsv_path_bad():
     with pytest.raises(exceptions.InvalidFormat):
-        read_seq_var_tsv(path=DATA_DIR / "example.bad.tsv")
+        SeqVarTsvTransformer().read_file(path=DATA_DIR / "example.bad.tsv")
 
 
 def test_read_struc_var_tsv_path_bad():
     with pytest.raises(exceptions.InvalidFormat):
-        read_struc_var_tsv(path=DATA_DIR / "example_sv.bad.tsv")
+        StrucVarTsvTransformer().read_file(path=DATA_DIR / "example_sv.bad.tsv")
 
 
 def test_read_seq_var_tsv_error():
     with pytest.raises(TypeError):
-        read_seq_var_tsv()
+        SeqVarTsvTransformer().read_file()
 
 
 def test_read_struc_var_tsv_error():
     with pytest.raises(TypeError):
-        read_struc_var_tsv()
+        StrucVarTsvTransformer().read_file()
 
 
 def test_guess_file_type():
