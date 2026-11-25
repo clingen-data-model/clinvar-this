@@ -207,7 +207,8 @@ class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
 
         For Categorical Variants, checks the first constraint for expressions. Only
         support extracting from DefiningAlleleConstraints at the moment. Then
-        checks members for expressions.
+        checks embedded members for expressions. Unresolved member references
+        are skipped because they do not contain expressions.
 
         For VRS Alleles, checks the `expressions` field.
 
@@ -256,6 +257,8 @@ class GkmJsonTransformer(TransformIO, ABC, Generic[GkmStatementT]):
 
             if members := variant.members:
                 for member in members:
+                    if isinstance(member, iriReference):
+                        continue
                     expressions.extend(member.root.expressions or [])
         else:
             expressions = variant.expressions or []
