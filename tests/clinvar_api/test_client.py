@@ -36,7 +36,7 @@ def test_submit_data_success(httpx_mock):
         models.SubmissionContainer(),
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
-    assert repr(result) == "Created(id='SUB999999')"
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == "Created(id='SUB999999')"
 
 
 def test_submit_data_failed(httpx_mock):
@@ -76,7 +76,7 @@ def test_retrieve_status_success_no_extra_file(httpx_mock, data_submission_submi
         FAKE_ID,
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
-    assert repr(result).replace("tzlocal", "tzutc") == (
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)").replace("tzlocal", "tzutc") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions("
         "id='SUB999999-1', responses=[], status='submitted', target_db='clinvar', "
         "updated=datetime.datetime(2021, 3, 19, 17, 24, 24, 384085, tzinfo=TzInfo(UTC)))]), summaries={})"
@@ -106,7 +106,7 @@ def test_retrieve_status_success_with_extra_files(
         FAKE_ID,
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
-    assert repr(result) == (
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions(id='SUB999999-1', "
         "responses=[SubmissionStatusResponse(status='processed', files=[SubmissionStatusFile(url='"
         "https://dsubmit.ncbi.nlm.nih.gov/api/2.0/files/xxxxxxxx/sub999999-summary-report.json/"
@@ -190,7 +190,7 @@ def test_client_submit_success(httpx_mock):
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = client_obj.submit_data(models.SubmissionContainer())
-    assert repr(result) == "Created(id='SUB999999')"
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == "Created(id='SUB999999')"
 
 
 def test_client_retrieve_status_success_no_extra_file(httpx_mock, data_submission_submitted):
@@ -205,7 +205,7 @@ def test_client_retrieve_status_success_no_extra_file(httpx_mock, data_submissio
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = client_obj.retrieve_status(FAKE_ID)
-    assert repr(result) == (
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions("
         "id='SUB999999-1', responses=[], status='submitted', target_db='clinvar', "
         "updated=datetime.datetime(2021, 3, 19, 17, 24, 24, 384085, tzinfo=TzInfo(UTC)))]), summaries={})"
@@ -225,7 +225,7 @@ async def test_async_submit_data_success(httpx_mock):
         models.SubmissionContainer(),
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
-    assert repr(result) == "Created(id='SUB999999')"
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == "Created(id='SUB999999')"
 
 
 @pytest.mark.asyncio
@@ -257,7 +257,7 @@ async def test_async_retrieve_status_success_no_extra_file(httpx_mock, data_subm
         FAKE_ID,
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
-    assert repr(result).replace("tzlocal", "tzutc") == (
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)").replace("tzlocal", "tzutc") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions("
         "id='SUB999999-1', responses=[], status='submitted', target_db='clinvar', "
         "updated=datetime.datetime(2021, 3, 19, 17, 24, 24, 384085, tzinfo=TzInfo(UTC)))]), summaries={})"
@@ -288,7 +288,7 @@ async def test_async_retrieve_status_success_with_extra_files(
         FAKE_ID,
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False),
     )
-    assert repr(result) == (
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions(id='SUB999999-1', "
         "responses=[SubmissionStatusResponse(status='processed', files=[SubmissionStatusFile(url='"
         "https://dsubmit.ncbi.nlm.nih.gov/api/2.0/files/xxxxxxxx/sub999999-summary-report.json/"
@@ -375,7 +375,7 @@ async def test_async_client_submit_success(httpx_mock):
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = await client_obj.submit_data(models.SubmissionContainer())
-    assert repr(result) == "Created(id='SUB999999')"
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == "Created(id='SUB999999')"
 
 
 @pytest.mark.asyncio
@@ -393,7 +393,7 @@ async def test_async_client_retrieve_status_success_no_extra_file(
         config=client.Config(auth_token=SecretStr(FAKE_TOKEN), presubmission_validation=False)
     )
     result = await client_obj.retrieve_status(FAKE_ID)
-    assert repr(result) == (
+    assert repr(result).replace("TzInfo(0)", "TzInfo(UTC)") == (
         "RetrieveStatusResult(status=SubmissionStatus(actions=[SubmissionStatusActions("
         "id='SUB999999-1', responses=[], status='submitted', target_db='clinvar', "
         "updated=datetime.datetime(2021, 3, 19, 17, 24, 24, 384085, tzinfo=TzInfo(UTC)))]), summaries={})"
